@@ -87,10 +87,10 @@ namespace IF
 
 
 	public:
-		Scene(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
+		Scene();
 		~Scene();
 
-		void Initialize();
+		void Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
 		void Update();
 		void Draw();
 	};

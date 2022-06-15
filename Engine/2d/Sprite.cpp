@@ -16,6 +16,13 @@ void IF::Sprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandLis
 	Sprite::matPro = MatrixOrthoGraphicProjection(0, winWidth, 0, winHeight, 0, 1);
 }
 
+IF::Sprite::~Sprite()
+{
+	constBuffTransform->Unmap(0, nullptr);
+	delete vi;
+	delete constMapTransform;
+}
+
 void IF::Sprite::SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList)
 {
 	assert(device);
@@ -193,7 +200,7 @@ void Sprite::TransferVertex()
 	vertices[RB].uv = { tex_right,	tex_bottom };
 	vertices[RT].uv = { tex_right,	tex_top };
 
-	ID3D12Resource* texBuff = Texture::Instance()->tex[texNum].texbuff.Get();
+	ComPtr<ID3D12Resource> texBuff = Texture::Instance()->tex[texNum].texbuff.Get();
 
 	if (texBuff)
 	{

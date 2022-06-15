@@ -16,7 +16,7 @@ void IF::GUI::Initialize(HWND hwnd, ID3D12Device* device, ID3D12DescriptorHeap* 
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX12_Init(device, NUM_FRAMES_IN_FLIGHT,
-        DXGI_FORMAT_R8G8B8A8_UNORM, SrvDescHeap,
+        DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, SrvDescHeap,
         SrvDescHeap->GetCPUDescriptorHandleForHeapStart(),
         SrvDescHeap->GetGPUDescriptorHandleForHeapStart());
 }

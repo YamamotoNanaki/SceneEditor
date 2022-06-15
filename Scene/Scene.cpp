@@ -7,13 +7,7 @@
 
 using namespace std;
 
-IF::Scene::Scene(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
-	:winWidth(winWidth), winHeight(winHeight), device(device), commandList(commandList), viewport(viewport), hwnd(hwnd)
-{
-	Graphic::SetDevice(device);
-	Texture::setDevice(device);
-	Model::SetDevice(device);
-}
+IF::Scene::Scene() {}
 
 IF::Scene::~Scene()
 {
@@ -21,11 +15,19 @@ IF::Scene::~Scene()
 	delete matPro;
 	sound->Reset();
 	sound->SoundUnLoad(testSound);
-	Graphic::DeleteInstance();
 }
 
-void IF::Scene::Initialize()
+void IF::Scene::Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
 {
+	this->winWidth = winWidth;
+	this->winHeight = winHeight;
+	this->device = device;
+	this->commandList = commandList;
+	this->viewport = viewport;
+	this->hwnd = hwnd;
+	Graphic::SetDevice(device);
+	Texture::setDevice(device);
+	Model::SetDevice(device);
 	//音源
 	testSound = sound->LoadWave("Resources/Alarm01.wav");
 
@@ -41,7 +43,7 @@ void IF::Scene::Initialize()
 	}
 	light->SetCircleShadowActive(0, true);
 	light->SetAmbientColor({ 1, 1, 1 });
-	Object::StaticInitialize(device.Get(), commandList.Get(), light);
+	Object::StaticInitialize(this->device.Get(), this->commandList.Get(), light);
 
 	//画像関連初期化
 	graph->Initialize(tex->descRangeSRV, L"Resources/Shaders/ModelVS.hlsl", L"Resources/Shaders/ModelPS.hlsl", L"Resources/Shaders/ModelGS.hlsl");
@@ -72,14 +74,14 @@ void IF::Scene::Initialize()
 
 
 	//2D関連
-	sprite.StaticInitialize(device.Get(), commandList.Get(), (float)winWidth, (float)winHeight);
+	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
 	SGraph = tex->LoadTexture("Resources/texture.png");
 	sprite.Initialize(SGraph, { 300,300 });
 
 	//sound->SoundPlay(testSound);
 
 	//IMGUI
-	gui.Initialize(hwnd, device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
+	gui.Initialize(this->hwnd, this->device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
 
 	//デバッグ用
 #ifdef _DEBUG

@@ -66,6 +66,8 @@ unsigned short IF::Sound::LoadWave(const char* filename)
 
 	soundDatas[num] = soundData;
 
+	delete pBuffer;
+
 	return num;
 }
 

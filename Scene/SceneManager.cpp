@@ -11,7 +11,8 @@ void IF::SceneManager::Initialize(int winWidth, int winHeight, ID3D12Device* dev
 	this->commandList = commandList;
 	this->viewport = viewport;
 	this->hwnd = hwnd;
-	scene = new Scene(winWidth, winHeight, device, commandList, viewport, hwnd);
+	scene = new Scene;
+	scene->Initialize(winWidth, winHeight, device, commandList, viewport, hwnd);
 }
 
 void IF::SceneManager::Update()

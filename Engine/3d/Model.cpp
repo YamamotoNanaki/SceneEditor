@@ -336,5 +336,7 @@ void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPO
 
 Model::~Model()
 {
+	constBuffTransform1->Unmap(0, nullptr);
 	delete vi;
+	delete constMapMaterial;
 }
