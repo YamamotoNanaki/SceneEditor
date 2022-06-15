@@ -65,7 +65,6 @@ namespace IF
 		Sound* sound = Sound::Instance();
 
 	public:
-		ConstBuff cb;
 		Texture* tex = Texture::Instance();
 		Graphic* graph = Graphic::Instance();
 

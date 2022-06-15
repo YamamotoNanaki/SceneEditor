@@ -89,13 +89,14 @@ void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool f
 	//定数バッファのマッピング
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));
+
+	cb.Initialize(device.Get());
 }
 
-void IF::Sprite::DrawBefore(ID3D12RootSignature* root, D3D12_GPU_VIRTUAL_ADDRESS GPUAddress, D3D_PRIMITIVE_TOPOLOGY topology)
+void IF::Sprite::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology)
 {
 	commandList->SetGraphicsRootSignature(root);
 	commandList->IASetPrimitiveTopology(topology);
-	commandList->SetGraphicsRootConstantBufferView(0, GPUAddress);
 }
 
 void IF::Sprite::Update()
@@ -110,14 +111,15 @@ void IF::Sprite::Update()
 
 void IF::Sprite::Draw(std::vector<D3D12_VIEWPORT> viewport)
 {
+	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
+	//頂点バッファの設定
+	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
+	//定数バッファビューの設定
+	commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+	Texture::Instance()->setTexture(commandList.Get(), texNum);
 	for (int i = 0; i < viewport.size(); i++)
 	{
-		Texture::Instance()->setTexture(commandList.Get(), texNum);
 		commandList->RSSetViewports(1, &viewport[i]);
-		//頂点バッファの設定
-		commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
-		//定数バッファビューの設定
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 		//描画コマンド
 		commandList->DrawInstanced(vi->GetSize(), 1, 0, 0);
 	}
@@ -140,6 +142,21 @@ void Sprite::SetTextureRect(Float2 texBase, Float2 texSize)
 
 	// 頂点バッファへのデータ転送
 	TransferVertex();
+}
+
+void IF::Sprite::SetColor(int r, int g, int b, int a)
+{
+	cb.SetColor(r, g, b, a);
+}
+
+void IF::Sprite::SetBright(int r, int g, int b)
+{
+	cb.SetBright(r, g, b);
+}
+
+void IF::Sprite::SetAlpha(int alpha)
+{
+	cb.SetAlpha(alpha);
 }
 
 void Sprite::TransferVertex()

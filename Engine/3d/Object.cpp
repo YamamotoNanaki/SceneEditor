@@ -8,14 +8,16 @@
 using namespace IF;
 using namespace std;
 using namespace IF::BillBoard;
+using namespace Microsoft::WRL;
 
 LightManager* Object::light = nullptr;
+ComPtr<ID3D12Device> Object::device = nullptr;
+ComPtr<ID3D12GraphicsCommandList> Object::commandList = nullptr;
 
-void IF::Object::DrawBefore(ID3D12GraphicsCommandList* commandList, ID3D12RootSignature* root, D3D12_GPU_VIRTUAL_ADDRESS GPUAddress, D3D_PRIMITIVE_TOPOLOGY topology)
+void IF::Object::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology)
 {
 	commandList->SetGraphicsRootSignature(root);
 	commandList->IASetPrimitiveTopology(topology);
-	commandList->SetGraphicsRootConstantBufferView(0, GPUAddress);
 }
 
 void IF::Object::SetModel(Model* model)
@@ -23,7 +25,7 @@ void IF::Object::SetModel(Model* model)
 	this->model = model;
 }
 
-void IF::Object::Initialize(ID3D12Device* device, Model* model)
+void IF::Object::Initialize(Model* model)
 {
 	HRESULT result;
 	//定数バッファのヒープ設定
@@ -50,6 +52,8 @@ void IF::Object::Initialize(ID3D12Device* device, Model* model)
 	assert(SUCCEEDED(result));
 
 	this->model = model;
+
+	cb.Initialize(device.Get());
 }
 
 void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, BillBoardMode mode)
@@ -82,7 +86,7 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, Bill
 	constMapTransform->cameraPos = cameraPos;
 }
 
-void Object::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport)
+void Object::Draw(vector<D3D12_VIEWPORT> viewport)
 {
 	if (model == nullptr)
 	{
@@ -91,11 +95,11 @@ void Object::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT>
 	}
 
 	light->Draw(4);
-
-	model->Draw(commandList, viewport, constBuffTransform.Get());
+	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
+	model->Draw(Object::commandList.Get(), viewport, constBuffTransform.Get());
 }
 
-void IF::Object::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
+void IF::Object::Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
 {
 	if (model == nullptr)
 	{
@@ -105,10 +109,25 @@ void IF::Object::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWP
 
 	light->Draw(4);
 
-	model->Draw(commandList, viewport, constBuffTransform.Get(), texNum);
+	model->Draw(Object::commandList.Get(), viewport, constBuffTransform.Get(), texNum);
 }
 
 Object::~Object()
 {
 	constBuffTransform->Unmap(0, nullptr);
+}
+
+void IF::Object::SetColor(int r, int g, int b, int a)
+{
+	cb.SetColor(r, g, b, a);
+}
+
+void IF::Object::SetBright(int r, int g, int b)
+{
+	cb.SetBright(r, g, b);
+}
+
+void IF::Object::SetAlpha(int alpha)
+{
+	cb.SetAlpha(alpha);
 }

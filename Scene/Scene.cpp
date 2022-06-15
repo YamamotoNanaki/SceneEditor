@@ -41,9 +41,7 @@ void IF::Scene::Initialize()
 	}
 	light->SetCircleShadowActive(0, true);
 	light->SetAmbientColor({ 1, 1, 1 });
-	Object::SetLight(light);
-	//定数バッファの初期化
-	cb.Initialize(device.Get());
+	Object::StaticInitialize(device.Get(), commandList.Get(), light);
 
 	//画像関連初期化
 	graph->Initialize(tex->descRangeSRV, L"Resources/Shaders/ModelVS.hlsl", L"Resources/Shaders/ModelPS.hlsl", L"Resources/Shaders/ModelGS.hlsl");
@@ -53,8 +51,8 @@ void IF::Scene::Initialize()
 	tex->Initialize();
 	domeM.LoadModel("skydome");
 	groundM.LoadModel("ground");
-	domeObj.Initialize(device.Get(), &domeM);
-	groundObj.Initialize(device.Get(), &groundM);
+	domeObj.Initialize(&domeM);
+	groundObj.Initialize(&groundM);
 	groundObj.position = { 0,-2,0 };
 
 	//カメラ関連初期化
@@ -66,7 +64,7 @@ void IF::Scene::Initialize()
 	random.Initialize();
 
 	sphereM.LoadModel("sphere", true);
-	sphereO.Initialize(device.Get(), &sphereM);
+	sphereO.Initialize(&sphereM);
 
 	sphereO.position = { -1,0,0 };
 	sphereO.scale = { 0.5,0.5,0.5 };
@@ -170,17 +168,17 @@ void IF::Scene::Update()
 void IF::Scene::Draw()
 {
 	graph->DrawBlendMode(commandList.Get());
-	domeObj.DrawBefore(commandList.Get(), graph->rootsignature.Get(), cb.GetGPUAddress());
-	domeObj.Draw(commandList.Get(), viewport);
-	groundObj.Draw(commandList.Get(), viewport);
-	sphereO.Draw(commandList.Get(), viewport);
+	Object::DrawBefore(graph->rootsignature.Get());
+	domeObj.Draw(viewport);
+	groundObj.Draw(viewport);
+	sphereO.Draw(viewport);
 
 	//pgraph.DrawBlendMode(commandList, Blend::ADD);
 	//tex->setTexture(commandList, efect);
 	//fire->particle[0].DrawBefore(commandList, pgraph.rootsignature.Get(), tex->srvHeap.Get(), cb.GetGPUAddress(), D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	//fire->Draw(commandList, viewport);
 	graph->DrawBlendMode(commandList.Get(), Blend::NORMAL2D);
-	sprite.DrawBefore(graph->rootsignature.Get(), cb.GetGPUAddress());
+	Sprite::DrawBefore(graph->rootsignature.Get());
 	sprite.Draw(viewport);
 
 	ImGui::Render();

@@ -300,17 +300,17 @@ void IF::Model::SetDevice(ID3D12Device* device)
 
 void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address)
 {
+	if (material.tex == true)Texture::Instance()->setTexture(commandList, material.texNum);
+	//頂点バッファの設定
+	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
+	//インデックスバッファの設定
+	commandList->IASetIndexBuffer(&vi->GetIndexView());
+	//定数バッファビューの設定
+	commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
 	for (int i = 0; i < viewport.size(); i++)
 	{
-		if (material.tex == true)Texture::Instance()->setTexture(commandList, material.texNum);
 		commandList->RSSetViewports(1, &viewport[i]);
-		//頂点バッファの設定
-		commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
-		//インデックスバッファの設定
-		commandList->IASetIndexBuffer(&vi->GetIndexView());
-		//定数バッファビューの設定
-		commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
-		commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
 		//描画コマンド
 		commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
 	}
@@ -318,17 +318,17 @@ void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPO
 
 void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address, unsigned short texNum)
 {
+	Texture::Instance()->setTexture(commandList, texNum);
+	//頂点バッファの設定
+	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
+	//インデックスバッファの設定
+	commandList->IASetIndexBuffer(&vi->GetIndexView());
+	//定数バッファビューの設定
+	commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
 	for (int i = 0; i < viewport.size(); i++)
 	{
-		Texture::Instance()->setTexture(commandList, texNum);
 		commandList->RSSetViewports(1, &viewport[i]);
-		//頂点バッファの設定
-		commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
-		//インデックスバッファの設定
-		commandList->IASetIndexBuffer(&vi->GetIndexView());
-		//定数バッファビューの設定
-		commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
-		commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
 		//描画コマンド
 		commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
 	}

@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteVI.h"
 #include "IFMath.h"
+#include "ConstBuff.h"
 #include <vector>
 #include <wrl.h>
 
@@ -26,6 +27,7 @@ namespace IF
 
 	private:
 		SV* vi = nullptr;
+		ConstBuff cb;
 		unsigned int texNum = 0;
 
 	public:
@@ -51,11 +53,14 @@ namespace IF
 		static void SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList);
 		void Initialize(unsigned int texNum, Float2 size = { 100,100 }, bool flipX = false, bool flipY = false);
 		void TransferVertex();
-		void DrawBefore(ID3D12RootSignature* root, D3D12_GPU_VIRTUAL_ADDRESS GPUAddress, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		void Update();
 		void Draw(std::vector<D3D12_VIEWPORT> viewport);
 		void SetPosition(Float2 position);
 		void SetSize(Float2 size);
 		void SetTextureRect(Float2 texBase, Float2 texSize);
+		void SetColor(int r, int g, int b, int a);
+		void SetBright(int r, int g, int b);
+		void SetAlpha(int a);
 	};
 }

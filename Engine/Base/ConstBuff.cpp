@@ -31,10 +31,14 @@ void IF::ConstBuff::Initialize(ID3D12Device* device)
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);	//マッピング
 	assert(SUCCEEDED(result));
 	constMapMaterial->color = Float4(1, 1, 1, 1);					//RGBAで半透明の赤
-	constBuffMaterial->Unmap(0, nullptr);							//マッピング解除
 
 	R = 255, G = 255, B = 255, A = 255;
 	r = 1, g = 1, b = 1, a = 1;
+}
+
+IF::ConstBuff::~ConstBuff()
+{
+	constBuffMaterial->Unmap(0, nullptr);							//マッピング解除
 }
 
 D3D12_GPU_VIRTUAL_ADDRESS IF::ConstBuff::GetGPUAddress()

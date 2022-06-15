@@ -7,7 +7,7 @@
 #include "ModelVI.h"
 #include "ConstStruct.h"
 #include "Model.h"
-#include "IFMath.h"
+#include "ConstBuff.h"
 
 #pragma comment(lib,"d3d12.lib") 
 
@@ -29,7 +29,10 @@ namespace IF
 		template<class T> using vector = std::vector<T>;
 	private:
 		Model* model = nullptr;
+		ConstBuff cb;
 		static LightManager* light;
+		static ComPtr<ID3D12Device> device;
+		static ComPtr<ID3D12GraphicsCommandList> commandList;
 
 	public:
 		//定数バッファ
@@ -46,17 +49,21 @@ namespace IF
 		Object* parent = nullptr;
 
 	public:
-		void Initialize(ID3D12Device* device, Model* model);
+		void Initialize(Model* model);
 		void SetModel(Model* model);
-		void DrawBefore(ID3D12GraphicsCommandList* commandList, ID3D12RootSignature* root, D3D12_GPU_VIRTUAL_ADDRESS GPUAddress,
-			D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		void Update(Matrix matView, Matrix matProjection, Float3 comeraPos, BillBoard::BillBoardMode mode = BillBoard::NOON);
-		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport);
-		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, unsigned short texNum);
+		void Draw(vector<D3D12_VIEWPORT> viewport);
+		void Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum);
 		~Object();
-		static void SetLight(LightManager* light)
+		static inline void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, LightManager* light)
 		{
+			Object::device = device;
+			Object::commandList = commandList;
 			Object::light = light;
 		}
+		void SetColor(int r, int g, int b, int a);
+		void SetBright(int r, int g, int b);
+		void SetAlpha(int a);
 	};
 }
