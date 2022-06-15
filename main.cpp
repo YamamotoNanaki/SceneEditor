@@ -22,7 +22,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
 	LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
 	Sound::Instance()->Initialize();
-	IScene* scene = new Scene(winWidth, winHeight, DirectX12::Instance()->device.Get(),DirectX12::Instance()->commandList.Get(), DirectX12::Instance()->viewport);
+	IScene* scene = new Scene(winWidth, winHeight, DirectX12::Instance()->device.Get(),DirectX12::Instance()->commandList.Get(), DirectX12::Instance()->viewport, Window::Instance()->hwnd);
 	scene->Initialize();
 	FPS fps;
 	fps.Initialize(60);

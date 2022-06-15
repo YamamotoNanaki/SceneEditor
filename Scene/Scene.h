@@ -11,6 +11,7 @@
 #include "Sprite.h"
 #include "IScene.h"
 #include "Sound.h"
+#include "GUI.h"
 
 #ifdef _DEBUG
 #include "DebugText.h"
@@ -74,6 +75,10 @@ namespace IF
 		ComPtr<ID3D12Device> device;
 		ComPtr<ID3D12GraphicsCommandList> commandList;
 		vector<D3D12_VIEWPORT> viewport;
+		HWND hwnd;
+
+	private:
+		GUI gui;
 
 		//デバッグ用
 #ifdef _DEBUG
@@ -83,7 +88,7 @@ namespace IF
 
 
 	public:
-		Scene(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport);
+		Scene(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
 		~Scene();
 
 		void Initialize();

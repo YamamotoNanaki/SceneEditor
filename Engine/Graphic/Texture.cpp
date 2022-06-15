@@ -16,6 +16,7 @@ IF::Texture::Texture()
 	descRangeSRV.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;									//種別はテクスチャ
 	descRangeSRV.BaseShaderRegister = 0;														//0番スロットから
 	descRangeSRV.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	tex[0].free = true;
 }
 
 Texture* IF::Texture::Instance()
@@ -63,14 +64,14 @@ unsigned short Texture::LoadTexture(const std::string filename)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	for (int i = 0; i < textureMax; i++)
+	for (int i = 1; i < textureMax; i++)
 	{
 		if (tex[i].free == false)continue;
 		if (tex[i].texName == filename)return i;
 	}
 
 	unsigned short num = 0;
-	for (int i = 0; i < textureMax; i++)
+	for (int i = 1; i < textureMax; i++)
 	{
 		if (tex[i].free == false)
 		{

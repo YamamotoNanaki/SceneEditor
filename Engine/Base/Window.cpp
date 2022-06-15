@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include "imgui_impl_win32.h"
 
 using namespace IF;
 
@@ -14,6 +14,7 @@ void IF::Window::DeleteInstance()
 	Window::Instance()->Unregister();
 	delete Window::Instance();
 }
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void IF::Window::Initialize(int window_width, int window_height, LPCWSTR windowName)
 {
@@ -70,6 +71,9 @@ bool Window::Message()
 
 LRESULT IF::Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+		return true;
+
 	// メッセージで分岐
 	switch (msg)
 	{

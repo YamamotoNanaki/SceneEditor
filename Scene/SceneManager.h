@@ -11,10 +11,11 @@ namespace IF
 		IScene* scene;
 		Microsoft::WRL::ComPtr< ID3D12Device>device;
 		Microsoft::WRL::ComPtr< ID3D12GraphicsCommandList>commandList;
+		HWND hwnd;
 		std::vector<D3D12_VIEWPORT>viewport;
 		int winWidth, winHeight;
 	public:
-		void Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport);
+		void Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport,HWND& hwnd);
 		void Update();
 		void Draw();
 	private:

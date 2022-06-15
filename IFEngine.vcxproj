@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\DebugText.h" />
+    <ClInclude Include="Engine\2d\GUI.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\2d\SpriteVI.h" />
     <ClInclude Include="Engine\3d\Model.h" />
@@ -191,6 +192,14 @@
     <ClInclude Include="Engine\Graphic\GPipeline.h" />
     <ClInclude Include="Engine\Graphic\Graphic.h" />
     <ClInclude Include="Engine\Graphic\Texture.h" />
+    <ClInclude Include="Engine\ImGUI\imconfig.h" />
+    <ClInclude Include="Engine\ImGUI\imgui.h" />
+    <ClInclude Include="Engine\ImGUI\imgui_impl_dx12.h" />
+    <ClInclude Include="Engine\ImGUI\imgui_impl_win32.h" />
+    <ClInclude Include="Engine\ImGUI\imgui_internal.h" />
+    <ClInclude Include="Engine\ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="Engine\ImGUI\imstb_textedit.h" />
+    <ClInclude Include="Engine\ImGUI\imstb_truetype.h" />
     <ClInclude Include="Engine\Input\Input.h" />
     <ClInclude Include="Engine\Light\CircleShadow.h" />
     <ClInclude Include="Engine\Light\DirectionalLight.h" />
@@ -217,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp" />
+    <ClCompile Include="Engine\2d\GUI.cpp" />
     <ClCompile Include="Engine\2d\Sprite.cpp" />
     <ClCompile Include="Engine\2d\SpriteVI.cpp" />
     <ClCompile Include="Engine\3d\Model.cpp" />
@@ -238,6 +248,13 @@
     <ClCompile Include="Engine\Graphic\GPipeline.cpp" />
     <ClCompile Include="Engine\Graphic\Graphic.cpp" />
     <ClCompile Include="Engine\Graphic\Texture.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui_tables.cpp" />
+    <ClCompile Include="Engine\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Light\Light.cpp" />
     <ClCompile Include="Engine\Math\Float2.cpp" />

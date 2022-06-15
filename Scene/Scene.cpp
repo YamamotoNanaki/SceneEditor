@@ -3,11 +3,12 @@
 #include "Rand.h"
 #include "Light.h"
 #include "IFMath.h"
+#include "DirectX12.h"
 
 using namespace std;
 
-IF::Scene::Scene(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport)
-	:winWidth(winWidth), winHeight(winHeight), device(device), commandList(commandList), viewport(viewport)
+IF::Scene::Scene(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
+	:winWidth(winWidth), winHeight(winHeight), device(device), commandList(commandList), viewport(viewport), hwnd(hwnd)
 {
 	Graphic::SetDevice(device);
 	Texture::setDevice(device);
@@ -79,6 +80,9 @@ void IF::Scene::Initialize()
 
 	//sound->SoundPlay(testSound);
 
+	//IMGUI
+	gui.Initialize(hwnd, device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
+
 	//デバッグ用
 #ifdef _DEBUG
 	dText.Initialize(tex->LoadTexture("Resources/debugfont.png"));
@@ -92,7 +96,7 @@ void IF::Scene::Update()
 	input->Update();
 
 	//光源
-	static Float3 dlColor = { 1,1,1 };
+	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
 
 	//if (input->KDown(KEY::W))lightDir.m128_f32[1] += 1.0f;
@@ -104,7 +108,7 @@ void IF::Scene::Update()
 	light->SetCircleShadowAtten(0, csAtten);
 	light->SetCircleShadowFactorAngle(0, csAngle);
 
-	for (int i = 0; i < 3; i++)light->SetDirLightColor(i, dlColor);
+	for (int i = 0; i < 3; i++)light->SetDirLightColor(i, { dlColor[0],dlColor[1],dlColor[2] });
 
 	//カメラ
 	if (input->KDown(KEY::UP))
@@ -147,6 +151,16 @@ void IF::Scene::Update()
 	sprite.position = { 540,500 };
 	sprite.Update();
 
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	ImGui::Begin("test");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(500, 200));
+	ImGui::Text("test");
+	ImGui::ColorEdit3("pointLightColor", dlColor, ImGuiColorEditFlags_Float);
+	ImGui::End();
+
 	//デバッグ用
 #ifdef _DEBUG
 	//dText.Print(100,100, 2, "matView.eye.x : %f",matView.eye.x);
@@ -168,6 +182,9 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(commandList.Get(), Blend::NORMAL2D);
 	sprite.DrawBefore(graph->rootsignature.Get(), cb.GetGPUAddress());
 	sprite.Draw(viewport);
+
+	ImGui::Render();
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList.Get());
 
 	//デバッグ用
 #ifdef _DEBUG
