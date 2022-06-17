@@ -31,10 +31,10 @@ namespace IF
 
 		struct SoundData
 		{
-			WAVEFORMATEX wfex;
-			BYTE* pBuffer;
-			unsigned int bufferSize;
-			const char* name;
+			WAVEFORMATEX wfex{};
+			BYTE* pBuffer = nullptr;
+			unsigned int bufferSize{};
+			const char* name = nullptr;
 			bool free = false;
 		};
 	private:

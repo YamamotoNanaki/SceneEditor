@@ -73,7 +73,7 @@ unsigned short IF::Sound::LoadWave(const char* filename)
 
 void IF::Sound::SoundUnLoad(unsigned short soundNum)
 {
-	delete[]soundDatas[soundNum].pBuffer;
+	//delete[]soundDatas[soundNum].pBuffer;
 
 	soundDatas[soundNum].pBuffer = 0;
 	soundDatas[soundNum].bufferSize = 0;

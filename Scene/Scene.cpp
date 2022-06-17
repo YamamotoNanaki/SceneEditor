@@ -7,27 +7,8 @@
 
 using namespace std;
 
-IF::Scene::Scene() {}
-
-IF::Scene::~Scene()
+void IF::Scene::Initialize()
 {
-	//light->UnMap();
-	delete matPro;
-	sound->Reset();
-	sound->SoundUnLoad(testSound);
-}
-
-void IF::Scene::Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
-{
-	this->winWidth = winWidth;
-	this->winHeight = winHeight;
-	this->device = device;
-	this->commandList = commandList;
-	this->viewport = viewport;
-	this->hwnd = hwnd;
-	Graphic::SetDevice(device);
-	Texture::setDevice(device);
-	Model::SetDevice(device);
 	//‰¹Œ¹
 	testSound = sound->LoadWave("Resources/Alarm01.wav");
 
@@ -88,6 +69,19 @@ void IF::Scene::Initialize(int winWidth, int winHeight, ID3D12Device* device, ID
 	dText.Initialize(tex->LoadTexture("Resources/debugfont.png"));
 
 #endif // _DEBUG
+}
+
+void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
+{
+	this->winWidth = winWidth;
+	this->winHeight = winHeight;
+	this->device = device;
+	this->commandList = commandList;
+	this->viewport = viewport;
+	this->hwnd = hwnd;
+	Graphic::SetDevice(device);
+	Texture::setDevice(device);
+	Model::SetDevice(device);
 }
 
 void IF::Scene::Update()
@@ -191,4 +185,12 @@ void IF::Scene::Draw()
 	//dText.Draw(viewport);
 
 #endif // _DEBUG
+}
+
+void IF::Scene::Delete()
+{
+	//light->UnMap();
+	delete matPro;
+	sound->SoundUnLoad(testSound);
+	sound->Reset();
 }

@@ -30,7 +30,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
 		Sound::Instance()->Initialize();
 		IScene* scene = new Scene;
-		scene->Initialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(), DirectX12::Instance()->viewport, Window::Instance()->hwnd);
+		scene->StaticInitialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(), DirectX12::Instance()->viewport, Window::Instance()->hwnd);
+		scene->Initialize();
 		FPS fps;
 		fps.Initialize(60);
 
@@ -46,12 +47,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			DirectX12::Instance()->DrawAfter();
 			fps.FPSFixed();
 		}
-		delete scene;
+		scene->Delete();
 		LightManager::DeleteInstance();
 		Input::DeleteInstance();
 		Sound::DeleteInstance();
 		Graphic::DeleteInstance();
 		Texture::DeleteInstance();
+		delete scene;
 		DirectX12::DeleteInstance();
 		Window::DeleteInstance();
 	}

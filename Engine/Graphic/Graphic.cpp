@@ -127,6 +127,8 @@ void Graphic::Compiller(LPCWSTR vs, LPCWSTR ps, LPCWSTR gs, char compile)
 //		result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[j], IID_PPV_ARGS(&pipelinestate[j]));
 //	}
 //	assert(SUCCEEDED(result));
+// 
+//	delete rootSigBlob;
 //
 //	return result;
 //

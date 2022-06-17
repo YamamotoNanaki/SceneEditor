@@ -69,12 +69,12 @@ namespace IF
 		Graphic* graph = Graphic::Instance();
 
 	private:
-		int winWidth;
-		int winHeight;
+		int winWidth{};
+		int winHeight{};
 		ComPtr<ID3D12Device> device;
 		ComPtr<ID3D12GraphicsCommandList> commandList;
 		vector<D3D12_VIEWPORT> viewport;
-		HWND hwnd;
+		HWND hwnd = nullptr;
 
 	private:
 		GUI gui;
@@ -87,11 +87,10 @@ namespace IF
 
 
 	public:
-		Scene();
-		~Scene();
-
-		void Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
-		void Update();
-		void Draw();
+		void Initialize()override;
+		void StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)override;
+		void Update()override;
+		void Draw()override;
+		void Delete()override;
 	};
 }

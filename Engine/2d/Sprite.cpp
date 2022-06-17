@@ -20,7 +20,6 @@ IF::Sprite::~Sprite()
 {
 	constBuffTransform->Unmap(0, nullptr);
 	delete vi;
-	delete constMapTransform;
 }
 
 void IF::Sprite::SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList)
