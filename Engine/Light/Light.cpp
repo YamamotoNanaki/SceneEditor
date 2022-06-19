@@ -273,7 +273,7 @@ void IF::LightManager::Draw(UINT rootParameterIndex)
 
 LightManager* IF::LightManager::Instance()
 {
-	LightManager* instance = new LightManager;
+	static LightManager* instance = new LightManager;
 	return instance;
 }
 

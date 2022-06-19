@@ -7,7 +7,7 @@ using namespace IF;
 
 DirectX12* IF::DirectX12::Instance()
 {
-	static DirectX12* inst=new DirectX12;
+	static DirectX12* inst = new DirectX12;
 
 	return inst;
 }
@@ -157,9 +157,12 @@ void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
 	//[“xƒrƒ…[ì¬
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	device->CreateDepthStencilView(
-		depthBuffer.Get(), &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
+	device->CreateDepthStencilView(depthBuffer.Get(), &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
+#ifdef _DEBUG
+	SetNewViewPort(1120, 630, 300, 40);
+#else
 	SetNewViewPort(window_width, window_height, 0, 0);
+#endif
 	SetScissorrect(0, window_width, 0, window_height);
 }
 

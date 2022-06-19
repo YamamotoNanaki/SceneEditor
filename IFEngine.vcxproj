@@ -175,9 +175,11 @@
     <ClInclude Include="Engine\2d\GUI.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\2d\SpriteVI.h" />
+    <ClInclude Include="Engine\3d\ComponentObj.h" />
     <ClInclude Include="Engine\3d\Model.h" />
     <ClInclude Include="Engine\3d\ModelVI.h" />
     <ClInclude Include="Engine\3d\Object.h" />
+    <ClInclude Include="Engine\3d\ObjectManager.h" />
     <ClInclude Include="Engine\Base\ConstBuff.h" />
     <ClInclude Include="Engine\Base\ConstStruct.h" />
     <ClInclude Include="Engine\Base\Debug.h" />
@@ -223,6 +225,8 @@
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Source\Fire.h" />
+    <ClInclude Include="Source\NormalObj.h" />
+    <ClInclude Include="Source\PlayerObj.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp" />
@@ -232,6 +236,7 @@
     <ClCompile Include="Engine\3d\Model.cpp" />
     <ClCompile Include="Engine\3d\ModelVI.cpp" />
     <ClCompile Include="Engine\3d\Object.cpp" />
+    <ClCompile Include="Engine\3d\ObjectManager.cpp" />
     <ClCompile Include="Engine\Base\ConstBuff.cpp" />
     <ClCompile Include="Engine\Base\Debug.cpp" />
     <ClCompile Include="Engine\Base\DirectX12.cpp" />
@@ -274,6 +279,8 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Fire.cpp" />
+    <ClCompile Include="Source\NormalObj.cpp" />
+    <ClCompile Include="Source\PlayerObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ModelGS.hlsl">

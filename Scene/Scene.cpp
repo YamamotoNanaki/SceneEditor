@@ -4,8 +4,11 @@
 #include "Light.h"
 #include "IFMath.h"
 #include "DirectX12.h"
+#include "PlayerObj.h"
+#include "NormalObj.h"
 
 using namespace std;
+using namespace ImGui;
 
 void IF::Scene::Initialize()
 {
@@ -32,11 +35,11 @@ void IF::Scene::Initialize()
 
 	//モデルの読み込みとオブジェクトとの紐付け(空と地面)
 	tex->Initialize();
-	domeM.LoadModel("skydome");
-	groundM.LoadModel("ground");
-	domeObj.Initialize(&domeM);
-	groundObj.Initialize(&groundM);
-	groundObj.position = { 0,-2,0 };
+	domeM = new Model;
+	groundM = new Model;
+	sphereM = new Model;
+	domeM->LoadModel("skydome");
+	groundM->LoadModel("ground");
 
 	//カメラ関連初期化
 	matPro = new Projection(45.0f, (float)winWidth, (float)winHeight);
@@ -46,13 +49,10 @@ void IF::Scene::Initialize()
 	Rand random;
 	random.Initialize();
 
-	sphereM.LoadModel("sphere", true);
-	sphereO.Initialize(&sphereM);
-
-	sphereO.position = { -1,0,0 };
-	sphereO.scale = { 0.5,0.5,0.5 };
+	sphereM->LoadModel("sphere", true);
 	matView.Update();
 
+	obj.Add<NormalObj>(domeM, matView.Get(), matPro->Get(), matView.eye, "dome");
 
 	//2D関連
 	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
@@ -129,8 +129,9 @@ void IF::Scene::Update()
 	if (input->KDown(KEY::W))spherePos.y += 0.5f;
 	if (input->KDown(KEY::S))spherePos.y -= 0.5f;
 
-	Float3 rot = sphereO.rotation;
-	rot.y += 0.05f;
+	obj.GetComponent<PlayerObj>();
+	static int rot = 0;
+	rot++;
 	sphereO.rotation = rot;
 	sphereO.position = spherePos;
 	light->SetCircleShadowCasterPos(0, spherePos);
@@ -138,22 +139,26 @@ void IF::Scene::Update()
 	matView.Update();
 	light->Update();
 
-	domeObj.Update(matView.Get(), matPro->Get(), matView.eye);
-	groundObj.Update(matView.Get(), matPro->Get(), matView.eye);
-	sphereO.Update(matView.Get(), matPro->Get(), matView.eye);
+	obj.Update();
 
 	sprite.position = { 540,500 };
 	sprite.Update();
 
+	static ImVec2 pos{ 0,0 };
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-	ImGui::Begin("test");
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(500, 200));
-	ImGui::Text("test");
-	ImGui::ColorEdit3("pointLightColor", dlColor, ImGuiColorEditFlags_Float);
-	ImGui::End();
+	NewFrame();
+	Begin("objList");
+	SetNextWindowPos({ 0,0 });
+	SetWindowSize(ImVec2(300, 410));
+	Text("test");
+	End();
+	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+	SetWindowPos({ 300,0 });
+	SetWindowSize(ImVec2(1120, 40));
+	Text("sceneview");
+	End();
+	ShowDemoWindow();
 
 	//デバッグ用
 #ifdef _DEBUG
@@ -165,9 +170,8 @@ void IF::Scene::Draw()
 {
 	graph->DrawBlendMode(commandList.Get());
 	Object::DrawBefore(graph->rootsignature.Get());
-	domeObj.Draw(viewport);
-	groundObj.Draw(viewport);
-	sphereO.Draw(viewport);
+	obj.SetViewport(viewport);
+	obj.Draw();
 
 	//pgraph.DrawBlendMode(commandList, Blend::ADD);
 	//tex->setTexture(commandList, efect);
@@ -191,6 +195,9 @@ void IF::Scene::Delete()
 {
 	//light->UnMap();
 	delete matPro;
+	delete groundM;
+	delete domeM;
+	delete sphereM;
 	sound->SoundUnLoad(testSound);
 	sound->Reset();
 }

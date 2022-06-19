@@ -261,6 +261,18 @@
     <ClInclude Include="Engine\2d\GUI.h">
       <Filter>Header Files\Engine\2d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3d\ObjectManager.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\ComponentObj.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NormalObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -400,6 +412,15 @@
     </ClCompile>
     <ClCompile Include="Engine\2d\GUI.cpp">
       <Filter>Source Files\Engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\ObjectManager.cpp">
+      <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NormalObj.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
