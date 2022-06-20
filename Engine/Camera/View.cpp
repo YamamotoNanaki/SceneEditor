@@ -82,3 +82,8 @@ Matrix View::Get() const
 {
 	return matView;
 }
+
+Matrix* IF::View::GetAddressOf()
+{
+	return &matView;
+}

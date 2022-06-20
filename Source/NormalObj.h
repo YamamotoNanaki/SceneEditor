@@ -11,39 +11,43 @@ namespace IF
 		Float3* cameraPos;
 		BillBoard::BillBoardMode mode = BillBoard::NOON;
 		static std::vector<D3D12_VIEWPORT>viewport;
-		std::string tag;
 	public:
-		void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode = BillBoard::NOON);
-		void Initialize(Model* model);
-		void Update();
-		void Draw();
-		inline void SetView(Matrix* matView)
+		void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode = BillBoard::NOON)override;
+		void Initialize(Model* model)override;
+		void Update()override;
+		void Draw()override;
+		inline void SetView(Matrix* matView)override
 		{
 			this->matView = matView;
 		}
-		inline void SetProjection(Matrix* matProjection)
+		inline void SetProjection(Matrix* matProjection)override
 		{
 			this->matProjection = matProjection;
 		}
-		inline void SetCamera(Float3* cameraPos)
+		inline void SetCamera(Float3* cameraPos)override
 		{
 			this->cameraPos = cameraPos;
 		}
-		inline void SetBillBoard(BillBoard::BillBoardMode mode)
+		inline void SetBillBoard(BillBoard::BillBoardMode mode)override
 		{
 			this->mode = mode;
 		}
-		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)
+		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)override
 		{
 			NormalObj::viewport = viewport;
 		}
-		inline void SetTexture(unsigned short texNum)
+		inline void SetTexture(unsigned short texNum)override
 		{
 			this->texNum = texNum;
 		}
-		inline void SetTag(std::string tag)
+		inline Float3 GetPos()override
 		{
-			this->tag = tag;
+			return obj.position;
 		}
+		inline void SetPos(Float3 pos)
+		{
+			this->obj.position = pos;
+		}
+		inline ~NormalObj()override {};
 	};
 }

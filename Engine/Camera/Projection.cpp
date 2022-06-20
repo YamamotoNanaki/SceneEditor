@@ -24,3 +24,8 @@ Matrix Projection::Get() const
 {
 	return matProjection;
 }
+
+Matrix* IF::Projection::GetAddressOf()
+{
+	return &matProjection;
+}

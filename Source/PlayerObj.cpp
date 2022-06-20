@@ -25,6 +25,6 @@ void IF::PlayerObj::Update()
 
 void IF::PlayerObj::Draw()
 {
-	if (texNum = 0)obj.Draw(viewport);
+	if (texNum == 0)obj.Draw(viewport);
 	else obj.Draw(viewport, texNum);
 }

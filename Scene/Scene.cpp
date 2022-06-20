@@ -27,7 +27,7 @@ void IF::Scene::Initialize()
 	}
 	light->SetCircleShadowActive(0, true);
 	light->SetAmbientColor({ 1, 1, 1 });
-	Object::StaticInitialize(this->device.Get(), this->commandList.Get(), light);
+	Object::StaticInitialize(device.Get(), commandList.Get(), light);
 
 	//‰æ‘œŠÖ˜A‰Šú‰»
 	graph->Initialize(tex->descRangeSRV, L"Resources/Shaders/ModelVS.hlsl", L"Resources/Shaders/ModelPS.hlsl", L"Resources/Shaders/ModelGS.hlsl");
@@ -52,7 +52,11 @@ void IF::Scene::Initialize()
 	sphereM->LoadModel("sphere", true);
 	matView.Update();
 
-	obj.Add<NormalObj>(domeM, matView.Get(), matPro->Get(), matView.eye, "dome");
+	obj.SetViewport(viewport);
+	obj.Add<NormalObj>(domeM, matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "dome");
+	obj.Add<NormalObj>(groundM, matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "ground");
+	obj.SetPosition({ 0,-2,0 }, "ground");
+	obj.Add<PlayerObj>(sphereM, matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "player");
 
 	//2DŠÖ˜A
 	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
@@ -129,11 +133,7 @@ void IF::Scene::Update()
 	if (input->KDown(KEY::W))spherePos.y += 0.5f;
 	if (input->KDown(KEY::S))spherePos.y -= 0.5f;
 
-	obj.GetComponent<PlayerObj>();
-	static int rot = 0;
-	rot++;
-	sphereO.rotation = rot;
-	sphereO.position = spherePos;
+	obj.SetPosition(spherePos, "player");
 	light->SetCircleShadowCasterPos(0, spherePos);
 
 	matView.Update();

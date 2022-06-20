@@ -33,7 +33,6 @@ namespace IF
 		static LightManager* light;
 		static ComPtr<ID3D12Device> device;
 		static ComPtr<ID3D12GraphicsCommandList> commandList;
-		static LightManager* light;
 
 	public:
 		//定数バッファ

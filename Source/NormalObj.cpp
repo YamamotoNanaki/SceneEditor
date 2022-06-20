@@ -1,5 +1,10 @@
 #include "NormalObj.h"
 
+using namespace IF;
+using namespace std;
+
+vector<D3D12_VIEWPORT>NormalObj::viewport;
+
 void IF::NormalObj::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode)
 {
 	SetView(matView);
@@ -20,6 +25,6 @@ void IF::NormalObj::Update()
 
 void IF::NormalObj::Draw()
 {
-	if (texNum = 0)obj.Draw(viewport);
+	if (texNum == 0)obj.Draw(viewport);
 	else obj.Draw(viewport, texNum);
 }

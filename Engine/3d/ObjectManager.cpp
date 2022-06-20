@@ -21,7 +21,5 @@ void IF::ObjectManager::Update()
 	for (auto com : buff)
 	{
 		com->Update();
-		if (objList.size() == 1)break;
-		if (com == *objList.end())break;
 	}
 }

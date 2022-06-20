@@ -19,5 +19,6 @@ namespace IF
 		void Initialze(Float3 eye, Float3 target, Float3 up);
 		void Update();
 		Matrix Get()const;
+		Matrix* GetAddressOf();
 	};
 }
