@@ -17,11 +17,7 @@ using namespace IF;
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	{
-#ifdef _DEBUG
-		const int winWidth = 1920, winHeight = 1080;  // c•
-#else
 		const int winWidth = 1280, winHeight = 720;  // c•
-#endif
 
 		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
 #ifdef _DEBUG

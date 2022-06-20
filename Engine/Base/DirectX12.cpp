@@ -159,7 +159,8 @@ void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(depthBuffer.Get(), &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
 #ifdef _DEBUG
-	SetNewViewPort(1120, 630, 300, 40);
+	SetNewViewPort(800, 450, 200, 40);
+	//SetNewViewPort(window_width, window_height, 0, 0);
 #else
 	SetNewViewPort(window_width, window_height, 0, 0);
 #endif

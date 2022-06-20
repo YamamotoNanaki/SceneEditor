@@ -6,7 +6,7 @@ namespace IF
 {
 	class ObjectManager
 	{
-	public:
+	private:
 		std::list<ComponentObj*> objList;
 	public:
 		ObjectManager() {}
@@ -154,5 +154,9 @@ namespace IF
 				}
 			}
 		}
+
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }

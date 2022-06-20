@@ -21,5 +21,8 @@ namespace IF
 		virtual void SetPos(Float3 pos) = 0;
 		virtual Float3 GetPos() = 0;
 		virtual ~ComponentObj() {};
+#ifdef _DEBUG
+		virtual void GUI() = 0;
+#endif
 	};
 }

@@ -1,5 +1,6 @@
 #include "ObjectManager.h"
 #include <cassert>
+#include "imgui.h"
 
 IF::ObjectManager::~ObjectManager()
 {
@@ -23,3 +24,14 @@ void IF::ObjectManager::Update()
 		com->Update();
 	}
 }
+
+#ifdef _DEBUG
+void IF::ObjectManager::GUI()
+{
+	for (auto com : objList)
+	{
+		com->GUI();
+	}
+}
+
+#endif

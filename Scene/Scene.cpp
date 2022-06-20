@@ -6,9 +6,28 @@
 #include "DirectX12.h"
 #include "PlayerObj.h"
 #include "NormalObj.h"
+#include <fstream>
 
 using namespace std;
 using namespace ImGui;
+
+void IF::Scene::WriteData(char* _sceneName)
+{
+	if (strcmp(_sceneName, "\0") == 0)
+	{
+		Text("Error");
+		return;
+	}
+	ofstream writing_file;
+	string scene = _sceneName;
+	string txt = ".txt";
+	string name = "Data/Scene/";
+	name = name + scene + txt;
+	writing_file.open(name, std::ios::out);
+	std::string writing_text = "test";
+	writing_file << writing_text << std::endl;
+	writing_file.close();
+}
 
 void IF::Scene::Initialize()
 {
@@ -65,11 +84,11 @@ void IF::Scene::Initialize()
 
 	//sound->SoundPlay(testSound);
 
+#ifdef _DEBUG
 	//IMGUI
 	gui.Initialize(this->hwnd, this->device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
 
 	//デバッグ用
-#ifdef _DEBUG
 	dText.Initialize(tex->LoadTexture("Resources/debugfont.png"));
 
 #endif // _DEBUG
@@ -90,6 +109,90 @@ void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* devi
 
 void IF::Scene::Update()
 {
+#ifdef _DEBUG
+	static bool flag = false;
+	static ImVec2 pos{ 0,0 };
+	static float dlColor[] = { 1,1,1 };
+	static Float3 spherePos = { -1,0,0 };
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	NewFrame();
+	Begin("objList");
+	obj.GUI();
+	End();
+	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+	SetWindowPos({ 200,0 });
+	SetWindowSize(ImVec2(350, 40));
+	Text("sceneview");
+	End();
+	Begin("DebugMenu", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+	SetWindowPos({ 550,0 });
+	SetWindowSize(ImVec2(550, 40));
+	const char start[] = "DebugStart";
+	const char stop[] = "DebugStop";
+	if (ImGui::Button(flag == false ? start : stop))flag = !flag;
+	End();
+	Begin("SceneOutput", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+	SetWindowPos({ 1000,0 });
+	SetWindowSize(ImVec2(280, 100));
+	static char _sceneName[256];
+	ImGui::InputText("OutputName", _sceneName, sizeof(_sceneName));
+	if (ImGui::Button("DataOutput"))
+	{
+		WriteData(_sceneName);
+	}
+	End();
+	ShowDemoWindow();
+	spherePos = obj.GetComponent<PlayerObj>()->GetPos();
+	light->SetCircleShadowCasterPos(0, spherePos);
+	if (flag) {
+		Input* input = Input::Instance();
+		input->Update();
+
+		//光源
+
+		//if (input->KDown(KEY::W))lightDir.m128_f32[1] += 1.0f;
+		//if (input->KDown(KEY::S))lightDir.m128_f32[1] -= 1.0f;
+		//if (input->KDown(KEY::D))lightDir.m128_f32[0] += 1.0f;
+		//if (input->KDown(KEY::A))lightDir.m128_f32[0] -= 1.0f;
+
+		light->SetCircleShadowDir(0, { csDir.x,csDir.y,csDir.z });
+		light->SetCircleShadowAtten(0, csAtten);
+		light->SetCircleShadowFactorAngle(0, csAngle);
+
+		for (int i = 0; i < 3; i++)light->SetDirLightColor(i, { dlColor[0],dlColor[1],dlColor[2] });
+
+		//カメラ
+		if (input->KDown(KEY::UP))
+		{
+			matView.eye.z += 0.5f;
+			matView.target.z += 0.5f;
+		}
+		if (input->KDown(KEY::DOWN))
+		{
+			matView.eye.z -= 0.5f;
+			matView.target.z -= 0.5f;
+		}
+		if (input->KDown(KEY::RIGHT))
+		{
+			matView.eye.x += 0.5f;
+			matView.target.x += 0.5f;
+		}
+		if (input->KDown(KEY::LEFT))
+		{
+			matView.eye.x -= 0.5f;
+			matView.target.x -= 0.5f;
+		}
+
+		if (input->KDown(KEY::W))spherePos.y += 0.5f;
+		if (input->KDown(KEY::S))spherePos.y -= 0.5f;
+
+		obj.SetPosition(spherePos, "player");
+		light->SetCircleShadowCasterPos(0, spherePos);
+	}
+
+#else
+
 	Input* input = Input::Instance();
 	input->Update();
 
@@ -136,35 +239,16 @@ void IF::Scene::Update()
 	obj.SetPosition(spherePos, "player");
 	light->SetCircleShadowCasterPos(0, spherePos);
 
+	sprite.position = { 540,500 };
+	sprite.Update();
+
+#endif // _DEBUG
 	matView.Update();
 	light->Update();
 
 	obj.Update();
-
-	sprite.position = { 540,500 };
-	sprite.Update();
-
-	static ImVec2 pos{ 0,0 };
-	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	NewFrame();
-	Begin("objList");
-	SetNextWindowPos({ 0,0 });
-	SetWindowSize(ImVec2(300, 410));
-	Text("test");
-	End();
-	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-	SetWindowPos({ 300,0 });
-	SetWindowSize(ImVec2(1120, 40));
-	Text("sceneview");
-	End();
-	ShowDemoWindow();
-
-	//デバッグ用
-#ifdef _DEBUG
-	//dText.Print(100,100, 2, "matView.eye.x : %f",matView.eye.x);
-#endif // _DEBUG
-}
+	//sprite.Update();
+	}
 
 void IF::Scene::Draw()
 {
@@ -181,11 +265,11 @@ void IF::Scene::Draw()
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	sprite.Draw(viewport);
 
+#ifdef _DEBUG
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList.Get());
 
 	//デバッグ用
-#ifdef _DEBUG
 	//dText.Draw(viewport);
 
 #endif // _DEBUG

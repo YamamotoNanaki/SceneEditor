@@ -49,5 +49,9 @@ namespace IF
 			this->obj.position = pos;
 		}
 		inline ~NormalObj()override {};
+		
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }

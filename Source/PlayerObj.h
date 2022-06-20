@@ -50,5 +50,9 @@ namespace IF
 			this->obj.position = pos;
 		}
 		inline ~PlayerObj()override {};
+
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }
