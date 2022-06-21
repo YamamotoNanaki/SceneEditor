@@ -19,7 +19,7 @@ unsigned short IF::Sound::LoadWave(const char* filename)
 		if (soundDatas[i].name == filename)return i;
 	}
 
-	unsigned short num = 0;
+	unsigned short num = -1;
 	for (int i = 0; i < Sound::maxSound; i++)
 	{
 		if (soundDatas[i].free == false)
@@ -28,6 +28,9 @@ unsigned short IF::Sound::LoadWave(const char* filename)
 			break;
 		}
 	}
+
+	if (num == -1)assert(0 && "SoundData‚Ì‹ó‚«‚ª‚ ‚è‚Ü‚¹‚ñ");
+
 	std::ifstream file;
 
 	file.open(filename, std::ios_base::binary);
