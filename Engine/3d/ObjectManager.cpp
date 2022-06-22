@@ -30,7 +30,6 @@ void IF::ObjectManager::GUI()
 {
 	for (auto com : objList)
 	{
-
 		if (ImGui::TreeNode(com->tag.c_str())) {
 			if (ImGui::TreeNode("Position"))
 			{

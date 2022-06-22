@@ -114,12 +114,14 @@ void IF::Scene::Update()
 	static ImVec2 pos{ 0,0 };
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
+	static bool addObj = false;
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
 	Begin("hierarchy", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	if (CollapsingHeader("ObjectList"))
 	{
+		if (ImGui::Button("Add") && !addObj)addObj = true;
 		obj.GUI();
 	}
 	if (CollapsingHeader("ModelList"))
@@ -153,6 +155,16 @@ void IF::Scene::Update()
 		WriteData(_sceneName);
 	}
 	End();
+	if (addObj)
+	{
+		static char _tagName[256];
+		Begin("NewObjectSetting", (bool*)false, ImGuiWindowFlags_NoResize);
+		//InputText("Tag", _tagName, sizeof(_tagName));
+		//InputText("Tag", _tagName, sizeof(_tagName));
+		if (ImGui::Button("Add"))addObj = false;
+		if (ImGui::Button("Cancel"))addObj = false;
+		End();
+	}
 	ShowDemoWindow();
 	spherePos = obj.GetComponent<PlayerObj>()->GetPos();
 	light->SetCircleShadowCasterPos(0, spherePos);
@@ -259,7 +271,7 @@ void IF::Scene::Update()
 
 	obj.Update();
 	//sprite.Update();
-}
+	}
 
 void IF::Scene::Draw()
 {
