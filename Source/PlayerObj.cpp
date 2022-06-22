@@ -29,17 +29,3 @@ void IF::PlayerObj::Draw()
 	if (texNum == 0)obj.Draw(viewport);
 	else obj.Draw(viewport, texNum);
 }
-
-#ifdef _DEBUG
-void IF::PlayerObj::GUI()
-{
-	if (ImGui::TreeNode(tag.c_str())) {
-		float f[3] = { obj.position.x,obj.position.y,obj.position.z };
-		ImGui::Text("Position");
-		ImGui::InputFloat3("", f);
-		obj.position = { f[0], f[1], f[2] };
-
-		ImGui::TreePop();
-	}
-}
-#endif

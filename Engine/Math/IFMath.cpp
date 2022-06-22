@@ -137,6 +137,11 @@ float IF::ConvertToRadians(float fDegrees)
 	return fDegrees * (M_PI / 180.0f);
 }
 
+float IF::ConvertToDegrees(float fRadians)
+{
+	return fRadians * (180.0f / M_PI);
+}
+
 Vector3 IF::VectorNegate(Vector3 m)
 {
 	return -m;

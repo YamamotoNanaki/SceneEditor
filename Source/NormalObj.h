@@ -48,10 +48,22 @@ namespace IF
 		{
 			this->obj.position = pos;
 		}
+		inline Float3 GetRota()override
+		{
+			return obj.rotation;
+		}
+		inline void SetRota(Float3 rotation)
+		{
+			this->obj.rotation = rotation;
+		}
+		inline Float3 GetScale()override
+		{
+			return obj.scale;
+		}
+		inline void SetScale(Float3 scale)
+		{
+			this->obj.scale = scale;
+		}
 		inline ~NormalObj()override {};
-		
-#ifdef _DEBUG
-		void GUI();
-#endif
 	};
 }

@@ -53,4 +53,5 @@ namespace IF
 	bool NearEqual(float S1, float S2, float Epsilon);
 	void ScalarSinCos(float* pSin, float* pCos, float  Value);
 	float ConvertToRadians(float fDegrees);
+	float ConvertToDegrees(float fRadians);
 };

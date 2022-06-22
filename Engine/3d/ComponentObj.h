@@ -19,10 +19,11 @@ namespace IF
 		virtual void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode = BillBoard::NOON) = 0;
 		virtual void SetTexture(unsigned short texNum) = 0;
 		virtual void SetPos(Float3 pos) = 0;
+		virtual void SetRota(Float3 pos) = 0;
+		virtual void SetScale(Float3 pos) = 0;
 		virtual Float3 GetPos() = 0;
+		virtual Float3 GetRota() = 0;
+		virtual Float3 GetScale() = 0;
 		virtual ~ComponentObj() {};
-#ifdef _DEBUG
-		virtual void GUI() = 0;
-#endif
 	};
 }

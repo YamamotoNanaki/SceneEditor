@@ -117,17 +117,28 @@ void IF::Scene::Update()
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
-	Begin("objList");
-	obj.GUI();
+	Begin("hierarchy", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	if (CollapsingHeader("ObjectList"))
+	{
+		obj.GUI();
+	}
+	if (CollapsingHeader("ModelList"))
+	{
+
+	}
+	if (CollapsingHeader("Light"))
+	{
+
+	}
+	if (CollapsingHeader("Camera"))
+	{
+
+	}
 	End();
 	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	SetWindowPos({ 200,0 });
-	SetWindowSize(ImVec2(350, 40));
-	Text("sceneview");
-	End();
-	Begin("DebugMenu", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-	SetWindowPos({ 550,0 });
-	SetWindowSize(ImVec2(550, 40));
+	SetWindowSize(ImVec2(800, 60));
+	Text("SceneView");
 	const char start[] = "DebugStart";
 	const char stop[] = "DebugStop";
 	if (ImGui::Button(flag == false ? start : stop))flag = !flag;
@@ -248,7 +259,7 @@ void IF::Scene::Update()
 
 	obj.Update();
 	//sprite.Update();
-	}
+}
 
 void IF::Scene::Draw()
 {
