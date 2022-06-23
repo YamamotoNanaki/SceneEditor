@@ -54,11 +54,9 @@ void IF::Scene::Initialize()
 
 	//モデルの読み込みとオブジェクトとの紐付け(空と地面)
 	tex->Initialize();
-	domeM = new Model;
-	groundM = new Model;
-	sphereM = new Model;
-	domeM->LoadModel("skydome");
-	groundM->LoadModel("ground");
+	modelM.Load("dome", false, "skydome");
+	modelM.Load("ground", false, "ground");
+	modelM.Load("sphere", true, "sphere");
 
 	//カメラ関連初期化
 	matPro = new Projection(45.0f, (float)winWidth, (float)winHeight);
@@ -68,14 +66,13 @@ void IF::Scene::Initialize()
 	Rand random;
 	random.Initialize();
 
-	sphereM->LoadModel("sphere", true);
 	matView.Update();
 
-	obj.SetViewport(viewport);
-	obj.Add<NormalObj>(domeM, matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "dome");
-	obj.Add<NormalObj>(groundM, matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "ground");
-	obj.SetPosition({ 0,-2,0 }, "ground");
-	obj.Add<PlayerObj>(sphereM, matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "player");
+	objM.SetViewport(viewport);
+	objM.Add<NormalObj>(modelM.GetModel("dome"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "dome");
+	objM.Add<NormalObj>(modelM.GetModel("ground"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "ground");
+	objM.SetPosition({ 0,-2,0 }, "ground");
+	objM.Add<PlayerObj>(modelM.GetModel("sphere"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "player");
 
 	//2D関連
 	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
@@ -115,18 +112,28 @@ void IF::Scene::Update()
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
 	static bool addObj = false;
+	static string _tagName = "Object";
+	static char _ctagName[256];
+	static int _objtagNum = 0;
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
 	Begin("hierarchy", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	if (CollapsingHeader("ObjectList"))
 	{
-		if (ImGui::Button("Add") && !addObj)addObj = true;
-		obj.GUI();
+		if (ImGui::Button("Add") && !addObj)
+		{
+			_tagName = "Object";
+			addObj = true;
+			_objtagNum = objM.GetTagNum(_tagName);
+			if (_objtagNum != 0)_tagName += (char)(_objtagNum + 48);
+			strcpy_s(_ctagName, _tagName.c_str());
+		}
+		objM.GUI();
 	}
 	if (CollapsingHeader("ModelList"))
 	{
-
+		modelM.GUI();
 	}
 	if (CollapsingHeader("Light"))
 	{
@@ -139,10 +146,11 @@ void IF::Scene::Update()
 	End();
 	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	SetWindowPos({ 200,0 });
-	SetWindowSize(ImVec2(800, 60));
+	SetWindowSize(ImVec2(800, 40));
 	Text("SceneView");
 	const char start[] = "DebugStart";
 	const char stop[] = "DebugStop";
+	ImGui::SameLine();
 	if (ImGui::Button(flag == false ? start : stop))flag = !flag;
 	End();
 	Begin("SceneOutput", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
@@ -157,16 +165,49 @@ void IF::Scene::Update()
 	End();
 	if (addObj)
 	{
-		static char _tagName[256];
+		static string _mtag;
+		static int typeM = 0;
+		static int typeB = 0;
 		Begin("NewObjectSetting", (bool*)false, ImGuiWindowFlags_NoResize);
-		//InputText("Tag", _tagName, sizeof(_tagName));
-		//InputText("Tag", _tagName, sizeof(_tagName));
-		if (ImGui::Button("Add"))addObj = false;
+		if (ImGui::TreeNode("setModel"))
+		{
+			_mtag = modelM.GUIRadio();
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("modelType"))
+		{
+			ImGui::RadioButton("NormalObj", &typeM, 0);
+			ImGui::SameLine();
+			ImGui::RadioButton("PlayerObj", &typeM, 1);
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("BillBoard"))
+		{
+			ImGui::RadioButton("not", &typeB, 0);
+			ImGui::SameLine();
+			ImGui::RadioButton("BOARD", &typeB, 1);
+			ImGui::SameLine();
+			ImGui::RadioButton("YBOARD", &typeB, 2);
+			ImGui::TreePop();
+		}
+		InputText("Tag", _ctagName, sizeof(_ctagName));
+		if (ImGui::Button("Add"))
+		{
+			if (typeM == 0)
+			{
+				objM.Add<NormalObj>(modelM.GetModel(_mtag), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, _ctagName, typeB);
+			}
+			if (typeM == 1)
+			{
+				objM.Add<PlayerObj>(modelM.GetModel(_mtag), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, _ctagName, typeB);
+			}
+			addObj = false;
+		}
 		if (ImGui::Button("Cancel"))addObj = false;
 		End();
 	}
 	ShowDemoWindow();
-	spherePos = obj.GetComponent<PlayerObj>()->GetPos();
+	spherePos = objM.GetComponent<PlayerObj>()->GetPos();
 	light->SetCircleShadowCasterPos(0, spherePos);
 	if (flag) {
 		Input* input = Input::Instance();
@@ -210,7 +251,7 @@ void IF::Scene::Update()
 		if (input->KDown(KEY::W))spherePos.y += 0.5f;
 		if (input->KDown(KEY::S))spherePos.y -= 0.5f;
 
-		obj.SetPosition(spherePos, "player");
+		objM.SetPosition(spherePos, "player");
 		light->SetCircleShadowCasterPos(0, spherePos);
 	}
 
@@ -269,7 +310,7 @@ void IF::Scene::Update()
 	matView.Update();
 	light->Update();
 
-	obj.Update();
+	objM.Update();
 	//sprite.Update();
 	}
 
@@ -277,8 +318,8 @@ void IF::Scene::Draw()
 {
 	graph->DrawBlendMode(commandList.Get());
 	Object::DrawBefore(graph->rootsignature.Get());
-	obj.SetViewport(viewport);
-	obj.Draw();
+	objM.SetViewport(viewport);
+	objM.Draw();
 
 	//pgraph.DrawBlendMode(commandList, Blend::ADD);
 	//tex->setTexture(commandList, efect);
@@ -302,9 +343,6 @@ void IF::Scene::Delete()
 {
 	//light->UnMap();
 	delete matPro;
-	delete groundM;
-	delete domeM;
-	delete sphereM;
 	sound->SoundUnLoad(testSound);
 	sound->Reset();
 }

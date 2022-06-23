@@ -3,7 +3,7 @@
 
 namespace IF
 {
-	class ComponentObj
+	class CObject
 	{
 	public:
 		std::string tag;
@@ -24,6 +24,6 @@ namespace IF
 		virtual Float3 GetPos() = 0;
 		virtual Float3 GetRota() = 0;
 		virtual Float3 GetScale() = 0;
-		virtual ~ComponentObj() {};
+		virtual ~CObject() {};
 	};
 }

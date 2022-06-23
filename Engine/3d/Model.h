@@ -20,6 +20,7 @@ namespace IF
 		ComPtr<ID3D12Resource> constBuffTransform1;
 		ConstBufferMaterial* constMapMaterial = nullptr;
 		static ComPtr<ID3D12Device> device;
+		std::string tag;
 
 	public:
 		struct Material
@@ -53,5 +54,13 @@ namespace IF
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address, unsigned short texNum);
 		~Model();
+		inline void SetTag(std::string tag)
+		{
+			this->tag = tag;
+		}
+		inline std::string GetTag()
+		{
+			return tag;
+		}
 	};
 }

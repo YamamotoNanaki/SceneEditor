@@ -273,6 +273,9 @@
     <ClInclude Include="Source\NormalObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3d\ModelManager.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -420,6 +423,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\NormalObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\ModelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

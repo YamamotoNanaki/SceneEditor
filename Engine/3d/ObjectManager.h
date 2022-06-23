@@ -7,17 +7,26 @@ namespace IF
 	class ObjectManager
 	{
 	private:
-		std::list<ComponentObj*> objList;
+		std::list<CObject*> objList;
 	public:
 		ObjectManager() {}
 		~ObjectManager();
 		void Draw();
 		void Update();
-		template <class T> inline void Add(Model* model, Matrix* matView, Matrix* matProjection, Float3* cameraPos, std::string tag, BillBoard::BillBoardMode mode = BillBoard::NOON)
+		template <class T> inline void Add(Model* model, Matrix* matView, Matrix* matProjection, Float3* cameraPos, std::string tag, int mode = BillBoard::NOON)
 		{
 			T* obj = new T;
 			obj->Initialize(model);
-			obj->MatInitialize(matView, matProjection, cameraPos, mode);
+			BillBoard::BillBoardMode a = BillBoard::NOON;
+			if (mode == BillBoard::BILLBOARD)
+			{
+				a = BillBoard::BILLBOARD;
+			}
+			if (mode == BillBoard::YBOARD)
+			{
+				a = BillBoard::YBOARD;
+			}
+			obj->MatInitialize(matView, matProjection, cameraPos, a);
 			obj->tag = tag;
 			objList.push_back(obj);
 		}
@@ -93,13 +102,22 @@ namespace IF
 				}
 			}
 		}
-		template<class T>inline void SetBillBoard(BillBoard::BillBoardMode mode, const char* tag = 0)
+		template<class T>inline void SetBillBoard(int mode, const char* tag = 0)
 		{
+			BillBoard::BillBoardMode a = BillBoard::NOON;
+			if (mode == BillBoard::BILLBOARD)
+			{
+				a = BillBoard::BILLBOARD;
+			}
+			if (mode == BillBoard::YBOARD)
+			{
+				a = BillBoard::YBOARD;
+			}
 			if (strcmp(tag, 0))
 			{
 				for (auto com : objList)
 				{
-					com->SetBillBoard(mode);
+					com->SetBillBoard(a);
 				}
 			}
 			else
@@ -109,7 +127,7 @@ namespace IF
 					const char* ctag = com->tag.c_str();
 					if (!strcmp(ctag, tag))
 					{
-						com->SetBillBoard(mode);
+						com->SetBillBoard(a);
 					}
 				}
 			}
@@ -153,6 +171,29 @@ namespace IF
 					return;
 				}
 			}
+		}
+		inline int GetTagNum(std::string tag)
+		{
+			int i = 0;
+			for (auto com : objList)
+			{
+				if (i == 0)
+				{
+					if (com->tag == tag)
+					{
+						i++;
+					}
+				}
+				else
+				{
+					std::string a = tag + (char)(i + 48);
+					if (com->tag == a)
+					{
+						i++;
+					}
+				}
+			}
+			return i;
 		}
 
 #ifdef _DEBUG

@@ -1,8 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #include <cstdlib>
-
-
 #include "Window.h"
 #include "DirectX12.h"
 #include "Input.h"

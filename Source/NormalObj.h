@@ -2,7 +2,7 @@
 #include "ComponentObj.h"
 namespace IF
 {
-	class NormalObj : public ComponentObj
+	class NormalObj : public CObject
 	{
 	private:
 		Object obj;

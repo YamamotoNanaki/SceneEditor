@@ -56,7 +56,7 @@ void IF::Object::Initialize(Model* model)
 	cb.Initialize(device.Get());
 }
 
-void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, BillBoardMode mode)
+void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int mode)
 {
 	Matrix matScale, matRot, matTrams;
 

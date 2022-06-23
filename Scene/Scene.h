@@ -1,6 +1,5 @@
 #pragma once
 #include "ConstBuff.h"
-#include "Model.h"
 #include "View.h"
 #include "Projection.h"
 #include "Texture.h"
@@ -12,6 +11,7 @@
 #include "Sound.h"
 #include "GUI.h"
 #include "ObjectManager.h"
+#include "ModelManager.h"
 
 #ifdef _DEBUG
 #include "DebugText.h"
@@ -35,7 +35,6 @@ namespace IF
 		int efect = 0;
 		int sky = 0;
 		int groundTex = 0;
-		Model* sphereM = nullptr;
 		Float3 slDir{ 0.0f,-1.0f,0.0f };
 		Float3 slPos{ 0.0f,5.0f,0.0f };
 		Float3 slColor{ 1.0f,1.0f,1.0f };
@@ -50,9 +49,6 @@ namespace IF
 
 		//-----------------------
 
-		//地面と空
-		Model* domeM = nullptr;
-		Model* groundM = nullptr;
 		//カメラ
 		View matView;
 		Projection* matPro = nullptr;
@@ -60,7 +56,10 @@ namespace IF
 		LightManager* light = nullptr;
 		//音源
 		Sound* sound = Sound::Instance();
-		ObjectManager obj;
+
+		//マネジャー
+		ObjectManager objM;
+		ModelManager modelM;
 
 	public:
 		Texture* tex = Texture::Instance();

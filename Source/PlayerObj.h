@@ -3,7 +3,7 @@
 
 namespace IF
 {
-	class PlayerObj : public ComponentObj
+	class PlayerObj : public CObject
 	{
 	private:
 		Object obj;

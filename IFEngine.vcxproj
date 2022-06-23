@@ -177,6 +177,7 @@
     <ClInclude Include="Engine\2d\SpriteVI.h" />
     <ClInclude Include="Engine\3d\ComponentObj.h" />
     <ClInclude Include="Engine\3d\Model.h" />
+    <ClInclude Include="Engine\3d\ModelManager.h" />
     <ClInclude Include="Engine\3d\ModelVI.h" />
     <ClInclude Include="Engine\3d\Object.h" />
     <ClInclude Include="Engine\3d\ObjectManager.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Engine\2d\Sprite.cpp" />
     <ClCompile Include="Engine\2d\SpriteVI.cpp" />
     <ClCompile Include="Engine\3d\Model.cpp" />
+    <ClCompile Include="Engine\3d\ModelManager.cpp" />
     <ClCompile Include="Engine\3d\ModelVI.cpp" />
     <ClCompile Include="Engine\3d\Object.cpp" />
     <ClCompile Include="Engine\3d\ObjectManager.cpp" />
