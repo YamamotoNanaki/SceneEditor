@@ -59,14 +59,11 @@ void IF::Scene::Initialize()
 	modelM.Load("sphere", true, "sphere");
 
 	//ƒJƒƒ‰ŠÖ˜A‰Šú‰»
-	matPro = new Projection(45.0f, (float)winWidth, (float)winHeight);
-	matView.eye = { 1,1,-5.0f };
+
 
 	//‚»‚Ì‚Ù‚©‚Ì‰Šú‰»
 	Rand random;
 	random.Initialize();
-
-	matView.Update();
 
 	objM.SetViewport(viewport);
 	objM.Add<NormalObj>(modelM.GetModel("dome"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "dome");

@@ -49,9 +49,6 @@ namespace IF
 
 		//-----------------------
 
-		//ƒJƒƒ‰
-		View matView;
-		Projection* matPro = nullptr;
 		//ŒõŒ¹
 		LightManager* light = nullptr;
 		//‰¹Œ¹
