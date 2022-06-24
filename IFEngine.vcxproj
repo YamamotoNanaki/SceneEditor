@@ -171,7 +171,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="Engine\2d\DebugText.h" />
     <ClInclude Include="Engine\2d\GUI.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
@@ -191,6 +190,7 @@
     <ClInclude Include="Engine\Base\Window.h" />
     <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="Engine\Camera\CameraManager.h" />
+    <ClInclude Include="Engine\Camera\DebugCamera.h" />
     <ClInclude Include="Engine\Camera\ICamera.h" />
     <ClInclude Include="Engine\Camera\Projection.h" />
     <ClInclude Include="Engine\Camera\View.h" />
@@ -234,7 +234,6 @@
     <ClInclude Include="Source\PlayerObj.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="Engine\2d\DebugText.cpp" />
     <ClCompile Include="Engine\2d\GUI.cpp" />
     <ClCompile Include="Engine\2d\Sprite.cpp" />
@@ -255,6 +254,7 @@
     <ClCompile Include="Engine\Base\Window.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Camera\CameraManager.cpp" />
+    <ClCompile Include="Engine\Camera\DebugCamera.cpp" />
     <ClCompile Include="Engine\Camera\Projection.cpp" />
     <ClCompile Include="Engine\Camera\View.cpp" />
     <ClCompile Include="Engine\Efect\Particle.cpp" />

@@ -81,13 +81,13 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
-Vector3& Vector3::operator=(const Float3 f)
-{
-	x = f.x;
-	y = f.y;
-	z = f.z;
-	return *this;
-}
+//Vector3& Vector3::operator=(const Float3 f)
+//{
+//	x = f.x;
+//	y = f.y;
+//	z = f.z;
+//	return *this;
+//}
 
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)
 {

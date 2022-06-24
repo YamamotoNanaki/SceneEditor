@@ -6,6 +6,8 @@
 #include "DirectX12.h"
 #include "PlayerObj.h"
 #include "NormalObj.h"
+#include "DebugCamera.h"
+#include "Camera.h"
 #include <fstream>
 
 using namespace std;
@@ -58,18 +60,33 @@ void IF::Scene::Initialize()
 	modelM.Load("ground", false, "ground");
 	modelM.Load("sphere", true, "sphere");
 
-	//カメラ関連初期化
-
 
 	//そのほかの初期化
 	Rand random;
 	random.Initialize();
 
+#ifdef _DEBUG
+	//カメラ関連初期化
+	cameraM.Add<DebugCamera>("debug", 45, (float)winWidth, (float)winHeight);
+	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
+	//オブジェクト初期化
+	objM.SetCamera(cameraM.GetCamera("debug"));
 	objM.SetViewport(viewport);
-	objM.Add<NormalObj>(modelM.GetModel("dome"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "dome");
-	objM.Add<NormalObj>(modelM.GetModel("ground"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "ground");
+	objM.Add<NormalObj>(modelM.GetModel("dome"), "dome");
+	objM.Add<NormalObj>(modelM.GetModel("ground"), "ground");
 	objM.SetPosition({ 0,-2,0 }, "ground");
-	objM.Add<PlayerObj>(modelM.GetModel("sphere"), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, "player");
+	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
+#else
+	//カメラ関連初期化
+	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
+	//オブジェクト初期化
+	objM.SetCamera(cameraM->GetCamera("mainCamera"));
+	objM.SetViewport(viewport);
+	objM.Add<NormalObj>(modelM.GetModel("dome"), "dome");
+	objM.Add<NormalObj>(modelM.GetModel("ground"), "ground");
+	objM.SetPosition({ 0,-2,0 }, "ground");
+	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
+#endif
 
 	//2D関連
 	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
@@ -132,11 +149,11 @@ void IF::Scene::Update()
 	{
 		modelM.GUI();
 	}
-	if (CollapsingHeader("Light"))
-	{
-
-	}
 	if (CollapsingHeader("Camera"))
+	{
+		cameraM.GUI();
+	}
+	if (CollapsingHeader("Light"))
 	{
 
 	}
@@ -148,7 +165,12 @@ void IF::Scene::Update()
 	const char start[] = "DebugStart";
 	const char stop[] = "DebugStop";
 	ImGui::SameLine();
-	if (ImGui::Button(flag == false ? start : stop))flag = !flag;
+	if (ImGui::Button(flag == false ? start : stop))
+	{
+		if (flag)objM.SetCamera(cameraM.GetCamera("debug"));
+		else objM.SetCamera(cameraM.GetCamera("mainCamera"));
+		flag = !flag;
+	}
 	End();
 	Begin("SceneOutput", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	SetWindowPos({ 1000,0 });
@@ -192,11 +214,11 @@ void IF::Scene::Update()
 		{
 			if (typeM == 0)
 			{
-				objM.Add<NormalObj>(modelM.GetModel(_mtag), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, _ctagName, typeB);
+				objM.Add<NormalObj>(modelM.GetModel(_mtag), _ctagName, typeB);
 			}
 			if (typeM == 1)
 			{
-				objM.Add<PlayerObj>(modelM.GetModel(_mtag), matView.GetAddressOf(), matPro->GetAddressOf(), &matView.eye, _ctagName, typeB);
+				objM.Add<PlayerObj>(modelM.GetModel(_mtag), _ctagName, typeB);
 			}
 			addObj = false;
 		}
@@ -206,10 +228,9 @@ void IF::Scene::Update()
 	ShowDemoWindow();
 	spherePos = objM.GetComponent<PlayerObj>()->GetPos();
 	light->SetCircleShadowCasterPos(0, spherePos);
+	Input* input = Input::Instance();
+	input->Update();
 	if (flag) {
-		Input* input = Input::Instance();
-		input->Update();
-
 		//光源
 
 		//if (input->KDown(KEY::W))lightDir.m128_f32[1] += 1.0f;
@@ -223,33 +244,16 @@ void IF::Scene::Update()
 
 		for (int i = 0; i < 3; i++)light->SetDirLightColor(i, { dlColor[0],dlColor[1],dlColor[2] });
 
-		//カメラ
-		if (input->KDown(KEY::UP))
-		{
-			matView.eye.z += 0.5f;
-			matView.target.z += 0.5f;
-		}
-		if (input->KDown(KEY::DOWN))
-		{
-			matView.eye.z -= 0.5f;
-			matView.target.z -= 0.5f;
-		}
-		if (input->KDown(KEY::RIGHT))
-		{
-			matView.eye.x += 0.5f;
-			matView.target.x += 0.5f;
-		}
-		if (input->KDown(KEY::LEFT))
-		{
-			matView.eye.x -= 0.5f;
-			matView.target.x -= 0.5f;
-		}
-
 		if (input->KDown(KEY::W))spherePos.y += 0.5f;
 		if (input->KDown(KEY::S))spherePos.y -= 0.5f;
 
 		objM.SetPosition(spherePos, "player");
 		light->SetCircleShadowCasterPos(0, spherePos);
+		cameraM.Update("mainCamera");
+	}
+	else
+	{
+		cameraM.Update("debug");
 	}
 
 #else
@@ -302,9 +306,9 @@ void IF::Scene::Update()
 
 	sprite.position = { 540,500 };
 	sprite.Update();
+	cameraM.Update();
 
 #endif // _DEBUG
-	matView.Update();
 	light->Update();
 
 	objM.Update();
@@ -339,7 +343,6 @@ void IF::Scene::Draw()
 void IF::Scene::Delete()
 {
 	//light->UnMap();
-	delete matPro;
 	sound->SoundUnLoad(testSound);
 	sound->Reset();
 }

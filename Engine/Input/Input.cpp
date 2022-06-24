@@ -44,8 +44,17 @@ void IF::Input::Initialize(HINSTANCE& hInstance, HWND& hwnd)
 	result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
 	assert(SUCCEEDED(result));
 
+	// 入力データ形式のセット
+	result = devMouse->SetDataFormat(&c_dfDIMouse2); // 標準形式
+	assert(SUCCEEDED(result));
+
 	//排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
+		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	assert(SUCCEEDED(result));
+
+	// 排他制御レベルのセット
+	result = devMouse->SetCooperativeLevel(
 		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 	assert(SUCCEEDED(result));
 }
@@ -163,12 +172,12 @@ bool IF::Input::MMRelease()
 	return false;
 }
 
-MOUSE::Mouse IF::Input::GetMouse3D()
+Mouse IF::Input::GetMouse3D()
 {
-	MOUSE::Mouse m;
-	m.X = mouse.lX;
-	m.Y = mouse.lY;
-	m.Z = mouse.lZ;
+	Mouse m;
+	m.x = mouse.lX;
+	m.y = mouse.lY;
+	m.z = mouse.lZ;
 	return m;
 }
 

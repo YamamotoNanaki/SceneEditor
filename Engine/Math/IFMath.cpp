@@ -142,6 +142,29 @@ float IF::ConvertToDegrees(float fRadians)
 	return fRadians * (180.0f / M_PI);
 }
 
+Vector3 IF::Vector3Transform(const Vector3& v, const Matrix& m)
+{
+	Vector3 mx = { m._1_1,m._1_2,m._1_3 };
+	Vector3 my = { m._2_1,m._2_2,m._2_3 };
+	Vector3 mz = { m._3_1,m._3_2,m._3_3 };
+	Vector3 mw = { m._4_1,m._4_2,m._4_3 };
+
+	Vector3 Result = {
+		v.z * mz.x + mw.x,
+		v.z * mz.y + mw.y,
+		v.z * mz.z + mw.z };
+	Result = {
+		v.y * my.x + Result.x,
+		v.y * my.y + Result.y,
+		v.y * my.z + Result.z };
+	Result = {
+		v.x * mx.x + Result.x,
+		v.x * mx.y + Result.y,
+		v.x * mx.z + Result.z };
+
+	return Result;
+}
+
 Vector3 IF::VectorNegate(Vector3 m)
 {
 	return -m;

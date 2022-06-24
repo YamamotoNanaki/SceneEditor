@@ -99,15 +99,12 @@ namespace IF
 		const KeyCode WASD[4] = { W,A,S,D };
 	}
 
-	namespace MOUSE
+	struct Mouse
 	{
-		struct Mouse
-		{
-			LONG X;
-			LONG Y;
-			LONG Z;
-		};
-	}
+		LONG x;
+		LONG y;
+		LONG z;
+	};
 
 	class Input
 	{
@@ -131,8 +128,8 @@ namespace IF
 		Input& operator=(const Input&) {}
 		~Input() {}
 	public:
-		static Input* Instance(); 
-		static void DeleteInstance(); 
+		static Input* Instance();
+		static void DeleteInstance();
 
 		void Initialize(HINSTANCE& hInstance, HWND& hwnd);
 
@@ -171,7 +168,7 @@ namespace IF
 		bool MRRelease();
 		bool MMRelease();
 
-		MOUSE::Mouse GetMouse3D();
+		Mouse GetMouse3D();
 
 		bool Judge(const KeyCode a[], int Type);
 	};

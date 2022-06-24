@@ -2,18 +2,24 @@
 #include "View.h"
 #include "Projection.h"
 #include "ICamera.h"
+#include "IFMath.h"
 
 namespace IF
 {
-	class Camera :public ICamera
+	class DebugCamera : public ICamera
 	{
-	private:
 		//カメラ
 		View* matView = nullptr;
 		Projection* matPro = nullptr;
+		// カメラ注視点までの距離
+		float distance = 20;
+		// スケーリング
+		float scaleX = 1.0f / (float)1280;
+		float scaleY = 1.0f / (float)720;
+		Matrix matRot;
 
 	public:
-		Camera() {}
+		DebugCamera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)
 		{
 			matPro = new Projection(fovAngle, winWidth, winHeight);
@@ -78,7 +84,7 @@ namespace IF
 		{
 			return matPro->GetAddressOf();
 		}
-		inline ~Camera()
+		inline ~DebugCamera()
 		{
 			delete matView;
 			delete matPro;

@@ -1,5 +1,6 @@
 #pragma once
 #include "ComponentObj.h"
+#include "ICamera.h"
 #include <list>
 
 namespace IF
@@ -8,12 +9,24 @@ namespace IF
 	{
 	private:
 		std::list<CObject*> objList;
+		ICamera* camera;
 	public:
 		ObjectManager() {}
 		~ObjectManager();
 		void Draw();
 		void Update();
-		template <class T> inline void Add(Model* model, Matrix* matView, Matrix* matProjection, Float3* cameraPos, std::string tag, int mode = BillBoard::NOON)
+		inline void SetCamera(ICamera* camera)
+		{
+			this->camera = camera;
+			if (objList.size() == 0)return;
+			for (auto com : objList)
+			{
+				com->SetView(camera->GetMatView());
+				com->SetProjection(camera->GetMatPro());
+				com->SetCamera(camera->GetEye());
+			}
+		}
+		template <class T> inline void Add(Model* model, std::string tag, int mode = BillBoard::NOON)
 		{
 			T* obj = new T;
 			obj->Initialize(model);
@@ -26,7 +39,7 @@ namespace IF
 			{
 				a = BillBoard::YBOARD;
 			}
-			obj->MatInitialize(matView, matProjection, cameraPos, a);
+			obj->MatInitialize(camera->GetMatView(), camera->GetMatPro(), camera->GetEye(), a);
 			obj->tag = tag;
 			objList.push_back(obj);
 		}

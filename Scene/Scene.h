@@ -1,7 +1,5 @@
 #pragma once
 #include "ConstBuff.h"
-#include "View.h"
-#include "Projection.h"
 #include "Texture.h"
 #include "Graphic.h"
 #include "Fire.h"
@@ -12,6 +10,7 @@
 #include "GUI.h"
 #include "ObjectManager.h"
 #include "ModelManager.h"
+#include "CameraManager.h"
 
 #ifdef _DEBUG
 #include "DebugText.h"
@@ -54,9 +53,11 @@ namespace IF
 		//音源
 		Sound* sound = Sound::Instance();
 
-		//マネジャー
+		//マネジャ
 		ObjectManager objM;
 		ModelManager modelM;
+		CameraManager cameraM;
+		
 
 	public:
 		Texture* tex = Texture::Instance();
