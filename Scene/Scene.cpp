@@ -168,6 +168,9 @@ void IF::Scene::Update()
 
 	}
 	End();
+	Begin("Assets", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	tex->GUI();
+	End();
 	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	SetWindowPos({ 200,0 });
 	SetWindowSize(ImVec2(800, 40));
@@ -288,7 +291,6 @@ void IF::Scene::Update()
 		}
 		End();
 	}
-	ShowDemoWindow();
 	spherePos = objM.GetComponent<PlayerObj>()->GetPos();
 	light->SetCircleShadowCasterPos(0, spherePos);
 	Input* input = Input::Instance();

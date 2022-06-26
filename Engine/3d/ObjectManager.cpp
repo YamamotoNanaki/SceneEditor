@@ -34,14 +34,14 @@ void IF::ObjectManager::GUI()
 			if (ImGui::TreeNode("Position"))
 			{
 				float p[3] = { com->GetPos().x,com->GetPos().y,com->GetPos().z };
-				ImGui::InputFloat3("", p);
+				ImGui::DragFloat3("", p);
 				com->SetPos({ p[0],p[1],p[2] });
 				ImGui::TreePop();
 			}
 			if (ImGui::TreeNode("Rotation"))
 			{
 				float r[3] = { ConvertToDegrees(com->GetRota().x),ConvertToDegrees(com->GetRota().y),ConvertToDegrees(com->GetRota().z) };
-				ImGui::InputFloat3("", r);
+				ImGui::DragFloat3("", r);
 				for (int i = 0; i < 3; i++)
 				{
 					if (r[i] >= 360)r[i] -= 360;
@@ -53,7 +53,7 @@ void IF::ObjectManager::GUI()
 			if (ImGui::TreeNode("Scale"))
 			{
 				float s[3] = { com->GetScale().x,com->GetScale().y,com->GetScale().z };
-				ImGui::InputFloat3("", s);
+				ImGui::DragFloat3("", s);
 				com->SetScale({ s[0], s[1], s[2] });
 				ImGui::TreePop();
 			}

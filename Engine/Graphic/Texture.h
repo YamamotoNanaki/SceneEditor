@@ -47,5 +47,9 @@ namespace IF
 		void Initialize();
 		void setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle);
 		unsigned short LoadTexture(const std::string filename);
+
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }

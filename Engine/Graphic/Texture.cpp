@@ -2,6 +2,7 @@
 #include <d3dx12.h>
 #include <d3d12.h>
 #include "Input.h"
+#include "ImGui.h"
 
 using namespace DirectX;
 using namespace IF;
@@ -162,6 +163,24 @@ unsigned short Texture::LoadTexture(const std::string filename)
 
 	return num;
 }
+
+#ifdef _DEBUG
+void IF::Texture::GUI()
+{
+	int j = 0;
+	for (int i = 0; i < 256; i++)
+	{
+		if (j % 7 != 0)ImGui::SameLine();
+		if (tex[i].free == true)
+		{
+			ImGui::Text("%03d", i);
+			ImGui::SameLine();
+			ImGui::Image((ImTextureID)tex[i].GPUHandle.ptr, { 96,96 });
+			j++;
+		}
+	}
+}
+#endif
 
 void IF::Texture::setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle)
 {

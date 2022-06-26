@@ -11,9 +11,7 @@ namespace IF
 		//カメラ
 		View* matView = nullptr;
 		Projection* matPro = nullptr;
-		// カメラ注視点までの距離
 		float distance = 20;
-		// スケーリング
 		float scaleX = 1.0f / (float)1280;
 		float scaleY = 1.0f / (float)720;
 		Matrix matRot;
