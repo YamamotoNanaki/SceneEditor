@@ -10,7 +10,7 @@ using namespace std;
 
 Microsoft::WRL::ComPtr<ID3D12Device> Model::device = nullptr;
 
-void Model::LoadModel(string name, bool smoothing)
+bool Model::LoadModel(string name, bool smoothing)
 {
 	vi = new MVI;
 	const string modelname = name;
@@ -21,7 +21,7 @@ void Model::LoadModel(string name, bool smoothing)
 	file.open(directory + filename);
 	if (file.fail())
 	{
-		assert(0 && "objファイルが開けません");
+		return false;
 	}
 
 	vector<Float3> position;
@@ -110,7 +110,8 @@ void Model::LoadModel(string name, bool smoothing)
 			line_stream >> mfilename;
 			ifstream mfile;
 			mfile.open(directory + mfilename);
-			if (mfile.fail())assert(0 && "mtlファイルが開けません");
+			if (mfile.fail())
+				return false;
 
 			string line;
 			while (getline(mfile, line))
@@ -191,6 +192,7 @@ void Model::LoadModel(string name, bool smoothing)
 	constBuffTransform1->Unmap(0, nullptr);
 
 	VIInitialize(smoothing);
+	return true;
 }
 
 void IF::Model::CreateCube(bool smoothing)

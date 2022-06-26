@@ -126,16 +126,18 @@ void IF::Scene::Update()
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
 	static bool addObj = false;
+	static bool addModel = false;
 	static string _tagName = "Object";
 	static char _ctagName[256];
 	static int _objtagNum = 0;
+	static int _ModeltagNum = 0;
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
 	Begin("hierarchy", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	if (CollapsingHeader("ObjectList"))
 	{
-		if (ImGui::Button("Add") && !addObj)
+		if (ImGui::Button("Add") && !addObj && !addModel)
 		{
 			_tagName = "Object";
 			addObj = true;
@@ -147,6 +149,14 @@ void IF::Scene::Update()
 	}
 	if (CollapsingHeader("ModelList"))
 	{
+		if (ImGui::Button("Add") && !addModel && !addObj)
+		{
+			_tagName = "Model";
+			addModel = true;
+			_ModeltagNum = modelM.GetTagNum(_tagName);
+			if (_ModeltagNum != 0)_tagName += (char)(_ModeltagNum + 48);
+			strcpy_s(_ctagName, _tagName.c_str());
+		}
 		modelM.GUI();
 	}
 	if (CollapsingHeader("Camera"))
@@ -222,7 +232,60 @@ void IF::Scene::Update()
 			}
 			addObj = false;
 		}
+		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))addObj = false;
+		End();
+	}
+	if (addModel)
+	{
+		static int smoot = 1;
+		static int loadMode = 0;
+		static char _faileName[256] = "file";
+		Begin("NewMaterialSetting", (bool*)false, ImGuiWindowFlags_NoResize);
+		if (ImGui::TreeNode("Smoothing"))
+		{
+			ImGui::RadioButton("true", &smoot, 1);
+			ImGui::SameLine();
+			ImGui::RadioButton("false", &smoot, 0);
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("LoadMode"))
+		{
+			ImGui::RadioButton("LoadModel", &loadMode, 0);
+			//ImGui::SameLine();
+			//ImGui::RadioButton("CreateCube", &loadMode, 1);
+			if (loadMode == 0)InputText("FaileName", _faileName, sizeof(_faileName));
+			ImGui::TreePop();
+		}
+		InputText("Tag", _ctagName, sizeof(_ctagName));
+		static bool error = false;
+		if (ImGui::Button("Add"))
+		{
+			if (loadMode == 0)
+			{
+				if (!modelM.Load(_ctagName, smoot, _faileName))error = true;
+				else
+				{
+					error = false;
+					addModel = false;
+				}
+			}
+			if (loadMode == 1)
+			{
+				//objM.Add<PlayerObj>(modelM.GetModel(_mtag), _ctagName, typeB);
+				addModel = false;
+			}
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			addModel = false;
+			error = false;
+		}
+		if (error)
+		{
+			Text("Error : File not found");
+		}
 		End();
 	}
 	ShowDemoWindow();
@@ -313,7 +376,7 @@ void IF::Scene::Update()
 
 	objM.Update();
 	//sprite.Update();
-	}
+}
 
 void IF::Scene::Draw()
 {
