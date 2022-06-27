@@ -451,39 +451,39 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+    <FxCompile Include="Data\Shaders\ParticleGS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+    <FxCompile Include="Data\Shaders\ParticlePS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
+    <FxCompile Include="Data\Shaders\ParticleVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
+    <FxCompile Include="Data\Shaders\SpritePS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ModelGS.hlsl">
+    <FxCompile Include="Data\Shaders\SpriteVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ModelPS.hlsl">
+    <FxCompile Include="Data\Shaders\ModelGS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ModelVS.hlsl">
+    <FxCompile Include="Data\Shaders\ModelPS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+    <FxCompile Include="Data\Shaders\ModelVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\Sprite.hlsli">
+    <None Include="Data\Shaders\Sprite.hlsli">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="Resources\Shaders\Model.hlsli">
+    <None Include="Data\Shaders\Model.hlsli">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="Resources\Shaders\Particle.hlsli">
+    <None Include="Data\Shaders\Particle.hlsli">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

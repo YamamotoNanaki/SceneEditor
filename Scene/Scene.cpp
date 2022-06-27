@@ -17,7 +17,7 @@ using namespace ImGui;
 void IF::Scene::Initialize()
 {
 	//音源
-	testSound = sound->LoadWave("Resources/Alarm01.wav");
+	testSound = sound->LoadWave("Data/Resources/Alarm01.wav");
 
 	//光源設定
 	light = LightManager::Instance();
@@ -34,8 +34,8 @@ void IF::Scene::Initialize()
 	Object::StaticInitialize(device.Get(), commandList.Get(), light);
 
 	//画像関連初期化
-	graph->Initialize(tex->descRangeSRV, L"Resources/Shaders/ModelVS.hlsl", L"Resources/Shaders/ModelPS.hlsl", L"Resources/Shaders/ModelGS.hlsl");
-	graph->Initialize2D(tex->descRangeSRV, L"Resources/Shaders/SpriteVS.hlsl", L"Resources/Shaders/SpritePS.hlsl");
+	graph->Initialize(tex->descRangeSRV, L"Data/Shaders/ModelVS.hlsl", L"Data/Shaders/ModelPS.hlsl", L"Data/Shaders/ModelGS.hlsl");
+	graph->Initialize2D(tex->descRangeSRV, L"Data/Shaders/SpriteVS.hlsl", L"Data/Shaders/SpritePS.hlsl");
 
 	//モデルの読み込みとオブジェクトとの紐付け(空と地面)
 	tex->Initialize();
@@ -74,7 +74,7 @@ void IF::Scene::Initialize()
 
 	//2D関連
 	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
-	SGraph = tex->LoadTexture("Resources/texture.png");
+	SGraph = tex->LoadTexture("texture.png");
 	sprite.Initialize(SGraph, { 300,300 });
 
 	//sound->SoundPlay(testSound);
@@ -84,7 +84,7 @@ void IF::Scene::Initialize()
 	gui.Initialize(this->hwnd, this->device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
 
 	//デバッグ用
-	dText.Initialize(tex->LoadTexture("Resources/debugfont.png"));
+	dText.Initialize(tex->LoadTexture("debugfont.png"));
 
 #endif // _DEBUG
 }

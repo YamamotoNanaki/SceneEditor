@@ -83,8 +83,9 @@ unsigned short Texture::LoadTexture(const std::string filename)
 
 	Tex newtex;
 	newtex.texName = filename;
+	string file = "Data/Resources/" + filename;
 	wchar_t szFile[256];
-	MultiByteToWideChar(CP_ACP, 0, filename.c_str(), -1, szFile, _countof(szFile));
+	MultiByteToWideChar(CP_ACP, 0, file.c_str(), -1, szFile, _countof(szFile));
 
 
 	HRESULT result = LoadFromWICFile(
@@ -188,7 +189,7 @@ void IF::Texture::GUI()
 
 void IF::Texture::GUIInit()
 {
-	folder = LoadTexture("Resources/folder.png");
+	folder = LoadTexture("folder.png");
 }
 #endif
 

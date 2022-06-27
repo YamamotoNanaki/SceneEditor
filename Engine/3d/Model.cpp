@@ -15,7 +15,7 @@ bool Model::LoadModel(string name, bool smoothing)
 	vi = new MVI;
 	const string modelname = name;
 	const string filename = modelname + ".obj";
-	const string directory = "Resources/" + modelname + "/";
+	const string directory = "Data/Resources/" + modelname + "/";
 
 	ifstream file;
 	file.open(directory + filename);
@@ -149,7 +149,7 @@ bool Model::LoadModel(string name, bool smoothing)
 				if (key == "map_Kd")
 				{
 					line_stream >> material.textureFilename;
-					material.texNum = Texture::Instance()->LoadTexture(directory + material.textureFilename);
+					material.texNum = Texture::Instance()->LoadTexture(material.textureFilename);
 					material.tex = true;
 				}
 			}
