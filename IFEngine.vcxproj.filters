@@ -437,9 +437,6 @@
     <ClCompile Include="Source\NormalObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\ModelManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Camera\Camera.cpp">
       <Filter>Source Files\Engine\Camera</Filter>
     </ClCompile>
@@ -447,7 +444,10 @@
       <Filter>Source Files\Engine\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Camera\CameraManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\ModelManager.cpp">
+      <Filter>Source Files\Engine\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

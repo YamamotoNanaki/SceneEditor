@@ -8,28 +8,11 @@
 #include "NormalObj.h"
 #include "DebugCamera.h"
 #include "Camera.h"
+#include "nlohmann/json.hpp"
 #include <fstream>
 
 using namespace std;
 using namespace ImGui;
-
-void IF::Scene::WriteData(char* _sceneName)
-{
-	if (strcmp(_sceneName, "\0") == 0)
-	{
-		Text("Error");
-		return;
-	}
-	ofstream writing_file;
-	string scene = _sceneName;
-	string txt = ".txt";
-	string name = "Data/Scene/";
-	name = name + scene + txt;
-	writing_file.open(name, std::ios::out);
-	std::string writing_text = "test";
-	writing_file << writing_text << std::endl;
-	writing_file.close();
-}
 
 void IF::Scene::Initialize()
 {
@@ -66,6 +49,7 @@ void IF::Scene::Initialize()
 	random.Initialize();
 
 #ifdef _DEBUG
+	tex->GUIInit();
 	//ƒJƒƒ‰ŠÖ˜A‰Šú‰»
 	cameraM.Add<DebugCamera>("debug", 45, (float)winWidth, (float)winHeight);
 	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
@@ -169,6 +153,7 @@ void IF::Scene::Update()
 	}
 	End();
 	Begin("Assets", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	if (tex->flag)if (ImGui::Button("Return"))tex->flag = false;
 	tex->GUI();
 	End();
 	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
@@ -184,6 +169,8 @@ void IF::Scene::Update()
 		else objM.SetCamera(cameraM.GetCamera("mainCamera"));
 		flag = !flag;
 	}
+	ImGui::SameLine();
+	Text("DebugCamera On/Off : mouseMiddle");
 	End();
 	Begin("SceneOutput", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	SetWindowPos({ 1000,0 });
@@ -192,7 +179,7 @@ void IF::Scene::Update()
 	ImGui::InputText("OutputName", _sceneName, sizeof(_sceneName));
 	if (ImGui::Button("DataOutput"))
 	{
-		WriteData(_sceneName);
+
 	}
 	End();
 	if (addObj)
@@ -217,9 +204,9 @@ void IF::Scene::Update()
 		{
 			ImGui::RadioButton("not", &typeB, 0);
 			ImGui::SameLine();
-			ImGui::RadioButton("BOARD", &typeB, 1);
+			ImGui::RadioButton("Billboard", &typeB, 1);
 			ImGui::SameLine();
-			ImGui::RadioButton("YBOARD", &typeB, 2);
+			ImGui::RadioButton("YBillboard", &typeB, 2);
 			ImGui::TreePop();
 		}
 		InputText("Tag", _ctagName, sizeof(_ctagName));
@@ -407,7 +394,6 @@ void IF::Scene::Draw()
 
 void IF::Scene::Delete()
 {
-	//light->UnMap();
 	sound->SoundUnLoad(testSound);
 	sound->Reset();
 }

@@ -79,8 +79,6 @@ namespace IF
 		DebugText dText;
 
 #endif // _DEBUG
-	private:
-		void WriteData(char* _sceneName);
 
 	public:
 		void Initialize()override;

@@ -167,18 +167,28 @@ unsigned short Texture::LoadTexture(const std::string filename)
 #ifdef _DEBUG
 void IF::Texture::GUI()
 {
-	int j = 0;
-	for (int i = 0; i < 256; i++)
+	if (!flag)flag = ImGui::ImageButton((ImTextureID)tex[folder].GPUHandle.ptr, { 96,96 });
+	else
 	{
-		if (j % 7 != 0)ImGui::SameLine();
-		if (tex[i].free == true)
+		int j = 0;
+		for (int i = 0; i < 256; i++)
 		{
-			ImGui::Text("%03d", i);
-			ImGui::SameLine();
-			ImGui::Image((ImTextureID)tex[i].GPUHandle.ptr, { 96,96 });
-			j++;
+			if (i == folder)continue;
+			if (j % 7 != 0)ImGui::SameLine();
+			if (tex[i].free == true)
+			{
+				ImGui::Text("%03d", i);
+				ImGui::SameLine();
+				ImGui::Image((ImTextureID)tex[i].GPUHandle.ptr, { 96,96 });
+				j++;
+			}
 		}
 	}
+}
+
+void IF::Texture::GUIInit()
+{
+	folder = LoadTexture("Resources/folder.png");
 }
 #endif
 

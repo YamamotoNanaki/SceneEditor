@@ -49,7 +49,10 @@ namespace IF
 		unsigned short LoadTexture(const std::string filename);
 
 #ifdef _DEBUG
+		unsigned short folder = 0;
+		bool flag = false;
 		void GUI();
+		void GUIInit();
 #endif
 	};
 }

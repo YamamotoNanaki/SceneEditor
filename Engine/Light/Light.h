@@ -43,7 +43,7 @@ namespace IF
 		LightManager() {};
 		LightManager(const LightManager&) {};
 		LightManager& operator=(const LightManager&) {};
-		~LightManager() {};
+		inline ~LightManager() {}
 
 	public:
 		static void SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList);
