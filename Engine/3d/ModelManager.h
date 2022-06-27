@@ -1,5 +1,6 @@
 #pragma once
 #include "Model.h"
+#include "nlohmann/json.hpp"
 
 namespace IF
 {
@@ -62,6 +63,7 @@ namespace IF
 #ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();
+		void OutputJson(nlohmann::json& j);
 #endif
 	};
 }

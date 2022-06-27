@@ -1,0 +1,108 @@
+{
+    "camera": {
+        "tag": [
+            "debug",
+            "mainCamera"
+        ],
+        "type": [
+            false,
+            true
+        ]
+    },
+    "model": {
+        "name": [
+            "skydome",
+            "ground",
+            "sphere"
+        ],
+        "smooth": [
+            false,
+            false,
+            true
+        ],
+        "tag": [
+            "dome",
+            "ground",
+            "sphere"
+        ]
+    },
+    "object": {
+        "camera": "debug",
+        "model": [
+            "dome",
+            "ground",
+            "sphere"
+        ],
+        "pos": [
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            {
+                "x": 0.0,
+                "y": -2.0,
+                "z": 0.0
+            },
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        ],
+        "rot": [
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        ],
+        "sca": [
+            {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        ],
+        "tag": [
+            "dome",
+            "ground",
+            "player"
+        ],
+        "type": [
+            2,
+            2,
+            1
+        ]
+    },
+    "texture": {
+        "name": [
+            "Fine_Basin.jpg",
+            "ground.png",
+            "white.png",
+            "folder.png",
+            "texture.png",
+            "debugfont.png"
+        ]
+    }
+}

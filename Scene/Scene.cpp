@@ -10,9 +10,11 @@
 #include "Camera.h"
 #include "nlohmann/json.hpp"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 using namespace ImGui;
+using namespace nlohmann;
 
 void IF::Scene::Initialize()
 {
@@ -42,11 +44,6 @@ void IF::Scene::Initialize()
 	modelM.Load("dome", false, "skydome");
 	modelM.Load("ground", false, "ground");
 	modelM.Load("sphere", true, "sphere");
-
-
-	//‚»‚Ì‚Ù‚©‚Ì‰Šú‰»
-	Rand random;
-	random.Initialize();
 
 #ifdef _DEBUG
 	tex->GUIInit();
@@ -87,6 +84,35 @@ void IF::Scene::Initialize()
 	dText.Initialize(tex->LoadTexture("debugfont.png"));
 
 #endif // _DEBUG
+}
+
+void IF::Scene::OutputJson()
+{
+	json j;
+	string a = "abc";
+	for (int i = 1; i < 256; i++)
+	{
+		if (tex->tex[i].free == false)continue;
+		j["texture"]["name"][i - 1] = tex->tex[i].texName;
+	}
+	modelM.OutputJson(j);
+	cameraM.OutputJson(j);
+	objM.OutputJson(j);
+
+	string s = j.dump(4);
+
+	ofstream writing_file;
+	string scene = "test";
+	string txt = ".json";
+	string name = "Data/Scene/";
+	name = name + scene + txt;
+	writing_file.open(name, std::ios::out);
+	writing_file << s << std::endl;
+	writing_file.close();
+}
+
+void IF::Scene::InputJson()
+{
 }
 
 void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
@@ -179,7 +205,7 @@ void IF::Scene::Update()
 	ImGui::InputText("OutputName", _sceneName, sizeof(_sceneName));
 	if (ImGui::Button("DataOutput"))
 	{
-
+		OutputJson();
 	}
 	End();
 	if (addObj)

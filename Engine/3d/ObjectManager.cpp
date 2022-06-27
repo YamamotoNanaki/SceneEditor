@@ -62,4 +62,29 @@ void IF::ObjectManager::GUI()
 		}
 	}
 }
+void IF::ObjectManager::OutputJson(nlohmann::json& j)
+{
+	int i = 0;
+	j["object"]["camera"] = camera->tag;
+	for (auto com : objList)
+	{
+		NormalObj* buff = dynamic_cast<NormalObj*>(com);
+		if (buff != nullptr)j["object"]["type"][i] = 0;
+		PlayerObj* buff1 = dynamic_cast<PlayerObj*>(com);
+		if (buff1 != nullptr) j["object"]["type"][i] = 1;
+		else j["object"]["type"][i] = 2;
+		j["object"]["tag"][i] = com->tag;
+		j["object"]["model"][i] = com->GetModelTag();
+		j["object"]["pos"][i]["x"] = com->GetPos().x;
+		j["object"]["pos"][i]["y"] = com->GetPos().y;
+		j["object"]["pos"][i]["z"] = com->GetPos().z;
+		j["object"]["rot"][i]["x"] = com->GetRota().x;
+		j["object"]["rot"][i]["y"] = com->GetRota().y;
+		j["object"]["rot"][i]["z"] = com->GetRota().z;
+		j["object"]["sca"][i]["x"] = com->GetScale().x;
+		j["object"]["sca"][i]["y"] = com->GetScale().y;
+		j["object"]["sca"][i]["z"] = com->GetScale().z;
+		i++;
+	}
+}
 #endif

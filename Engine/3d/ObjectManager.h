@@ -1,6 +1,10 @@
 #pragma once
 #include "ComponentObj.h"
+#include "NormalObj.h"
+#include "PlayerObj.h"
 #include "ICamera.h"
+#include "Camera.h"
+#include "nlohmann/json.hpp"
 #include <list>
 
 namespace IF
@@ -211,6 +215,12 @@ namespace IF
 
 #ifdef _DEBUG
 		void GUI();
+		enum typeinfo
+		{
+			Tag,
+			Model
+		};
+		void OutputJson(nlohmann::json& j);
 #endif
 	};
 }

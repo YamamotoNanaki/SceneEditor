@@ -79,6 +79,8 @@ namespace IF
 		DebugText dText;
 
 #endif // _DEBUG
+		void OutputJson();
+		void InputJson();
 
 	public:
 		void Initialize()override;

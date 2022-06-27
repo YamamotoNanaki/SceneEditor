@@ -192,6 +192,9 @@ bool Model::LoadModel(string name, bool smoothing)
 	constBuffTransform1->Unmap(0, nullptr);
 
 	VIInitialize(smoothing);
+
+	this->name = name;
+	smooth = smoothing;
 	return true;
 }
 
@@ -341,3 +344,4 @@ Model::~Model()
 	constBuffTransform1->Unmap(0, nullptr);
 	delete vi;
 }
+

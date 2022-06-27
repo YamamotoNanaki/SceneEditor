@@ -32,3 +32,15 @@ std::string IF::ModelManager::GUIRadio()
 	}
 	return r;
 }
+
+void IF::ModelManager::OutputJson(nlohmann::json& j)
+{
+	int i = 0;
+	for (auto com : modelList)
+	{
+		j["model"]["tag"][i] = com->GetTag();
+		j["model"]["name"][i] = com->name;
+		j["model"]["smooth"][i] = com->smooth;
+		i++;
+	}
+}

@@ -45,6 +45,8 @@ namespace IF
 	public:
 		MVI* vi = nullptr;
 		Material material{};
+		std::string name;
+		bool smooth;
 
 	public:
 		static void SetDevice(ID3D12Device* device);

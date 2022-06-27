@@ -1,6 +1,9 @@
 #pragma once
 #include "ICamera.h"
+#include "Camera.h"
+#include "nlohmann/json.hpp"
 #include <list>
+#include <vector>
 
 namespace IF
 {
@@ -136,6 +139,8 @@ namespace IF
 
 #ifdef _DEBUG
 		void GUI();
+	public:
+		void OutputJson(nlohmann::json& j);
 #endif
 	};
 }
