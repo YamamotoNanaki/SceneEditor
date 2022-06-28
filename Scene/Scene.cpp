@@ -86,10 +86,9 @@ void IF::Scene::Initialize()
 #endif // _DEBUG
 }
 
-void IF::Scene::OutputJson()
+void IF::Scene::OutputJson(std::string failename)
 {
 	json j;
-	string a = "abc";
 	for (int i = 1; i < 256; i++)
 	{
 		if (tex->tex[i].free == false)continue;
@@ -102,7 +101,7 @@ void IF::Scene::OutputJson()
 	string s = j.dump(4);
 
 	ofstream writing_file;
-	string scene = "test";
+	string scene = failename;
 	string txt = ".json";
 	string name = "Data/Scene/";
 	name = name + scene + txt;
@@ -111,8 +110,20 @@ void IF::Scene::OutputJson()
 	writing_file.close();
 }
 
-void IF::Scene::InputJson()
+bool IF::Scene::InputJson(std::string failename)
 {
+	std::ifstream reading_file;
+	string scene = failename;
+	string txt = ".json";
+	string name = "Data/Scene/";
+	name = name + scene + txt;
+	reading_file.open(name, std::ios::in);
+	std::string reading_line_buffer;
+	while (std::getline(reading_file, reading_line_buffer))
+	{
+
+	}
+	reading_file.close();
 }
 
 void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
@@ -203,10 +214,50 @@ void IF::Scene::Update()
 	SetWindowSize(ImVec2(280, 100));
 	static char _sceneName[256];
 	ImGui::InputText("OutputName", _sceneName, sizeof(_sceneName));
+	static bool error = false;
+	static bool error2 = false;
+	static bool success = false;
+	static bool success2 = false;
 	if (ImGui::Button("DataOutput"))
 	{
-		OutputJson();
+		if (!strcmp(_sceneName, "\0"))
+		{
+			error = true;
+			success = false;
+			success2 = false;
+			error2 = false;
+		}
+		else
+		{
+			OutputJson(_sceneName);
+			error = false;
+			success = true;
+			success2 = false;
+			error2 = false;
+		}
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("DataInput"))
+	{
+		if (!strcmp(_sceneName, "\0"))
+		{
+			error = true;
+			success2 = false;
+			success = false;
+			error2 = false;
+		}
+		else
+		{
+			error2 = InputJson(_sceneName);
+			error = false;
+			success = false;
+			success2 = true;
+		}
+	}
+	if (error)Text("Error : Please enter file name");
+	if (error2)Text("Error : File not found");
+	if (success)Text("File output succeeded");
+	if (success2)Text("File successfully entered");
 	End();
 	if (addObj)
 	{

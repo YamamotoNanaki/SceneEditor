@@ -79,8 +79,8 @@ namespace IF
 		DebugText dText;
 
 #endif // _DEBUG
-		void OutputJson();
-		void InputJson();
+		void OutputJson(std::string failename);
+		bool InputJson(std::string failename);
 
 	public:
 		void Initialize()override;

@@ -43,10 +43,10 @@ void IF::CameraManager::OutputJson(nlohmann::json& j)
 	int i = 0;
 	for (auto com : cameraList)
 	{
+		j["camera"]["tag"][i] = com->tag;
 		Camera* buff = dynamic_cast<Camera*>(com);
 		if (buff != nullptr)j["camera"]["type"][i] = true;
 		else j["camera"]["type"][i] = false;
-		j["camera"]["tag"][i] = com->tag;
 		i++;
 	}
 }
