@@ -53,15 +53,15 @@ void IF::Scene::Initialize()
 	//オブジェクト初期化
 	objM.SetCamera(cameraM.GetCamera("debug"));
 	objM.SetViewport(viewport);
-	objM.Add<NormalObj>(modelM.GetModel("dome"), "dome");
-	objM.Add<NormalObj>(modelM.GetModel("ground"), "ground");
+	objM.Add<UsuallyObj>(modelM.GetModel("dome"), "dome");
+	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
 	objM.SetPosition({ 0,-2,0 }, "ground");
 	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
 #else
 	//カメラ関連初期化
-	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
+	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
 	//オブジェクト初期化
-	objM.SetCamera(cameraM->GetCamera("mainCamera"));
+	objM.SetCamera(cameraM.GetCamera("mainCamera"));
 	objM.SetViewport(viewport);
 	objM.Add<NormalObj>(modelM.GetModel("dome"), "dome");
 	objM.Add<NormalObj>(modelM.GetModel("ground"), "ground");
@@ -86,6 +86,7 @@ void IF::Scene::Initialize()
 #endif // _DEBUG
 }
 
+#ifdef _DEBUG
 void IF::Scene::OutputJson(std::string failename)
 {
 	json j;
@@ -109,21 +110,51 @@ void IF::Scene::OutputJson(std::string failename)
 	writing_file << s << std::endl;
 	writing_file.close();
 }
+#endif
 
 bool IF::Scene::InputJson(std::string failename)
 {
+
 	std::ifstream reading_file;
 	string scene = failename;
 	string txt = ".json";
 	string name = "Data/Scene/";
 	name = name + scene + txt;
 	reading_file.open(name, std::ios::in);
-	std::string reading_line_buffer;
-	while (std::getline(reading_file, reading_line_buffer))
-	{
-
-	}
+	std::string line;
+	json j;
+	reading_file >> j;
 	reading_file.close();
+	for (auto& i : j["texture"]["name"])
+	{
+		tex->LoadTexture(i);
+	}
+	for (auto i : j["Model"])
+	{
+		modelM.Load(i["tag"], i["smooth"], i["name"]);
+	}
+	for (auto i : j["camera"])
+	{
+		if (i["type"])cameraM.Add<Camera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+		else cameraM.Add<DebugCamera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+	}
+#ifdef _DEBUG
+	objM.SetCamera(cameraM.GetCamera("debug"));
+#else
+	objM.SetCamera(cameraM.GetCamera(j["object"]["camera"]));
+#endif
+	objM.Reset();
+	for (auto i : j["object"]["object"])
+	{
+		if (i["type"] == 0)objM.Add<UsuallyObj>(modelM.GetModel(i["model"]), i["tag"]);
+		else if (i["type"] == 1)objM.Add<PlayerObj>(modelM.GetModel(i["model"]), i["tag"]);
+		else;
+		objM.SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
+		objM.SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
+		objM.SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
+	}
+
+	return true;
 }
 
 void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
@@ -215,7 +246,7 @@ void IF::Scene::Update()
 	static char _sceneName[256];
 	ImGui::InputText("OutputName", _sceneName, sizeof(_sceneName));
 	static bool error = false;
-	static bool error2 = false;
+	static bool error2 = true;
 	static bool success = false;
 	static bool success2 = false;
 	if (ImGui::Button("DataOutput"))
@@ -225,7 +256,7 @@ void IF::Scene::Update()
 			error = true;
 			success = false;
 			success2 = false;
-			error2 = false;
+			error2 = true;
 		}
 		else
 		{
@@ -233,7 +264,7 @@ void IF::Scene::Update()
 			error = false;
 			success = true;
 			success2 = false;
-			error2 = false;
+			error2 = true;
 		}
 	}
 	ImGui::SameLine();
@@ -244,7 +275,7 @@ void IF::Scene::Update()
 			error = true;
 			success2 = false;
 			success = false;
-			error2 = false;
+			error2 = true;
 		}
 		else
 		{
@@ -255,7 +286,7 @@ void IF::Scene::Update()
 		}
 	}
 	if (error)Text("Error : Please enter file name");
-	if (error2)Text("Error : File not found");
+	if (!error2)Text("Error : File not found");
 	if (success)Text("File output succeeded");
 	if (success2)Text("File successfully entered");
 	End();
@@ -291,7 +322,7 @@ void IF::Scene::Update()
 		{
 			if (typeM == 0)
 			{
-				objM.Add<NormalObj>(modelM.GetModel(_mtag), _ctagName, typeB);
+				objM.Add<UsuallyObj>(modelM.GetModel(_mtag), _ctagName, typeB);
 			}
 			if (typeM == 1)
 			{
@@ -355,7 +386,7 @@ void IF::Scene::Update()
 		}
 		End();
 	}
-	spherePos = objM.GetComponent<PlayerObj>()->GetPos();
+	/*spherePos = objM.GetComponent<PlayerObj>()->GetPos();*/
 	light->SetCircleShadowCasterPos(0, spherePos);
 	Input* input = Input::Instance();
 	input->Update();
@@ -405,32 +436,7 @@ void IF::Scene::Update()
 
 	for (int i = 0; i < 3; i++)light->SetDirLightColor(i, { dlColor[0],dlColor[1],dlColor[2] });
 
-	//カメラ
-	if (input->KDown(KEY::UP))
-	{
-		matView.eye.z += 0.5f;
-		matView.target.z += 0.5f;
-	}
-	if (input->KDown(KEY::DOWN))
-	{
-		matView.eye.z -= 0.5f;
-		matView.target.z -= 0.5f;
-	}
-	if (input->KDown(KEY::RIGHT))
-	{
-		matView.eye.x += 0.5f;
-		matView.target.x += 0.5f;
-	}
-	if (input->KDown(KEY::LEFT))
-	{
-		matView.eye.x -= 0.5f;
-		matView.target.x -= 0.5f;
-	}
-
-	if (input->KDown(KEY::W))spherePos.y += 0.5f;
-	if (input->KDown(KEY::S))spherePos.y -= 0.5f;
-
-	obj.SetPosition(spherePos, "player");
+	objM.SetPosition(spherePos, "player");
 	light->SetCircleShadowCasterPos(0, spherePos);
 
 	sprite.position = { 540,500 };

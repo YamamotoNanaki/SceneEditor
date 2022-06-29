@@ -200,6 +200,7 @@ bool Model::LoadModel(string name, bool smoothing)
 
 void IF::Model::CreateCube(bool smoothing)
 {
+	this->name = "ccube";
 	vi = new MVI;
 
 	Vertex vertices[] = {

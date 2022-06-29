@@ -3,6 +3,7 @@
 
 using namespace ImGui;
 
+#ifdef _DEBUG
 void IF::CameraManager::GUI()
 {
 	for (auto com : cameraList)
@@ -43,10 +44,11 @@ void IF::CameraManager::OutputJson(nlohmann::json& j)
 	int i = 0;
 	for (auto com : cameraList)
 	{
-		j["camera"]["tag"][i] = com->tag;
+		j["camera"][i]["tag"] = com->tag;
 		Camera* buff = dynamic_cast<Camera*>(com);
-		if (buff != nullptr)j["camera"]["type"][i] = true;
-		else j["camera"]["type"][i] = false;
+		if (buff != nullptr)j["camera"][i]["type"] = true;
+		else j["camera"][i]["type"] = false;
 		i++;
 	}
 }
+#endif

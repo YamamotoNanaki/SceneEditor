@@ -78,8 +78,8 @@ namespace IF
 #ifdef _DEBUG
 		DebugText dText;
 
-#endif // _DEBUG
 		void OutputJson(std::string failename);
+#endif // _DEBUG
 		bool InputJson(std::string failename);
 
 	public:

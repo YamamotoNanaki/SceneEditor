@@ -15,6 +15,10 @@ namespace IF
 	public:
 		template <class T> inline void Add(std::string tag, float fovAngle, float winWidth, float winHeight)
 		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)return;
+			}
 			T* camera = new T;
 			camera->Initialize(fovAngle, winWidth, winHeight);
 			camera->SetTag(tag);

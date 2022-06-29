@@ -7,6 +7,7 @@ IF::ModelManager::~ModelManager()
 	assert(modelList.empty() && "インスタンスを破棄できません");
 }
 
+#ifdef _DEBUG
 void IF::ModelManager::GUI()
 {
 	for (auto com : modelList)
@@ -38,9 +39,10 @@ void IF::ModelManager::OutputJson(nlohmann::json& j)
 	int i = 0;
 	for (auto com : modelList)
 	{
-		j["model"]["tag"][i] = com->GetTag();
-		j["model"]["name"][i] = com->name;
-		j["model"]["smooth"][i] = com->smooth;
+		j["model"][i]["tag"] = com->GetTag();
+		j["model"][i]["name"] = com->name;
+		j["model"][i]["smooth"] = com->smooth;
 		i++;
 	}
 }
+#endif

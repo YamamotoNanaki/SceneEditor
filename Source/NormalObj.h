@@ -2,7 +2,7 @@
 #include "ComponentObj.h"
 namespace IF
 {
-	class NormalObj : public CObject
+	class UsuallyObj : public CObject
 	{
 	private:
 		Object obj;
@@ -34,7 +34,7 @@ namespace IF
 		}
 		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)override
 		{
-			NormalObj::viewport = viewport;
+			UsuallyObj::viewport = viewport;
 		}
 		inline void SetTexture(unsigned short texNum)override
 		{
@@ -64,7 +64,7 @@ namespace IF
 		{
 			this->obj.scale = scale;
 		}
-		inline ~NormalObj()override {};
+		inline ~UsuallyObj()override {};
 #ifdef _DEBUG
 		inline std::string GetModelTag()override
 		{

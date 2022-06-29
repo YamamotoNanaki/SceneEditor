@@ -30,6 +30,10 @@ namespace IF
 				com->SetCamera(camera->GetEye());
 			}
 		}
+		inline void Reset()
+		{
+			objList.clear();
+		}
 		template <class T> inline void Add(Model* model, std::string tag, int mode = BillBoard::NOON)
 		{
 			T* obj = new T;
@@ -47,18 +51,9 @@ namespace IF
 			obj->tag = tag;
 			objList.push_back(obj);
 		}
-		template<class T> inline T* GetComponent()
+		template<class T>inline void SetView(Matrix* matView, std::string tag = "\0")
 		{
-			for (auto com : objList) {
-				T* buff = dynamic_cast<T*>(com);
-				if (buff != nullptr)
-					return buff;
-			}
-			return nullptr;
-		}
-		template<class T>inline void SetView(Matrix* matView, const char* tag = 0)
-		{
-			if (strcmp(tag, 0))
+			if (tag == "\0")
 			{
 				for (auto com : objList)
 				{
@@ -69,17 +64,16 @@ namespace IF
 			{
 				for (auto com : objList)
 				{
-					const char* ctag = com->tag.c_str();
-					if (!strcmp(ctag, tag))
+					if (com->tag == tag)
 					{
 						com->SetView(matView);
 					}
 				}
 			}
 		}
-		template<class T>inline void SetProjection(Matrix* matProjection, const char* tag = 0)
+		template<class T>inline void SetProjection(Matrix* matProjection, std::string tag = "\0")
 		{
-			if (strcmp(tag, 0))
+			if (tag == "\0")
 			{
 				for (auto com : objList)
 				{
@@ -90,17 +84,16 @@ namespace IF
 			{
 				for (auto com : objList)
 				{
-					const char* ctag = com->tag.c_str();
-					if (!strcmp(ctag, tag))
+					if (com->tag == tag)
 					{
 						com->SetProjection(matProjection);
 					}
 				}
 			}
 		}
-		template<class T>inline void SetCamera(Float3* cameraPos, const char* tag = 0)
+		template<class T>inline void SetCamera(Float3* cameraPos, std::string tag = "\0")
 		{
-			if (strcmp(tag, 0))
+			if (tag == "\0")
 			{
 				for (auto com : objList)
 				{
@@ -119,7 +112,7 @@ namespace IF
 				}
 			}
 		}
-		template<class T>inline void SetBillBoard(int mode, const char* tag = 0)
+		template<class T>inline void SetBillBoard(int mode, std::string tag = "\0")
 		{
 			BillBoard::BillBoardMode a = BillBoard::NOON;
 			if (mode == BillBoard::BILLBOARD)
@@ -130,7 +123,7 @@ namespace IF
 			{
 				a = BillBoard::YBOARD;
 			}
-			if (strcmp(tag, 0))
+			if (tag == "\0")
 			{
 				for (auto com : objList)
 				{
@@ -141,8 +134,7 @@ namespace IF
 			{
 				for (auto com : objList)
 				{
-					const char* ctag = com->tag.c_str();
-					if (!strcmp(ctag, tag))
+					if (com->tag == tag)
 					{
 						com->SetBillBoard(a);
 					}
@@ -156,9 +148,9 @@ namespace IF
 				com->SetViewport(viewport);
 			}
 		}
-		template<class T>inline void SetTexture(unsigned short texNum, const char* tag = 0)
+		template<class T>inline void SetTexture(unsigned short texNum, std::string tag = "\0")
 		{
-			if (strcmp(tag, 0))
+			if (tag == "\0")
 			{
 				for (auto com : objList)
 				{
@@ -169,22 +161,42 @@ namespace IF
 			{
 				for (auto com : objList)
 				{
-					const char* ctag = com->tag.c_str();
-					if (!strcmp(ctag, tag))
+					if (com->tag == tag)
 					{
 						com->SetTexture(texNum);
 					}
 				}
 			}
 		}
-		inline void SetPosition(Float3 pos, const char* tag)
+		inline void SetPosition(Float3 pos, std::string tag)
 		{
 			for (auto com : objList)
 			{
-				const char* ctag = com->tag.c_str();
-				if (!strcmp(ctag, tag))
+				if (com->tag == tag)
 				{
 					com->SetPos(pos);
+					return;
+				}
+			}
+		}
+		inline void SetRotation(Float3 rota, std::string tag)
+		{
+			for (auto com : objList)
+			{
+				if (com->tag == tag)
+				{
+					com->SetRota(rota);
+					return;
+				}
+			}
+		}
+		inline void SetScale(Float3 scale, std::string tag)
+		{
+			for (auto com : objList)
+			{
+				if (com->tag == tag)
+				{
+					com->SetScale(scale);
 					return;
 				}
 			}

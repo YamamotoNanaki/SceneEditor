@@ -65,25 +65,26 @@ void IF::ObjectManager::GUI()
 void IF::ObjectManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
-	j["object"]["camera"] = camera->tag;
+	if (camera->tag == "debug")j["object"]["camera"] = "mainCamera";
+	else j["object"]["camera"] = camera->tag;
 	for (auto com : objList)
 	{
-		NormalObj* buff = dynamic_cast<NormalObj*>(com);
-		if (buff != nullptr)j["object"]["type"][i] = 0;
+		UsuallyObj* buff = dynamic_cast<UsuallyObj*>(com);
 		PlayerObj* buff1 = dynamic_cast<PlayerObj*>(com);
-		if (buff1 != nullptr) j["object"]["type"][i] = 1;
-		else j["object"]["type"][i] = 2;
-		j["object"]["tag"][i] = com->tag;
-		j["object"]["model"][i] = com->GetModelTag();
-		j["object"]["pos"][i]["x"] = com->GetPos().x;
-		j["object"]["pos"][i]["y"] = com->GetPos().y;
-		j["object"]["pos"][i]["z"] = com->GetPos().z;
-		j["object"]["rot"][i]["x"] = com->GetRota().x;
-		j["object"]["rot"][i]["y"] = com->GetRota().y;
-		j["object"]["rot"][i]["z"] = com->GetRota().z;
-		j["object"]["sca"][i]["x"] = com->GetScale().x;
-		j["object"]["sca"][i]["y"] = com->GetScale().y;
-		j["object"]["sca"][i]["z"] = com->GetScale().z;
+		if (buff != nullptr)j["object"]["object"][i]["type"] = 0;
+		else if (buff1 != nullptr) j["object"]["object"][i]["type"] = 1;
+		else j["object"]["object"][i]["type"] = 2;
+		j["object"]["object"][i]["tag"] = com->tag;
+		j["object"]["object"][i]["model"] = com->GetModelTag();
+		j["object"]["object"][i]["pos"]["x"] = com->GetPos().x;
+		j["object"]["object"][i]["pos"]["y"] = com->GetPos().y;
+		j["object"]["object"][i]["pos"]["z"] = com->GetPos().z;
+		j["object"]["object"][i]["rot"]["x"] = com->GetRota().x;
+		j["object"]["object"][i]["rot"]["y"] = com->GetRota().y;
+		j["object"]["object"][i]["rot"]["z"] = com->GetRota().z;
+		j["object"]["object"][i]["sca"]["x"] = com->GetScale().x;
+		j["object"]["object"][i]["sca"]["y"] = com->GetScale().y;
+		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
 		i++;
 	}
 }

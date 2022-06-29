@@ -13,13 +13,20 @@ namespace IF
 		~ModelManager();
 		inline bool Load(std::string tag, bool smoothing, std::string name)
 		{
+			for (auto com : modelList)
+			{
+				if (com->GetTag() == tag)
+				{
+					return true;
+				}
+			}
 			Model* model = new Model;
 			if (!model->LoadModel(name, smoothing))return false;
 			model->SetTag(tag);
 			modelList.push_back(model);
 			return true;
 		}
-		inline void Create(std::string tag, std::string mode, bool smoothing)
+		inline void Create(std::string tag, bool smoothing, std::string mode)
 		{
 			Model* model = new Model;
 			model->CreateCube(smoothing);
