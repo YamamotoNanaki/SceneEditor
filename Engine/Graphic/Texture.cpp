@@ -125,6 +125,8 @@ unsigned short Texture::LoadTexture(const std::string filename)
 		nullptr,
 		IID_PPV_ARGS(&newtex.texbuff));
 
+	if (newtex.texbuff == nullptr)return 0;
+
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
 		const Image* img = scratchImg.GetImage(i, 0, 0);

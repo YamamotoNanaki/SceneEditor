@@ -90,7 +90,7 @@ void IF::Scene::Initialize()
 void IF::Scene::OutputJson(std::string failename)
 {
 	json j;
-	for (int i = 1; i < 256; i++)
+	for (int i = 1; i < tex->tex.size(); i++)
 	{
 		if (tex->tex[i].free == false)continue;
 		j["texture"]["name"][i - 1] = tex->tex[i].texName;
@@ -98,6 +98,7 @@ void IF::Scene::OutputJson(std::string failename)
 	modelM.OutputJson(j);
 	cameraM.OutputJson(j);
 	objM.OutputJson(j);
+	spriteM.OutputJson(j);
 
 	string s = j.dump(4);
 
@@ -152,6 +153,14 @@ bool IF::Scene::InputJson(std::string failename)
 		objM.SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM.SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
 	}
+	spriteM.Reset();
+	for (auto i : j["sprite"])
+	{
+		spriteM.Add(i["tex"], i["tag"]);
+		spriteM.SetPosition({ i["pos"]["x"],i["pos"]["y"] }, i["tag"]);
+		spriteM.SetRotation(i["rot"], i["tag"]);
+		spriteM.SetScale({ i["sca"]["x"],i["sca"]["y"] }, i["tag"]);
+	}
 
 	return true;
 }
@@ -179,6 +188,7 @@ void IF::Scene::Update()
 	static bool addObj = false;
 	static bool addSpr = false;
 	static bool addModel = false;
+	static bool addTex = false;
 	static string _tagName = "Object";
 	static char _ctagName[256];
 	static int _objtagNum = 0;
@@ -190,7 +200,7 @@ void IF::Scene::Update()
 	Begin("hierarchy", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	if (CollapsingHeader("ObjectList"))
 	{
-		if (ImGui::Button("Add") && !addObj && !addModel)
+		if (ImGui::Button("Add") && !addObj && !addModel && !addTex && !addSpr)
 		{
 			_tagName = "Object";
 			addObj = true;
@@ -202,7 +212,7 @@ void IF::Scene::Update()
 	}
 	if (CollapsingHeader("SpriteList"))
 	{
-		if (ImGui::Button("Add") && !addObj && !addModel)
+		if (ImGui::Button("Add") && !addObj && !addModel && !addTex && !addSpr)
 		{
 			_tagName = "sprite";
 			addSpr = true;
@@ -214,7 +224,7 @@ void IF::Scene::Update()
 	}
 	if (CollapsingHeader("ModelList"))
 	{
-		if (ImGui::Button("Add") && !addModel && !addObj)
+		if (ImGui::Button("Add") && !addModel && !addObj && !addTex && !addSpr)
 		{
 			_tagName = "Model";
 			addModel = true;
@@ -234,7 +244,12 @@ void IF::Scene::Update()
 	}
 	End();
 	Begin("Assets", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-	if (tex->flag)if (ImGui::Button("Return"))tex->flag = false;
+	if (tex->flag)
+	{
+		if (ImGui::Button("Return"))tex->flag = false;
+		ImGui::SameLine();
+		if (ImGui::Button("Add") && !addModel && !addObj && !addTex && !addSpr)addTex = true;
+	}
 	tex->GUI();
 	End();
 	Begin("sceneView", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
@@ -352,7 +367,7 @@ void IF::Scene::Update()
 		static int smoot = 1;
 		static int loadMode = 0;
 		static char _faileName[256] = "file";
-		Begin("NewMaterialSetting", (bool*)false, ImGuiWindowFlags_NoResize);
+		Begin("NewModelSetting", (bool*)false, ImGuiWindowFlags_NoResize);
 		if (ImGui::TreeNode("Smoothing"))
 		{
 			ImGui::RadioButton("true", &smoot, 1);
@@ -399,9 +414,36 @@ void IF::Scene::Update()
 		}
 		End();
 	}
+	if (addTex)
+	{
+		static char _faileName[256] = "file";
+		Begin("NewTextureSetting", (bool*)false, ImGuiWindowFlags_NoResize);
+		InputText("FaileName", _faileName, sizeof(_faileName));
+		static bool error = false;
+		if (ImGui::Button("Add"))
+		{
+			if (!tex->LoadTexture(_faileName))error = true;
+			else
+			{
+				error = false;
+				addTex = false;
+			}
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			addTex = false;
+			error = false;
+		}
+		if (error)
+		{
+			Text("Error : File not found");
+		}
+		End();
+	}
 	if (addSpr)
 	{
-		Begin("NewMaterialSetting", (bool*)false, ImGuiWindowFlags_NoResize);
+		Begin("NewSpriteSetting", (bool*)false, ImGuiWindowFlags_NoResize);
 		InputText("Tag", _ctagName, sizeof(_ctagName));
 		static int texNum = 1;
 		if (ImGui::TreeNode("LoadTexture"))
@@ -481,7 +523,7 @@ void IF::Scene::Update()
 
 	objM.Update();
 	spriteM.Update();
-}
+	}
 
 void IF::Scene::Draw()
 {

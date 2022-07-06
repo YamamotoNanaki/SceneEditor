@@ -23,12 +23,7 @@
         {
             "name": "sphere",
             "smooth": true,
-            "tag": "Model"
-        },
-        {
-            "name": "sphere",
-            "smooth": false,
-            "tag": "Model1"
+            "tag": "sphere"
         }
     ],
     "object": {
@@ -75,9 +70,9 @@
                 "type": 0
             },
             {
-                "model": "Model",
+                "model": "sphere",
                 "pos": {
-                    "x": 1.899999976158142,
+                    "x": 0.0,
                     "y": 0.0,
                     "z": 0.0
                 },
@@ -91,39 +86,34 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "tag": "Object",
-                "type": 0
-            },
-            {
-                "model": "Model1",
-                "pos": {
-                    "x": -1.5499999523162842,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "rot": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "sca": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "tag": "Object1",
+                "tag": "player",
                 "type": 1
             }
         ]
     },
+    "sprite": [
+        {
+            "pos": {
+                "x": 334.0,
+                "y": 265.0
+            },
+            "rot": 0.0,
+            "sca": {
+                "x": 12.600000381469727,
+                "y": 4.199999809265137
+            },
+            "tag": "seiunsukai",
+            "tex": 5
+        }
+    ],
     "texture": {
         "name": [
             "Fine_Basin.jpg",
             "ground.png",
+            "white.png",
             "folder.png",
             "texture.png",
-            "debugfont.png",
-            "white.png"
+            "debugfont.png"
         ]
     }
 }

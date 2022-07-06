@@ -58,6 +58,18 @@ void IF::SpriteManager::GUI()
 
 void IF::SpriteManager::OutputJson(nlohmann::json& j)
 {
+	int i = 0;
+	for (auto com : spriteList)
+	{
+		j["sprite"][i]["tag"] = com->tag;
+		j["sprite"][i]["tex"] = com->texNum;
+		j["sprite"][i]["pos"]["x"] = com->position.x;
+		j["sprite"][i]["pos"]["y"] = com->position.y;
+		j["sprite"][i]["rot"] = com->rotation;
+		j["sprite"][i]["sca"]["x"] = com->scale.x;
+		j["sprite"][i]["sca"]["y"] = com->scale.y;
+		i++;
+	}
 }
 
 #endif

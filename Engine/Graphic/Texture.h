@@ -54,6 +54,7 @@ namespace IF
 		void GUI();
 		void TexNum(int* texNum);
 		void GUIInit();
+		int GetTagNum();
 #endif
 	};
 }
