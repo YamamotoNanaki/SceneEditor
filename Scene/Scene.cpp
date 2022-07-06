@@ -43,7 +43,7 @@ void IF::Scene::Initialize()
 	tex->Initialize();
 	modelM.Load("dome", false, "skydome");
 	modelM.Load("ground", false, "ground");
-	//modelM.Load("sphere", true, "sphere");
+	modelM.Load("sphere", true, "sphere");
 
 #ifdef _DEBUG
 	tex->GUIInit();
@@ -56,7 +56,7 @@ void IF::Scene::Initialize()
 	objM.Add<UsuallyObj>(modelM.GetModel("dome"), "dome");
 	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
 	objM.SetPosition({ 0,-2,0 }, "ground");
-	//objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
+	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
 #else
 	//ƒJƒƒ‰ŠÖ˜A‰Šú‰»
 	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
