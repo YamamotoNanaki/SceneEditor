@@ -70,9 +70,9 @@ void IF::Scene::Initialize()
 #endif
 
 	//2DŠÖ˜A
-	sprite.StaticInitialize(this->device.Get(), this->commandList.Get(), (float)winWidth, (float)winHeight);
+	Sprite::StaticInitialize(this->device.Get(), this->commandList.Get(), viewport, (float)winWidth, (float)winHeight);
 	SGraph = tex->LoadTexture("texture.png");
-	sprite.Initialize(SGraph, { 300,300 });
+	spriteM.Add(SGraph, "seiunsukai");
 
 	//sound->SoundPlay(testSound);
 
@@ -197,6 +197,13 @@ void IF::Scene::Update()
 			strcpy_s(_ctagName, _tagName.c_str());
 		}
 		objM.GUI();
+	}
+	if (CollapsingHeader("SpriteList"))
+	{
+		if (ImGui::Button("Add") && !addObj && !addModel)
+		{
+		}
+		spriteM.GUI();
 	}
 	if (CollapsingHeader("ModelList"))
 	{
@@ -438,15 +445,13 @@ void IF::Scene::Update()
 	objM.SetPosition(spherePos, "player");
 	light->SetCircleShadowCasterPos(0, spherePos);
 
-	sprite.position = { 540,500 };
-	sprite.Update();
 	cameraM.Update();
 
 #endif // _DEBUG
 	light->Update();
 
 	objM.Update();
-	//sprite.Update();
+	spriteM.Update();
 }
 
 void IF::Scene::Draw()
@@ -462,7 +467,7 @@ void IF::Scene::Draw()
 	//fire->Draw(commandList, viewport);
 	graph->DrawBlendMode(commandList.Get(), Blend::NORMAL2D);
 	Sprite::DrawBefore(graph->rootsignature.Get());
-	sprite.Draw(viewport);
+	spriteM.Draw();
 
 #ifdef _DEBUG
 	ImGui::Render();

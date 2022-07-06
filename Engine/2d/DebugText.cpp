@@ -44,7 +44,7 @@ void IF::DebugText::Draw(std::vector<D3D12_VIEWPORT>viewport)
 	{
 		sprites[i].Update();
 		// スプライト描画
-		sprites[i].Draw(viewport);
+		sprites[i].Draw();
 	}
 
 	spriteIndex = 0;

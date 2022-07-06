@@ -8,17 +8,18 @@ using namespace Microsoft::WRL;
 ComPtr < ID3D12GraphicsCommandList> Sprite::commandList = nullptr;
 ComPtr < ID3D12Device> Sprite::device = nullptr;
 Matrix Sprite::matPro;
+std::vector<D3D12_VIEWPORT> Sprite::viewport;
 
-void IF::Sprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, float winWidth, float winHeight)
+void IF::Sprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport, float winWidth, float winHeight)
 {
 	SetDeviceCommand(device, commandList);
-
+	SetViewport(viewport);
 	Sprite::matPro = MatrixOrthoGraphicProjection(0, winWidth, 0, winHeight, 0, 1);
 }
 
 IF::Sprite::~Sprite()
 {
-	constBuffTransform->Unmap(0, nullptr);
+	//constBuffTransform->Unmap(0, nullptr);
 	delete vi;
 }
 
@@ -108,14 +109,20 @@ void IF::Sprite::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY to
 void IF::Sprite::Update()
 {
 	matWorld = MatrixIdentity();
-	matWorld *= MatrixRotationZ(ConvertToRadians(rotation));
+	matWorld *= MatrixScaling(scale.x, scale.y, 1);
+	matWorld *= MatrixRotationZ(rotation);
 	matWorld *= MatrixTranslation(position.x, position.y, 0);
 
 	//定数バッファへのデータ転送
 	constMapTransform->mat = matWorld * matPro;
 }
 
-void IF::Sprite::Draw(std::vector<D3D12_VIEWPORT> viewport)
+void IF::Sprite::SetViewport(std::vector<D3D12_VIEWPORT> viewport)
+{
+	Sprite::viewport = viewport;
+}
+
+void IF::Sprite::Draw()
 {
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	//頂点バッファの設定

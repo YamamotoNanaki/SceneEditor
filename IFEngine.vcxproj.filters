@@ -288,6 +288,9 @@
     <ClInclude Include="Engine\Camera\DebugCamera.h">
       <Filter>Header Files\Engine\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\2d\SpriteManager.h">
+      <Filter>Header Files\Engine\2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -448,6 +451,9 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\ModelManager.cpp">
       <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\2d\SpriteManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

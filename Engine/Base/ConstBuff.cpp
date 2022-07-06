@@ -38,7 +38,7 @@ void IF::ConstBuff::Initialize(ID3D12Device* device)
 
 IF::ConstBuff::~ConstBuff()
 {
-	constBuffMaterial->Unmap(0, nullptr);							//マッピング解除
+	//constBuffMaterial->Unmap(0, nullptr);							//マッピング解除
 }
 
 D3D12_GPU_VIRTUAL_ADDRESS IF::ConstBuff::GetGPUAddress()

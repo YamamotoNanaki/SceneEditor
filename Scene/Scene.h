@@ -11,6 +11,7 @@
 #include "ObjectManager.h"
 #include "ModelManager.h"
 #include "CameraManager.h"
+#include "SpriteManager.h"
 
 #ifdef _DEBUG
 #include "DebugText.h"
@@ -57,7 +58,7 @@ namespace IF
 		ObjectManager objM;
 		ModelManager modelM;
 		CameraManager cameraM;
-		
+		SpriteManager spriteM;
 
 	public:
 		Texture* tex = Texture::Instance();
