@@ -25,7 +25,7 @@ namespace IF
 		};
 
 	private:
-		static const short textureMax = 256;
+		static const short textureMax = 1024;
 		unsigned short textureSize = 0;
 		static ComPtr<ID3D12Device> device;
 
@@ -52,6 +52,7 @@ namespace IF
 		unsigned short folder = 0;
 		bool flag = false;
 		void GUI();
+		void TexNum(int* texNum);
 		void GUIInit();
 #endif
 	};

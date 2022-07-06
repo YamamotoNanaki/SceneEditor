@@ -187,6 +187,24 @@ void IF::Texture::GUI()
 	}
 }
 
+void IF::Texture::TexNum(int* texNum)
+{
+	int j = 0;
+	for (int i = 0; i < 256; i++)
+	{
+		if (i == folder)continue;
+		if (!tex[i].free)continue;
+		string _tagName;
+		if (i < 10)_tagName = "00";
+		else if (i < 100)_tagName = "0";
+		else _tagName = "";
+		_tagName += (char)(i + 48);
+		if (j % 3 != 0)ImGui::SameLine();
+		ImGui::RadioButton(_tagName.c_str(), texNum, i);
+		j++;
+	}
+}
+
 void IF::Texture::GUIInit()
 {
 	folder = LoadTexture("folder.png");

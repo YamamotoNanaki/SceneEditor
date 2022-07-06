@@ -177,10 +177,12 @@ void IF::Scene::Update()
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
 	static bool addObj = false;
+	static bool addSpr = false;
 	static bool addModel = false;
 	static string _tagName = "Object";
 	static char _ctagName[256];
 	static int _objtagNum = 0;
+	static int _spriteNum = 0;
 	static int _ModeltagNum = 0;
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -202,6 +204,11 @@ void IF::Scene::Update()
 	{
 		if (ImGui::Button("Add") && !addObj && !addModel)
 		{
+			_tagName = "sprite";
+			addSpr = true;
+			_spriteNum = spriteM.GetTagNum(_tagName);
+			if (_spriteNum != 0)_tagName += (char)(_spriteNum + 48);
+			strcpy_s(_ctagName, _tagName.c_str());
 		}
 		spriteM.GUI();
 	}
@@ -389,6 +396,28 @@ void IF::Scene::Update()
 		if (error)
 		{
 			Text("Error : File not found");
+		}
+		End();
+	}
+	if (addSpr)
+	{
+		Begin("NewMaterialSetting", (bool*)false, ImGuiWindowFlags_NoResize);
+		InputText("Tag", _ctagName, sizeof(_ctagName));
+		static int texNum = 1;
+		if (ImGui::TreeNode("LoadTexture"))
+		{
+			tex->TexNum(&texNum);
+			ImGui::TreePop();
+		}
+		if (ImGui::Button("Add"))
+		{
+			spriteM.Add((unsigned short)texNum, _ctagName);
+			addSpr = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			addSpr = false;
 		}
 		End();
 	}
