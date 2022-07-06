@@ -23,7 +23,12 @@
         {
             "name": "sphere",
             "smooth": true,
-            "tag": "sphere"
+            "tag": "Model"
+        },
+        {
+            "name": "sphere",
+            "smooth": false,
+            "tag": "Model1"
         }
     ],
     "object": {
@@ -70,9 +75,9 @@
                 "type": 0
             },
             {
-                "model": "sphere",
+                "model": "Model",
                 "pos": {
-                    "x": 0.0,
+                    "x": 1.899999976158142,
                     "y": 0.0,
                     "z": 0.0
                 },
@@ -86,7 +91,27 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "tag": "player",
+                "tag": "Object",
+                "type": 0
+            },
+            {
+                "model": "Model1",
+                "pos": {
+                    "x": -1.5499999523162842,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Object1",
                 "type": 1
             }
         ]
@@ -95,10 +120,10 @@
         "name": [
             "Fine_Basin.jpg",
             "ground.png",
-            "white.png",
             "folder.png",
             "texture.png",
-            "debugfont.png"
+            "debugfont.png",
+            "white.png"
         ]
     }
 }

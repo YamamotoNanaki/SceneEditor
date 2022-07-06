@@ -43,7 +43,7 @@ void IF::Scene::Initialize()
 	tex->Initialize();
 	modelM.Load("dome", false, "skydome");
 	modelM.Load("ground", false, "ground");
-	modelM.Load("sphere", true, "sphere");
+	//modelM.Load("sphere", true, "sphere");
 
 #ifdef _DEBUG
 	tex->GUIInit();
@@ -56,7 +56,7 @@ void IF::Scene::Initialize()
 	objM.Add<UsuallyObj>(modelM.GetModel("dome"), "dome");
 	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
 	objM.SetPosition({ 0,-2,0 }, "ground");
-	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
+	//objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
 #else
 	//ƒJƒƒ‰ŠÖ˜A‰Šú‰»
 	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
@@ -114,7 +114,6 @@ void IF::Scene::OutputJson(std::string failename)
 
 bool IF::Scene::InputJson(std::string failename)
 {
-
 	std::ifstream reading_file;
 	string scene = failename;
 	string txt = ".json";
@@ -129,7 +128,7 @@ bool IF::Scene::InputJson(std::string failename)
 	{
 		tex->LoadTexture(i);
 	}
-	for (auto i : j["Model"])
+	for (auto i : j["model"])
 	{
 		modelM.Load(i["tag"], i["smooth"], i["name"]);
 	}
