@@ -34,25 +34,29 @@ namespace IF
 				com->SetViewport(viewport);
 			}
 		}
-		inline void SetTexture(unsigned short texNum, std::string tag = "\0")
+		inline void SetTexture(unsigned short texNum, std::string tag)
 		{
-			if (tag == "\0")
+			for (auto com : spriteList)
 			{
-				for (auto com : spriteList)
+				if (com->tag == tag)
 				{
 					com->texNum = texNum;
+					return;
 				}
 			}
-			else
+		}
+		inline unsigned short GetTexture(std::string tag)
+		{
+			unsigned short texNum = 0;
+			for (auto com : spriteList)
 			{
-				for (auto com : spriteList)
+				if (com->tag == tag)
 				{
-					if (com->tag == tag)
-					{
-						com->texNum = texNum;
-					}
+					texNum = com->texNum;
+					break;
 				}
 			}
+			return texNum;
 		}
 		inline void SetPosition(Float2 pos, std::string tag)
 		{
@@ -114,7 +118,7 @@ namespace IF
 #ifdef _DEBUG
 		bool drawflag = false;
 
-		void GUI();
+		void GUI(bool* flag,std::string* tag);
 		enum typeinfo
 		{
 			Tag,

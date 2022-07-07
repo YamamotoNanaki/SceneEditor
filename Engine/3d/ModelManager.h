@@ -67,8 +67,32 @@ namespace IF
 			}
 			return i;
 		}
+		inline void SetTexture(unsigned short texNum, std::string tag)
+		{
+			for (auto com : modelList)
+			{
+				if (com->GetTag() == tag)
+				{
+					com->SetTexNum(texNum);
+					return;
+				}
+			}
+		}
+		inline unsigned short GetTexture(std::string tag)
+		{
+			unsigned short texNum = 0;
+			for (auto com : modelList)
+			{
+				if (com->GetTag() == tag)
+				{
+					texNum = com->GetTexNum();
+					break;
+				}
+			}
+			return texNum;
+		}
 #ifdef _DEBUG
-		void GUI();
+		void GUI(bool* flag, std::string* tag);
 		std::string GUIRadio();
 		void OutputJson(nlohmann::json& j);
 #endif

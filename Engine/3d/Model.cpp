@@ -340,6 +340,16 @@ void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPO
 	}
 }
 
+unsigned short IF::Model::GetTexNum()
+{
+	return material.texNum;
+}
+
+void IF::Model::SetTexNum(unsigned short texNum)
+{
+	material.texNum = texNum;
+}
+
 Model::~Model()
 {
 	constBuffTransform1->Unmap(0, nullptr);

@@ -8,11 +8,25 @@ IF::ModelManager::~ModelManager()
 }
 
 #ifdef _DEBUG
-void IF::ModelManager::GUI()
+void IF::ModelManager::GUI(bool* flag, std::string* tag)
 {
-	for (auto com : modelList)
+	auto buff = modelList;
+	for (auto com : buff)
 	{
-		ImGui::Text("%s", com->GetTag().c_str());
+		if (ImGui::TreeNode(com->GetTag().c_str()))
+		{
+			if (ImGui::Button("ChangeTexture"))
+			{
+				*flag = true;
+				*tag = com->GetTag();
+			}
+			if (ImGui::Button("Delete"))
+			{
+				modelList.remove(com);
+				delete com;
+			}
+			ImGui::TreePop();
+		}
 	}
 }
 

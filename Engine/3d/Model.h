@@ -55,6 +55,8 @@ namespace IF
 		void VIInitialize(bool smoothing, bool normal = false);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address, unsigned short texNum);
+		unsigned short GetTexNum();
+		void SetTexNum(unsigned short texNum);
 		~Model();
 		inline void SetTag(std::string tag)
 		{

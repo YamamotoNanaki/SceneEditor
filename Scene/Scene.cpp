@@ -71,8 +71,8 @@ void IF::Scene::Initialize()
 
 	//2DŠÖ˜A
 	Sprite::StaticInitialize(this->device.Get(), this->commandList.Get(), viewport, (float)winWidth, (float)winHeight);
-	SGraph = tex->LoadTexture("texture.png");
-	spriteM.Add(SGraph, "seiunsukai");
+	SGraph = tex->LoadTexture("kakuninn.png");
+	spriteM.Add(SGraph, "pix");
 
 	//sound->SoundPlay(testSound);
 
@@ -194,6 +194,9 @@ void IF::Scene::Update()
 	static int _objtagNum = 0;
 	static int _spriteNum = 0;
 	static int _ModeltagNum = 0;
+	static bool texM = false;
+	static bool texS = false;
+	static string texCName;
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
@@ -220,7 +223,7 @@ void IF::Scene::Update()
 			if (_spriteNum != 0)_tagName += (char)(_spriteNum + 48);
 			strcpy_s(_ctagName, _tagName.c_str());
 		}
-		spriteM.GUI();
+		spriteM.GUI(&texS, &texCName);
 	}
 	if (CollapsingHeader("ModelList"))
 	{
@@ -232,7 +235,7 @@ void IF::Scene::Update()
 			if (_ModeltagNum != 0)_tagName += (char)(_ModeltagNum + 48);
 			strcpy_s(_ctagName, _tagName.c_str());
 		}
-		modelM.GUI();
+		modelM.GUI(&texM, &texCName);
 	}
 	if (CollapsingHeader("Camera"))
 	{
@@ -462,6 +465,46 @@ void IF::Scene::Update()
 			addSpr = false;
 		}
 		End();
+	}if (texM)
+	{
+		Begin("textureManager", (bool*)false, ImGuiWindowFlags_NoResize);
+		static int texNum = modelM.GetTexture(texCName);
+		if (ImGui::TreeNode("LoadTexture"))
+		{
+			tex->TexNum(&texNum);
+			ImGui::TreePop();
+		}
+		if (ImGui::Button("change"))
+		{
+			modelM.SetTexture(texNum, texCName);
+			texM = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			texM = false;
+		}
+		End();
+	}if (texS)
+	{
+		Begin("textureManager", (bool*)false, ImGuiWindowFlags_NoResize);
+		static int texNum = spriteM.GetTexture(texCName);
+		if (ImGui::TreeNode("LoadTexture"))
+		{
+			tex->TexNum(&texNum);
+			ImGui::TreePop();
+		}
+		if (ImGui::Button("change"))
+		{
+			spriteM.SetTexture(texNum, texCName);
+			texS = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			texS = false;
+		}
+		End();
 	}
 	/*spherePos = objM.GetComponent<PlayerObj>()->GetPos();*/
 	light->SetCircleShadowCasterPos(0, spherePos);
@@ -523,7 +566,7 @@ void IF::Scene::Update()
 
 	objM.Update();
 	spriteM.Update();
-	}
+}
 
 void IF::Scene::Draw()
 {

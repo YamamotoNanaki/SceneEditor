@@ -23,9 +23,10 @@ void IF::SpriteManager::Update()
 }
 
 #ifdef _DEBUG
-void IF::SpriteManager::GUI()
+void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 {
-	for (auto com : spriteList)
+	auto buff = spriteList;
+	for (auto com : buff)
 	{
 		if (ImGui::TreeNode(com->tag.c_str())) {
 			if (ImGui::TreeNode("Position"))
@@ -50,6 +51,16 @@ void IF::SpriteManager::GUI()
 				ImGui::DragFloat2("", s, 0.05f);
 				com->scale = { s[0],s[1] };
 				ImGui::TreePop();
+			}
+			if (ImGui::Button("ChangeTexture"))
+			{
+				*tag = com->tag;
+				*flag = true;
+			}
+			if (ImGui::Button("Delete"))
+			{
+				spriteList.remove(com);
+				delete com;
 			}
 			ImGui::TreePop();
 		}

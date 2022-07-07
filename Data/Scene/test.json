@@ -24,6 +24,11 @@
             "name": "sphere",
             "smooth": true,
             "tag": "sphere"
+        },
+        {
+            "name": "sphere",
+            "smooth": false,
+            "tag": "Model"
         }
     ],
     "object": {
@@ -72,7 +77,7 @@
             {
                 "model": "sphere",
                 "pos": {
-                    "x": 0.0,
+                    "x": 3.1500000953674316,
                     "y": 0.0,
                     "z": 0.0
                 },
@@ -88,22 +93,68 @@
                 },
                 "tag": "player",
                 "type": 1
+            },
+            {
+                "model": "Model",
+                "pos": {
+                    "x": 0.10000000149011612,
+                    "y": 0.0,
+                    "z": -3.799999952316284
+                },
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Object",
+                "type": 0
             }
         ]
     },
     "sprite": [
         {
             "pos": {
-                "x": 334.0,
-                "y": 265.0
+                "x": 931.0,
+                "y": 319.0
+            },
+            "rot": 1.1606439352035522,
+            "sca": {
+                "x": 5.099999904632568,
+                "y": 5.5
+            },
+            "tag": "pix",
+            "tex": 5
+        },
+        {
+            "pos": {
+                "x": 301.0,
+                "y": 429.0
+            },
+            "rot": 4.974188327789307,
+            "sca": {
+                "x": 8.600000381469727,
+                "y": 4.449999809265137
+            },
+            "tag": "sprite",
+            "tex": 7
+        },
+        {
+            "pos": {
+                "x": 55.0,
+                "y": 205.0
             },
             "rot": 0.0,
             "sca": {
-                "x": 12.600000381469727,
-                "y": 4.199999809265137
+                "x": 1.0,
+                "y": 1.0
             },
-            "tag": "seiunsukai",
-            "tex": 5
+            "tag": "sprite1",
+            "tex": 3
         }
     ],
     "texture": {
@@ -112,8 +163,9 @@
             "ground.png",
             "white.png",
             "folder.png",
-            "texture.png",
-            "debugfont.png"
+            "kakuninn.png",
+            "debugfont.png",
+            "mario.jpg"
         ]
     }
 }

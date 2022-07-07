@@ -6,7 +6,8 @@ using namespace ImGui;
 #ifdef _DEBUG
 void IF::CameraManager::GUI()
 {
-	for (auto com : cameraList)
+	auto buff = cameraList;
+	for (auto com : buff)
 	{
 		if (TreeNode(com->tag.c_str()))
 		{
@@ -33,6 +34,11 @@ void IF::CameraManager::GUI()
 				ImGui::InputFloat3("", u);
 				com->SetUp({ u[0], u[1], u[2] });
 				ImGui::TreePop();
+			}
+			if (ImGui::Button("Delete"))
+			{
+				cameraList.remove(com);
+				delete com;
 			}
 			TreePop();
 		}

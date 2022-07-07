@@ -28,7 +28,8 @@ void IF::ObjectManager::Update()
 #ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
-	for (auto com : objList)
+	auto buff = objList;
+	for (auto com : buff)
 	{
 		if (ImGui::TreeNode(com->tag.c_str())) {
 			if (ImGui::TreeNode("Position"))
@@ -57,7 +58,11 @@ void IF::ObjectManager::GUI()
 				com->SetScale({ s[0], s[1], s[2] });
 				ImGui::TreePop();
 			}
-
+			if (ImGui::Button("Delete"))
+			{
+				objList.remove(com);
+				delete com;
+			}
 			ImGui::TreePop();
 		}
 	}
