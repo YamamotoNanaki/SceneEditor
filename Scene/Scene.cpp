@@ -132,6 +132,7 @@ bool IF::Scene::InputJson(std::string failename)
 	for (auto i : j["model"])
 	{
 		modelM.Load(i["tag"], i["smooth"], i["name"]);
+		modelM.SetTexture(i["tex"], i["name"]);
 	}
 	for (auto i : j["camera"])
 	{
