@@ -13,7 +13,7 @@ namespace IF
 	{
 	private:
 		std::list<CObject*> objList;
-		ICamera* camera;
+		ICamera* camera = nullptr;
 	public:
 		ObjectManager() {}
 		~ObjectManager();

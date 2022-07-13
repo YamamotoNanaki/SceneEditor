@@ -26,12 +26,19 @@ namespace IF
 			modelList.push_back(model);
 			return true;
 		}
-		inline void Create(std::string tag, bool smoothing, std::string mode)
+		inline void Create(std::string tag, bool smoothing, unsigned short texNum, unsigned short mode)
 		{
 			Model* model = new Model;
-			model->CreateCube(smoothing);
+			if (mode == CREATE_CUBE)model->CreateCube(texNum, smoothing);
+			else if (mode == CREATE_TRIANGLE)model->CreateTriangle(texNum, smoothing);
+			else if (mode == CREATE_CIRCLE)model->CreateCircle(texNum, smoothing);
+			else if (mode == CREATE_SPHERE)model->CreateSphere(texNum, smoothing);
 			model->SetTag(tag);
 			modelList.push_back(model);
+		}
+		inline void Reset()
+		{
+			modelList.clear();
 		}
 		inline Model* GetModel(std::string tag)
 		{

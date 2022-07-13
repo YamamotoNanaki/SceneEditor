@@ -57,6 +57,7 @@ void IF::ModelManager::OutputJson(nlohmann::json& j)
 		j["model"][i]["name"] = com->name;
 		j["model"][i]["smooth"] = com->smooth;
 		j["model"][i]["tex"] = com->GetTexNum();
+		j["model"][i]["type"] = com->type;
 		i++;
 	}
 }

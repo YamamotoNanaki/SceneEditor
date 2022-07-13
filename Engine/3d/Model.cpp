@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace IF;
 using namespace std;
@@ -195,13 +197,14 @@ bool Model::LoadModel(string name, bool smoothing)
 
 	this->name = name;
 	smooth = smoothing;
+	type = LOAD_MODEL;
 	return true;
 }
 
-void IF::Model::CreateCube(bool smoothing)
+void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 {
-	this->name = "ccube";
 	vi = new MVI;
+	type = CREATE_CUBE;
 
 	Vertex vertices[] = {
 		// x   y   z        u    v
@@ -284,10 +287,199 @@ void IF::Model::CreateCube(bool smoothing)
 	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
 	assert(SUCCEEDED(result));
 
-	constMapMaterial->ambient = material.ambient;
-	constMapMaterial->diffuse = material.diffuse;
-	constMapMaterial->specular = material.specular;
+	constMapMaterial->ambient = { 0.8,0.8,0.8 };
+	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
+	constMapMaterial->specular = { 0.8,0.8,0.8 };
 	constMapMaterial->alpha = material.alpha;
+	material.texNum = texNum;
+	material.tex = true;
+
+	constBuffTransform1->Unmap(0, nullptr);
+
+	VIInitialize(smoothing, true);
+}
+
+void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
+{
+	vi = new MVI;
+	type = CREATE_TRIANGLE;
+
+	Vertex vertices[] = {
+		// x   y   z        u    v
+		//前
+		{{-5, -5, 0},{},{0.0f, 0.0f}},	//左下
+		{{0, 5, 0},{},{0.0f, 0.0f}},	//上
+		{{+5, -5, 0},{},{0.0f, 0.0f}},	//右下
+	};
+
+	//インデックスデータ
+	unsigned short indices[] = {
+		//前
+		0,1,2
+	};
+
+	vi->SetVerticleIndex(vertices, _countof(vertices), indices, _countof(indices));
+
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
+
+	HRESULT result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = { 0.8,0.8,0.8 };
+	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
+	constMapMaterial->specular = { 0.8,0.8,0.8 };
+	constMapMaterial->alpha = material.alpha;
+	material.texNum = texNum;
+	material.tex = true;
+
+	constBuffTransform1->Unmap(0, nullptr);
+
+	VIInitialize(smoothing, true);
+}
+
+void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
+{
+	vi = new MVI;
+	const int DIV = 64;
+	const float radius = 0.5f;
+	type = CREATE_CIRCLE;
+
+	Vertex vertices[DIV + 1]{};
+
+	for (int i = 0; i < DIV; i++)
+	{
+		vertices[i] = { {radius * sinf(2 * M_PI / DIV * i),radius * cosf(2 * M_PI / DIV * i),0},{},{0,0} };
+	}
+	vertices[DIV] = { 0,0,0 };
+
+	unsigned short indices[DIV * 3]{};
+
+	for (int i = 0; i < DIV; i++)
+	{
+		indices[i * 3] = i;
+		indices[i * 3 + 1] = i + 1;
+		indices[i * 3 + 2] = DIV;
+	}
+	indices[DIV * 3 - 2] = 0;
+
+	vi->SetVerticleIndex(vertices, _countof(vertices), indices, _countof(indices));
+
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
+
+	HRESULT result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = { 0.8,0.8,0.8 };
+	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
+	constMapMaterial->specular = { 0.8,0.8,0.8 };
+	constMapMaterial->alpha = material.alpha;
+	material.texNum = texNum;
+	material.tex = true;
+
+	constBuffTransform1->Unmap(0, nullptr);
+
+	VIInitialize(smoothing, true);
+}
+
+void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
+{
+	vi = new MVI;
+	const int DIV = 4;
+	const float radius = 0.5f;
+	type = CREATE_SPHERE;
+
+	Vertex vertices[DIV * DIV]{};
+
+	for (int i = 0; i < DIV; i++)
+	{
+		for (int j = 0; j < DIV; j++)
+		{
+			vertices[i * j].pos.x = radius * sinf(2 * M_PI / DIV * j);
+			vertices[i * j].pos.y = radius * cosf(2 * M_PI / DIV * i);
+			vertices[i * j].pos.z = radius * sinf(2 * M_PI / DIV * i);
+		}
+	}
+
+	unsigned short indices[DIV * DIV * 6]{};
+
+	for (int i = 0; i < DIV * DIV; i++)
+	{
+		indices[i * 6] = i;
+		indices[i * 6 + 1] = i + DIV;
+		indices[i * 6 + 2] = i + DIV + 1;
+		indices[i * 6 + 3] = i;
+		indices[i * 6 + 4] = i + DIV + 1;
+		indices[i * 6 + 5] = i + 1;
+	}
+	
+
+	vi->SetVerticleIndex(vertices, _countof(vertices), indices, _countof(indices));
+
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
+
+	HRESULT result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = { 0.8,0.8,0.8 };
+	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
+	constMapMaterial->specular = { 0.8,0.8,0.8 };
+	constMapMaterial->alpha = material.alpha;
+	material.texNum = texNum;
+	material.tex = true;
 
 	constBuffTransform1->Unmap(0, nullptr);
 

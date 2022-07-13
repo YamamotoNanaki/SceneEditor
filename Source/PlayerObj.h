@@ -6,10 +6,10 @@ namespace IF
 	class PlayerObj : public CObject
 	{
 	private:
-		Object obj;
+		Object obj{};
 		unsigned short texNum = 0;
-		Matrix* matView, * matProjection;
-		Float3* cameraPos;
+		Matrix* matView = nullptr, * matProjection = nullptr;
+		Float3* cameraPos = nullptr;
 		BillBoard::BillBoardMode mode = BillBoard::NOON;
 		static std::vector<D3D12_VIEWPORT>viewport;
 	public:

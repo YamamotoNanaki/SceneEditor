@@ -41,30 +41,7 @@ void IF::MVI::Initialize(ID3D12Device* device, bool smoothing, bool flag)
 
 #pragma region 法線ベクトルの計算
 
-	if (smoothing)
-	{
-		auto itr = smoothData.begin();
-		for (; itr != smoothData.end(); ++itr)
-		{
-			vector<unsigned short>& v = itr->second;
-
-			Vector3 normal = {};
-			for (unsigned short index : v)
-			{
-				normal.x += vertices[index].normal.x;
-				normal.y += vertices[index].normal.y;
-				normal.z += vertices[index].normal.z;
-			}
-			Vector3 a = normal / (float)v.size();
-			normal = Vector3Normalize(a);
-			for (unsigned short index : v)
-			{
-				vertices[index].normal = { normal.x,normal.y,normal.z };
-			}
-		}
-	}
-
-	if (!indices.size() == 0 && flag && !smoothing)
+	if (!indices.size() == 0 && flag)
 	{
 		for (int i = 0; i < indices.size() / 3; i++)
 		{
@@ -88,6 +65,30 @@ void IF::MVI::Initialize(ID3D12Device* device, bool smoothing, bool flag)
 			vertices[index2].normal = SetFloat3(normal);
 		}
 	}
+
+	if (smoothing)
+	{
+		auto itr = smoothData.begin();
+		for (; itr != smoothData.end(); ++itr)
+		{
+			vector<unsigned short>& v = itr->second;
+
+			Vector3 normal = {};
+			for (unsigned short index : v)
+			{
+				normal.x += vertices[index].normal.x;
+				normal.y += vertices[index].normal.y;
+				normal.z += vertices[index].normal.z;
+			}
+			Vector3 a = normal / (float)v.size();
+			normal = Vector3Normalize(a);
+			for (unsigned short index : v)
+			{
+				vertices[index].normal = { normal.x,normal.y,normal.z };
+			}
+		}
+	}
+
 
 #pragma endregion 法線ベクトルの計算
 

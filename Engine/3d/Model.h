@@ -11,6 +11,14 @@
 
 namespace IF
 {
+	enum ModelCreateNums
+	{
+		LOAD_MODEL,
+		CREATE_CUBE,
+		CREATE_TRIANGLE,
+		CREATE_CIRCLE,
+		CREATE_SPHERE
+	};
 	class Model
 	{
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -46,12 +54,16 @@ namespace IF
 		MVI* vi = nullptr;
 		Material material{};
 		std::string name;
-		bool smooth;
+		bool smooth = false;
+		unsigned short type = 0;
 
 	public:
 		static void SetDevice(ID3D12Device* device);
 		bool LoadModel(std::string name, bool smoothing = false);
-		void CreateCube(bool smoothing = false);
+		void CreateCube(unsigned short texNum, bool smoothing = false);
+		void CreateTriangle(unsigned short texNum, bool smoothing = false);
+		void CreateCircle(unsigned short texNum, bool smoothing = false);
+		void CreateSphere(unsigned short texNum, bool smoothing = false);
 		void VIInitialize(bool smoothing, bool normal = false);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address, unsigned short texNum);

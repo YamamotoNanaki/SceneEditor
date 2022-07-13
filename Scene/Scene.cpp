@@ -18,6 +18,8 @@ using namespace nlohmann;
 
 void IF::Scene::Initialize()
 {
+	tex->Initialize();
+	tex->LoadTexture("white.png");
 	//音源
 	testSound = sound->LoadWave("Data/Resources/Alarm01.wav");
 
@@ -31,7 +33,6 @@ void IF::Scene::Initialize()
 		light->SetPointLightActive(i, false);
 		light->SetSpotLightActive(i, false);
 	}
-	light->SetCircleShadowActive(0, true);
 	light->SetAmbientColor({ 1, 1, 1 });
 	Object::StaticInitialize(device.Get(), commandList.Get(), light);
 
@@ -40,7 +41,6 @@ void IF::Scene::Initialize()
 	graph->Initialize2D(tex->descRangeSRV, L"Data/Shaders/SpriteVS.hlsl", L"Data/Shaders/SpritePS.hlsl");
 
 	//モデルの読み込みとオブジェクトとの紐付け(空と地面)
-	tex->Initialize();
 	modelM.Load("dome", false, "skydome");
 	modelM.Load("ground", false, "ground");
 	modelM.Load("sphere", true, "sphere");
@@ -63,8 +63,8 @@ void IF::Scene::Initialize()
 	//オブジェクト初期化
 	objM.SetCamera(cameraM.GetCamera("mainCamera"));
 	objM.SetViewport(viewport);
-	objM.Add<NormalObj>(modelM.GetModel("dome"), "dome");
-	objM.Add<NormalObj>(modelM.GetModel("ground"), "ground");
+	objM.Add<UsuallyObj>(modelM.GetModel("dome"), "dome");
+	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
 	objM.SetPosition({ 0,-2,0 }, "ground");
 	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
 #endif
@@ -115,6 +115,9 @@ void IF::Scene::OutputJson(std::string failename)
 
 bool IF::Scene::InputJson(std::string failename)
 {
+	objM.Reset();
+	spriteM.Reset();
+	modelM.Reset();
 	std::ifstream reading_file;
 	string scene = failename;
 	string txt = ".json";
@@ -131,8 +134,12 @@ bool IF::Scene::InputJson(std::string failename)
 	}
 	for (auto i : j["model"])
 	{
-		modelM.Load(i["tag"], i["smooth"], i["name"]);
-		modelM.SetTexture(i["tex"], i["name"]);
+		if (i["type"] == 0)
+		{
+			modelM.Load(i["tag"], i["smooth"], i["name"]);
+			modelM.SetTexture(i["tex"], i["name"]);
+		}
+		else if (i["type"] >= 1)modelM.Create(i["tag"], i["smooth"], i["tex"],i["type"]);
 	}
 	for (auto i : j["camera"])
 	{
@@ -144,7 +151,6 @@ bool IF::Scene::InputJson(std::string failename)
 #else
 	objM.SetCamera(cameraM.GetCamera(j["object"]["camera"]));
 #endif
-	objM.Reset();
 	for (auto i : j["object"]["object"])
 	{
 		if (i["type"] == 0)objM.Add<UsuallyObj>(modelM.GetModel(i["model"]), i["tag"]);
@@ -154,7 +160,6 @@ bool IF::Scene::InputJson(std::string failename)
 		objM.SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM.SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
 	}
-	spriteM.Reset();
 	for (auto i : j["sprite"])
 	{
 		spriteM.Add(i["tex"], i["tag"]);
@@ -371,6 +376,7 @@ void IF::Scene::Update()
 		static int smoot = 1;
 		static int loadMode = 0;
 		static char _faileName[256] = "file";
+		static int texNum = 1;
 		Begin("NewModelSetting", (bool*)false, ImGuiWindowFlags_NoResize);
 		if (ImGui::TreeNode("Smoothing"))
 		{
@@ -381,11 +387,24 @@ void IF::Scene::Update()
 		}
 		if (ImGui::TreeNode("LoadMode"))
 		{
-			ImGui::RadioButton("LoadModel", &loadMode, 0);
-			//ImGui::SameLine();
-			//ImGui::RadioButton("CreateCube", &loadMode, 1);
+			ImGui::RadioButton("LoadModel", &loadMode, LOAD_MODEL);
+			ImGui::SameLine();
+			ImGui::RadioButton("CreateCube", &loadMode, CREATE_CUBE);
+			ImGui::SameLine();
+			ImGui::RadioButton("CreateTriangle", &loadMode, CREATE_TRIANGLE);
+			ImGui::RadioButton("CreateCircle", &loadMode, CREATE_CIRCLE);
+			ImGui::SameLine();
+			ImGui::RadioButton("CreateSphere", &loadMode, CREATE_SPHERE);
 			if (loadMode == 0)InputText("FaileName", _faileName, sizeof(_faileName));
 			ImGui::TreePop();
+		}
+		if (loadMode >= 1)
+		{
+			if (ImGui::TreeNode("Texture"))
+			{
+				tex->TexNum(&texNum);
+				ImGui::TreePop();
+			}
 		}
 		InputText("Tag", _ctagName, sizeof(_ctagName));
 		static bool error = false;
@@ -400,9 +419,9 @@ void IF::Scene::Update()
 					addModel = false;
 				}
 			}
-			if (loadMode == 1)
+			if (loadMode >= 1)
 			{
-				//objM.Add<PlayerObj>(modelM.GetModel(_mtag), _ctagName, typeB);
+				modelM.Create(_ctagName, smoot, texNum, loadMode);
 				addModel = false;
 			}
 		}
@@ -508,28 +527,11 @@ void IF::Scene::Update()
 		End();
 	}
 	/*spherePos = objM.GetComponent<PlayerObj>()->GetPos();*/
-	light->SetCircleShadowCasterPos(0, spherePos);
+	/*light->SetCircleShadowCasterPos(0, spherePos);*/
 	Input* input = Input::Instance();
 	input->Update();
 	if (flag) {
-		//光源
 
-		//if (input->KDown(KEY::W))lightDir.m128_f32[1] += 1.0f;
-		//if (input->KDown(KEY::S))lightDir.m128_f32[1] -= 1.0f;
-		//if (input->KDown(KEY::D))lightDir.m128_f32[0] += 1.0f;
-		//if (input->KDown(KEY::A))lightDir.m128_f32[0] -= 1.0f;
-
-		light->SetCircleShadowDir(0, { csDir.x,csDir.y,csDir.z });
-		light->SetCircleShadowAtten(0, csAtten);
-		light->SetCircleShadowFactorAngle(0, csAngle);
-
-		for (int i = 0; i < 3; i++)light->SetDirLightColor(i, { dlColor[0],dlColor[1],dlColor[2] });
-
-		if (input->KDown(KEY::W))spherePos.y += 0.5f;
-		if (input->KDown(KEY::S))spherePos.y -= 0.5f;
-
-		objM.SetPosition(spherePos, "player");
-		light->SetCircleShadowCasterPos(0, spherePos);
 		cameraM.Update("mainCamera");
 	}
 	else
@@ -545,20 +547,6 @@ void IF::Scene::Update()
 	//光源
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
-
-	//if (input->KDown(KEY::W))lightDir.m128_f32[1] += 1.0f;
-	//if (input->KDown(KEY::S))lightDir.m128_f32[1] -= 1.0f;
-	//if (input->KDown(KEY::D))lightDir.m128_f32[0] += 1.0f;
-	//if (input->KDown(KEY::A))lightDir.m128_f32[0] -= 1.0f;
-
-	light->SetCircleShadowDir(0, { csDir.x,csDir.y,csDir.z });
-	light->SetCircleShadowAtten(0, csAtten);
-	light->SetCircleShadowFactorAngle(0, csAngle);
-
-	for (int i = 0; i < 3; i++)light->SetDirLightColor(i, { dlColor[0],dlColor[1],dlColor[2] });
-
-	objM.SetPosition(spherePos, "player");
-	light->SetCircleShadowCasterPos(0, spherePos);
 
 	cameraM.Update();
 
