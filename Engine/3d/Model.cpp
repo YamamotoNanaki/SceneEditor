@@ -420,36 +420,77 @@ void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
 void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 {
 	vi = new MVI;
-	const int DIV = 4;
-	const float radius = 0.5f;
+	const int DIV = 128;
+	const float radius = 1.0f;
 	type = CREATE_SPHERE;
 
-	Vertex vertices[DIV * DIV]{};
+	std::vector<Vertex> vertices{};
+
+	vertices.push_back({ { 0, radius, 0 }, {}, {0,0} });
+
+	for (int i = 1; i < DIV; i++)
+	{
+		float y = cosf(M_PI / DIV * i) * radius;
+		float r = sinf(M_PI / DIV * i) * radius;
+		for (int j = 0; j < DIV; j++)
+		{
+			vertices.push_back({ { sinf(2 * M_PI / DIV * j) * r,y,cosf(2 * M_PI / DIV * j) * r},{},{0,0} });
+		}
+	}
+	vertices.push_back({ { 0,-radius,0 },{},{0,0} });
+
+	std::vector< unsigned short> indices{};
 
 	for (int i = 0; i < DIV; i++)
 	{
 		for (int j = 0; j < DIV; j++)
 		{
-			vertices[i * j].pos.x = radius * sinf(2 * M_PI / DIV * j);
-			vertices[i * j].pos.y = radius * cosf(2 * M_PI / DIV * i);
-			vertices[i * j].pos.z = radius * sinf(2 * M_PI / DIV * i);
+			if (i == 0)
+			{
+				indices.push_back(0);
+				indices.push_back(j + 1);
+				if (j == DIV - 1)
+				{
+					indices.push_back(1);
+					break;
+				}
+				indices.push_back(j + 2);
+
+			}
+			else if (i == DIV - 1)
+			{
+				indices.push_back((i - 1) * DIV + 1 + j);
+				indices.push_back(vertices.size() - 1);
+				if (j == DIV - 1)
+				{
+					indices.push_back((i - 1) * DIV + 1 + j - DIV + 1);
+					break;
+				}
+				indices.push_back((i - 1) * DIV + 1 + j + 1);
+			}
+			else
+			{
+				if (j == DIV - 1)
+				{
+					indices.push_back((i - 1) * DIV + 1 + j);
+					indices.push_back((i - 1) * DIV + 1 + j + DIV);
+					indices.push_back((i - 1) * DIV + 1 + j + 1);
+					indices.push_back((i - 1) * DIV + 1 + j);
+					indices.push_back((i - 1) * DIV + 1 + j + 1);
+					indices.push_back((i - 1) * DIV + 1 + j - DIV + 1);
+					break;
+				}
+				indices.push_back((i - 1) * DIV + 1 + j);
+				indices.push_back((i - 1) * DIV + 1 + j + DIV);
+				indices.push_back((i - 1) * DIV + 1 + j + DIV + 1);
+				indices.push_back((i - 1) * DIV + 1 + j);
+				indices.push_back((i - 1) * DIV + 1 + j + DIV + 1);
+				indices.push_back((i - 1) * DIV + 1 + j + 1);
+			}
 		}
 	}
 
-	unsigned short indices[DIV * DIV * 6]{};
-
-	for (int i = 0; i < DIV * DIV; i++)
-	{
-		indices[i * 6] = i;
-		indices[i * 6 + 1] = i + DIV;
-		indices[i * 6 + 2] = i + DIV + 1;
-		indices[i * 6 + 3] = i;
-		indices[i * 6 + 4] = i + DIV + 1;
-		indices[i * 6 + 5] = i + 1;
-	}
-	
-
-	vi->SetVerticleIndex(vertices, _countof(vertices), indices, _countof(indices));
+	vi->SetVerticleIndex(vertices, vertices.size(), indices, indices.size());
 
 	//定数バッファのヒープ設定
 	D3D12_HEAP_PROPERTIES heapProp{};

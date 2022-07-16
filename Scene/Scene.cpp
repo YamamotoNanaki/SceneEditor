@@ -139,7 +139,7 @@ bool IF::Scene::InputJson(std::string failename)
 			modelM.Load(i["tag"], i["smooth"], i["name"]);
 			modelM.SetTexture(i["tex"], i["name"]);
 		}
-		else if (i["type"] >= 1)modelM.Create(i["tag"], i["smooth"], i["tex"],i["type"]);
+		else if (i["type"] >= 1)modelM.Create(i["tag"], i["smooth"], i["tex"], i["type"]);
 	}
 	for (auto i : j["camera"])
 	{
