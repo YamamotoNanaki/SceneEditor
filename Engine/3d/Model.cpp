@@ -420,7 +420,7 @@ void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
 void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 {
 	vi = new MVI;
-	const int DIV = 128;
+	const int DIV = 64;
 	const float radius = 1.0f;
 	type = CREATE_SPHERE;
 
