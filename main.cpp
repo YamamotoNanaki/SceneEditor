@@ -18,11 +18,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		const int winWidth = 1280, winHeight = 720;  // c•
 
 		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
-#ifdef _DEBUG
-		Debug();
-#endif // _DEBUG
-
 		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
+#ifdef _DEBUG
+		Debug(DirectX12::Instance()->device.Get());
+#endif // _DEBUG
 		Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
 		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
 		Sound::Instance()->Initialize();

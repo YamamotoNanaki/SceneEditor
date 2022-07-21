@@ -81,9 +81,9 @@ namespace IF
 
 		void OutputJson(std::string failename);
 #endif // _DEBUG
-		bool InputJson(std::string failename);
 
 	public:
+		bool InputJson(std::string failename)override;
 		void Initialize()override;
 		void StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)override;
 		void Update()override;

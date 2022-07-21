@@ -3,7 +3,7 @@
 #include <wrl.h>
 
 #ifdef _DEBUG
-void Debug()
+void Debug(ID3D12Device* device)
 {
 	// デバックレイヤーをオンに
 	Microsoft::WRL::ComPtr<ID3D12Debug1> debugController;
@@ -11,6 +11,12 @@ void Debug()
 	{
 		debugController->EnableDebugLayer();
 		debugController->SetEnableGPUBasedValidation(TRUE);
+	}
+	Microsoft::WRL::ComPtr<ID3D12InfoQueue>infoQueue;
+	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	{
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
 	}
 }
 #endif
