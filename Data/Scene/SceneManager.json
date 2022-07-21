@@ -1,0 +1,23 @@
+{
+    "scene": [
+        {
+            "name": "triangle",
+            "next": [
+                "test"
+            ]
+        },
+        {
+            "name": "test",
+            "next": [
+                "triangle"
+            ]
+        },
+        {
+            "name": "scene"
+        },
+        {
+            "name": "scene1"
+        }
+    ],
+    "start": "triangle"
+}

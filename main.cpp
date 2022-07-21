@@ -4,8 +4,9 @@
 #include "Window.h"
 #include "DirectX12.h"
 #include "Input.h"
-#include "Scene.h"
+//#include "Scene.h"
 #include "FPS.h"
+#include "SceneManager.h"
 #ifdef _DEBUG
 #include "Debug.h"
 #endif // _DEBUG
@@ -18,16 +19,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		const int winWidth = 1280, winHeight = 720;  // 縦幅
 
 		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
-		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
 #ifdef _DEBUG
-		Debug(DirectX12::Instance()->device.Get());
+		Debug();
 #endif // _DEBUG
+		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
 		Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
 		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
 		Sound::Instance()->Initialize();
-		IScene* scene = new Scene;
-		scene->StaticInitialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(), DirectX12::Instance()->viewport, Window::Instance()->hwnd);
-		scene->Initialize();
+		/*IScene* scene = new Scene;*/
+		/*scene->StaticInitialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(), DirectX12::Instance()->viewport, Window::Instance()->hwnd);
+		scene->Initialize();*/
+		SceneManager* sceneM = SceneManager::Instance();
+		sceneM->Initialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(),
+			DirectX12::Instance()->viewport, Window::Instance()->hwnd);
 		FPS fps;
 		fps.Initialize(60);
 
@@ -36,20 +40,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//メッセージ
 			if (Window::Instance()->Message())break;
 
-			scene->Update();
+			sceneM->Update();
 
 			DirectX12::Instance()->DrawBefore();
-			scene->Draw();
+			sceneM->Draw();
 			DirectX12::Instance()->DrawAfter();
 			fps.FPSFixed();
 		}
-		scene->Delete();
+		sceneM->Release();
+		/*scene->Delete();*/
 		LightManager::DeleteInstance();
 		Input::DeleteInstance();
 		Sound::DeleteInstance();
 		Graphic::DeleteInstance();
 		Texture::DeleteInstance();
-		delete scene;
+		/*delete scene;*/
 		DirectX12::DeleteInstance();
 		Window::DeleteInstance();
 	}

@@ -78,7 +78,7 @@ namespace IF
 		//デバッグ用
 #ifdef _DEBUG
 		DebugText dText;
-
+	public:
 		void OutputJson(std::string failename);
 #endif // _DEBUG
 

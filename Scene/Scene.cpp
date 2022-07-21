@@ -9,6 +9,7 @@
 #include "DebugCamera.h"
 #include "Camera.h"
 #include "nlohmann/json.hpp"
+#include "SceneManager.h"
 #include <fstream>
 #include <iostream>
 
@@ -122,9 +123,14 @@ bool IF::Scene::InputJson(std::string failename)
 	string scene = failename;
 	string txt = ".json";
 	string name = "Data/Scene/";
+	bool flag = false;
 	name = name + scene + txt;
 	reading_file.open(name, std::ios::in);
-	std::string line;
+	if (!reading_file.is_open())
+	{
+		reading_file.open("Data/Scene/Base.json", std::ios::in);
+		flag = true;
+	}
 	json j;
 	reading_file >> j;
 	reading_file.close();
@@ -167,6 +173,8 @@ bool IF::Scene::InputJson(std::string failename)
 		spriteM.SetRotation(i["rot"], i["tag"]);
 		spriteM.SetScale({ i["sca"]["x"],i["sca"]["y"] }, i["tag"]);
 	}
+
+	if (flag)OutputJson(failename);
 
 	return true;
 }
@@ -252,6 +260,7 @@ void IF::Scene::Update()
 
 	}
 	End();
+	static bool sceneMFlag = false;
 	Begin("Assets", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	if (tex->flag)
 	{
@@ -280,7 +289,8 @@ void IF::Scene::Update()
 	Begin("SceneOutput", (bool*)false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 	SetWindowPos({ 1000,0 });
 	SetWindowSize(ImVec2(280, 100));
-	static char _sceneName[256];
+	if (ImGui::Button("SceneManager"))sceneMFlag = true;
+	/*static char _sceneName[256];
 	ImGui::InputText("OutputName", _sceneName, sizeof(_sceneName));
 	static bool error = false;
 	static bool error2 = true;
@@ -325,7 +335,7 @@ void IF::Scene::Update()
 	if (error)Text("Error : Please enter file name");
 	if (!error2)Text("Error : File not found");
 	if (success)Text("File output succeeded");
-	if (success2)Text("File successfully entered");
+	if (success2)Text("File successfully entered");*/
 	End();
 	if (addObj)
 	{
@@ -485,7 +495,8 @@ void IF::Scene::Update()
 			addSpr = false;
 		}
 		End();
-	}if (texM)
+	}
+	if (texM)
 	{
 		Begin("textureManager", (bool*)false, ImGuiWindowFlags_NoResize);
 		static int texNum = modelM.GetTexture(texCName);
@@ -505,7 +516,8 @@ void IF::Scene::Update()
 			texM = false;
 		}
 		End();
-	}if (texS)
+	}
+	if (texS)
 	{
 		Begin("textureManager", (bool*)false, ImGuiWindowFlags_NoResize);
 		static int texNum = spriteM.GetTexture(texCName);
@@ -525,6 +537,10 @@ void IF::Scene::Update()
 			texS = false;
 		}
 		End();
+	}
+	if (sceneMFlag)
+	{
+		SceneManager::Instance()->GUI(sceneMFlag);
 	}
 	/*spherePos = objM.GetComponent<PlayerObj>()->GetPos();*/
 	/*light->SetCircleShadowCasterPos(0, spherePos);*/
@@ -584,6 +600,6 @@ void IF::Scene::Draw()
 
 void IF::Scene::Delete()
 {
-	sound->SoundUnLoad(testSound);
-	sound->Reset();
+	//sound->SoundUnLoad(testSound);
+	//sound->Reset();
 }

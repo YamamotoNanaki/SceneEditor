@@ -3,5 +3,5 @@
 
 #ifdef _DEBUG
 //デバッグレイヤーを使用
-void Debug(ID3D12Device* device);
+void Debug();
 #endif
