@@ -193,6 +193,7 @@ void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* devi
 
 void IF::Scene::Update()
 {
+	static int hoge = 0;
 #ifdef _DEBUG
 	static bool flag = false;
 	static ImVec2 pos{ 0,0 };
@@ -554,7 +555,12 @@ void IF::Scene::Update()
 		cameraM.Update("debug");
 	}
 
-	if (input->KTriggere(KEY::ENTER))SceneManager::Instance()->Next(0);
+	if (input->KTriggere(KEY::ENTER))
+	{
+		SceneManager::Instance()->Next(0);
+		hoge++;
+		if (hoge > 4)hoge -= 5;
+	}
 #else
 
 	Input* input = Input::Instance();
@@ -564,15 +570,28 @@ void IF::Scene::Update()
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
 
-	if (input->KTriggere(KEY::ENTER))SceneManager::Instance()->Next(0);
+	if (input->KTriggere(KEY::ENTER))
+	{
+		SceneManager::Instance()->Next(0);
+		hoge++;
+		if (hoge > 4)hoge -= 5;
+	}
 
 	cameraM.Update();
 
 #endif // _DEBUG
 
+	dText.Print(100, 50, 1.5, "now scene  : %d",hoge);
 	dText.Print(100, 100, 1.5, "next scene : Enter key");
-	dText.Print(100, 140, 1.5, "camera     : Arrow key");
-
+	if (hoge < 4)dText.Print(100, 140, 1.5, "camera     : Arrow key");
+	else
+	{
+		dText.Print(100, 140, 1.5, "DebugCamera");
+		dText.Print(100, 170, 1.5, "MouseL     : rotate");
+		dText.Print(100, 200, 1.5, "MouseR     : move");
+		dText.Print(100, 230, 1.5, "MouseMWheel: distance");
+	}
+	
 	light->Update();
 
 	objM.Update();
