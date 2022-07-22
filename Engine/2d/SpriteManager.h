@@ -115,7 +115,7 @@ namespace IF
 			return i;
 		}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		bool drawflag = false;
 
 		void GUI(bool* flag,std::string* tag);
@@ -124,7 +124,7 @@ namespace IF
 			Tag,
 			Model
 		};
-#endif
+//#endif
 		void OutputJson(nlohmann::json& j);
 	};
 }

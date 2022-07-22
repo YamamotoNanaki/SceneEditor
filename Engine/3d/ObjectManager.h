@@ -226,13 +226,13 @@ namespace IF
 		}
 		void OutputJson(nlohmann::json& j);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void GUI();
 		enum typeinfo
 		{
 			Tag,
 			Model
 		};
-#endif
+//#endif
 	};
 }

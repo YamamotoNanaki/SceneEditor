@@ -50,11 +50,11 @@ namespace IF
 		void GUIInit();
 		unsigned short folder = 0;
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		bool flag = false;
 		void GUI();
 		void TexNum(int* texNum);
 		int GetTagNum();
-#endif
+//#endif
 	};
 }

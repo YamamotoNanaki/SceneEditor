@@ -22,7 +22,7 @@ void IF::SpriteManager::Update()
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 {
 	auto buff = spriteList;
@@ -67,7 +67,7 @@ void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 	}
 }
 
-#endif
+//#endif
 void IF::SpriteManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;

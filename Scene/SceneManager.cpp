@@ -94,7 +94,7 @@ void IF::SceneManager::Release()
 	delete SceneManager::Instance();
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::SceneManager::Output()
 {
 	json j;
@@ -290,7 +290,7 @@ void IF::SceneManager::GUI(bool& flag)
 	}
 	ImGui::End();
 }
-#endif
+//#endif
 
 IF::SceneManager::~SceneManager()
 {

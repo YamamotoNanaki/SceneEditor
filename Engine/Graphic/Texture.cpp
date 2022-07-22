@@ -167,7 +167,7 @@ unsigned short Texture::LoadTexture(const std::string filename)
 	return num;
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::Texture::GUI()
 {
 	if (!flag)flag = ImGui::ImageButton((ImTextureID)tex[folder].GPUHandle.ptr, { 96,96 });
@@ -206,7 +206,7 @@ void IF::Texture::TexNum(int* texNum)
 		j++;
 	}
 }
-#endif
+//#endif
 
 void IF::Texture::GUIInit()
 {

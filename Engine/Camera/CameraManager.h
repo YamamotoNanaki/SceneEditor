@@ -147,8 +147,8 @@ namespace IF
 			cameraList.clear();
 		}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void GUI();
-#endif
+//#endif
 	};
 }

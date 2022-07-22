@@ -7,9 +7,9 @@
 //#include "Scene.h"
 #include "FPS.h"
 #include "SceneManager.h"
-#ifdef _DEBUG
+//#ifdef _DEBUG
 #include "Debug.h"
-#endif // _DEBUG
+//#endif // _DEBUG
 
 using namespace IF;
 

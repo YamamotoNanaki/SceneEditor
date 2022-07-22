@@ -25,7 +25,7 @@ void IF::ObjectManager::Update()
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
 	auto buff = objList;
@@ -67,7 +67,7 @@ void IF::ObjectManager::GUI()
 		}
 	}
 }
-#endif
+//#endif
 void IF::ObjectManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;

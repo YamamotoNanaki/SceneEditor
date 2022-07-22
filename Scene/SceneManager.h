@@ -34,10 +34,10 @@ namespace IF
 		static SceneManager* Instance();
 		static void Release();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void Output();
 		void GUI(bool& flag);
 		std::string start;
-#endif
+//#endif
 	};
 }

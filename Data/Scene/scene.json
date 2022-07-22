@@ -50,6 +50,7 @@
         "camera": "mainCamera",
         "object": [
             {
+                "BillBoard": 0,
                 "model": "dome",
                 "pos": {
                     "x": 0.0,
@@ -67,10 +68,10 @@
                     "z": 1.0
                 },
                 "tag": "dome",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
                 "model": "ground",
                 "pos": {
                     "x": 0.0,
@@ -88,10 +89,10 @@
                     "z": 1.0
                 },
                 "tag": "ground",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
                 "model": "circle",
                 "pos": {
                     "x": -2.4000000953674316,
@@ -109,10 +110,10 @@
                     "z": 1.0
                 },
                 "tag": "Object",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
                 "model": "sphere",
                 "pos": {
                     "x": 1.850000023841858,
@@ -130,10 +131,10 @@
                     "z": 1.0
                 },
                 "tag": "Object1",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
                 "model": "triangle",
                 "pos": {
                     "x": -1.649999976158142,
@@ -151,8 +152,7 @@
                     "z": 0.20000000298023224
                 },
                 "tag": "Object2",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             }
         ]
     },

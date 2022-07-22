@@ -3,7 +3,7 @@
 
 using namespace ImGui;
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::CameraManager::GUI()
 {
 	auto buff = cameraList;
@@ -44,7 +44,7 @@ void IF::CameraManager::GUI()
 		}
 	}
 }
-#endif
+//#endif
 
 void IF::CameraManager::OutputJson(nlohmann::json& j)
 {

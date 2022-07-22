@@ -7,7 +7,7 @@ IF::ModelManager::~ModelManager()
 	assert(modelList.empty() && "インスタンスを破棄できません");
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::ModelManager::GUI(bool* flag, std::string* tag)
 {
 	auto buff = modelList;
@@ -47,7 +47,7 @@ std::string IF::ModelManager::GUIRadio()
 	}
 	return r;
 }
-#endif
+//#endif
 
 void IF::ModelManager::OutputJson(nlohmann::json& j)
 {
