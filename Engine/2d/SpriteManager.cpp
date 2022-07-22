@@ -67,6 +67,7 @@ void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 	}
 }
 
+#endif
 void IF::SpriteManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
@@ -83,4 +84,3 @@ void IF::SpriteManager::OutputJson(nlohmann::json& j)
 	}
 }
 
-#endif

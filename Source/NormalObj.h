@@ -65,11 +65,9 @@ namespace IF
 			this->obj.scale = scale;
 		}
 		inline ~UsuallyObj()override {};
-#ifdef _DEBUG
 		inline std::string GetModelTag()override
 		{
 			return obj.GetModelTag();
 		}
-#endif
 	};
 }

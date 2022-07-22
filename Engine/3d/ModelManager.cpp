@@ -47,6 +47,7 @@ std::string IF::ModelManager::GUIRadio()
 	}
 	return r;
 }
+#endif
 
 void IF::ModelManager::OutputJson(nlohmann::json& j)
 {
@@ -61,4 +62,3 @@ void IF::ModelManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif

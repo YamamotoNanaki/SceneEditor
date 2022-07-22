@@ -140,11 +140,11 @@ namespace IF
 				}
 			}
 		}
+	public:
+		void OutputJson(nlohmann::json& j);
 
 #ifdef _DEBUG
 		void GUI();
-	public:
-		void OutputJson(nlohmann::json& j);
 #endif
 	};
 }

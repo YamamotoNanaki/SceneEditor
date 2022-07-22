@@ -224,6 +224,7 @@ namespace IF
 			}
 			return i;
 		}
+		void OutputJson(nlohmann::json& j);
 
 #ifdef _DEBUG
 		void GUI();
@@ -232,7 +233,6 @@ namespace IF
 			Tag,
 			Model
 		};
-		void OutputJson(nlohmann::json& j);
 #endif
 	};
 }

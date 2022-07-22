@@ -87,7 +87,6 @@ void IF::Scene::Initialize()
 #endif // _DEBUG
 }
 
-#ifdef _DEBUG
 void IF::Scene::OutputJson(std::string failename)
 {
 	json j;
@@ -112,7 +111,6 @@ void IF::Scene::OutputJson(std::string failename)
 	writing_file << s << std::endl;
 	writing_file.close();
 }
-#endif
 
 bool IF::Scene::InputJson(std::string failename)
 {

@@ -1,12 +1,12 @@
 {
     "camera": [
         {
-            "tag": "debug",
-            "type": false
-        },
-        {
             "tag": "mainCamera",
             "type": true
+        },
+        {
+            "tag": "debug",
+            "type": false
         }
     ],
     "model": [
@@ -117,8 +117,8 @@
             "white.png",
             "Fine_Basin.jpg",
             "ground.png",
-            "folder.png",
             "kakuninn.png",
+            "folder.png",
             "debugfont.png"
         ]
     }

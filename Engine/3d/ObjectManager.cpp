@@ -67,6 +67,7 @@ void IF::ObjectManager::GUI()
 		}
 	}
 }
+#endif
 void IF::ObjectManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
@@ -93,4 +94,3 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif

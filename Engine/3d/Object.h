@@ -66,11 +66,9 @@ namespace IF
 		void SetBright(int r, int g, int b);
 		void SetAlpha(int a);
 
-#ifdef _DEBUG
 		inline std::string GetModelTag()
 		{
 			return model->GetTag();
 		}
-#endif
 	};
 }

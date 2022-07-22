@@ -25,8 +25,6 @@ namespace IF
 		virtual Float3 GetRota() = 0;
 		virtual Float3 GetScale() = 0;
 		virtual ~CObject() {};
-#ifdef _DEBUG
 		virtual std::string GetModelTag() = 0;
-#endif
 	};
 }

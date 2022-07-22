@@ -44,6 +44,7 @@ void IF::CameraManager::GUI()
 		}
 	}
 }
+#endif
 
 void IF::CameraManager::OutputJson(nlohmann::json& j)
 {
@@ -57,4 +58,3 @@ void IF::CameraManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif

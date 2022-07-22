@@ -124,7 +124,7 @@ namespace IF
 			Tag,
 			Model
 		};
-		void OutputJson(nlohmann::json& j);
 #endif
+		void OutputJson(nlohmann::json& j);
 	};
 }

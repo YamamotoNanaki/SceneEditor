@@ -98,10 +98,10 @@ namespace IF
 			}
 			return texNum;
 		}
+		void OutputJson(nlohmann::json& j);
 #ifdef _DEBUG
 		void GUI(bool* flag, std::string* tag);
 		std::string GUIRadio();
-		void OutputJson(nlohmann::json& j);
 #endif
 	};
 }
