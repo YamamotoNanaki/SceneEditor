@@ -46,8 +46,8 @@ void IF::Scene::Initialize()
 	modelM.Load("ground", false, "ground");
 	modelM.Load("sphere", true, "sphere");
 
-#ifdef _DEBUG
 	tex->GUIInit();
+#ifdef _DEBUG
 	//カメラ関連初期化
 	cameraM.Add<DebugCamera>("debug", 45, (float)winWidth, (float)winHeight);
 	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
@@ -76,13 +76,13 @@ void IF::Scene::Initialize()
 	spriteM.Add(SGraph, "pix");
 
 	//sound->SoundPlay(testSound);
+	//デバッグ用
+	dText.Initialize(tex->LoadTexture("debugfont.png"));
 
 #ifdef _DEBUG
 	//IMGUI
 	gui.Initialize(this->hwnd, this->device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
 
-	//デバッグ用
-	dText.Initialize(tex->LoadTexture("debugfont.png"));
 
 #endif // _DEBUG
 }
@@ -117,6 +117,7 @@ bool IF::Scene::InputJson(std::string failename)
 	objM.Reset();
 	spriteM.Reset();
 	modelM.Reset();
+	cameraM.Reset();
 	std::ifstream reading_file;
 	string scene = failename;
 	string txt = ".json";
@@ -141,9 +142,9 @@ bool IF::Scene::InputJson(std::string failename)
 		if (i["type"] == 0)
 		{
 			modelM.Load(i["tag"], i["smooth"], i["name"]);
-			modelM.SetTexture(i["tex"], i["name"]);
 		}
 		else if (i["type"] >= 1)modelM.Create(i["tag"], i["smooth"], i["tex"], i["type"]);
+		modelM.SetTexture(i["tex"], i["tag"]);
 	}
 	for (auto i : j["camera"])
 	{
@@ -157,8 +158,8 @@ bool IF::Scene::InputJson(std::string failename)
 #endif
 	for (auto i : j["object"]["object"])
 	{
-		if (i["type"] == 0)objM.Add<UsuallyObj>(modelM.GetModel(i["model"]), i["tag"]);
-		else if (i["type"] == 1)objM.Add<PlayerObj>(modelM.GetModel(i["model"]), i["tag"]);
+		if (i["type"] == 0)objM.Add<UsuallyObj>(modelM.GetModel(i["model"]), i["tag"], i["BillBoard"]);
+		else if (i["type"] == 1)objM.Add<PlayerObj>(modelM.GetModel(i["model"]), i["tag"], i["BillBoard"]);
 		else;
 		objM.SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM.SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
@@ -553,6 +554,7 @@ void IF::Scene::Update()
 		cameraM.Update("debug");
 	}
 
+	if (input->KTriggere(KEY::ENTER))SceneManager::Instance()->Next(0);
 #else
 
 	Input* input = Input::Instance();
@@ -562,9 +564,15 @@ void IF::Scene::Update()
 	static float dlColor[] = { 1,1,1 };
 	static Float3 spherePos = { -1,0,0 };
 
+	if (input->KTriggere(KEY::ENTER))SceneManager::Instance()->Next(0);
+
 	cameraM.Update();
 
 #endif // _DEBUG
+
+	dText.Print(100, 100, 1.5, "next scene : Enter key");
+	dText.Print(100, 140, 1.5, "camera     : Arrow key");
+
 	light->Update();
 
 	objM.Update();
@@ -586,12 +594,12 @@ void IF::Scene::Draw()
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	spriteM.Draw();
 
+	dText.Draw(viewport);
 #ifdef _DEBUG
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList.Get());
 
 	//デバッグ用
-	//dText.Draw(viewport);
 
 #endif // _DEBUG
 }

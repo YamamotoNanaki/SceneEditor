@@ -91,6 +91,7 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 		j["object"]["object"][i]["sca"]["x"] = com->GetScale().x;
 		j["object"]["object"][i]["sca"]["y"] = com->GetScale().y;
 		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
+		j["object"]["object"][i]["BillBoard"] = (int)com->GetBillBoard();
 		i++;
 	}
 }

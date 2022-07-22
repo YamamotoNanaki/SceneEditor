@@ -1,12 +1,12 @@
 {
     "camera": [
         {
-            "tag": "debug",
+            "tag": "mainCamera",
             "type": false
         },
         {
-            "tag": "mainCamera",
-            "type": true
+            "tag": "debug",
+            "type": false
         }
     ],
     "model": [
@@ -27,29 +27,23 @@
         {
             "name": "",
             "smooth": false,
-            "tag": "triangle",
+            "tag": "Model",
             "tex": 1,
             "type": 2
         },
         {
             "name": "",
             "smooth": false,
-            "tag": "circle",
+            "tag": "Model1",
             "tex": 1,
             "type": 3
-        },
-        {
-            "name": "",
-            "smooth": false,
-            "tag": "sphere",
-            "tex": 1,
-            "type": 4
         }
     ],
     "object": {
         "camera": "mainCamera",
         "object": [
             {
+                "BillBoard": 0,
                 "model": "dome",
                 "pos": {
                     "x": 0.0,
@@ -67,10 +61,10 @@
                     "z": 1.0
                 },
                 "tag": "dome",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
                 "model": "ground",
                 "pos": {
                     "x": 0.0,
@@ -88,61 +82,19 @@
                     "z": 1.0
                 },
                 "tag": "ground",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
-                "model": "circle",
+                "BillBoard": 1,
+                "model": "Model",
                 "pos": {
-                    "x": -2.4000000953674316,
-                    "y": 0.05000000074505806,
-                    "z": 0.0
-                },
-                "rot": {
-                    "x": 0.0,
-                    "y": 5.384340763092041,
-                    "z": 0.0
-                },
-                "sca": {
-                    "x": 1.0,
+                    "x": 1.7000000476837158,
                     "y": 1.0,
-                    "z": 1.0
-                },
-                "tag": "Object",
-                "type": 0,
-				"BillBoard": 0
-            },
-            {
-                "model": "sphere",
-                "pos": {
-                    "x": 1.850000023841858,
-                    "y": 0.0,
-                    "z": 0.0
+                    "z": 4.75
                 },
                 "rot": {
                     "x": 0.0,
                     "y": 0.0,
-                    "z": 0.0
-                },
-                "sca": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "tag": "Object1",
-                "type": 0,
-				"BillBoard": 0
-            },
-            {
-                "model": "triangle",
-                "pos": {
-                    "x": -1.649999976158142,
-                    "y": 0.6499999761581421,
-                    "z": 5.5
-                },
-                "rot": {
-                    "x": 0.0,
-                    "y": 6.003932476043701,
                     "z": 0.0
                 },
                 "sca": {
@@ -150,9 +102,71 @@
                     "y": 0.20000000298023224,
                     "z": 0.20000000298023224
                 },
+                "tag": "Object",
+                "type": 0
+            },
+            {
+                "BillBoard": 2,
+                "model": "Model",
+                "pos": {
+                    "x": -5.800000190734863,
+                    "y": 0.05000000074505806,
+                    "z": 5.199999809265137
+                },
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.20000000298023224,
+                    "y": 0.20000000298023224,
+                    "z": 0.20000000298023224
+                },
+                "tag": "Object1",
+                "type": 1
+            },
+            {
+                "BillBoard": 1,
+                "model": "Model1",
+                "pos": {
+                    "x": 2.25,
+                    "y": -0.8999999761581421,
+                    "z": -0.6499999761581421
+                },
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
                 "tag": "Object2",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
+            },
+            {
+                "BillBoard": 2,
+                "model": "Model1",
+                "pos": {
+                    "x": -2.049999952316284,
+                    "y": -0.6499999761581421,
+                    "z": -0.949999988079071
+                },
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Object3",
+                "type": 1
             }
         ]
     },

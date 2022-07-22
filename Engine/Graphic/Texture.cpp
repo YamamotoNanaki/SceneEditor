@@ -206,12 +206,12 @@ void IF::Texture::TexNum(int* texNum)
 		j++;
 	}
 }
+#endif
 
 void IF::Texture::GUIInit()
 {
 	folder = LoadTexture("folder.png");
 }
-#endif
 
 void IF::Texture::setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle)
 {

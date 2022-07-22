@@ -7,7 +7,12 @@
 void IF::DebugCamera::Update()
 {
 	Input* input = Input::Instance();
-	static bool flag = false;
+	static bool flag;
+#ifdef _DEBUG
+	flag = false;
+#else
+	flag = true;
+#endif
 	if (input->MMTriggere())flag = !flag;
 	if (flag)
 	{

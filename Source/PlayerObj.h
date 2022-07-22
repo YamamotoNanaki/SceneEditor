@@ -33,6 +33,10 @@ namespace IF
 		{
 			this->mode = mode;
 		}
+		inline BillBoard::BillBoardMode GetBillBoard()override
+		{
+			return mode;
+		}
 		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)override
 		{
 			PlayerObj::viewport = viewport;

@@ -26,5 +26,6 @@ namespace IF
 		virtual Float3 GetScale() = 0;
 		virtual ~CObject() {};
 		virtual std::string GetModelTag() = 0;
+		virtual BillBoard::BillBoardMode GetBillBoard() = 0;
 	};
 }

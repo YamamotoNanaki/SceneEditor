@@ -56,14 +56,31 @@ void IF::SceneManager::Load(std::string* startscene)
 			b.push_back(com2);
 		}
 		sceneList.push_back({ b,a });
+		if (j["start"] == a)
+		{
+			nownext = b;
+		}
 	}
 }
 
 void IF::SceneManager::Next(unsigned short nextNum)
 {
-	if (nownext.size() < nextNum)return;
-
-	scene->InputJson(nownext[nextNum]);
+	if (nownext.size() < nextNum)
+	{
+		scene->InputJson(now);
+	}
+	else
+	{
+		scene->InputJson(nownext[nextNum]);
+		now = nownext[nextNum];
+		for (auto com : sceneList)
+		{
+			if (now == com.name)
+			{
+				nownext = com.next;
+			}
+		}
+	}
 }
 
 SceneManager* IF::SceneManager::Instance()

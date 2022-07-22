@@ -12,11 +12,8 @@
 #include "ModelManager.h"
 #include "CameraManager.h"
 #include "SpriteManager.h"
-
-#ifdef _DEBUG
 #include "DebugText.h"
 
-#endif // _DEBUG
 
 
 namespace IF
@@ -74,10 +71,10 @@ namespace IF
 
 	private:
 		GUI gui;
+		DebugText dText;
 
 		//デバッグ用
 #ifdef _DEBUG
-		DebugText dText;
 
 #endif // _DEBUG
 

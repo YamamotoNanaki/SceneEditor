@@ -53,7 +53,8 @@
                     "z": 1.0
                 },
                 "tag": "dome",
-                "type": 0
+                "type": 0,
+				"BillBoard": 0
             },
             {
                 "model": "ground",
@@ -73,7 +74,8 @@
                     "z": 1.0
                 },
                 "tag": "ground",
-                "type": 0
+                "type": 0,
+				"BillBoard": 0
             },
             {
                 "model": "sphere",
@@ -93,7 +95,8 @@
                     "z": 1.0
                 },
                 "tag": "player",
-                "type": 1
+                "type": 1,
+				"BillBoard": 0
             }
         ]
     },

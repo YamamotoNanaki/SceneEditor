@@ -142,6 +142,10 @@ namespace IF
 		}
 	public:
 		void OutputJson(nlohmann::json& j);
+		inline void Reset()
+		{
+			cameraList.clear();
+		}
 
 #ifdef _DEBUG
 		void GUI();

@@ -9,14 +9,26 @@
         {
             "name": "test",
             "next": [
-                "triangle"
+                "scene"
             ]
         },
         {
-            "name": "scene"
+            "name": "scene",
+            "next": [
+                "scene1"
+            ]
         },
         {
-            "name": "scene1"
+            "name": "scene1",
+            "next": [
+                "scene2"
+            ]
+        },
+        {
+            "name": "scene2",
+            "next": [
+                "triangle"
+            ]
         }
     ],
     "start": "triangle"

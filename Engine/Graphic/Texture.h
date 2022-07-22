@@ -47,13 +47,13 @@ namespace IF
 		void Initialize();
 		void setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle);
 		unsigned short LoadTexture(const std::string filename);
+		void GUIInit();
+		unsigned short folder = 0;
 
 #ifdef _DEBUG
-		unsigned short folder = 0;
 		bool flag = false;
 		void GUI();
 		void TexNum(int* texNum);
-		void GUIInit();
 		int GetTagNum();
 #endif
 	};
