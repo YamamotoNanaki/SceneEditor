@@ -47,7 +47,7 @@ void IF::Scene::Initialize()
 	modelM.Load("sphere", true, "sphere");
 
 	tex->GUIInit();
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	//カメラ関連初期化
 	cameraM.Add<DebugCamera>("debug", 45, (float)winWidth, (float)winHeight);
 	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
@@ -58,17 +58,17 @@ void IF::Scene::Initialize()
 	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
 	objM.SetPosition({ 0,-2,0 }, "ground");
 	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
-//#else
-//	//カメラ関連初期化
-//	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
-//	//オブジェクト初期化
-//	objM.SetCamera(cameraM.GetCamera("mainCamera"));
-//	objM.SetViewport(viewport);
-//	objM.Add<UsuallyObj>(modelM.GetModel("dome"), "dome");
-//	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
-//	objM.SetPosition({ 0,-2,0 }, "ground");
-//	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
-//#endif
+#else
+	//カメラ関連初期化
+	cameraM.Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
+	//オブジェクト初期化
+	objM.SetCamera(cameraM.GetCamera("mainCamera"));
+	objM.SetViewport(viewport);
+	objM.Add<UsuallyObj>(modelM.GetModel("dome"), "dome");
+	objM.Add<UsuallyObj>(modelM.GetModel("ground"), "ground");
+	objM.SetPosition({ 0,-2,0 }, "ground");
+	objM.Add<PlayerObj>(modelM.GetModel("sphere"), "player");
+#endif
 
 	//2D関連
 	Sprite::StaticInitialize(this->device.Get(), this->commandList.Get(), viewport, (float)winWidth, (float)winHeight);
@@ -79,12 +79,12 @@ void IF::Scene::Initialize()
 	//デバッグ用
 	dText.Initialize(tex->LoadTexture("debugfont.png"));
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	//IMGUI
 	gui.Initialize(this->hwnd, this->device.Get(), tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
 
 
-//#endif // _DEBUG
+#endif // _DEBUG
 }
 
 void IF::Scene::OutputJson(std::string failename)
@@ -151,11 +151,11 @@ bool IF::Scene::InputJson(std::string failename)
 		if (i["type"])cameraM.Add<Camera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
 		else cameraM.Add<DebugCamera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
 	}
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	objM.SetCamera(cameraM.GetCamera("debug"));
-//#else
-//	objM.SetCamera(cameraM.GetCamera(j["object"]["camera"]));
-//#endif
+#else
+	objM.SetCamera(cameraM.GetCamera(j["object"]["camera"]));
+#endif
 	for (auto i : j["object"]["object"])
 	{
 		if (i["type"] == 0)objM.Add<UsuallyObj>(modelM.GetModel(i["model"]), i["tag"], i["BillBoard"]);
@@ -194,7 +194,7 @@ void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* devi
 void IF::Scene::Update()
 {
 	static int hoge = 0;
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	static bool flag = false;
 	static ImVec2 pos{ 0,0 };
 	static float dlColor[] = { 1,1,1 };
@@ -561,25 +561,26 @@ void IF::Scene::Update()
 		hoge++;
 		if (hoge > 4)hoge -= 5;
 	}
-//#else
-//
-//	Input* input = Input::Instance();
-//	input->Update();
-//
-//	//光源
-//	static float dlColor[] = { 1,1,1 };
-//	static Float3 spherePos = { -1,0,0 };
-//
-//	if (input->KTriggere(KEY::ENTER))
-//	{
-//		SceneManager::Instance()->Next(0);
-//		hoge++;
-//		if (hoge > 4)hoge -= 5;
-//	}
-//
-//	cameraM.Update();
-//
-//#endif // _DEBUG
+#else
+
+	Input* input = Input::Instance();
+	input->Update();
+
+	//光源
+	static float dlColor[] = { 1,1,1 };
+	static Float3 spherePos = { -1,0,0 };
+
+
+	if (input->KTriggere(KEY::ENTER))
+	{
+		SceneManager::Instance()->Next(0);
+		hoge++;
+		if (hoge > 4)hoge -= 5;
+	}
+
+	cameraM.Update();
+
+#endif // _DEBUG
 
 	dText.Print(100, 50, 1.5, "now scene  : %d",hoge);
 	dText.Print(100, 100, 1.5, "next scene : Enter key");
@@ -614,13 +615,13 @@ void IF::Scene::Draw()
 	spriteM.Draw();
 
 	dText.Draw(viewport);
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList.Get());
 
 	//デバッグ用
 
-//#endif // _DEBUG
+#endif // _DEBUG
 }
 
 void IF::Scene::Delete()

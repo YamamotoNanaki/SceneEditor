@@ -7,17 +7,17 @@
 void IF::DebugCamera::Update()
 {
 	Input* input = Input::Instance();
-	static bool flag = false;
-	bool dirty = false;
-	//#ifdef _DEBUG
-	//#else
-	//	flag = true;
-	//	dirty = true;
-	//#endif
+	static bool flag;
+#ifdef _DEBUG
+	flag = false;
+#else
+	flag = true;
+#endif
 	if (input->MMTriggere())flag = !flag;
 	if (flag)
 	{
 		Mouse move = input->GetMouse3D();
+		bool dirty = false;
 		float angleX = 0;
 		float angleY = 0;
 
@@ -70,12 +70,13 @@ void IF::DebugCamera::Update()
 
 			matRot = newMatRot * matRot;
 
+			
 			Vector3 newTargetEye = { 0.0f, 0.0f, -distance };
 			Vector3 newUp = { 0.0f, 1.0f, 0.0f };
-
+			
 			newTargetEye = Vector3Transform(newTargetEye, matRot);
 			newUp = Vector3Transform(newUp, matRot);
-
+			
 			const Float3& newTarget = matView->target;
 			SetEye({ newTarget.x + newTargetEye.x, newTarget.y + newTargetEye.y, newTarget.z + newTargetEye.z });
 			SetUp({ newUp.x, newUp.y, newUp.z });
