@@ -103,6 +103,12 @@
     <Filter Include="ImGUI">
       <UniqueIdentifier>{824b585a-a8fb-4568-9db0-4b46dfe818e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Collision">
+      <UniqueIdentifier>{78cc95e9-80db-41c4-947d-6578c2756bdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine\Collision">
+      <UniqueIdentifier>{efd67f1d-d680-4068-aeb0-e664ecf470dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\Sprite.h">
@@ -291,6 +297,15 @@
     <ClInclude Include="Engine\2d\SpriteManager.h">
       <Filter>Header Files\Engine\2d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Collision\Collision.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionPrimitive.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Component.h">
+      <Filter>Header Files\Engine\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -454,6 +469,12 @@
     </ClCompile>
     <ClCompile Include="Engine\2d\SpriteManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\Collision.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

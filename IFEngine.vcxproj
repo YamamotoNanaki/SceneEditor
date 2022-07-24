@@ -183,6 +183,7 @@
     <ClInclude Include="Engine\3d\ModelVI.h" />
     <ClInclude Include="Engine\3d\Object.h" />
     <ClInclude Include="Engine\3d\ObjectManager.h" />
+    <ClInclude Include="Engine\Base\Component.h" />
     <ClInclude Include="Engine\Base\ConstBuff.h" />
     <ClInclude Include="Engine\Base\ConstStruct.h" />
     <ClInclude Include="Engine\Base\Debug.h" />
@@ -196,6 +197,8 @@
     <ClInclude Include="Engine\Camera\ICamera.h" />
     <ClInclude Include="Engine\Camera\Projection.h" />
     <ClInclude Include="Engine\Camera\View.h" />
+    <ClInclude Include="Engine\Collision\Collision.h" />
+    <ClInclude Include="Engine\Collision\CollisionPrimitive.h" />
     <ClInclude Include="Engine\Efect\Particle.h" />
     <ClInclude Include="Engine\Efect\ParticleVI.h" />
     <ClInclude Include="Engine\Graphic\GPipeline.h" />
@@ -260,6 +263,8 @@
     <ClCompile Include="Engine\Camera\DebugCamera.cpp" />
     <ClCompile Include="Engine\Camera\Projection.cpp" />
     <ClCompile Include="Engine\Camera\View.cpp" />
+    <ClCompile Include="Engine\Collision\Collision.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="Engine\Efect\Particle.cpp" />
     <ClCompile Include="Engine\Efect\ParticleVI.cpp" />
     <ClCompile Include="Engine\Graphic\GPipeline.cpp" />

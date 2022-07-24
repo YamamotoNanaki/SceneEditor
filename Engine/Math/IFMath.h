@@ -1,4 +1,6 @@
 #pragma once
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "Float2.h"
 #include "Float3.h"
 #include "Float4.h"
