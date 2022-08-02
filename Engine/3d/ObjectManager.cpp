@@ -58,6 +58,20 @@ void IF::ObjectManager::GUI()
 				com->SetScale({ s[0], s[1], s[2] });
 				ImGui::TreePop();
 			}
+			if (ImGui::TreeNode("Collision"))
+			{
+				static int type = NotPri;
+				static int old = 0;
+				type = old = com->GetCollision();
+				ImGui::RadioButton("Ray", &type, RayPri);
+				ImGui::SameLine();
+				ImGui::RadioButton("Sphere", &type, SpherePri);
+				ImGui::RadioButton("Plane", &type, PlanePri);
+				ImGui::SameLine();
+				ImGui::RadioButton("Not", &type, NotPri);
+				ImGui::TreePop();
+				if (type != old)com->SetCollision((unsigned short)type);
+			}
 			if (ImGui::Button("Delete"))
 			{
 				objList.remove(com);
@@ -92,6 +106,7 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 		j["object"]["object"][i]["sca"]["y"] = com->GetScale().y;
 		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
 		j["object"]["object"][i]["BillBoard"] = (int)com->GetBillBoard();
+		j["object"]["object"][i]["collision"] = (int)com->GetCollision();
 		i++;
 	}
 }

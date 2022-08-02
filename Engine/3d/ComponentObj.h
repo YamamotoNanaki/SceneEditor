@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "CollisionPrimitive.h"
 
 namespace IF
 {
@@ -27,5 +28,8 @@ namespace IF
 		virtual ~CObject() {};
 		virtual std::string GetModelTag() = 0;
 		virtual BillBoard::BillBoardMode GetBillBoard() = 0;
+		virtual void SetCollision(unsigned short type) = 0;
+		virtual unsigned short GetCollision() = 0;
+		virtual Primitive* GetPrimitive() = 0;
 	};
 }

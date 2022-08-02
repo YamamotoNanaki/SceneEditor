@@ -30,7 +30,9 @@ void IF::SceneManager::Draw()
 
 void IF::SceneManager::Delete()
 {
+#ifdef _DEBUG
 	scene->OutputJson(now);
+#endif
 	scene->Delete();
 	delete scene;
 }
@@ -94,7 +96,7 @@ void IF::SceneManager::Release()
 	delete SceneManager::Instance();
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 void IF::SceneManager::Output()
 {
 	json j;
@@ -290,7 +292,7 @@ void IF::SceneManager::GUI(bool& flag)
 	}
 	ImGui::End();
 }
-//#endif
+#endif
 
 IF::SceneManager::~SceneManager()
 {

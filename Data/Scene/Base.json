@@ -36,6 +36,8 @@
         "camera": "mainCamera",
         "object": [
             {
+                "BillBoard": 0,
+                "collision": 65535,
                 "model": "dome",
                 "pos": {
                     "x": 0.0,
@@ -53,10 +55,11 @@
                     "z": 1.0
                 },
                 "tag": "dome",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
+                "collision": 65535,
                 "model": "ground",
                 "pos": {
                     "x": 0.0,
@@ -74,10 +77,11 @@
                     "z": 1.0
                 },
                 "tag": "ground",
-                "type": 0,
-				"BillBoard": 0
+                "type": 0
             },
             {
+                "BillBoard": 0,
+                "collision": 65535,
                 "model": "sphere",
                 "pos": {
                     "x": 0.0,
@@ -95,26 +99,10 @@
                     "z": 1.0
                 },
                 "tag": "player",
-                "type": 1,
-				"BillBoard": 0
+                "type": 1
             }
         ]
     },
-    "sprite": [
-        {
-            "pos": {
-                "x": 0.0,
-                "y": 0.0
-            },
-            "rot": 0.0,
-            "sca": {
-                "x": 1.0,
-                "y": 1.0
-            },
-            "tag": "pix",
-            "tex": 5
-        }
-    ],
     "texture": {
         "name": [
             "white.png",

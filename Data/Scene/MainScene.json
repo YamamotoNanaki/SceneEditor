@@ -1,12 +1,12 @@
 {
     "camera": [
         {
-            "tag": "mainCamera",
-            "type": true
-        },
-        {
             "tag": "debug",
             "type": false
+        },
+        {
+            "tag": "mainCamera",
+            "type": true
         }
     ],
     "model": [
@@ -32,18 +32,25 @@
             "type": 0
         },
         {
-            "name": "girl",
-            "smooth": true,
-            "tag": "girl",
+            "name": "",
+            "smooth": false,
+            "tag": "cube",
             "tex": 1,
-            "type": 0
+            "type": 1
         },
         {
-            "name": "sphere",
-            "smooth": true,
-            "tag": "sphere2",
-            "tex": 5,
-            "type": 0
+            "name": "",
+            "smooth": false,
+            "tag": "ray",
+            "tex": 1,
+            "type": 5
+        },
+        {
+            "name": "",
+            "smooth": false,
+            "tag": "Model",
+            "tex": 1,
+            "type": 4
         }
     ],
     "object": {
@@ -51,6 +58,7 @@
         "object": [
             {
                 "BillBoard": 0,
+                "collision": 65535,
                 "model": "dome",
                 "pos": {
                     "x": 0.0,
@@ -72,6 +80,7 @@
             },
             {
                 "BillBoard": 0,
+                "collision": 65535,
                 "model": "ground",
                 "pos": {
                     "x": 0.0,
@@ -93,32 +102,56 @@
             },
             {
                 "BillBoard": 0,
-                "model": "girl",
+                "collision": 65535,
+                "model": "cube",
                 "pos": {
-                    "x": 0.0,
-                    "y": -1.899999976158142,
-                    "z": 0.10000000149011612
+                    "x": 2.0,
+                    "y": 1.0,
+                    "z": 3.700000047683716
                 },
                 "rot": {
                     "x": 0.0,
-                    "y": 3.0194196701049805,
+                    "y": 0.0,
                     "z": 0.0
                 },
                 "sca": {
-                    "x": 0.20000000298023224,
-                    "y": 0.20000000298023224,
-                    "z": 0.20000000298023224
+                    "x": 0.0010000000474974513,
+                    "y": 0.0010000000474974513,
+                    "z": 1.0
                 },
-                "tag": "Object",
-                "type": 0
+                "tag": "cube",
+                "type": 1
             },
             {
                 "BillBoard": 0,
-                "model": "sphere",
+                "collision": 2,
+                "model": "ray",
                 "pos": {
-                    "x": 2.0999999046325684,
-                    "y": -1.600000023841858,
+                    "x": 2.0,
+                    "y": 1.0,
                     "z": 0.0
+                },
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 1.0
+                },
+                "tag": "ray",
+                "type": 1
+            },
+            {
+                "BillBoard": 0,
+                "collision": 0,
+                "model": "Model",
+                "pos": {
+                    "x": 0.0,
+                    "y": 1.0,
+                    "z": 5.0
                 },
                 "rot": {
                     "x": 0.0,
@@ -130,32 +163,26 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "tag": "Object1",
-                "type": 0
-            },
-            {
-                "BillBoard": 0,
-                "model": "sphere2",
-                "pos": {
-                    "x": -1.850000023841858,
-                    "y": -1.0,
-                    "z": -0.699999988079071
-                },
-                "rot": {
-                    "x": 0.0,
-                    "y": 1.1693706512451172,
-                    "z": 0.0
-                },
-                "sca": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "tag": "Object2",
+                "tag": "Object",
                 "type": 0
             }
         ]
     },
+    "sprite": [
+        {
+            "pos": {
+                "x": 194.0,
+                "y": 223.0
+            },
+            "rot": 0.0,
+            "sca": {
+                "x": 3.9000000953674316,
+                "y": 4.849999904632568
+            },
+            "tag": "sprite",
+            "tex": 5
+        }
+    ],
     "texture": {
         "name": [
             "white.png",

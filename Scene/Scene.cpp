@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "nlohmann/json.hpp"
 #include "SceneManager.h"
+#include "Collision.h"
 #include <fstream>
 #include <iostream>
 
@@ -86,6 +87,7 @@ void IF::Scene::Initialize()
 
 #endif // _DEBUG
 }
+#ifdef _DEBUG
 
 void IF::Scene::OutputJson(std::string failename)
 {
@@ -111,7 +113,7 @@ void IF::Scene::OutputJson(std::string failename)
 	writing_file << s << std::endl;
 	writing_file.close();
 }
-
+#endif
 bool IF::Scene::InputJson(std::string failename)
 {
 	objM.Reset();
@@ -164,6 +166,7 @@ bool IF::Scene::InputJson(std::string failename)
 		objM.SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM.SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM.SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
+		objM.SetCollision(i["collision"], i["tag"]);
 	}
 	for (auto i : j["sprite"])
 	{
@@ -173,7 +176,7 @@ bool IF::Scene::InputJson(std::string failename)
 		spriteM.SetScale({ i["sca"]["x"],i["sca"]["y"] }, i["tag"]);
 	}
 
-	if (flag)OutputJson(failename);
+	//if (flag)OutputJson(failename);
 
 	return true;
 }
@@ -405,6 +408,8 @@ void IF::Scene::Update()
 			ImGui::RadioButton("CreateCircle", &loadMode, CREATE_CIRCLE);
 			ImGui::SameLine();
 			ImGui::RadioButton("CreateSphere", &loadMode, CREATE_SPHERE);
+			ImGui::SameLine();
+			ImGui::RadioButton("CreateRay", &loadMode, CREATE_RAY);
 			if (loadMode == 0)InputText("FaileName", _faileName, sizeof(_faileName));
 			ImGui::TreePop();
 		}
@@ -581,17 +586,6 @@ void IF::Scene::Update()
 	cameraM.Update();
 
 #endif // _DEBUG
-
-	dText.Print(100, 50, 1.5, "now scene  : %d",hoge);
-	dText.Print(100, 100, 1.5, "next scene : Enter key");
-	if (hoge < 4)dText.Print(100, 140, 1.5, "camera     : Arrow key");
-	else
-	{
-		dText.Print(100, 140, 1.5, "DebugCamera");
-		dText.Print(100, 170, 1.5, "MouseL     : rotate");
-		dText.Print(100, 200, 1.5, "MouseR     : move");
-		dText.Print(100, 230, 1.5, "MouseMWheel: distance");
-	}
 	
 	light->Update();
 
@@ -612,9 +606,10 @@ void IF::Scene::Draw()
 	//fire->Draw(commandList, viewport);
 	graph->DrawBlendMode(commandList.Get(), Blend::NORMAL2D);
 	Sprite::DrawBefore(graph->rootsignature.Get());
+	if(objM.Collision())
 	spriteM.Draw();
 
-	dText.Draw(viewport);
+	//dText.Draw(viewport);
 #ifdef _DEBUG
 	ImGui::Render();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList.Get());

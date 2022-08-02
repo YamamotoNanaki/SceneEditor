@@ -205,39 +205,40 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 {
 	vi = new MVI;
 	type = CREATE_CUBE;
+	const float size = 5;
 
 	Vertex vertices[] = {
 		// x   y   z        u    v
 		//前
-		{{-5, -5, -5},{},{0.0f, 1.0f}},	//左下
-		{{-5, +5, -5},{},{0.0f, 0.0f}},	//左上
-		{{+5, -5, -5},{},{1.0f, 1.0f}},	//右下
-		{{+5, +5, -5},{},{1.0f, 0.0f}},	//右上
+		{{-size, -size, -size},{},{0.0f, 1.0f}},	//左下
+		{{-size, +size, -size},{},{0.0f, 0.0f}},	//左上
+		{{+size, -size, -size},{},{1.0f, 1.0f}},	//右下
+		{{+size, +size, -size},{},{1.0f, 0.0f}},	//右上
 		//後			
-		{{+5, -5, +5},{},{1.0f, 1.0f}},	//右下
-		{{+5, +5, +5},{},{1.0f, 0.0f}},	//右上
-		{{-5, -5, +5},{},{0.0f, 1.0f}},	//左下
-		{{-5, +5, +5},{},{0.0f, 0.0f}},	//左上
-		//左			
-		{{-5, -5, -5},{},{0.0f, 1.0f}},	//左下
-		{{-5, -5, +5},{},{0.0f, 0.0f}},	//左上
-		{{-5, +5, -5},{},{1.0f, 1.0f}},	//右下
-		{{-5, +5, +5},{},{1.0f, 0.0f}},	//右上
-		//右			
-		{{+5, +5, -5},{},{1.0f, 1.0f}},	//右下
-		{{+5, +5, +5},{},{1.0f, 0.0f}},	//右上
-		{{+5, -5, -5},{},{0.0f, 1.0f}},	//左下
-		{{+5, -5, +5},{},{0.0f, 0.0f}},	//左上
-		//下			
-		{{-5, +5, +5},{},{1.0f, 1.0f}},	//右下
-		{{+5, +5, +5},{},{1.0f, 0.0f}},	//右上
-		{{-5, +5, -5},{},{0.0f, 1.0f}},	//左下
-		{{+5, +5, -5},{},{0.0f, 0.0f}},	//左上
-		//上			
-		{{-5, -5, -5},{},{0.0f, 1.0f}},	//左下
-		{{+5, -5, -5},{},{0.0f, 0.0f}},	//左上
-		{{-5, -5, +5},{},{1.0f, 1.0f}},	//右下
-		{{+5, -5, +5},{},{1.0f, 0.0f}},	//右上
+		{{+size, -size, +size},{},{1.0f, 1.0f}},	//右下
+		{{+size, +size, +size},{},{1.0f, 0.0f}},	//右上
+		{{-size, -size, +size},{},{0.0f, 1.0f}},	//左下
+		{{-size, +size, +size},{},{0.0f, 0.0f}},	//左上
+		//左
+		{{-size, -size, -size},{},{0.0f, 1.0f}},	//左下
+		{{-size, -size, +size},{},{0.0f, 0.0f}},	//左上
+		{{-size, +size, -size},{},{1.0f, 1.0f}},	//右下
+		{{-size, +size, +size},{},{1.0f, 0.0f}},	//右上
+		//右
+		{{+size, +size, -size},{},{1.0f, 1.0f}},	//右下
+		{{+size, +size, +size},{},{1.0f, 0.0f}},	//右上
+		{{+size, -size, -size},{},{0.0f, 1.0f}},	//左下
+		{{+size, -size, +size},{},{0.0f, 0.0f}},	//左上
+		//下
+		{{-size, +size, +size},{},{1.0f, 1.0f}},	//右下
+		{{+size, +size, +size},{},{1.0f, 0.0f}},	//右上
+		{{-size, +size, -size},{},{0.0f, 1.0f}},	//左下
+		{{+size, +size, -size},{},{0.0f, 0.0f}},	//左上
+		//上
+		{{-size, -size, -size},{},{0.0f, 1.0f}},	//左下
+		{{+size, -size, -size},{},{0.0f, 0.0f}},	//左上
+		{{-size, -size, +size},{},{1.0f, 1.0f}},	//右下
+		{{+size, -size, +size},{},{1.0f, 0.0f}},	//右上
 	};
 
 	//インデックスデータ
@@ -525,6 +526,56 @@ void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 	constBuffTransform1->Unmap(0, nullptr);
 
 	VIInitialize(smoothing, true);
+}
+
+void IF::Model::CreateRay()
+{
+	vi = new MVI;
+	type = CREATE_RAY;
+
+	Vertex vertices[] =
+	{
+		{{0, 0, 0},{},{0.0f, 0.0f}},
+	};
+	unsigned short indices[] =
+	{
+		0,0,0
+	};
+
+	vi->SetVerticleIndex(vertices, _countof(vertices), indices, _countof(indices));
+
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
+
+	HRESULT result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = { 0.8,0.8,0.8 };
+	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
+	constMapMaterial->specular = { 0.8,0.8,0.8 };
+	constMapMaterial->alpha = material.alpha;
+	material.tex = true;
+
+	constBuffTransform1->Unmap(0, nullptr);
+
+	VIInitialize(false, true);
 }
 
 void Model::VIInitialize(bool smoothing, bool normal)

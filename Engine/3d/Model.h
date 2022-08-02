@@ -17,7 +17,8 @@ namespace IF
 		CREATE_CUBE,
 		CREATE_TRIANGLE,
 		CREATE_CIRCLE,
-		CREATE_SPHERE
+		CREATE_SPHERE,
+		CREATE_RAY
 	};
 	class Model
 	{
@@ -47,7 +48,7 @@ namespace IF
 				alpha = 1.0f;
 			}
 			bool tex = false;
-			unsigned short texNum = 0;
+			unsigned short texNum = 1;
 		};
 
 	public:
@@ -64,6 +65,7 @@ namespace IF
 		void CreateTriangle(unsigned short texNum, bool smoothing = false);
 		void CreateCircle(unsigned short texNum, bool smoothing = false);
 		void CreateSphere(unsigned short texNum, bool smoothing = false);
+		void CreateRay();
 		void VIInitialize(bool smoothing, bool normal = false);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address);
 		void Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address, unsigned short texNum);

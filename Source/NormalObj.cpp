@@ -21,6 +21,20 @@ void IF::UsuallyObj::Initialize(Model* model)
 
 void IF::UsuallyObj::Update()
 {
+	if (colision != nullptr)
+	{
+		if (ptype == NotPri);
+		else if (ptype == RayPri)
+		{
+			colision->SetCenter(SetVector3(obj.position));
+			colision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z }));
+		}
+		else
+		{
+			colision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));
+			colision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f * 2.0f);
+		}
+	}
 	obj.Update(*matView, *matProjection, *cameraPos, mode);
 }
 

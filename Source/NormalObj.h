@@ -1,5 +1,6 @@
 #pragma once
 #include "ComponentObj.h"
+#include "CollisionPrimitive.h"
 namespace IF
 {
 	class UsuallyObj : public CObject
@@ -11,7 +12,40 @@ namespace IF
 		Float3* cameraPos = nullptr;
 		BillBoard::BillBoardMode mode = BillBoard::NOON;
 		static std::vector<D3D12_VIEWPORT>viewport;
+		Primitive* colision;
+		unsigned short ptype;
 	public:
+		inline void SetCollision(unsigned short type)
+		{
+			if (type == RayPri)
+			{
+				colision = new Ray;
+				ptype = RayPri;
+			}
+			else if (type == PlanePri)
+			{
+				colision = new Plane;
+				ptype = PlanePri;
+			}
+			else if (type == SpherePri)
+			{
+				colision = new Sphere;
+				ptype = SpherePri;
+			}
+			else
+			{
+				if (colision != nullptr)delete colision;
+				ptype = NotPri;
+			}
+		}
+		inline unsigned short GetCollision()
+		{
+			return ptype;
+		}
+		inline Primitive* GetPrimitive()
+		{
+			return colision;
+		}
 		void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode = BillBoard::NOON)override;
 		void Initialize(Model* model)override;
 		void Update()override;

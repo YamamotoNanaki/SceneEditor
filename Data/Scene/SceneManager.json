@@ -1,35 +1,11 @@
 {
     "scene": [
         {
-            "name": "triangle",
+            "name": "MainScene",
             "next": [
-                "test"
-            ]
-        },
-        {
-            "name": "test",
-            "next": [
-                "scene"
-            ]
-        },
-        {
-            "name": "scene",
-            "next": [
-                "scene1"
-            ]
-        },
-        {
-            "name": "scene1",
-            "next": [
-                "scene2"
-            ]
-        },
-        {
-            "name": "scene2",
-            "next": [
-                "triangle"
+                "MainScene"
             ]
         }
     ],
-    "start": "triangle"
+    "start": "MainScene"
 }

@@ -14,6 +14,8 @@ namespace IF
 		virtual void Draw() = 0;
 		virtual void Delete() = 0;
 		virtual ~IScene() {};
+#ifdef _DEBUG
 		virtual void OutputJson(std::string failename) = 0;
+#endif
 	};
 }

@@ -33,6 +33,7 @@ namespace IF
 			else if (mode == CREATE_TRIANGLE)model->CreateTriangle(texNum, smoothing);
 			else if (mode == CREATE_CIRCLE)model->CreateCircle(texNum, smoothing);
 			else if (mode == CREATE_SPHERE)model->CreateSphere(texNum, smoothing);
+			else if (mode == CREATE_RAY)model->CreateRay();
 			model->SetTag(tag);
 			modelList.push_back(model);
 		}
