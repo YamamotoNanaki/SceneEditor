@@ -18,5 +18,5 @@ int Timer::NowTime() const
 
 bool Timer::IsEnd() const
 {
-	return timer == end;
+	return timer >= end;
 }

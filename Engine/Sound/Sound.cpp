@@ -5,19 +5,21 @@ using namespace IF;
 
 void IF::Sound::Initialize()
 {
-	HRESULT result = XAudio2Create(&xAudio, 0, XAUDIO2_ANY_PROCESSOR);
+	HRESULT result = XAudio2Create(&xAudio, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	assert(SUCCEEDED(result) && "サウンドの初期化に失敗しました");
 	result = xAudio->CreateMasteringVoice(&masterVoice);
 	assert(SUCCEEDED(result) && "サウンドの初期化に失敗しました");
 }
 
-unsigned short IF::Sound::LoadWave(const char* filename)
+unsigned short IF::Sound::LoadWave(std::string filename)
 {
 	for (int i = 0; i < Sound::maxSound; i++)
 	{
 		if (soundDatas[i].free == false)continue;
 		if (soundDatas[i].name == filename)return i;
 	}
+	std::string name = "Data/Sound/";
+	name += filename + ".wav";
 
 	unsigned short num = -1;
 	for (int i = 0; i < Sound::maxSound; i++)
@@ -33,7 +35,7 @@ unsigned short IF::Sound::LoadWave(const char* filename)
 
 	std::ifstream file;
 
-	file.open(filename, std::ios_base::binary);
+	file.open(name, std::ios_base::binary);
 	assert(file.is_open() && "ファイルが開けません");
 
 	RiffHeader riff;
@@ -62,14 +64,10 @@ unsigned short IF::Sound::LoadWave(const char* filename)
 
 	file.close();
 
-	SoundData soundData = {};
-	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	soundData.bufferSize = data.size;
-
-	soundDatas[num] = soundData;
-
-	delete pBuffer;
+	soundDatas[num].wfex = format.fmt;
+	soundDatas[num].pBuffer = reinterpret_cast<BYTE*>(pBuffer);
+	soundDatas[num].bufferSize = data.size;
+	soundDatas[num].free = true;
 
 	return num;
 }
@@ -81,13 +79,14 @@ void IF::Sound::SoundUnLoad(unsigned short soundNum)
 	soundDatas[soundNum].pBuffer = 0;
 	soundDatas[soundNum].bufferSize = 0;
 	soundDatas[soundNum].wfex = {};
+	soundDatas[soundNum].free = false;
+	soundDatas[soundNum].pSourceVoice = nullptr;
 }
 
 void IF::Sound::SoundPlay(unsigned short soundNum, bool roop)
 {
 	HRESULT result;
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	result = xAudio->CreateSourceVoice(&pSourceVoice, &soundDatas[soundNum].wfex);
+	result = xAudio.Get()->CreateSourceVoice(&soundDatas[soundNum].pSourceVoice, &soundDatas[soundNum].wfex);
 	assert(SUCCEEDED(result));
 
 	XAUDIO2_BUFFER buf{};
@@ -97,8 +96,9 @@ void IF::Sound::SoundPlay(unsigned short soundNum, bool roop)
 	else buf.LoopCount = 0;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
-	result = pSourceVoice->SubmitSourceBuffer(&buf);
-	result = pSourceVoice->Start();
+	soundDatas[soundNum].pSourceVoice->SetVolume(soundDatas[soundNum].volume);
+	result = soundDatas[soundNum].pSourceVoice->SubmitSourceBuffer(&buf);
+	result = soundDatas[soundNum].pSourceVoice->Start();
 }
 
 Sound* IF::Sound::Instance()
@@ -107,9 +107,22 @@ Sound* IF::Sound::Instance()
 	return inst;
 }
 
+void IF::Sound::SetVolume(unsigned short soundNum, int volume)
+{
+	soundDatas[soundNum].volume = (float)volume / 255.0f;
+	if (soundDatas[soundNum].pSourceVoice != nullptr)soundDatas[soundNum].pSourceVoice->SetVolume(soundDatas[soundNum].volume);
+}
+
 void IF::Sound::DeleteInstance()
 {
 	delete Sound::Instance();
+}
+
+void IF::Sound::StopSound(unsigned short soundNum)
+{
+	if (soundDatas[soundNum].pSourceVoice == nullptr)return;
+	HRESULT result = soundDatas[soundNum].pSourceVoice->Stop();
+	soundDatas[soundNum].pSourceVoice = nullptr;
 }
 
 void IF::Sound::Reset()

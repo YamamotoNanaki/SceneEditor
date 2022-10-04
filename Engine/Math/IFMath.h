@@ -15,7 +15,7 @@ namespace IF
 	Float3 SetFloat3ToFloat2(Float2 f, float z = 0);
 	Float4 SetFloat4ToVector3(Vector3 v, float w = 0);
 	Float3 SetFloat3(Vector3 v);
-	Float2 SetFloat3ToVector2(Vector2 v);
+	Float2 SetFloat2(Vector2 v);
 	Vector3 SetVector3(Float3 f);
 	Vector3 SetVector3ToFloat2(Float2 f, float z = 0);
 	Vector2 SetVector2(Float2 f);

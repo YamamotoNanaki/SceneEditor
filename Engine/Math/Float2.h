@@ -12,11 +12,11 @@ namespace IF
 		Float2 operator+()const;
 		Float2 operator-()const;
 		Float2 operator*()const;
-		Float2& operator+=(Float2 f);
-		Float2& operator-=(Float2 f);
-		Float2& operator*=(Float2 f);
-		Float2& operator/=(Float2 f);
-		Float2& operator*=(float f);
-		Float2& operator/=(float f);
+		void operator+=(Float2 f);
+		void operator-=(Float2 f);
+		void operator*=(Float2 f);
+		void operator/=(Float2 f);
+		void operator*=(float f);
+		void operator/=(float f);
 	};
 };

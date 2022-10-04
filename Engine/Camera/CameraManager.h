@@ -12,7 +12,60 @@ namespace IF
 	private:
 		std::list<ICamera*>cameraList;
 
+
+	private:
+		CameraManager() {}
+		CameraManager(const CameraManager&) {}
+		CameraManager& operator=(const CameraManager&) {}
+		~CameraManager()
+		{
+			for (auto com : cameraList)
+			{
+				delete com;
+			}
+			cameraList.clear();
+		}
+
 	public:
+		inline Vector3& GetFront(std::string tag)
+		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)
+				{
+					return com->GetFront();
+				}
+			}
+		}
+		inline Float3& GetSpeed(std::string tag)
+		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)
+				{
+					return com->GetSpeed();
+				}
+			}
+		}
+		inline float& GetRotation(std::string tag)
+		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)
+				{
+					return com->GetRota();
+				}
+			}
+		}
+		static CameraManager* Instance()
+		{
+			static CameraManager* inst = new CameraManager;
+			return inst;
+		}
+		static void DeleteInstance()
+		{
+			delete Instance();
+		}
 		template <class T> inline void Add(std::string tag, float fovAngle, float winWidth, float winHeight)
 		{
 			for (auto com : cameraList)
@@ -60,6 +113,27 @@ namespace IF
 				{
 					com->SetEye(eye);
 					return;
+				}
+			}
+		}
+		inline void SetType(short type, std::string tag)
+		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)
+				{
+					com->SetType(type);
+					return;
+				}
+			}
+		}
+		inline Float3& GetEye(std::string tag)
+		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)
+				{
+					return *com->GetEye();
 				}
 			}
 		}
@@ -141,14 +215,18 @@ namespace IF
 			}
 		}
 	public:
-		void OutputJson(nlohmann::json& j);
 		inline void Reset()
 		{
+			for (auto com : cameraList)
+			{
+				delete com;
+			}
 			cameraList.clear();
 		}
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
+		void OutputJson(nlohmann::json& j);
 		void GUI();
-//#endif
+#endif
 	};
 }

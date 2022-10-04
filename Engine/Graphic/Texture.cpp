@@ -200,7 +200,42 @@ void IF::Texture::TexNum(int* texNum)
 		if (i < 10)_tagName = "00";
 		else if (i < 100)_tagName = "0";
 		else _tagName = "";
-		_tagName += (char)(i + 48);
+		if (i < 10)
+		{
+			_tagName += (char)(i + 48);
+		}
+		else if (i < 100)
+		{
+			int a = i / 10;
+			int b = i % 10;
+			_tagName += (char)(a + 48);
+			_tagName += (char)(b + 48);
+		}
+		else if (i < 1000)
+		{
+			int a = i / 100;
+			int b = i / 10;
+			b -= a * 10;
+			int c = i % 10;
+			_tagName += (char)(a + 48);
+			_tagName += (char)(b + 48);
+			_tagName += (char)(c + 48);
+		}
+		else
+		{
+			int a = i / 1000;
+			int b = i / 100;
+			b -= a * 10;
+			int c = i / 10;
+			c -= a * 100;
+			c -= b * 10;
+			int d = i % 10;
+
+			_tagName += (char)(a + 48);
+			_tagName += (char)(b + 48);
+			_tagName += (char)(c + 48);
+			_tagName += (char)(d + 48);
+		}
 		if (j % 3 != 0)ImGui::SameLine();
 		ImGui::RadioButton(_tagName.c_str(), texNum, i);
 		j++;

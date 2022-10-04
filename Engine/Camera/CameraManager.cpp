@@ -3,48 +3,15 @@
 
 using namespace ImGui;
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 void IF::CameraManager::GUI()
 {
 	auto buff = cameraList;
 	for (auto com : buff)
 	{
-		if (TreeNode(com->tag.c_str()))
-		{
-			if (ImGui::TreeNode("Eye"))
-			{
-				Float3 eye = *com->GetEye();
-				float e[3] = { eye.x,eye.y,eye.z };
-				ImGui::InputFloat3("", e);
-				com->SetEye({ e[0],e[1],e[2] });
-				ImGui::TreePop();
-			}
-			if (ImGui::TreeNode("Target"))
-			{
-				Float3 target = com->GetTarget();
-				float t[3] = { ConvertToDegrees(target.x),ConvertToDegrees(target.y),ConvertToDegrees(target.z) };
-				ImGui::InputFloat3("", t);
-				com->SetTarget({ ConvertToRadians(t[0]),ConvertToRadians(t[1]), ConvertToRadians(t[2]) });
-				ImGui::TreePop();
-			}
-			if (ImGui::TreeNode("Up"))
-			{
-				Float3 up = com->GetUp();
-				float u[3] = { up.x,up.y,up.z };
-				ImGui::InputFloat3("", u);
-				com->SetUp({ u[0], u[1], u[2] });
-				ImGui::TreePop();
-			}
-			if (ImGui::Button("Delete"))
-			{
-				cameraList.remove(com);
-				delete com;
-			}
-			TreePop();
-		}
+		com->GUI();
 	}
 }
-//#endif
 
 void IF::CameraManager::OutputJson(nlohmann::json& j)
 {
@@ -52,9 +19,20 @@ void IF::CameraManager::OutputJson(nlohmann::json& j)
 	for (auto com : cameraList)
 	{
 		j["camera"][i]["tag"] = com->tag;
+		j["camera"][i]["eye"]["x"] = com->GetEye()->x;
+		j["camera"][i]["eye"]["y"] = com->GetEye()->y;
+		j["camera"][i]["eye"]["z"] = com->GetEye()->z;
+		j["camera"][i]["target"]["x"] = com->GetTarget().x;
+		j["camera"][i]["target"]["y"] = com->GetTarget().y;
+		j["camera"][i]["target"]["z"] = com->GetTarget().z;
 		Camera* buff = dynamic_cast<Camera*>(com);
-		if (buff != nullptr)j["camera"][i]["type"] = true;
+		if (buff != nullptr)
+		{
+			j["camera"][i]["type"] = true;
+			j["camera"][i]["cameratype"] = com->GetType();
+		}
 		else j["camera"][i]["type"] = false;
 		i++;
 	}
 }
+#endif

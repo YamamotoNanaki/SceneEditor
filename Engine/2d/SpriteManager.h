@@ -11,13 +11,21 @@ namespace IF
 	private:
 		std::list<Sprite*>spriteList;
 
-	public:
 		SpriteManager() {}
+		SpriteManager(const Sprite&) {}
+		SpriteManager& operator=(const SpriteManager&) {}
 		~SpriteManager();
+	public:
+		static SpriteManager* Instance();
+		static void DeleteInstance();
 		void Draw();
 		void Update();
 		inline void Reset()
 		{
+			for (auto com : spriteList)
+			{
+				delete com;
+			}
 			spriteList.clear();
 		}
 		inline void Add(unsigned short texNum, std::string tag)
@@ -69,6 +77,27 @@ namespace IF
 				}
 			}
 		}
+		inline void SetAlpha(float a, std::string tag, bool all = false)
+		{
+			if (all)
+			{
+				for (auto com : spriteList)
+				{
+					com->SetAlpha(a);
+				}
+			}
+			else
+			{
+				for (auto com : spriteList)
+				{
+					if (com->tag == tag)
+					{
+						com->SetAlpha(a);
+						return;
+					}
+				}
+			}
+		}
 		inline void SetRotation(float rota, std::string tag)
 		{
 			for (auto com : spriteList)
@@ -87,6 +116,16 @@ namespace IF
 				if (com->tag == tag)
 				{
 					com->scale = scale;
+					return;
+				}
+			}
+		}
+		inline void SetAI(short aitype, std::string tag)
+		{
+			for (auto com : spriteList)
+			{
+				if (com->tag == tag)
+				{
 					return;
 				}
 			}
@@ -115,16 +154,16 @@ namespace IF
 			return i;
 		}
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 		bool drawflag = false;
 
-		void GUI(bool* flag,std::string* tag);
+		void GUI(bool* flag, std::string* tag);
 		enum typeinfo
 		{
 			Tag,
 			Model
 		};
-//#endif
+#endif
 		void OutputJson(nlohmann::json& j);
 	};
 }

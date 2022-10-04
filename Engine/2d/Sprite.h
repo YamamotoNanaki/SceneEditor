@@ -2,6 +2,7 @@
 #include "SpriteVI.h"
 #include "IFMath.h"
 #include "ConstBuff.h"
+#include "Timer.h"
 #include <vector>
 #include <wrl.h>
 #include <string>
@@ -30,6 +31,7 @@ namespace IF
 	private:
 		SV* vi = nullptr;
 		ConstBuff cb;
+		Timer animeTimer;
 
 	public:
 		//定数バッファ
@@ -50,6 +52,9 @@ namespace IF
 		bool flipY = false;
 		std::string tag;
 		unsigned int texNum = 0;
+		bool DrawFlag = true;
+		bool f = true;
+		bool f2 = true;
 
 	public:
 		~Sprite();
@@ -67,5 +72,9 @@ namespace IF
 		void SetColor(int r, int g, int b, int a);
 		void SetBright(int r, int g, int b);
 		void SetAlpha(int a);
+
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }

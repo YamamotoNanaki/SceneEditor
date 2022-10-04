@@ -48,7 +48,7 @@ namespace IF
 			return colision;
 		}
 		void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode = BillBoard::NOON)override;
-		void Initialize(Model* model)override;
+		//void Initialize(Model* model)override;
 		void Update()override;
 		void Draw()override;
 		inline void SetView(Matrix* matView)override

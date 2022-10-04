@@ -2,10 +2,24 @@
 #include <cassert>
 #include "imgui.h"
 
+using namespace IF;
+
 IF::ObjectManager::~ObjectManager()
 {
+	for (auto com : objList)delete com;
 	objList.clear();
 	assert(objList.empty() && "インスタンスを破棄できません");
+}
+
+IF::ObjectManager* IF::ObjectManager::Instance()
+{
+	static ObjectManager* inst = new ObjectManager;
+	return inst;
+}
+
+void IF::ObjectManager::DeleteInstance()
+{
+	delete ObjectManager::Instance();
 }
 
 void IF::ObjectManager::Draw()
@@ -23,55 +37,29 @@ void IF::ObjectManager::Update()
 	{
 		com->Update();
 	}
+	ChangePushback("Reticle");
 }
 
-//#ifdef _DEBUG
+Primitive* IF::ObjectManager::GetPrimitive(std::string tag)
+{
+	for (auto com : objList)
+	{
+		if (com->tag == tag)
+		{
+			return com->GetPrimitive();
+		}
+	}
+	return nullptr;
+}
+
+#ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
 	auto buff = objList;
 	for (auto com : buff)
 	{
 		if (ImGui::TreeNode(com->tag.c_str())) {
-			if (ImGui::TreeNode("Position"))
-			{
-				float p[3] = { com->GetPos().x,com->GetPos().y,com->GetPos().z };
-				ImGui::DragFloat3("", p, 0.05f);
-				com->SetPos({ p[0],p[1],p[2] });
-				ImGui::TreePop();
-			}
-			if (ImGui::TreeNode("Rotation"))
-			{
-				float r[3] = { ConvertToDegrees(com->GetRota().x),ConvertToDegrees(com->GetRota().y),ConvertToDegrees(com->GetRota().z) };
-				ImGui::DragFloat3("", r, 0.5f);
-				for (int i = 0; i < 3; i++)
-				{
-					if (r[i] >= 360)r[i] -= 360;
-					if (r[i] < 0)r[i] += 360;
-				}
-				com->SetRota({ ConvertToRadians(r[0]),ConvertToRadians(r[1]), ConvertToRadians(r[2]) });
-				ImGui::TreePop();
-			}
-			if (ImGui::TreeNode("Scale"))
-			{
-				float s[3] = { com->GetScale().x,com->GetScale().y,com->GetScale().z };
-				ImGui::DragFloat3("", s, 0.05f);
-				com->SetScale({ s[0], s[1], s[2] });
-				ImGui::TreePop();
-			}
-			if (ImGui::TreeNode("Collision"))
-			{
-				static int type = NotPri;
-				static int old = 0;
-				type = old = com->GetCollision();
-				ImGui::RadioButton("Ray", &type, RayPri);
-				ImGui::SameLine();
-				ImGui::RadioButton("Sphere", &type, SpherePri);
-				ImGui::RadioButton("Plane", &type, PlanePri);
-				ImGui::SameLine();
-				ImGui::RadioButton("Not", &type, NotPri);
-				ImGui::TreePop();
-				if (type != old)com->SetCollision((unsigned short)type);
-			}
+			com->GUI();
 			if (ImGui::Button("Delete"))
 			{
 				objList.remove(com);
@@ -81,7 +69,25 @@ void IF::ObjectManager::GUI()
 		}
 	}
 }
-//#endif
+
+std::string IF::ObjectManager::GUIRadio()
+{
+	int i = 0;
+	static int mode = 0;
+	std::string r;
+	for (auto com : objList)
+	{
+		if (i % 3)ImGui::SameLine();
+		ImGui::RadioButton(com->tag.c_str(), &mode, i);
+		if (mode == i)
+		{
+			r = com->tag;
+		}
+		i++;
+	}
+	return r;
+}
+
 void IF::ObjectManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
@@ -91,9 +97,16 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 	{
 		UsuallyObj* buff = dynamic_cast<UsuallyObj*>(com);
 		PlayerObj* buff1 = dynamic_cast<PlayerObj*>(com);
-		if (buff != nullptr)j["object"]["object"][i]["type"] = 0;
+		if (buff != nullptr)
+		{
+			j["object"]["object"][i]["type"] = 0;
+			j["object"]["object"][i]["AI"] = com->GetAi();
+		}
 		else if (buff1 != nullptr) j["object"]["object"][i]["type"] = 1;
-		else j["object"]["object"][i]["type"] = 2;
+		{
+			j["object"]["object"][i]["type"] = 3;
+			j["object"]["object"][i]["AI"] = com->GetAi();
+		}
 		j["object"]["object"][i]["tag"] = com->tag;
 		j["object"]["object"][i]["model"] = com->GetModelTag();
 		j["object"]["object"][i]["pos"]["x"] = com->GetPos().x;
@@ -107,6 +120,21 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
 		j["object"]["object"][i]["BillBoard"] = (int)com->GetBillBoard();
 		j["object"]["object"][i]["collision"] = (int)com->GetCollision();
+		j["object"]["object"][i]["prefab"] = com->GetPrefab();
 		i++;
+	}
+}
+#endif
+
+void IF::ObjectManager::Delete(std::string tag)
+{
+	for (auto com : objList)
+	{
+		if (com->tag == tag)
+		{
+			objList.remove(com);
+			delete com;
+			return;
+		}
 	}
 }

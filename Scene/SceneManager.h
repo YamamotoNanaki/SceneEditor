@@ -2,13 +2,14 @@
 #include "Scene.h"
 #include <list>
 #include <string>
+#include <memory>
 
 namespace IF
 {
 	class SceneManager
 	{
 	private:
-		IScene* scene = nullptr;
+		std::unique_ptr<Scene> scene;
 		std::string now;
 		std::vector<std::string>nownext;
 		struct SceneDatas
@@ -22,9 +23,9 @@ namespace IF
 		SceneManager(const SceneManager&) {}
 		SceneManager& operator=(const SceneManager&) {}
 		~SceneManager();
-		void Delete();
 
 	public:
+		void Delete();
 		void Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList,
 			std::vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
 		void Update();

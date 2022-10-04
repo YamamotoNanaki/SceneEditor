@@ -15,8 +15,26 @@ namespace IF
 		float scaleX = 1.0f / (float)1280;
 		float scaleY = 1.0f / (float)720;
 		Matrix matRot;
+		Vector3 frontvec;
+		float speed;
+		float rota;
 
 	public:
+		inline short GetType() { return 0; }
+		inline void SetType(short type){}
+		inline float& GetRota()
+		{
+			return rota;
+		}
+		inline Vector3& GetFront()
+		{
+			return frontvec;
+		}
+		inline Float3& GetSpeed()
+		{
+			Float3 r = SetFloat3(frontvec);
+			return r *= speed;
+		}
 		DebugCamera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)
 		{
@@ -87,5 +105,8 @@ namespace IF
 			delete matView;
 			delete matPro;
 		}
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }

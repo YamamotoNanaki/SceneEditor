@@ -22,7 +22,15 @@ namespace IF
 		float posY = 0.0f;
 		float size = 1.0f;
 
+	private:
+		DebugText() {}
+		DebugText(const DebugText&) {}
+		DebugText& operator=(const DebugText&) {}
+		~DebugText() {}
+
 	public:
+		static DebugText* Instance();
+		static void DeleteInstance();
 		void Initialize(unsigned int texNum);
 		void Print(float x, float y, float scale, const char* text, ...);
 		void Draw(std::vector<D3D12_VIEWPORT>viewport);

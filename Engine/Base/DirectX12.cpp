@@ -218,7 +218,7 @@ void DirectX12::DrawAfter()
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
 	// バッファをフリップ（裏表の入替え）
-	result = swapchain->Present(1, 0);
+	result = swapchain->Present(0, 0);
 	assert(SUCCEEDED(result));
 	// コマンドリストの実行完了を待つ
 	commandQueue->Signal(fence.Get(), ++fenceVal);

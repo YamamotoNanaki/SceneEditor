@@ -18,7 +18,8 @@ namespace IF
 		CREATE_TRIANGLE,
 		CREATE_CIRCLE,
 		CREATE_SPHERE,
-		CREATE_RAY
+		CREATE_RAY,
+		CREATE_POLYGON_SQUARE,
 	};
 	class Model
 	{
@@ -62,6 +63,7 @@ namespace IF
 		static void SetDevice(ID3D12Device* device);
 		bool LoadModel(std::string name, bool smoothing = false);
 		void CreateCube(unsigned short texNum, bool smoothing = false);
+		void CreatePolygonSquare(unsigned short texNum, bool smoothing = false);
 		void CreateTriangle(unsigned short texNum, bool smoothing = false);
 		void CreateCircle(unsigned short texNum, bool smoothing = false);
 		void CreateSphere(unsigned short texNum, bool smoothing = false);

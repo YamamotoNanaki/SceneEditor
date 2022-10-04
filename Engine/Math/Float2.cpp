@@ -26,35 +26,36 @@ Float2 Float2::operator*() const
 	return *this;
 }
 
-Float2& Float2::operator+=(Float2 f)
+void Float2::operator+=(Float2 f)
 {
-	return *this = (this->x + f.x, this->y + f.y);
+	*this = (this->x + f.x, this->y + f.y);
 }
 
-Float2& Float2::operator-=(Float2 f)
+void Float2::operator-=(Float2 f)
 {
-	return *this = (this->x - f.x, this->y - f.y);
+	*this = (this->x - f.x, this->y - f.y);
 }
 
-Float2& Float2::operator*=(Float2 f)
+void Float2::operator*=(Float2 f)
 {
-	return *this = (this->x * f.x, this->y * f.y);
+	*this = (this->x * f.x, this->y * f.y);
 }
 
-Float2& Float2::operator/=(Float2 f)
+void Float2::operator/=(Float2 f)
 {
-	assert(f.x == 0 && "—ëœŽZ");
-	assert(f.y == 0 && "—ëœŽZ");
-	return *this = (this->x / f.x, this->y / f.y);
+	assert(f.x != 0 && "—ëœŽZ");
+	assert(f.y != 0 && "—ëœŽZ");
+	*this = (this->x / f.x, this->y / f.y);
 }
 
-Float2& Float2::operator*=(float f)
+void Float2::operator*=(float f)
 {
-	return *this = (this->x * f, this->y * f);
+	*this = (this->x * f, this->y * f);
 }
 
-Float2& Float2::operator/=(float f)
+void Float2::operator/=(float f)
 {
-	assert(f == 0 && "—ëœŽZ");
-	return *this = (this->x / f, this->y / f);
+	assert(f != 0 && "—ëœŽZ");
+	this->x = this->x / f;
+	this->y = this->y / f;
 }

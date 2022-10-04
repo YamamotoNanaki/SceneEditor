@@ -5,6 +5,7 @@ using namespace IF;
 void IF::FPS::Initialize(unsigned int FPS)
 {
 	MIN_FREAM_TIME = 1.0f / FPS;
+	if (QueryPerformanceFrequency(&timeFreq))
 	QueryPerformanceCounter(&timeStart);
 }
 
@@ -19,7 +20,7 @@ void FPS::FPSFixed() {
 		timeBeginPeriod(1);
 		Sleep(sleepTime);
 		timeEndPeriod(1);
-
+		QueryPerformanceCounter(&timeStart);
 		return;
 	}
 

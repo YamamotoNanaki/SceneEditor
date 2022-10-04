@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include <cassert>
 #include "Texture.h"
+#include "imgui.h"
 
 using namespace IF;
 using namespace Microsoft::WRL;
@@ -19,7 +20,6 @@ void IF::Sprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandLis
 
 IF::Sprite::~Sprite()
 {
-	//constBuffTransform->Unmap(0, nullptr);
 	delete vi;
 }
 
@@ -113,6 +113,9 @@ void IF::Sprite::Update()
 	matWorld *= MatrixRotationZ(rotation);
 	matWorld *= MatrixTranslation(position.x, position.y, 0);
 
+	static Float4 color{};
+	SetColor(color.x, color.y, color.z, color.w);
+
 	//定数バッファへのデータ転送
 	constMapTransform->mat = matWorld * matPro;
 }
@@ -124,6 +127,7 @@ void IF::Sprite::SetViewport(std::vector<D3D12_VIEWPORT> viewport)
 
 void IF::Sprite::Draw()
 {
+	if (!DrawFlag)return;
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	//頂点バッファの設定
 	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
@@ -171,6 +175,13 @@ void IF::Sprite::SetAlpha(int alpha)
 {
 	cb.SetAlpha(alpha);
 }
+
+#ifdef _DEBUG
+void IF::Sprite::GUI()
+{
+	
+}
+#endif
 
 void Sprite::TransferVertex()
 {

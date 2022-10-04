@@ -1,9 +1,22 @@
 #include "SpriteManager.h"
 #include "imgui.h"
 
+using namespace IF;
+
 IF::SpriteManager::~SpriteManager()
 {
 	Reset();
+}
+
+SpriteManager* IF::SpriteManager::Instance()
+{
+	static SpriteManager* inst = new SpriteManager;
+	return inst;
+}
+
+void IF::SpriteManager::DeleteInstance()
+{
+	delete SpriteManager::Instance();
 }
 
 void IF::SpriteManager::Draw()
@@ -22,7 +35,7 @@ void IF::SpriteManager::Update()
 	}
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 {
 	auto buff = spriteList;
@@ -52,6 +65,7 @@ void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 				com->scale = { s[0],s[1] };
 				ImGui::TreePop();
 			}
+			com->GUI();
 			if (ImGui::Button("ChangeTexture"))
 			{
 				*tag = com->tag;
@@ -67,7 +81,7 @@ void IF::SpriteManager::GUI(bool* flag,std::string* tag)
 	}
 }
 
-//#endif
+#endif
 void IF::SpriteManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;

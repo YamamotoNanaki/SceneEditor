@@ -14,10 +14,10 @@ void IF::UsuallyObj::MatInitialize(Matrix* matView, Matrix* matProjection, Float
 	SetBillBoard(mode);
 }
 
-void IF::UsuallyObj::Initialize(Model* model)
-{
-	obj.Initialize(model);
-}
+//void IF::UsuallyObj::Initialize(Model* model)
+//{
+//	obj.Initialize(model);
+//}
 
 void IF::UsuallyObj::Update()
 {

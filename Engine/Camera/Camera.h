@@ -2,6 +2,7 @@
 #include "View.h"
 #include "Projection.h"
 #include "ICamera.h"
+#include "Timer.h"
 
 namespace IF
 {
@@ -11,14 +12,43 @@ namespace IF
 		//ƒJƒƒ‰
 		View* matView = nullptr;
 		Projection* matPro = nullptr;
+		Vector3 frontvec{};
+		Float3 speed{};
+		float rota = 90;
+		float fspeed = 0;
+		Timer timer;
+		bool Tflag = true;
+		short flag = -1;
+		short cameratype = 0;
 
 	public:
+		inline short GetType()
+		{
+			return cameratype;
+		}
+		inline void SetType(short type)
+		{
+			cameratype = type;
+		}
+		inline float& GetRota()
+		{
+			return rota;
+		}
+		inline Vector3& GetFront()
+		{
+			return frontvec;
+		}
+		inline Float3& GetSpeed()
+		{
+			return speed;
+		}
 		Camera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)
 		{
 			matPro = new Projection(fovAngle, winWidth, winHeight);
 			matView = new View;
-			matView->eye = { 1,1,-5.0f };
+			//matView->target = { 0,2,0 };
+			//matView->eye = { 0,1,-10 };
 			matView->Update();
 		}
 		void Update();
@@ -83,5 +113,9 @@ namespace IF
 			delete matView;
 			delete matPro;
 		}
+
+#ifdef _DEBUG
+		void GUI();
+#endif
 	};
 }

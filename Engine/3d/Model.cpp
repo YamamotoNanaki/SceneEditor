@@ -205,7 +205,7 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 {
 	vi = new MVI;
 	type = CREATE_CUBE;
-	const float size = 5;
+	const float size = 1;
 
 	Vertex vertices[] = {
 		// x   y   z        u    v
@@ -300,6 +300,65 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 	VIInitialize(smoothing, true);
 }
 
+void IF::Model::CreatePolygonSquare(unsigned short texNum, bool smoothing)
+{
+	vi = new MVI;
+	type = CREATE_POLYGON_SQUARE;
+	const float size = 1;
+
+	Vertex vertices[] = {
+		// x   y   z        u    v
+		//前
+		{{-size, -size, -size},{},{0.0f, 1.0f}},	//左下
+		{{-size, +size, -size},{},{0.0f, 0.0f}},	//左上
+		{{+size, -size, -size},{},{1.0f, 1.0f}},	//右下
+		{{+size, +size, -size},{},{1.0f, 0.0f}}		//右上
+	};
+
+	//インデックスデータ
+	unsigned short indices[] = {
+		//前
+		0,1,2,
+		2,1,3
+	};
+
+	vi->SetVerticleIndex(vertices, _countof(vertices), indices, _countof(indices));
+
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
+
+	HRESULT result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = { 0.8,0.8,0.8 };
+	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
+	constMapMaterial->specular = { 0.8,0.8,0.8 };
+	constMapMaterial->alpha = material.alpha;
+	material.texNum = texNum;
+	material.tex = true;
+
+	constBuffTransform1->Unmap(0, nullptr);
+
+	VIInitialize(smoothing, true);
+}
+
 void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
 {
 	vi = new MVI;
@@ -308,9 +367,9 @@ void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
 	Vertex vertices[] = {
 		// x   y   z        u    v
 		//前
-		{{-5, -5, 0},{},{0.0f, 0.0f}},	//左下
-		{{0, 5, 0},{},{0.0f, 0.0f}},	//上
-		{{+5, -5, 0},{},{0.0f, 0.0f}},	//右下
+		{{-1, -1, 0},{},{0.0f, 0.0f}},	//左下
+		{{0, 1, 0},{},{0.0f, 0.0f}},	//上
+		{{+1, -1, 0},{},{0.0f, 0.0f}},	//右下
 	};
 
 	//インデックスデータ
@@ -636,7 +695,6 @@ void IF::Model::SetTexNum(unsigned short texNum)
 
 Model::~Model()
 {
-	constBuffTransform1->Unmap(0, nullptr);
 	delete vi;
 }
 

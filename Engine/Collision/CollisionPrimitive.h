@@ -13,12 +13,15 @@ namespace IF
 		virtual void SetCenter(Vector3 c) = 0;
 		virtual void SetDir(Vector3 d) = 0;
 		virtual void SetRadius(float r) = 0;
+		virtual const Vector3 GetCenter() = 0;
+		virtual const Vector3 GetDir() = 0;
+		virtual const float GetRadius() = 0;
 	};
 	struct Sphere :public Primitive
 	{
 		Vector3 center = { 0,0,0 };
 		float radius = 1.0f;
-		inline void SetCenter(Vector3 c)
+		inline void SetCenter(Vector3 c)override
 		{
 			center = c;
 		}
@@ -26,6 +29,15 @@ namespace IF
 		inline void SetRadius(float r)
 		{
 			radius = r;
+		}
+		inline const Vector3 GetCenter() override
+		{
+			return center;
+		}
+		inline const Vector3 GetDir() override { return { 0,0,0 }; }
+		inline const float GetRadius()
+		{
+			return radius;
 		}
 	};
 	struct Plane :public Primitive
@@ -41,6 +53,15 @@ namespace IF
 		{
 			distance = r;
 		}
+		inline const Vector3 GetCenter()
+		{
+			return normal;
+		}
+		inline const Vector3 GetDir() { return { 0,0,0 }; }
+		inline const float GetRadius() 
+		{
+			return distance;
+		}
 	};
 	struct Ray :public Primitive
 	{
@@ -55,6 +76,16 @@ namespace IF
 			dir = d;
 		}
 		inline void SetRadius(float r) {}
+
+		inline const Vector3 GetCenter()
+		{
+			return start;
+		}
+		inline const Vector3 GetDir()
+		{
+			return dir;
+		}
+		inline const float GetRadius() { return 0.0f; }
 	};
 }
 

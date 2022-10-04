@@ -12,7 +12,7 @@ void IF::SceneManager::Initialize(int winWidth, int winHeight, ID3D12Device* dev
 	vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
 {
 	Load(&now);
-	scene = new Scene;
+	scene = make_unique<Scene>();
 	scene->StaticInitialize(winWidth, winHeight, device, commandList, viewport, hwnd);
 	scene->Initialize();
 	scene->InputJson(now);
@@ -31,10 +31,9 @@ void IF::SceneManager::Draw()
 void IF::SceneManager::Delete()
 {
 #ifdef _DEBUG
-	scene->OutputJson(now);
+	//scene->OutputJson(now);
 #endif
 	scene->Delete();
-	delete scene;
 }
 
 void IF::SceneManager::Load(std::string* startscene)
@@ -192,7 +191,7 @@ void IF::SceneManager::GUI(bool& flag)
 		}
 		if (ImGui::Button("Change"))
 		{
-			scene->OutputJson(now);
+			//scene->OutputJson(now);
 			scene->InputJson(sceneList[mode4].name);
 			now = sceneList[mode4].name;
 		}

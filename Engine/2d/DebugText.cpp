@@ -1,5 +1,18 @@
 #include "DebugText.h"
 
+using namespace IF;
+
+DebugText* IF::DebugText::Instance()
+{
+	static DebugText* inst = new DebugText;
+	return inst;
+}
+
+void IF::DebugText::DeleteInstance()
+{
+	delete DebugText::Instance();
+}
+
 void IF::DebugText::Initialize(unsigned int texNum)
 {
 	for (int i = 0; i < _countof(sprites); i++)

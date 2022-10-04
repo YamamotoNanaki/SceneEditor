@@ -10,7 +10,7 @@ using namespace std;
 using namespace IF::BillBoard;
 using namespace Microsoft::WRL;
 
-LightManager* Object::light = nullptr;
+LightManager* Object::lightPtr = nullptr;
 ComPtr<ID3D12Device> Object::device = nullptr;
 ComPtr<ID3D12GraphicsCommandList> Object::commandList = nullptr;
 
@@ -94,7 +94,7 @@ void Object::Draw(vector<D3D12_VIEWPORT> viewport)
 		return;
 	}
 
-	light->Draw(4);
+	lightPtr->Draw(4);
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	model->Draw(Object::commandList.Get(), viewport, constBuffTransform.Get());
 }
@@ -107,7 +107,7 @@ void IF::Object::Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
 		return;
 	}
 
-	light->Draw(4);
+	lightPtr->Draw(4);
 
 	model->Draw(Object::commandList.Get(), viewport, constBuffTransform.Get(), texNum);
 }

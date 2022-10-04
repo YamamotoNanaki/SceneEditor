@@ -14,21 +14,21 @@ void IF::PlayerObj::MatInitialize(Matrix* matView, Matrix* matProjection, Float3
 	SetCamera(cameraPos);
 	SetBillBoard(mode);
 }
-
-void IF::PlayerObj::Initialize(Model* model)
-{
-	obj.Initialize(model);
-}
+//
+//void IF::PlayerObj::Initialize(Model* model)
+//{
+//	obj.Initialize(model);
+//}
 
 void IF::PlayerObj::Update()
 {
 	//==========================//
 	Input* i = Input::Instance();
 
-	if (i->KDown(KEY::W))obj.position.y += 0.1f;
-	if (i->KDown(KEY::S))obj.position.y -= 0.1f;
-	if (i->KDown(KEY::D))obj.position.x += 0.1f;
-	if (i->KDown(KEY::A))obj.position.x -= 0.1f;
+	//if (i->KDown(KEY::W))obj.position.y += 0.1f;
+	//if (i->KDown(KEY::S))obj.position.y -= 0.1f;
+	//if (i->KDown(KEY::D))obj.position.x += 0.1f;
+	//if (i->KDown(KEY::A))obj.position.x -= 0.1f;
 
 	//==========================//
 	if (colision != nullptr)
