@@ -1,10 +1,23 @@
 #include "ModelManager.h"
 #include "imgui.h"
 
+using namespace IF;
+
 IF::ModelManager::~ModelManager()
 {
 	modelList.clear();
 	assert(modelList.empty() && "インスタンスを破棄できません");
+}
+
+ModelManager* IF::ModelManager::Instance()
+{
+	static ModelManager* inst = new ModelManager;
+	return inst;
+}
+
+void IF::ModelManager::DeleteInstance()
+{
+	delete ModelManager::Instance();
 }
 
 #ifdef _DEBUG

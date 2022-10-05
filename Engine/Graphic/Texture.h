@@ -53,8 +53,8 @@ namespace IF
 		void OutputJson(nlohmann::json& j);
 		inline void TexReset()
 		{
-			textureSize = 1;
-			for (int i = 1; i < textureMax; i++) {
+			textureSize = 0;
+			for (int i = 0; i < textureMax; i++) {
 				tex[i].texbuff.Reset();
 				tex[i].CPUHandle.ptr = 0;
 				tex[i].texName.clear();

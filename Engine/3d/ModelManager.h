@@ -8,9 +8,14 @@ namespace IF
 	{
 	private:
 		std::list <Model*> modelList;
+		~ModelManager();
+		ModelManager() {}
+		ModelManager(const ModelManager&) {}
+		ModelManager& operator=(const ModelManager&) {}
 
 	public:
-		~ModelManager();
+		static ModelManager* Instance();
+		static void DeleteInstance();
 		inline bool Load(std::string tag, bool smoothing, std::string name)
 		{
 			for (auto com : modelList)

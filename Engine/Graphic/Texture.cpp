@@ -251,12 +251,11 @@ void IF::Texture::GUIInit()
 void IF::Texture::OutputJson(nlohmann::json& j)
 {
 	short i = 0;
-	for (auto buff : tex)
+	for (int i = 1; i < tex.size(); i++)
 	{
-		i++;
 		if (textureSize < i)break;
-		if (buff.free == false)continue;
-		j["texture"]["name"][i - 1] = buff.texName;
+		if (tex[i].free == false)continue;
+		j["texture"]["name"][i - 1] = tex[i].texName;
 	}
 }
 

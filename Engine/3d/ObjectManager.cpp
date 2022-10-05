@@ -52,11 +52,6 @@ Primitive* IF::ObjectManager::GetPrimitive(std::string tag)
 	return nullptr;
 }
 
-void IF::ObjectManager::InputJson(nlohmann::json& j)
-{
-
-}
-
 #ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {

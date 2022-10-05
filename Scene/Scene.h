@@ -13,8 +13,6 @@
 #include "SpriteManager.h"
 #include "DebugText.h"
 
-
-
 namespace IF
 {
 	class Scene
@@ -26,7 +24,7 @@ namespace IF
 		//-----------------------
 		ObjectManager* objM = ObjectManager::Instance();
 		Texture* tex = Texture::Instance();
-
+		ModelManager* modelM = ModelManager::Instance();
 
 	public:
 		void InputJson(std::string failename);

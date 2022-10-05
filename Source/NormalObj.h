@@ -14,7 +14,32 @@ namespace IF
 		static std::vector<D3D12_VIEWPORT>viewport;
 		Primitive* colision;
 		unsigned short ptype;
+		bool prefab = false;
+		bool deleteFlag = false;
 	public:
+		inline void SetAlpha(float a)
+		{
+			obj.SetAlpha(a);
+		}
+		Float4 color;
+		short num = 0;
+		void DeleteObj();
+		inline void SetColor(int r, int g, int b, int a)
+		{
+			obj.SetColor(r, g, b, a);
+		}
+		inline void SetAi(unsigned short ai)
+		{
+			//this->ai = ai;
+		}
+		inline bool GetPrefab()
+		{
+			return prefab;
+		}
+		inline Model* GetModelAddress()
+		{
+			return obj.GetModel();
+		}
 		inline void SetCollision(unsigned short type)
 		{
 			if (type == RayPri)
@@ -47,7 +72,7 @@ namespace IF
 			return colision;
 		}
 		void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode = BillBoard::NOON)override;
-		//void Initialize(Model* model)override;
+		void Initialize(Model* model, bool prefab)override;
 		void Update()override;
 		void Draw()override;
 		inline void SetView(Matrix* matView)override
@@ -102,10 +127,25 @@ namespace IF
 		{
 			this->obj.scale = scale;
 		}
-		inline ~Obj()override {};
+		inline ~Obj()override
+		{
+			if (colision != nullptr)delete colision;
+		};
 		inline std::string GetModelTag()override
 		{
 			return obj.GetModelTag();
 		}
+#ifdef _DEBUG
+		bool flag = false;
+		inline void SetFlag(bool flag)
+		{
+			this->flag = flag;
+		}
+		void GUI();
+		inline unsigned short GetAi()
+		{
+			return 0;
+		}
+#endif
 	};
 }

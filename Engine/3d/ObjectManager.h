@@ -1,7 +1,6 @@
 #pragma once
 #include "ComponentObj.h"
 #include "NormalObj.h"
-#include "PlayerObj.h"
 #include "ICamera.h"
 #include "Camera.h"
 #include "nlohmann/json.hpp"
@@ -478,7 +477,6 @@ namespace IF
 					}
 				}
 			}
-			void InputJson(nlohmann::json& j);
 #ifdef _DEBUG
 			void GUI();
 			std::string GUIRadio();
