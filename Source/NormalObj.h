@@ -3,7 +3,7 @@
 #include "CollisionPrimitive.h"
 namespace IF
 {
-	class UsuallyObj : public CObject
+	class Obj : public CObject
 	{
 	private:
 		Object obj{};
@@ -72,7 +72,7 @@ namespace IF
 		}
 		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)override
 		{
-			UsuallyObj::viewport = viewport;
+			Obj::viewport = viewport;
 		}
 		inline void SetTexture(unsigned short texNum)override
 		{
@@ -102,7 +102,7 @@ namespace IF
 		{
 			this->obj.scale = scale;
 		}
-		inline ~UsuallyObj()override {};
+		inline ~Obj()override {};
 		inline std::string GetModelTag()override
 		{
 			return obj.GetModelTag();

@@ -4,9 +4,9 @@
 using namespace IF;
 using namespace std;
 
-vector<D3D12_VIEWPORT>UsuallyObj::viewport;
+vector<D3D12_VIEWPORT>Obj::viewport;
 
-void IF::UsuallyObj::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode)
+void IF::Obj::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode)
 {
 	SetView(matView);
 	SetProjection(matProjection);
@@ -19,8 +19,10 @@ void IF::UsuallyObj::MatInitialize(Matrix* matView, Matrix* matProjection, Float
 //	obj.Initialize(model);
 //}
 
-void IF::UsuallyObj::Update()
+void IF::Obj::Update()
 {
+
+
 	if (colision != nullptr)
 	{
 		if (ptype == NotPri);
@@ -38,7 +40,7 @@ void IF::UsuallyObj::Update()
 	obj.Update(*matView, *matProjection, *cameraPos, mode);
 }
 
-void IF::UsuallyObj::Draw()
+void IF::Obj::Draw()
 {
 	if (texNum == 0)obj.Draw(viewport);
 	else obj.Draw(viewport, texNum);

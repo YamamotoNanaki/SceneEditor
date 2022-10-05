@@ -478,6 +478,7 @@ namespace IF
 					}
 				}
 			}
+			void InputJson(nlohmann::json& j);
 #ifdef _DEBUG
 			void GUI();
 			std::string GUIRadio();

@@ -26,11 +26,36 @@ void IF::Scene::Initialize()
 
 void IF::Scene::OutputJson(std::string failename)
 {
+	json j;
+	tex->OutputJson(j);
+	objM->OutputJson(j);
 
+	string s = j.dump(4);
+
+	ofstream writing_file;
+	string scene = failename;
+	string txt = ".json";
+	string name = "Data/Scene/";
+	name = name + scene + txt;
+	writing_file.open(name, std::ios::out);
+	writing_file << s << std::endl;
+	writing_file.close();
 }
 #endif
 void IF::Scene::InputJson(std::string failename)
 {
+	objM->Reset();
+	tex->TexReset();
+	std::ifstream reading_file;
+	string scene = failename;
+	string txt = ".json";
+	string name = "Data/Scene/";
+	bool flag = false;
+	name = name + scene + txt;
+	reading_file.open(name, std::ios::in);
+	json j;
+	reading_file >> j;
+	reading_file.close();
 
 }
 
@@ -51,5 +76,5 @@ void IF::Scene::Draw()
 
 void IF::Scene::Delete()
 {
-
+	ObjectManager::DeleteInstance();
 }

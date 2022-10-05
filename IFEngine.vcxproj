@@ -297,7 +297,6 @@
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Fire.cpp" />
     <ClCompile Include="Source\NormalObj.cpp" />
-    <ClCompile Include="Source\PlayerObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Engine\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

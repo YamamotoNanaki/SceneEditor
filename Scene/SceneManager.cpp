@@ -31,7 +31,7 @@ void IF::SceneManager::Draw()
 void IF::SceneManager::Delete()
 {
 #ifdef _DEBUG
-	//scene->OutputJson(now);
+	scene->OutputJson(now);
 #endif
 	scene->Delete();
 }

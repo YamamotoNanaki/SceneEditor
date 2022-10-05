@@ -52,6 +52,11 @@ Primitive* IF::ObjectManager::GetPrimitive(std::string tag)
 	return nullptr;
 }
 
+void IF::ObjectManager::InputJson(nlohmann::json& j)
+{
+
+}
+
 #ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
@@ -91,22 +96,11 @@ std::string IF::ObjectManager::GUIRadio()
 void IF::ObjectManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
-	if (camera->tag == "debug")j["object"]["camera"] = "mainCamera";
-	else j["object"]["camera"] = camera->tag;
+	//if (camera->tag == "debug")j["object"]["camera"] = "mainCamera";
+	//else j["object"]["camera"] = camera->tag;
 	for (auto com : objList)
 	{
-		UsuallyObj* buff = dynamic_cast<UsuallyObj*>(com);
-		PlayerObj* buff1 = dynamic_cast<PlayerObj*>(com);
-		if (buff != nullptr)
-		{
-			j["object"]["object"][i]["type"] = 0;
-			j["object"]["object"][i]["AI"] = com->GetAi();
-		}
-		else if (buff1 != nullptr) j["object"]["object"][i]["type"] = 1;
-		{
-			j["object"]["object"][i]["type"] = 3;
-			j["object"]["object"][i]["AI"] = com->GetAi();
-		}
+		j["object"]["object"][i]["AI"] = com->GetAi();
 		j["object"]["object"][i]["tag"] = com->tag;
 		j["object"]["object"][i]["model"] = com->GetModelTag();
 		j["object"]["object"][i]["pos"]["x"] = com->GetPos().x;

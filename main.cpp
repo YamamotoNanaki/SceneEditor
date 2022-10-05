@@ -37,7 +37,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			DirectX12::Instance()->DrawAfter();
 			fps.FPSFixed();
 		}
-		sceneM->Delete();
 		sceneM->Release();
 		LightManager::DeleteInstance();
 		Input::DeleteInstance();

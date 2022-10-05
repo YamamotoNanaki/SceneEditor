@@ -449,9 +449,6 @@
     <ClCompile Include="Engine\3d\ObjectManager.cpp">
       <Filter>Source Files\Engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerObj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\NormalObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

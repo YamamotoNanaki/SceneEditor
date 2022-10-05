@@ -167,7 +167,7 @@ unsigned short Texture::LoadTexture(const std::string filename)
 	return num;
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 void IF::Texture::GUI()
 {
 	if (!flag)flag = ImGui::ImageButton((ImTextureID)tex[folder].GPUHandle.ptr, { 96,96 });
@@ -241,11 +241,23 @@ void IF::Texture::TexNum(int* texNum)
 		j++;
 	}
 }
-//#endif
+#endif
 
 void IF::Texture::GUIInit()
 {
 	folder = LoadTexture("folder.png");
+}
+
+void IF::Texture::OutputJson(nlohmann::json& j)
+{
+	short i = 0;
+	for (auto buff : tex)
+	{
+		i++;
+		if (textureSize < i)break;
+		if (buff.free == false)continue;
+		j["texture"]["name"][i - 1] = buff.texName;
+	}
 }
 
 void IF::Texture::setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle)

@@ -24,13 +24,9 @@ namespace IF
 	private:
 		//変数宣言
 		//-----------------------
+		ObjectManager* objM = ObjectManager::Instance();
+		Texture* tex = Texture::Instance();
 
-		
-		//デバッグ用
-#ifdef _DEBUG
-		void OutputJson(std::string failename);
-
-#endif // _DEBUG
 
 	public:
 		void InputJson(std::string failename);
@@ -39,5 +35,11 @@ namespace IF
 		void Update();
 		void Draw();
 		void Delete();
+		
+		//デバッグ用
+#ifdef _DEBUG
+		void OutputJson(std::string failename);
+
+#endif // _DEBUG
 	};
 }
