@@ -40,7 +40,7 @@ namespace IF
 		D3D12_RECT scissorrect{};
 
 		// 3ÅDâÊñ ÉNÉäÉA        R  G  B   A
-		float clearColor[4] = { 0 ,0 ,0 ,1.0f };
+		float clearColor[4] = { 0.1f ,0.25f ,0.5f ,1.0f };
 
 	public:
 		static DirectX12* Instance();

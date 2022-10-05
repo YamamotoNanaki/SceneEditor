@@ -14,38 +14,38 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	{
 		const int winWidth = 1280, winHeight = 720;  // 縦幅
 
-		//Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
-		//DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
-		//Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
-		//LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
-		//Sound::Instance()->Initialize();
-		//SceneManager* sceneM = SceneManager::Instance();
-		//sceneM->Initialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(),
-		//	DirectX12::Instance()->viewport, Window::Instance()->hwnd);
-		//FPS fps;
-		//fps.Initialize(60);
+		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
+		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
+		Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
+		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
+		Sound::Instance()->Initialize();
+		SceneManager* sceneM = SceneManager::Instance();
+		sceneM->Initialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(),
+			DirectX12::Instance()->viewport, Window::Instance()->hwnd);
+		FPS fps;
+		fps.Initialize(60);
 
-		//while (true)
-		//{
-		//	//メッセージ
-		//	if (Window::Instance()->Message())break;
+		while (true)
+		{
+			//メッセージ
+			if (Window::Instance()->Message())break;
 
-		//	//sceneM->Update();
+			sceneM->Update();
 
-		//	//DirectX12::Instance()->DrawBefore();
-		//	////sceneM->Draw();
-		//	//DirectX12::Instance()->DrawAfter();
-		//	//fps.FPSFixed();
-		//}
-		//sceneM->Delete();
-		//sceneM->Release();
-		//LightManager::DeleteInstance();
-		//Input::DeleteInstance();
-		//Sound::DeleteInstance();
-		//Graphic::DeleteInstance();
-		//Texture::DeleteInstance();
-		//DirectX12::DeleteInstance();
-		//Window::DeleteInstance();
+			DirectX12::Instance()->DrawBefore();
+			sceneM->Draw();
+			DirectX12::Instance()->DrawAfter();
+			fps.FPSFixed();
+		}
+		sceneM->Delete();
+		sceneM->Release();
+		LightManager::DeleteInstance();
+		Input::DeleteInstance();
+		Sound::DeleteInstance();
+		Graphic::DeleteInstance();
+		Texture::DeleteInstance();
+		DirectX12::DeleteInstance();
+		Window::DeleteInstance();
 	}
 	_CrtDumpMemoryLeaks();
 	return 0;
