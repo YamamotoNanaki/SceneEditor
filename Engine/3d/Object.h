@@ -31,8 +31,8 @@ namespace IF
 		Model* model = nullptr;
 		ConstBuff cb;
 		static LightManager* lightPtr;
-		static ComPtr<ID3D12Device> device;
-		static ComPtr<ID3D12GraphicsCommandList> commandList;
+		static ID3D12Device* device;
+		static ID3D12GraphicsCommandList* commandList;
 
 	public:
 		//定数バッファ
@@ -60,11 +60,11 @@ namespace IF
 		void Draw(vector<D3D12_VIEWPORT> viewport);
 		void Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum);
 		~Object();
-		static inline void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList)
+		static inline void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, LightManager* light)
 		{
 			Object::device = device;
 			Object::commandList = commandList;
-			Object::lightPtr = LightManager::Instance();
+			Object::lightPtr = light;
 		}
 		void SetColor(int r, int g, int b, int a);
 		void SetBright(int r, int g, int b);

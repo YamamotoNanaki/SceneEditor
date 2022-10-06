@@ -10,7 +10,7 @@
 using namespace IF;
 using namespace std;
 
-Microsoft::WRL::ComPtr<ID3D12Device> Model::device = nullptr;
+ID3D12Device* Model::device = nullptr;
 
 bool Model::LoadModel(string name, bool smoothing)
 {
@@ -639,7 +639,7 @@ void IF::Model::CreateRay()
 
 void Model::VIInitialize(bool smoothing, bool normal)
 {
-	vi->Initialize(device.Get(), smoothing, normal);
+	vi->Initialize(device, smoothing, normal);
 }
 
 void IF::Model::SetDevice(ID3D12Device* device)

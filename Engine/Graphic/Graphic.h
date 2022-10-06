@@ -59,7 +59,7 @@ namespace IF
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	private:
 		std::vector<ComPtr<ID3DBlob>>Blobs;
-		static ComPtr < ID3D12Device> device;
+		static ID3D12Device* device;
 
 	public:
 		ComPtr<ID3D12RootSignature> rootsignature;

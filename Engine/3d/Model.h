@@ -29,7 +29,7 @@ namespace IF
 		//定数バッファ
 		ComPtr<ID3D12Resource> constBuffTransform1;
 		ConstBufferMaterial* constMapMaterial = nullptr;
-		static ComPtr<ID3D12Device> device;
+		static ID3D12Device* device;
 		std::string tag;
 
 	public:

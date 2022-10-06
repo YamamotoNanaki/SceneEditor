@@ -28,7 +28,7 @@ namespace IF
 	private:
 		static const short textureMax = 1024;
 		unsigned short textureSize = 0;
-		static ComPtr<ID3D12Device> device;
+		static ID3D12Device* device;
 
 	public:
 		D3D12_DESCRIPTOR_RANGE descRangeSRV{};

@@ -23,6 +23,23 @@ void IF::Scene::Initialize()
 {
 	tex->Initialize();
 	tex->LoadTexture("white.png");
+	graph->Initialize(tex->descRangeSRV, L"Data/Shaders/ModelVS.hlsl", L"Data/Shaders/ModelPS.hlsl", L"Data/Shaders/ModelGS.hlsl");
+	cameraM->Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
+	lightM->Initialize();
+	lightM->DefaultLightSetting();
+	for (int i = 0; i < 3; i++)
+	{
+		lightM->SetDirLightActive(i, true);
+		lightM->SetPointLightActive(i, false);
+		lightM->SetSpotLightActive(i, false);
+	}
+	lightM->SetAmbientColor({ 1, 1, 1 });
+	Object::StaticInitialize(device, commandList, lightM);
+
+	objM->SetCamera(cameraM->GetCamera("mainCamera"));
+#ifdef _DEBUG
+	gui.Initialize(this->hwnd, this->device, tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
+#endif
 }
 #ifdef _DEBUG
 
@@ -75,7 +92,7 @@ void IF::Scene::InputJson(std::string failename)
 	}
 	for (auto i : j["object"]["object"])
 	{
-		objM->Add<Obj>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], i["prefab"]);
+		objM->Add<Obj>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 		objM->SetAi(i["tag"], i["AI"]);
 		objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
@@ -86,18 +103,44 @@ void IF::Scene::InputJson(std::string failename)
 
 void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
 {
+	this->winWidth = winWidth;
+	this->winHeight = winHeight;
+	this->device = device;
+	this->commandList = commandList;
+	this->viewport = viewport;
+	this->hwnd = hwnd;
 	objM->SetViewport(viewport);
 	Texture::setDevice(device);
+	ModelManager::StaticInitialize(device);
+	Graphic::SetDevice(device);
 }
 
 void IF::Scene::Update()
 {
-
+#ifdef _DEBUG
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	NewFrame();
+	objM->GUI();
+#endif
+	cameraM->Update("mainCamera");
+	lightM->Update();
+	objM->Update();
 }
 
 void IF::Scene::Draw()
 {
+	graph->DrawBlendMode(commandList);
+	Object::DrawBefore(graph->rootsignature.Get());
+	objM->SetViewport(viewport);
+	objM->Draw();
+#ifdef _DEBUG
+	ImGui::Render();
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
+	//デバッグ用
+
+#endif // _DEBUG
 }
 
 void IF::Scene::Delete()

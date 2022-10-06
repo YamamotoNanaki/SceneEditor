@@ -9,7 +9,7 @@ using namespace IF;
 using namespace Microsoft::WRL;
 using namespace std;
 
-ComPtr<ID3D12Device> Texture::device = nullptr;
+ID3D12Device* Texture::device = nullptr;
 
 IF::Texture::Texture()
 {

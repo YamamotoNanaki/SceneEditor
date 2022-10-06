@@ -1,8 +1,10 @@
 #include "ObjectManager.h"
+#include "ModelManager.h"
 #include <cassert>
 #include "imgui.h"
 
 using namespace IF;
+using namespace std;
 
 IF::ObjectManager::~ObjectManager()
 {
@@ -56,6 +58,7 @@ Primitive* IF::ObjectManager::GetPrimitive(std::string tag)
 void IF::ObjectManager::GUI()
 {
 	auto buff = objList;
+	ImGui::Begin("Object");
 	for (auto com : buff)
 	{
 		if (ImGui::TreeNode(com->tag.c_str())) {
@@ -68,6 +71,38 @@ void IF::ObjectManager::GUI()
 			ImGui::TreePop();
 		}
 	}
+	if (ImGui::CollapsingHeader("NewObject"))
+	{
+		static char tagC[256];
+		static string tag;
+		static string model;
+		static int board = 0;
+		ImGui::InputText("Tag", tagC, sizeof(tagC));
+		tag = tagC;
+		if (ImGui::TreeNode("setModel"))
+		{
+			model = ModelManager::Instance()->GUIRadio();
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("BillBoard"))
+		{
+			ImGui::RadioButton("NotBillBoard", &board, 0);
+			ImGui::SameLine();
+			ImGui::RadioButton("BillBoard", &board, 1);
+			ImGui::SameLine();
+			ImGui::RadioButton("YBillBoard", &board, 2);
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("AI"))
+		{
+			ImGui::TreePop();
+		}
+		if (ImGui::Button("Add"))
+		{
+			Add<Obj>(ModelManager::Instance()->GetModel(model), tag, board);
+		}
+	}
+	ImGui::End();
 }
 
 std::string IF::ObjectManager::GUIRadio()

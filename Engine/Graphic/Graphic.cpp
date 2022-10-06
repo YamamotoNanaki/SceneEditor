@@ -6,7 +6,7 @@ using namespace std;
 using namespace IF;
 using namespace Microsoft::WRL;
 
-ComPtr< ID3D12Device> Graphic::device = nullptr;
+ID3D12Device* Graphic::device = nullptr;
 
 void IF::Graphic::SetDevice(ID3D12Device* device)
 {

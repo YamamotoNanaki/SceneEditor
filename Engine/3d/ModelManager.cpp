@@ -5,8 +5,17 @@ using namespace IF;
 
 IF::ModelManager::~ModelManager()
 {
+	for (auto buff : modelList)
+	{
+		delete buff;
+	}
 	modelList.clear();
 	assert(modelList.empty() && "インスタンスを破棄できません");
+}
+
+void IF::ModelManager::StaticInitialize(ID3D12Device* device)
+{
+	Model::SetDevice(device);
 }
 
 ModelManager* IF::ModelManager::Instance()

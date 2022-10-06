@@ -11,8 +11,8 @@ using namespace IF::BillBoard;
 using namespace Microsoft::WRL;
 
 LightManager* Object::lightPtr = nullptr;
-ComPtr<ID3D12Device> Object::device = nullptr;
-ComPtr<ID3D12GraphicsCommandList> Object::commandList = nullptr;
+ID3D12Device* Object::device = nullptr;
+ID3D12GraphicsCommandList* Object::commandList = nullptr;
 
 void IF::Object::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology)
 {
@@ -53,7 +53,7 @@ void IF::Object::Initialize(Model* model)
 
 	this->model = model;
 
-	cb.Initialize(device.Get());
+	cb.Initialize(device);
 }
 
 void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int mode)
@@ -96,7 +96,7 @@ void Object::Draw(vector<D3D12_VIEWPORT> viewport)
 
 	lightPtr->Draw(4);
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
-	model->Draw(Object::commandList.Get(), viewport, constBuffTransform.Get());
+	model->Draw(Object::commandList, viewport, constBuffTransform.Get());
 }
 
 void IF::Object::Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
@@ -109,7 +109,7 @@ void IF::Object::Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
 
 	lightPtr->Draw(4);
 
-	model->Draw(Object::commandList.Get(), viewport, constBuffTransform.Get(), texNum);
+	model->Draw(Object::commandList, viewport, constBuffTransform.Get(), texNum);
 }
 
 Object::~Object()

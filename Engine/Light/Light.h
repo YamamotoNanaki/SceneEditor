@@ -31,8 +31,8 @@ namespace IF
 		};
 
 	private:
-		static ComPtr < ID3D12Device> device;
-		static ComPtr < ID3D12GraphicsCommandList> commandList;
+		static ID3D12Device* device;
+		static ID3D12GraphicsCommandList* commandList;
 		ComPtr<ID3D12Resource> constBuff;
 		Float3 ambientColor = { 1,1,1 };
 		DLight dLight[DLightNum];
@@ -43,7 +43,7 @@ namespace IF
 		LightManager() {};
 		LightManager(const LightManager&) {};
 		LightManager& operator=(const LightManager&) {};
-		inline ~LightManager() {}
+		~LightManager() { UnMap(); }
 
 	public:
 		static void SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList);

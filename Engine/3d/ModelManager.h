@@ -14,6 +14,7 @@ namespace IF
 		ModelManager& operator=(const ModelManager&) {}
 
 	public:
+		static void StaticInitialize(ID3D12Device* device);
 		static ModelManager* Instance();
 		static void DeleteInstance();
 		inline bool Load(std::string tag, bool smoothing, std::string name)
@@ -110,9 +111,9 @@ namespace IF
 			return texNum;
 		}
 		void OutputJson(nlohmann::json& j);
-//#ifdef _DEBUG
+#ifdef _DEBUG
 		void GUI(bool* flag, std::string* tag);
 		std::string GUIRadio();
-//#endif
+#endif
 	};
 }

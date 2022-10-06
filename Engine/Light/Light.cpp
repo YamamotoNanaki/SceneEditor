@@ -4,8 +4,8 @@
 using namespace IF;
 using namespace Microsoft::WRL;
 
-ComPtr<ID3D12Device> IF::LightManager::device = nullptr;
-ComPtr<ID3D12GraphicsCommandList> IF::LightManager::commandList = nullptr;
+ID3D12Device* IF::LightManager::device = nullptr;
+ID3D12GraphicsCommandList* IF::LightManager::commandList = nullptr;
 
 void IF::LightManager::SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList)
 {

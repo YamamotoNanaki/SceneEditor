@@ -1,5 +1,5 @@
 {
-    "model": [
+	"model": [
         {
             "name": "skydome",
             "smooth": false,
@@ -7,11 +7,10 @@
             "tex": 2,
             "type": 0
         }
-    ],
-    "object": {
+	],
+	"object": {
         "object": [
             {
-                "AI": 0,
                 "BillBoard": 0,
                 "collision": 65535,
                 "model": "dome",
@@ -20,7 +19,6 @@
                     "y": 0.0,
                     "z": 0.0
                 },
-                "prefab": false,
                 "rot": {
                     "x": 0.0,
                     "y": 0.0,
@@ -31,14 +29,14 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "tag": "dome"
+                "tag": "dome",
+                "AI": 0
             }
         ]
     },
     "texture": {
         "name": [
-            "white.png",
-            "Fine_Basin.jpg"
+            "white.png"
         ]
     }
 }
