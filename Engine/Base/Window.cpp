@@ -1,11 +1,12 @@
 #include "Window.h"
 #include "imgui_impl_win32.h"
+#include "Debug.h"
 
 using namespace IF;
 
 Window* IF::Window::Instance()
 {
-	static Window* inst = new Window;
+	static Window* inst = DEBUG_NEW Window;
 	return inst;
 }
 

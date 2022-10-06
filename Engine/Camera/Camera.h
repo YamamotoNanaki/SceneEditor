@@ -3,6 +3,7 @@
 #include "Projection.h"
 #include "ICamera.h"
 #include "Timer.h"
+#include "Debug.h"
 
 namespace IF
 {
@@ -45,8 +46,8 @@ namespace IF
 		Camera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)
 		{
-			matPro = new Projection(fovAngle, winWidth, winHeight);
-			matView = new View;
+			matPro = DEBUG_NEW Projection(fovAngle, winWidth, winHeight);
+			matView = DEBUG_NEW View;
 			//matView->target = { 0,2,0 };
 			//matView->eye = { 0,1,-10 };
 			matView->Update();

@@ -68,7 +68,7 @@ namespace IF
 		}
 		template <class T> inline T* Add(Model* model, std::string tag, int mode = BillBoard::NOON, bool prefab = false)
 		{
-			T* obj = new T;
+			T* obj = DEBUG_NEW T;
 			obj->Initialize(model, prefab);
 			BillBoard::BillBoardMode a = BillBoard::NOON;
 			if (mode == BillBoard::BILLBOARD)
@@ -87,7 +87,7 @@ namespace IF
 		}
 		template <class T> inline T* CopyAdd(std::string copytag, std::string addtag, bool prefab = false)
 		{
-			T* obj = new T;
+			T* obj = DEBUG_NEW T;
 			for (auto com : objList)
 			{
 				if (com->tag == copytag)

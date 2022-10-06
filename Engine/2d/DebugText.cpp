@@ -1,10 +1,11 @@
 #include "DebugText.h"
+#include "Debug.h"
 
 using namespace IF;
 
 DebugText* IF::DebugText::Instance()
 {
-	static DebugText* inst = new DebugText;
+	static DebugText* inst = DEBUG_NEW DebugText;
 	return inst;
 }
 

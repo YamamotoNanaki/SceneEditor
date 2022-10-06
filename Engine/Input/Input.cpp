@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Debug.h"
 #include <cassert>
 
 using namespace IF;
@@ -20,7 +21,7 @@ Input::Input()
 
 Input* IF::Input::Instance()
 {
-	static Input* inst = new Input;
+	static Input* inst = DEBUG_NEW Input;
 	return inst;
 }
 

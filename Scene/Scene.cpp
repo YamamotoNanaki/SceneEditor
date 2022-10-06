@@ -147,4 +147,5 @@ void IF::Scene::Delete()
 {
 	ObjectManager::DeleteInstance();
 	ModelManager::DeleteInstance();
+	CameraManager::DeleteInstance();
 }

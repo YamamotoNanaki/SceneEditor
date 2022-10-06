@@ -1,4 +1,5 @@
 #include "Sound.h"
+#include "Debug.h"
 #include <cassert>
 
 using namespace IF;
@@ -59,7 +60,7 @@ unsigned short IF::Sound::LoadWave(std::string filename)
 	}
 	if (strncmp(data.id, "data ", 4) != 0)assert(0 && "データの確認に失敗しました");
 
-	char* pBuffer = new char[data.size];
+	char* pBuffer = DEBUG_NEW char[data.size];
 	file.read(pBuffer, data.size);
 
 	file.close();
@@ -103,7 +104,7 @@ void IF::Sound::SoundPlay(unsigned short soundNum, bool roop)
 
 Sound* IF::Sound::Instance()
 {
-	static Sound* inst = new Sound;
+	static Sound* inst = DEBUG_NEW Sound;
 	return inst;
 }
 

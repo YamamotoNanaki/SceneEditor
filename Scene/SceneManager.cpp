@@ -3,6 +3,7 @@
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
+#include "Debug.h"
 
 using namespace IF;
 using namespace std;
@@ -86,7 +87,7 @@ void IF::SceneManager::Next(unsigned short nextNum)
 
 SceneManager* IF::SceneManager::Instance()
 {
-	static SceneManager* inst = new SceneManager;
+	static SceneManager* inst = DEBUG_NEW SceneManager;
 	return inst;
 }
 

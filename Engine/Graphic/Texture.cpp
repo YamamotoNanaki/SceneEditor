@@ -3,6 +3,7 @@
 #include <d3d12.h>
 #include "Input.h"
 #include "ImGui.h"
+#include "Debug.h"
 
 using namespace DirectX;
 using namespace IF;
@@ -22,7 +23,7 @@ IF::Texture::Texture()
 
 Texture* IF::Texture::Instance()
 {
-	static Texture* inst = new Texture;
+	static Texture* inst = DEBUG_NEW Texture;
 	return inst;
 }
 

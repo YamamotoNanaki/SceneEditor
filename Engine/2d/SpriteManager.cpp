@@ -10,7 +10,7 @@ IF::SpriteManager::~SpriteManager()
 
 SpriteManager* IF::SpriteManager::Instance()
 {
-	static SpriteManager* inst = new SpriteManager;
+	static SpriteManager* inst = DEBUG_NEW SpriteManager;
 	return inst;
 }
 

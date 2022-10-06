@@ -1,5 +1,6 @@
 #include "DirectX12.h"
 #include <cassert>
+#include "Debug.h"
 
 using namespace Microsoft::WRL;
 using namespace std;
@@ -7,7 +8,7 @@ using namespace IF;
 
 DirectX12* IF::DirectX12::Instance()
 {
-	static DirectX12* inst = new DirectX12;
+	static DirectX12* inst = DEBUG_NEW DirectX12;
 
 	return inst;
 }

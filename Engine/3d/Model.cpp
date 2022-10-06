@@ -6,6 +6,7 @@
 #include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Debug.h"
 
 using namespace IF;
 using namespace std;
@@ -14,7 +15,7 @@ ID3D12Device* Model::device = nullptr;
 
 bool Model::LoadModel(string name, bool smoothing)
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	const string modelname = name;
 	const string filename = modelname + ".obj";
 	const string directory = "Data/Resources/" + modelname + "/";
@@ -203,7 +204,7 @@ bool Model::LoadModel(string name, bool smoothing)
 
 void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	type = CREATE_CUBE;
 	const float size = 1;
 
@@ -302,7 +303,7 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 
 void IF::Model::CreatePolygonSquare(unsigned short texNum, bool smoothing)
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	type = CREATE_POLYGON_SQUARE;
 	const float size = 1;
 
@@ -361,7 +362,7 @@ void IF::Model::CreatePolygonSquare(unsigned short texNum, bool smoothing)
 
 void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	type = CREATE_TRIANGLE;
 
 	Vertex vertices[] = {
@@ -417,7 +418,7 @@ void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
 
 void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	const int DIV = 64;
 	const float radius = 0.5f;
 	type = CREATE_CIRCLE;
@@ -479,7 +480,7 @@ void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
 
 void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	const int DIV = 64;
 	const float radius = 1.0f;
 	type = CREATE_SPHERE;
@@ -589,7 +590,7 @@ void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 
 void IF::Model::CreateRay()
 {
-	vi = new MVI;
+	vi = DEBUG_NEW MVI;
 	type = CREATE_RAY;
 
 	Vertex vertices[] =

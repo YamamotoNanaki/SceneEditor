@@ -1,6 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include "Camera.h"
+#include "Debug.h"
 #include "nlohmann/json.hpp"
 #include <list>
 
@@ -30,7 +31,7 @@ namespace IF
 		}
 		inline void Add(unsigned short texNum, std::string tag)
 		{
-			Sprite* spr = new Sprite;
+			Sprite* spr = DEBUG_NEW Sprite;
 			spr->Initialize(texNum);
 			spr->tag = tag;
 			spriteList.push_back(spr);

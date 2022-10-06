@@ -3,6 +3,7 @@
 #include "Projection.h"
 #include "ICamera.h"
 #include "IFMath.h"
+#include "Debug.h"
 
 namespace IF
 {
@@ -38,8 +39,8 @@ namespace IF
 		DebugCamera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)
 		{
-			matPro = new Projection(fovAngle, winWidth, winHeight);
-			matView = new View;
+			matPro = DEBUG_NEW Projection(fovAngle, winWidth, winHeight);
+			matView = DEBUG_NEW View;
 			matView->eye = { 1,1,-5.0f };
 			matView->Update();
 		}

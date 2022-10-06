@@ -1,5 +1,6 @@
 #pragma once
 #include "ComponentObj.h"
+#include "Debug.h"
 #include "CollisionPrimitive.h"
 
 namespace IF
@@ -20,17 +21,17 @@ namespace IF
 		{
 			if (type == RayPri)
 			{
-				colision = new Ray;
+				colision = DEBUG_NEW Ray;
 				ptype = RayPri;
 			}
 			else if (type == PlanePri)
 			{
-				colision = new Plane;
+				colision = DEBUG_NEW Plane;
 				ptype = PlanePri;
 			}
 			else if (type == SpherePri)
 			{
-				colision = new Sphere;
+				colision = DEBUG_NEW Sphere;
 				ptype = SpherePri;
 			}
 			else

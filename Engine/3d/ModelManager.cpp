@@ -1,5 +1,6 @@
 #include "ModelManager.h"
 #include "imgui.h"
+#include "Debug.h"
 
 using namespace IF;
 
@@ -20,7 +21,7 @@ void IF::ModelManager::StaticInitialize(ID3D12Device* device)
 
 ModelManager* IF::ModelManager::Instance()
 {
-	static ModelManager* inst = new ModelManager;
+	static ModelManager* inst = DEBUG_NEW ModelManager;
 	return inst;
 }
 

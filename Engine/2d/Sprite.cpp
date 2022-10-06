@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include <cassert>
 #include "Texture.h"
+#include "Debug.h"
 #include "imgui.h"
 
 using namespace IF;
@@ -34,7 +35,7 @@ void IF::Sprite::SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandLis
 
 void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool flipY)
 {
-	vi = new SV;
+	vi = DEBUG_NEW SV;
 
 	this->texNum = texNum;
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "ICamera.h"
 #include "Camera.h"
+#include "Debug.h"
 #include "nlohmann/json.hpp"
 #include <list>
 #include <vector>
@@ -59,7 +60,7 @@ namespace IF
 		}
 		static CameraManager* Instance()
 		{
-			static CameraManager* inst = new CameraManager;
+			static CameraManager* inst = DEBUG_NEW CameraManager;
 			return inst;
 		}
 		static void DeleteInstance()
@@ -72,7 +73,7 @@ namespace IF
 			{
 				if (com->tag == tag)return;
 			}
-			T* camera = new T;
+			T* camera = DEBUG_NEW T;
 			camera->Initialize(fovAngle, winWidth, winHeight);
 			camera->SetTag(tag);
 			cameraList.push_back(camera);

@@ -1,6 +1,7 @@
 #include "Graphic.h"
 #include <cassert>
 #include <d3dcompiler.h>
+#include "Debug.h"
 
 using namespace std;
 using namespace IF;
@@ -15,7 +16,7 @@ void IF::Graphic::SetDevice(ID3D12Device* device)
 
 Graphic* IF::Graphic::Instance()
 {
-	static Graphic* inst = new Graphic;
+	static Graphic* inst = DEBUG_NEW Graphic;
 	return inst;
 }
 

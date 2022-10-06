@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "nlohmann/json.hpp"
+#include "Debug.h"
 
 namespace IF
 {
@@ -26,7 +27,7 @@ namespace IF
 					return true;
 				}
 			}
-			Model* model = new Model;
+			Model* model = DEBUG_NEW Model;
 			if (!model->LoadModel(name, smoothing))return false;
 			model->SetTag(tag);
 			modelList.push_back(model);
@@ -34,7 +35,7 @@ namespace IF
 		}
 		inline void Create(std::string tag, bool smoothing, unsigned short texNum, unsigned short mode)
 		{
-			Model* model = new Model;
+			Model* model = DEBUG_NEW Model;
 			if (mode == CREATE_CUBE)model->CreateCube(texNum, smoothing);
 			else if (mode == CREATE_TRIANGLE)model->CreateTriangle(texNum, smoothing);
 			else if (mode == CREATE_CIRCLE)model->CreateCircle(texNum, smoothing);

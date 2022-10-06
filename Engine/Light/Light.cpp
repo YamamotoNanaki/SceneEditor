@@ -1,5 +1,6 @@
 #include "Light.h"
 #include <cassert>
+#include "Debug.h"
 
 using namespace IF;
 using namespace Microsoft::WRL;
@@ -273,7 +274,7 @@ void IF::LightManager::Draw(UINT rootParameterIndex)
 
 LightManager* IF::LightManager::Instance()
 {
-	static LightManager* instance = new LightManager;
+	static LightManager* instance = DEBUG_NEW LightManager;
 	return instance;
 }
 

@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 #include <cassert>
 #include "imgui.h"
+#include "Debug.h"
 
 using namespace IF;
 using namespace std;
@@ -15,7 +16,7 @@ IF::ObjectManager::~ObjectManager()
 
 IF::ObjectManager* IF::ObjectManager::Instance()
 {
-	static ObjectManager* inst = new ObjectManager;
+	static ObjectManager* inst = DEBUG_NEW ObjectManager;
 	return inst;
 }
 
