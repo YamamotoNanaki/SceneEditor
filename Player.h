@@ -2,9 +2,10 @@
 #include "ComponentObj.h"
 #include "CollisionPrimitive.h"
 #include "Debug.h"
+#include <string>
 namespace IF
 {
-	class Normal : public CObject
+	class Player : public CObject
 	{
 	private:
 		static const std::string objName;
@@ -19,10 +20,22 @@ namespace IF
 		bool prefab = false;
 		bool deleteFlag = false;
 	public:
+		//アップデート関数
+		void GameUpdate();
+		void SetCollision();
+		void MatrixUpdate();
+		//当たった時の処理
+		void IsEnemyHitNotWeak();
+		void IsEnemyHitWakPoint();
+		void CollisionObject();
+
+
+
 		const std::string GetObjName()
 		{
 			return objName;
 		}
+		static const std::string GetObjectName() { return objName; };
 		inline void SetAlpha(float a)
 		{
 			obj.SetAlpha(a);
@@ -105,7 +118,7 @@ namespace IF
 		}
 		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)override
 		{
-			Normal::viewport = viewport;
+			Player::viewport = viewport;
 		}
 		inline void SetTexture(unsigned short texNum)override
 		{
@@ -135,7 +148,7 @@ namespace IF
 		{
 			this->obj.scale = scale;
 		}
-		inline ~Normal()override
+		inline ~Player()override
 		{
 			if (colision != nullptr)delete colision;
 		};
@@ -157,3 +170,5 @@ namespace IF
 #endif
 	};
 }
+
+

@@ -6,6 +6,7 @@
 #include "nlohmann/json.hpp"
 #include "Collision.h"
 #include <list>
+#include "Player.h"
 
 namespace IF
 {

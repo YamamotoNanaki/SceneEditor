@@ -91,8 +91,8 @@ void IF::Scene::InputJson(std::string failename)
 	}
 	for (auto i : j["object"]["object"])
 	{
-		objM->Add<Obj>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
-		objM->SetAi(i["tag"], i["AI"]);
+		if ("Normal" == i["ObjectName"])objM->Add<Normal>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
+		else if ("Player" == i["ObjectName"])objM->Add<Player>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 		objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM->SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);

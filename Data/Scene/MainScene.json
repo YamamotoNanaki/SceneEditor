@@ -11,8 +11,8 @@
     "object": {
         "object": [
             {
-                "AI": 0,
                 "BillBoard": 0,
+                "ObjectName": "Normal",
                 "collision": 65535,
                 "model": "dome",
                 "pos": {

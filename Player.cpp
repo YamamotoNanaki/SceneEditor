@@ -1,4 +1,4 @@
-#include "NormalObj.h"
+#include "Player.h"
 #include "imgui.h"
 #include "ObjectManager.h"
 #include "CameraManager.h"
@@ -8,36 +8,17 @@
 using namespace IF;
 using namespace std;
 
-vector<D3D12_VIEWPORT>Normal::viewport;
-const std::string Normal::objName = "Normal";
+vector<D3D12_VIEWPORT>Player::viewport;
+const std::string Player::objName = "Player";
 
 
-void IF::Normal::DeleteObj()
+void IF::Player::GameUpdate()
 {
-	if (deleteFlag)
-	{
-		ObjectManager::Instance()->Delete(tag);
-	}
+
 }
 
-void IF::Normal::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode)
+void IF::Player::SetCollision()
 {
-	SetView(matView);
-	SetProjection(matProjection);
-	SetCamera(cameraPos);
-	SetBillBoard(mode);
-}
-
-void IF::Normal::Initialize(Model* model, bool prefab)
-{
-	obj.Initialize(model);
-	this->prefab = prefab;
-}
-
-void IF::Normal::Update()
-{
-
-
 	if (colision != nullptr)
 	{
 		if (ptype == NotPri);
@@ -52,10 +33,57 @@ void IF::Normal::Update()
 			colision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f);
 		}
 	}
+}
+
+void IF::Player::MatrixUpdate()
+{
 	obj.Update(*matView, *matProjection, *cameraPos, mode);
 }
 
-void IF::Normal::Draw()
+void IF::Player::IsEnemyHitNotWeak()
+{
+}
+
+void IF::Player::IsEnemyHitWakPoint()
+{
+}
+
+void IF::Player::CollisionObject()
+{
+}
+
+void IF::Player::DeleteObj()
+{
+	if (deleteFlag)
+	{
+		ObjectManager::Instance()->Delete(tag);
+	}
+}
+
+void IF::Player::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, BillBoard::BillBoardMode mode)
+{
+	SetView(matView);
+	SetProjection(matProjection);
+	SetCamera(cameraPos);
+	SetBillBoard(mode);
+}
+
+void IF::Player::Initialize(Model* model, bool prefab)
+{
+	obj.Initialize(model);
+	this->prefab = prefab;
+}
+
+void IF::Player::Update()
+{
+
+	GameUpdate();
+	SetCollision();
+	MatrixUpdate();
+
+}
+
+void IF::Player::Draw()
 {
 	if (prefab)return;
 	if (texNum == 0)obj.Draw(viewport);
@@ -64,7 +92,7 @@ void IF::Normal::Draw()
 
 
 #ifdef _DEBUG
-void IF::Normal::GUI()
+void IF::Player::GUI()
 {
 	if (ImGui::TreeNode("Position"))
 	{

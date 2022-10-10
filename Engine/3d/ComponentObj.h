@@ -38,6 +38,7 @@ namespace IF
 		virtual Primitive* GetPrimitive() = 0;
 		virtual void SetAi(unsigned short ai) = 0;
 		virtual void DeleteObj() = 0;
+		virtual const std::string GetObjName() = 0;
 #ifdef _DEBUG
 		virtual void SetFlag(bool flag) = 0;
 		virtual void GUI() = 0;

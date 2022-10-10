@@ -128,7 +128,7 @@ unsigned short Texture::LoadTexture(const std::string filename)
 		nullptr,
 		IID_PPV_ARGS(&newtex.texbuff));
 
-	if (newtex.texbuff == nullptr)return 0;
+	if (newtex.texbuff == nullptr)return -1;
 
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
@@ -199,16 +199,33 @@ void IF::Texture::GUI()
 				ImGui::Image((ImTextureID)tex[num].GPUHandle.ptr, { 96,96 });
 				if (ImGui::CollapsingHeader("ChangeTexture"))
 				{
+					static int error = 0;
+					if (error)ImGui::Text("Error : %s", error == 1 ? "input == \\0" : "texBuff == nullptr");
 					static char c[256];
 					ImGui::InputText("LoadTextureHandle", c, sizeof(c));
 					if (ImGui::Button("Change"))
 					{
-						tex[num].texbuff.Reset();
-						tex[num].CPUHandle.ptr = 0;
-						tex[num].GPUHandle.ptr = 0;
-						tex[num].texName.clear();
-						tex[num].free = false;
-						LoadTexture(c);
+						string s = c;
+						if (s == "\0")
+						{
+							error = 1;
+						}
+						else
+						{
+							tex[num].texbuff.Reset();
+							tex[num].CPUHandle.ptr = 0;
+							tex[num].GPUHandle.ptr = 0;
+							string texname = tex[num].texName;
+							tex[num].texName.clear();
+							tex[num].free = false;
+							int num = LoadTexture(s);
+							if (num == 65535)
+							{
+								error = 2;
+								LoadTexture(texname);
+							}
+							else error = 0;
+						}
 					}
 				}
 				//ƒGƒ‰[‚ª‹N‚±‚é‚Ì‚Å‚Æ‚è‚ ‚¦‚¸“€Œ‹
@@ -233,12 +250,22 @@ void IF::Texture::GUI()
 			static bool flag = false;
 			static unsigned short num = 0;
 			static Timer t;
+			static bool error = false;
+			if (error)ImGui::Text("Error : texBuff == nullptr");
 			ImGui::InputText("LoadTextureHandle", c, sizeof(c));
 			if (ImGui::Button("Add"))
 			{
 				num = LoadTexture(c);
-				flag = true;
-				t.Set(240);
+				if (num == 65535)
+				{
+					error = true;
+				}
+				else
+				{
+					error = false;
+					flag = true;
+					t.Set(240);
+				}
 			}
 			if (flag)
 			{

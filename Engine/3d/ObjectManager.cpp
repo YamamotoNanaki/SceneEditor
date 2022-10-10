@@ -78,6 +78,7 @@ void IF::ObjectManager::GUI()
 		static string tag;
 		static string model;
 		static int board = 0;
+		static int objn = 0;
 		ImGui::InputText("Tag", tagC, sizeof(tagC));
 		tag = tagC;
 		if (ImGui::TreeNode("setModel"))
@@ -94,13 +95,16 @@ void IF::ObjectManager::GUI()
 			ImGui::RadioButton("YBillBoard", &board, 2);
 			ImGui::TreePop();
 		}
-		if (ImGui::TreeNode("AI"))
+		if (ImGui::TreeNode("ObjectName"))
 		{
+			ImGui::RadioButton("Normel", &objn, 0);
+			ImGui::RadioButton("Player", &objn, 1);
 			ImGui::TreePop();
 		}
 		if (ImGui::Button("Add"))
 		{
-			Add<Obj>(ModelManager::Instance()->GetModel(model), tag, board);
+			if (objn == 0)Add<Normal>(ModelManager::Instance()->GetModel(model), tag, board);
+			if (objn == 1)Add<Player>(ModelManager::Instance()->GetModel(model), tag, board);
 		}
 	}
 	ImGui::End();
@@ -131,7 +135,7 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 	//else j["object"]["camera"] = camera->tag;
 	for (auto com : objList)
 	{
-		j["object"]["object"][i]["AI"] = com->GetAi();
+		j["object"]["object"][i]["ObjectName"] = com->GetObjName();
 		j["object"]["object"][i]["tag"] = com->tag;
 		j["object"]["object"][i]["model"] = com->GetModelTag();
 		j["object"]["object"][i]["pos"]["x"] = com->GetPos().x;

@@ -82,7 +82,7 @@ void IF::ModelManager::GUI()
 	{
 		static int smoot = 0;
 		static int loadMode = 0;
-		static int texNum = 0;
+		static int texNum = 1;
 		static char tag[256];
 		static char fName[256];
 		ImGui::InputText("Tag", tag, sizeof(tag));

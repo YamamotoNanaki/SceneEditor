@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -172,6 +172,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Engine\2d\DebugText.h" />
     <ClInclude Include="Engine\2d\GUI.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Engine\Other\Timer.h" />
     <ClInclude Include="Engine\Other\Util.h" />
     <ClInclude Include="Engine\Sound\Sound.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
@@ -238,6 +240,7 @@
     <ClInclude Include="Source\NormalObj.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Engine\2d\DebugText.cpp" />
     <ClCompile Include="Engine\2d\GUI.cpp" />
     <ClCompile Include="Engine\2d\Sprite.cpp" />
@@ -292,6 +295,7 @@
     <ClCompile Include="Engine\Other\Util.cpp" />
     <ClCompile Include="Engine\Sound\Sound.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Fire.cpp" />

@@ -109,6 +109,12 @@
     <Filter Include="Header Files\Engine\Collision">
       <UniqueIdentifier>{efd67f1d-d680-4068-aeb0-e664ecf470dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameClass">
+      <UniqueIdentifier>{3ae91cf8-d2c9-4f7a-a2bb-f4a0838c0e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameClass">
+      <UniqueIdentifier>{1fe34489-f91b-40fe-9006-bfe6f38fcc9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\Sprite.h">
@@ -303,6 +309,12 @@
     <ClInclude Include="Engine\Base\Component.h">
       <Filter>Header Files\Engine\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\GameClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files\GameClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -469,6 +481,12 @@
     </ClCompile>
     <ClCompile Include="Engine\2d\SpriteManager.cpp">
       <Filter>Source Files\Engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\GameClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\GameClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
