@@ -121,6 +121,10 @@ void IF::Object::SetColor(int r, int g, int b, int a)
 {
 	cb.SetColor(r, g, b, a);
 }
+void IF::Object::SetColorF(float r, float g, float b, float a)
+{
+	cb.SetColor(r, g, b, a);
+}
 
 void IF::Object::SetBright(int r, int g, int b)
 {

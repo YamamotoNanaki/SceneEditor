@@ -14,6 +14,12 @@
                 "BillBoard": 0,
                 "ObjectName": "Normal",
                 "collision": 65535,
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
                 "model": "dome",
                 "pos": {
                     "x": 0.0,

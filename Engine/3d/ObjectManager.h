@@ -284,6 +284,17 @@ namespace IF
 				}
 			}
 		}
+		inline void SetColor(Float4 color, std::string tag)
+		{
+			for (auto com : objList)
+			{
+				if (com->tag == tag)
+				{
+					com->SetColor(color);
+					return;
+				}
+			}
+		}
 		inline Float3 GetScale(std::string tag)
 		{
 			for (auto com : objList)

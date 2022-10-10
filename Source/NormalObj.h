@@ -27,12 +27,10 @@ namespace IF
 		{
 			obj.SetAlpha(a);
 		}
-		Float4 color;
-		short num = 0;
 		void DeleteObj();
-		inline void SetColor(int r, int g, int b, int a)
+		inline void SetColor(Float4 color)override
 		{
-			obj.SetColor(r, g, b, a);
+			obj.SetColorF(color.x, color.y, color.z, color.w);
 		}
 		inline void SetAi(unsigned short ai)
 		{
@@ -142,6 +140,10 @@ namespace IF
 		inline std::string GetModelTag()override
 		{
 			return obj.GetModelTag();
+		}
+		inline Float4 GetColor()override
+		{
+			return obj.GetColor();
 		}
 #ifdef _DEBUG
 		bool flag = false;

@@ -96,6 +96,8 @@ void IF::Scene::InputJson(std::string failename)
 		objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM->SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
+		Float4 f = { i["color"]["x"],i["color"]["y"],i["color"]["z"],i["color"]["w"] };
+		objM->SetColor(f, i["tag"]);
 		objM->SetCollision(i["collision"], i["tag"]);
 	}
 }

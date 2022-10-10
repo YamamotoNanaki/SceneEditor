@@ -67,6 +67,11 @@ namespace IF
 			Object::lightPtr = light;
 		}
 		void SetColor(int r, int g, int b, int a);
+		void SetColorF(float r, float g, float b, float a);
+		inline Float4 GetColor()
+		{
+			return cb.GetColor();
+		}
 		void SetBright(int r, int g, int b);
 		void SetAlpha(int a);
 

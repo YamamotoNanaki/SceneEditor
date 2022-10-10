@@ -39,6 +39,8 @@ namespace IF
 		virtual void SetAi(unsigned short ai) = 0;
 		virtual void DeleteObj() = 0;
 		virtual const std::string GetObjName() = 0;
+		virtual Float4 GetColor() = 0;
+		virtual void SetColor(Float4 color) = 0;
 #ifdef _DEBUG
 		virtual void SetFlag(bool flag) = 0;
 		virtual void GUI() = 0;

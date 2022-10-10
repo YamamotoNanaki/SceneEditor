@@ -92,6 +92,13 @@ void IF::Normal::GUI()
 		obj.scale = { s[0], s[1], s[2] };
 		ImGui::TreePop();
 	}
+	if (ImGui::TreeNode("Color"))
+	{
+		static float s[4] = { obj.GetColor().x,obj.GetColor().y,obj.GetColor().z,obj.GetColor().w };
+		ImGui::ColorEdit4("", s);
+		obj.SetColorF(s[0], s[1], s[2], s[3]);
+		ImGui::TreePop();
+	}
 	if (ImGui::TreeNode("Collision"))
 	{
 		static int type = NotPri;

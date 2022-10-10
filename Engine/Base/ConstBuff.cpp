@@ -2,6 +2,8 @@
 #include "Util.h"
 #include <cassert>
 
+using namespace IF;
+
 void IF::ConstBuff::Initialize(ID3D12Device* device)
 {
 	HRESULT result;
@@ -73,4 +75,19 @@ void IF::ConstBuff::SetColor(int red, int green, int blue, int alpha)
 	if (alpha != A)a = TypeConversionByte(alpha);
 	R = red, G = green, B = blue, A = alpha;
 	constMapMaterial->color = Float4(r, g, b, a);					//RGBAÇ≈îºìßñæÇÃê‘
+}
+void IF::ConstBuff::SetColor(float red, float green, float blue, float alpha)
+{
+	if (red == r && green == g && blue == b && alpha == a) return;
+	r = red, g = green, b = blue, a = alpha;
+	if (red != r)R = TypeConversion255(red);
+	if (green != g)G = TypeConversion255(green);
+	if (blue != b)B = TypeConversion255(blue);
+	if (alpha != a)A = TypeConversion255(alpha);
+	constMapMaterial->color = Float4(r, g, b, a);					//RGBAÇ≈îºìßñæÇÃê‘
+}
+
+Float4 IF::ConstBuff::GetColor()
+{
+		return Float4(r, g, b, a);
 }

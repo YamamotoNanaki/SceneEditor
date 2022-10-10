@@ -31,17 +31,19 @@ namespace IF
 
 
 
+		inline void SetAlpha(float a)
+		{
+			obj.SetAlpha(a);
+		}
 		const std::string GetObjName()
 		{
 			return objName;
 		}
 		static const std::string GetObjectName() { return objName; };
-		inline void SetAlpha(float a)
+		inline void SetColor(Float4 color)override
 		{
-			obj.SetAlpha(a);
+			obj.SetColorF(color.x, color.y, color.z, color.w);
 		}
-		Float4 color;
-		short num = 0;
 		void DeleteObj();
 		inline void SetColor(int r, int g, int b, int a)
 		{
@@ -155,6 +157,10 @@ namespace IF
 		inline std::string GetModelTag()override
 		{
 			return obj.GetModelTag();
+		}
+		inline Float4 GetColor()override
+		{
+			return obj.GetColor();
 		}
 #ifdef _DEBUG
 		bool flag = false;

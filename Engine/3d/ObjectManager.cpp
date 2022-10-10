@@ -167,6 +167,10 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 		j["object"]["object"][i]["sca"]["x"] = com->GetScale().x;
 		j["object"]["object"][i]["sca"]["y"] = com->GetScale().y;
 		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
+		j["object"]["object"][i]["color"]["x"] = com->GetColor().x;
+		j["object"]["object"][i]["color"]["y"] = com->GetColor().y;
+		j["object"]["object"][i]["color"]["z"] = com->GetColor().z;
+		j["object"]["object"][i]["color"]["w"] = com->GetColor().w;
 		j["object"]["object"][i]["BillBoard"] = (int)com->GetBillBoard();
 		j["object"]["object"][i]["collision"] = (int)com->GetCollision();
 		j["object"]["object"][i]["prefab"] = com->GetPrefab();
