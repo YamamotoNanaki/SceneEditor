@@ -81,19 +81,19 @@ namespace IF
 		/// </summary>
 		/// <param name="keyCode">判定を取りたいキーのマクロ</param>
 		/// <returns></returns>
-		bool KTriggere(KeyCode keyCode);
+		bool KeyTriggere(KeyCode keyCode);
 		/// <summary>
 		/// 入力判定
 		/// </summary>
 		/// <param name="keyCode">判定を取りたいキーのマクロ</param>
 		/// <returns></returns>
-		bool KDown(KeyCode keyCode);
+		bool KeyDown(KeyCode keyCode);
 		/// <summary>
 		/// リリース判定
 		/// </summary>
 		/// <param name="keyCode">判定を取りたいキーのマクロ</param>
 		/// <returns></returns>
-		bool KRelease(KeyCode keyCode);
+		bool KeyRelease(KeyCode keyCode);
 
 		bool MLPush();
 		bool MRPush();

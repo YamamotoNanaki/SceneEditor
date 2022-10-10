@@ -25,11 +25,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		FPS fps;
 		fps.Initialize(60);
 
-		while (true)
+		while (!Input::Instance()->KeyDown(KEY::ESC))
 		{
 			//メッセージ
 			if (Window::Instance()->Message())break;
-
+			Input::Instance()->Update();
 			sceneM->Update();
 
 			DirectX12::Instance()->DrawBefore();

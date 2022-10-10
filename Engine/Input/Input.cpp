@@ -124,19 +124,19 @@ void Input::Update()
 	}
 }
 
-bool Input::KTriggere(KeyCode keyCode)
+bool Input::KeyTriggere(KeyCode keyCode)
 {
 	//if (!(INPUT_FLAG & USE_INPUT_KEY))return false;
 	return key[keyCode] && !oldkey[keyCode];
 }
 
-bool Input::KDown(KeyCode keyCode)
+bool Input::KeyDown(KeyCode keyCode)
 {
 	//if (!(INPUT_FLAG & USE_INPUT_KEY))return false;
 	return key[keyCode];
 }
 
-bool Input::KRelease(KeyCode keyCode)
+bool Input::KeyRelease(KeyCode keyCode)
 {
 	//if (!(INPUT_FLAG & USE_INPUT_KEY))return false;
 	return !key[keyCode] && oldkey[keyCode];
@@ -336,7 +336,7 @@ bool Input::Judge(const KeyCode a[], int Type)
 	int c = sizeof(a[0]);
 	for (int i = 0; i < b / c; i++)
 	{
-		if (KDown(a[i]))
+		if (KeyDown(a[i]))
 		{
 			if (Type == OR)return true;
 		}
