@@ -236,7 +236,6 @@
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Source\Fire.h" />
     <ClInclude Include="Source\NormalObj.h" />
-    <ClInclude Include="Source\PlayerObj.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp" />

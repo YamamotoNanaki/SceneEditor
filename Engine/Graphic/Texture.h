@@ -49,7 +49,7 @@ namespace IF
 		void setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle);
 		unsigned short LoadTexture(const std::string filename);
 		void GUIInit();
-		unsigned short folder = 0;
+		//unsigned short folder = 0;
 		void OutputJson(nlohmann::json& j);
 		inline void TexReset()
 		{

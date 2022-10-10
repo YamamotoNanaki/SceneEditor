@@ -1,7 +1,6 @@
 #pragma once
 #include <dinput.h>
-#include "Window.h"
-#include "wrl.h"
+#include <wrl.h>
 #include "Float2.h"
 #include <Xinput.h>
 

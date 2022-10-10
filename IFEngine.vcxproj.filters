@@ -273,9 +273,6 @@
     <ClInclude Include="Engine\3d\ComponentObj.h">
       <Filter>Header Files\Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PlayerObj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\NormalObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -464,14 +461,14 @@
     <ClCompile Include="Engine\3d\ModelManager.cpp">
       <Filter>Source Files\Engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\2d\SpriteManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collision\Collision.cpp">
       <Filter>Source Files\Engine\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp">
       <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\2d\SpriteManager.cpp">
+      <Filter>Source Files\Engine\2d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

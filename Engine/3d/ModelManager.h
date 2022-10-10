@@ -113,7 +113,7 @@ namespace IF
 		}
 		void OutputJson(nlohmann::json& j);
 #ifdef _DEBUG
-		void GUI(bool* flag, std::string* tag);
+		void GUI();
 		std::string GUIRadio();
 #endif
 	};

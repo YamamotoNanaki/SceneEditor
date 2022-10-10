@@ -4,7 +4,6 @@
 #include "Light.h"
 #include "IFMath.h"
 #include "DirectX12.h"
-#include "PlayerObj.h"
 #include "NormalObj.h"
 #include "DebugCamera.h"
 #include "Camera.h"
@@ -122,6 +121,8 @@ void IF::Scene::Update()
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
 	objM->GUI();
+	modelM->GUI();
+	tex->GUI();
 #endif
 	cameraM->Update("mainCamera");
 	lightM->Update();

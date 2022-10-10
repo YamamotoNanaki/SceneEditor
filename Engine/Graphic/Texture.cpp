@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "ImGui.h"
 #include "Debug.h"
+#include "Timer.h"
 
 using namespace DirectX;
 using namespace IF;
@@ -53,6 +54,7 @@ void IF::Texture::Initialize()
 	for (int i = 0; i < textureMax; i++) {
 		tex[i].texbuff.Reset();
 		tex[i].CPUHandle.ptr = 0;
+		tex[i].GPUHandle.ptr = 0;
 		tex[i].texName.clear();
 		tex[i].free = false;
 	}
@@ -171,82 +173,107 @@ unsigned short Texture::LoadTexture(const std::string filename)
 #ifdef _DEBUG
 void IF::Texture::GUI()
 {
-	if (!flag)flag = ImGui::ImageButton((ImTextureID)tex[folder].GPUHandle.ptr, { 96,96 });
-	else
+	static int num = 0;
+	static bool flag = false;
+	ImGui::Begin("Texture");
 	{
-		int j = 0;
-		for (int i = 0; i < 256; i++)
+		if (ImGui::CollapsingHeader("ShowTexture"))
 		{
-			if (i == folder)continue;
-			if (j % 7 != 0)ImGui::SameLine();
-			if (tex[i].free == true)
+			if (!flag)
 			{
-				ImGui::Text("%03d", i);
-				ImGui::SameLine();
-				ImGui::Image((ImTextureID)tex[i].GPUHandle.ptr, { 96,96 });
-				j++;
+				for (int i = 0; i < 256; i++)
+				{
+					if (tex[i].free == true)
+					{
+						ImGui::Text("%03d", i);
+						if (ImGui::ImageButton((ImTextureID)tex[i].GPUHandle.ptr, { 96,96 }))
+						{
+							flag = true;
+							num = i;
+						}
+					}
+				}
+			}
+			else
+			{
+				ImGui::Image((ImTextureID)tex[num].GPUHandle.ptr, { 96,96 });
+				if (ImGui::CollapsingHeader("ChangeTexture"))
+				{
+					static char c[256];
+					ImGui::InputText("LoadTextureHandle", c, sizeof(c));
+					if (ImGui::Button("Change"))
+					{
+						tex[num].texbuff.Reset();
+						tex[num].CPUHandle.ptr = 0;
+						tex[num].GPUHandle.ptr = 0;
+						tex[num].texName.clear();
+						tex[num].free = false;
+						LoadTexture(c);
+					}
+				}
+				//ƒGƒ‰[‚ª‹N‚±‚é‚Ì‚Å‚Æ‚è‚ ‚¦‚¸“€Œ‹
+				//if (ImGui::Button("Delete"))
+				//{
+				//	tex[num].texbuff.Reset();
+				//	tex[num].CPUHandle.ptr = 0;
+				//	tex[num].GPUHandle.ptr = 0;
+				//	tex[num].texName.clear();
+				//	tex[num].free = false;
+				//	flag = false;
+				//}
+				if (ImGui::Button("Cansel"))
+				{
+					flag = false;
+				}
+			}
+		}
+		if (ImGui::CollapsingHeader("LoadTexture"))
+		{
+			static char c[256];
+			static bool flag = false;
+			static unsigned short num = 0;
+			static Timer t;
+			ImGui::InputText("LoadTextureHandle", c, sizeof(c));
+			if (ImGui::Button("Add"))
+			{
+				num = LoadTexture(c);
+				flag = true;
+				t.Set(240);
+			}
+			if (flag)
+			{
+				t.Update();
+				ImGui::Image((ImTextureID)tex[num].GPUHandle.ptr, { 96,96 });
+				if (t.IsEnd())
+				{
+					flag = false;
+				}
 			}
 		}
 	}
+	ImGui::End();
 }
 
 void IF::Texture::TexNum(int* texNum)
 {
-	int j = 0;
-	for (int i = 0; i < 256; i++)
+	ImGui::Text("NowTexNum : %03d", *texNum);
+	if (ImGui::CollapsingHeader("TexNums"))
 	{
-		if (i == folder)continue;
-		if (!tex[i].free)continue;
-		string _tagName;
-		if (i < 10)_tagName = "00";
-		else if (i < 100)_tagName = "0";
-		else _tagName = "";
-		if (i < 10)
+		for (int i = 0; i < 256; i++)
 		{
-			_tagName += (char)(i + 48);
+			if (tex[i].free == true)
+			{
+				ImGui::Text("Num : %03d", i);
+				if (ImGui::ImageButton((ImTextureID)tex[i].GPUHandle.ptr, { 96,96 }))*texNum = i;
+			}
 		}
-		else if (i < 100)
-		{
-			int a = i / 10;
-			int b = i % 10;
-			_tagName += (char)(a + 48);
-			_tagName += (char)(b + 48);
-		}
-		else if (i < 1000)
-		{
-			int a = i / 100;
-			int b = i / 10;
-			b -= a * 10;
-			int c = i % 10;
-			_tagName += (char)(a + 48);
-			_tagName += (char)(b + 48);
-			_tagName += (char)(c + 48);
-		}
-		else
-		{
-			int a = i / 1000;
-			int b = i / 100;
-			b -= a * 10;
-			int c = i / 10;
-			c -= a * 100;
-			c -= b * 10;
-			int d = i % 10;
-
-			_tagName += (char)(a + 48);
-			_tagName += (char)(b + 48);
-			_tagName += (char)(c + 48);
-			_tagName += (char)(d + 48);
-		}
-		if (j % 3 != 0)ImGui::SameLine();
-		ImGui::RadioButton(_tagName.c_str(), texNum, i);
-		j++;
 	}
 }
 #endif
 
 void IF::Texture::GUIInit()
 {
-	folder = LoadTexture("folder.png");
+	/*folder = LoadTexture("folder.png");*/
 }
 
 void IF::Texture::OutputJson(nlohmann::json& j)
@@ -254,7 +281,6 @@ void IF::Texture::OutputJson(nlohmann::json& j)
 	short i = 0;
 	for (int i = 1; i < tex.size(); i++)
 	{
-		if (textureSize < i)break;
 		if (tex[i].free == false)continue;
 		j["texture"]["name"][i - 1] = tex[i].texName;
 	}
