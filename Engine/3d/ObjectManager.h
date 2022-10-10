@@ -69,6 +69,7 @@ namespace IF
 		}
 		template <class T> inline T* Add(Model* model, std::string tag, int mode = BillBoard::NOON, bool prefab = false)
 		{
+			if (model == nullptr)return nullptr;
 			T* obj = DEBUG_NEW T;
 			obj->Initialize(model, prefab);
 			BillBoard::BillBoardMode a = BillBoard::NOON;

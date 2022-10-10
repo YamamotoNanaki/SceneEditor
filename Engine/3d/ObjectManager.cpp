@@ -76,9 +76,11 @@ void IF::ObjectManager::GUI()
 	{
 		static char tagC[256];
 		static string tag;
-		static string model;
+		static string model = ModelManager::Instance()->GUIRadio();
 		static int board = 0;
 		static int objn = 0;
+		static int error = 0;
+		if (error)ImGui::Text("error : %s", error == 1 ? "tag == \0" : "model == nullptr");
 		ImGui::InputText("Tag", tagC, sizeof(tagC));
 		tag = tagC;
 		if (ImGui::TreeNode("setModel"))
@@ -103,8 +105,26 @@ void IF::ObjectManager::GUI()
 		}
 		if (ImGui::Button("Add"))
 		{
-			if (objn == 0)Add<Normal>(ModelManager::Instance()->GetModel(model), tag, board);
-			if (objn == 1)Add<Player>(ModelManager::Instance()->GetModel(model), tag, board);
+			string s = tag;
+			if (s == "\0")error = 1;
+			else
+			{
+				if (objn == 0)
+				{
+					Normal* b = Add<Normal>(ModelManager::Instance()->GetModel(model), tag, board);
+					if (b == nullptr)
+					{
+						error = 2;
+					}
+				}
+				if (objn == 1) {
+					Player* b = Add<Player>(ModelManager::Instance()->GetModel(model), tag, board);
+					if (b == nullptr)
+					{
+						error = 2;
+					}
+				}
+			}
 		}
 	}
 	ImGui::End();
