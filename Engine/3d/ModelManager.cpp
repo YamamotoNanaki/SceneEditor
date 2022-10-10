@@ -85,6 +85,11 @@ void IF::ModelManager::GUI()
 		static int texNum = 1;
 		static char tag[256];
 		static char fName[256];
+		static int error = 0;
+		if (error)
+		{
+			ImGui::Text("Error : %s", error == 1 ? "tag == \\0" : "File could not be opened");
+		}
 		ImGui::InputText("Tag", tag, sizeof(tag));
 		if (loadMode == 0)ImGui::InputText("FaileName", fName, sizeof(fName));
 		if (ImGui::TreeNode("LoadMode"))
@@ -110,30 +115,34 @@ void IF::ModelManager::GUI()
 			ImGui::RadioButton("false", &smoot, 0);
 			ImGui::TreePop();
 		}
-		static bool error = false;
 		if (ImGui::Button("Add"))
 		{
-			if (loadMode == 0)
+			std::string t = tag;
+			if (t == "\0")
 			{
-				if (!Load(tag, smoot, fName))error = true;
-				else
-				{
-					error = false;
-				}
+				error = 1;
 			}
-			if (loadMode >= 1)
+			else
 			{
-				Create(tag, smoot, texNum, loadMode);
+				if (loadMode == 0)
+				{
+					if (!Load(t, smoot, fName))error = 2;
+					else
+					{
+						error = 0;
+					}
+				}
+				if (loadMode >= 1)
+				{
+					Create(t, smoot, texNum, loadMode);
+					error = 0;
+				}
 			}
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))
 		{
 			error = false;
-		}
-		if (error)
-		{
-			ImGui::Text("Error");
 		}
 	}
 	ImGui::End();
