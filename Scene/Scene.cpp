@@ -122,8 +122,6 @@ void IF::Scene::Update()
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();
-	if (Input::Instance()->KeyDown(KEY::SPACE))objM->SetColor({ (float)198 / 255,(float)45 / 255,(float)20 / 255,1 }, "dome");
-	else objM->SetColor({ 1,1,1,1 }, "dome");
 	objM->GUI();
 	modelM->GUI();
 	tex->GUI();
