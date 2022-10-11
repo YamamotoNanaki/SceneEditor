@@ -52,17 +52,6 @@ void IF::Camera::GUI()
 			matView->target = { t[0],t[1],t[2] };
 			ImGui::TreePop();
 		}
-		if (ImGui::TreeNode("type"))
-		{
-			static int n;
-			n = cameratype;
-			ImGui::InputInt("typeNum", &n);
-			ImGui::RadioButton("title", &n, 0);
-			ImGui::SameLine();
-			ImGui::RadioButton("main", &n, 1);
-			ImGui::TreePop();
-			cameratype = n;
-		}
 		ImGui::TreePop();
 	}
 }

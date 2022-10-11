@@ -149,6 +149,17 @@ namespace IF
 				}
 			}
 		}
+		inline void SetRota(float rota, std::string tag)
+		{
+			for (auto com : cameraList)
+			{
+				if (com->tag == tag)
+				{
+					com->SetRota(rota);
+					return;
+				}
+			}
+		}
 		inline void SetUp(Float3 up, std::string tag)
 		{
 			for (auto com : cameraList)

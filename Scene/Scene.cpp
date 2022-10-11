@@ -48,6 +48,7 @@ void IF::Scene::OutputJson(std::string failename)
 	tex->OutputJson(j);
 	modelM->OutputJson(j);
 	objM->OutputJson(j);
+	cameraM->OutputJson(j);
 
 	string s = j.dump(4);
 
@@ -65,6 +66,7 @@ void IF::Scene::InputJson(std::string failename)
 {
 	objM->Reset();
 	tex->TexReset();
+	cameraM->Reset();
 	std::ifstream reading_file;
 	string scene = failename;
 	string txt = ".json";
@@ -89,6 +91,14 @@ void IF::Scene::InputJson(std::string failename)
 		else if (i["type"] >= 1)modelM->Create(i["tag"], i["smooth"], i["tex"], i["type"]);
 		modelM->SetTexture(i["tex"], i["tag"]);
 	}
+	for (auto i : j["camera"])
+	{
+		cameraM->Add<Camera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+		cameraM->SetEye({ i["eye"]["x"],i["eye"]["y"],i["eye"]["z"] }, i["tag"]);
+		cameraM->SetTarget({ i["target"]["x"],i["target"]["y"],i["target"]["z"] }, i["tag"]);
+		cameraM->SetRota(i["rota"], i["tag"]);
+	}
+	objM->SetCamera(cameraM->GetCamera(j["object"]["camera"]));
 	for (auto i : j["object"]["object"])
 	{
 		if ("Normal" == i["ObjectName"])objM->Add<Normal>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
@@ -125,6 +135,7 @@ void IF::Scene::Update()
 	objM->GUI();
 	modelM->GUI();
 	tex->GUI();
+	cameraM->GUI();
 #endif
 	cameraM->Update("mainCamera");
 	lightM->Update();

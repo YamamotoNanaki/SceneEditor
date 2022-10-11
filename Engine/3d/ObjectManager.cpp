@@ -152,7 +152,7 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
 	//if (camera->tag == "debug")j["object"]["camera"] = "mainCamera";
-	//else j["object"]["camera"] = camera->tag;
+	j["object"]["camera"] = camera->tag;
 	for (auto com : objList)
 	{
 		j["object"]["object"][i]["ObjectName"] = com->GetObjName();

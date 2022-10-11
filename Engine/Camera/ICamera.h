@@ -28,6 +28,7 @@ namespace IF
 		virtual Matrix* GetMatView() = 0;
 		virtual Matrix* GetMatPro() = 0;
 		virtual float& GetRota() = 0;
+		virtual void SetRota(float rota) = 0;
 		virtual short GetType() = 0;
 		virtual void SetType(short type) = 0;
 		virtual ~ICamera() {}

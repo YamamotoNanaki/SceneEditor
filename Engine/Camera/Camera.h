@@ -31,10 +31,6 @@ namespace IF
 		{
 			cameratype = type;
 		}
-		inline float& GetRota()
-		{
-			return rota;
-		}
 		inline Vector3& GetFront()
 		{
 			return frontvec;
@@ -92,6 +88,14 @@ namespace IF
 		inline Float3* GetEye()
 		{
 			return &matView->eye;
+		}
+		inline float& GetRota() override
+		{
+			return rota;
+		}
+		inline void SetRota(float rota)
+		{
+			this->rota = rota;
 		}
 		inline Float3& GetTarget()
 		{
