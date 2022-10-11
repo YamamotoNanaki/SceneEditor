@@ -16,9 +16,6 @@ static enum camerainfo
 
 void IF::Camera::Update()
 {
-	static float distance = 10.0f;
-	matView->target = { matView->eye.x + cosf(ConvertToRadians(rota)) * distance,  2.0f,
-		matView->eye.z + sinf(ConvertToRadians(rota)) * distance };
 	frontvec = { cosf(ConvertToRadians(rota)),0,sinf(ConvertToRadians(rota)) };
 	frontvec.Normalize();
 
@@ -30,19 +27,13 @@ static const int starttime = 70;
 #ifdef _DEBUG
 void IF::Camera::GUI()
 {
+	static float distance = 10.0f;
 	if (ImGui::TreeNode(tag.c_str())) {
 		if (ImGui::TreeNode("Eye"))
 		{
 			float e[3] = { matView->eye.x,matView->eye.y,matView->eye.z };
 			ImGui::DragFloat3("", e, 0.05f);
 			matView->eye = { e[0],e[1],e[2] };
-			ImGui::TreePop();
-		}
-		if (ImGui::TreeNode("Rotation"))
-		{
-			float t[2] = { rota,0 };
-			ImGui::DragFloat2("", t, 0.05f);
-			rota = t[0];
 			ImGui::TreePop();
 		}
 		if (ImGui::TreeNode("Target"))
