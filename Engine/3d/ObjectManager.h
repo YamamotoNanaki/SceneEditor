@@ -6,7 +6,6 @@
 #include "nlohmann/json.hpp"
 #include "Collision.h"
 #include <list>
-#include "Player.h"
 
 namespace IF
 {
@@ -35,17 +34,6 @@ namespace IF
 				com->SetCamera(camera->GetEye());
 			}
 		}
-		inline void SetAi(std::string tag, short ai)
-		{
-			for (auto com : objList)
-			{
-				if (com->tag == tag)
-				{
-					com->SetAi(ai);
-					return;
-				}
-			}
-		}
 		inline void Reset()
 		{
 			for (auto com : objList)
@@ -71,7 +59,6 @@ namespace IF
 		{
 			if (model == nullptr)return nullptr;
 			T* obj = DEBUG_NEW T;
-			obj->Initialize(model, prefab);
 			BillBoard::BillBoardMode a = BillBoard::NOON;
 			if (mode == BillBoard::BILLBOARD)
 			{
@@ -82,8 +69,10 @@ namespace IF
 				a = BillBoard::YBOARD;
 			}
 			obj->MatInitialize(camera->GetMatView(), camera->GetMatPro(), camera->GetEye(), a);
+			obj->Initialize(model, prefab);
 			obj->tag = tag;
-			obj->SetCollision(NotPri);
+			//obj->SetCollision(NotPri);
+			obj->cameraPtr = camera;
 			objList.push_back(obj);
 			return obj;
 		}
@@ -504,16 +493,6 @@ namespace IF
 				for (auto com : objList)
 				{
 					com->SetFlag(flag);
-				}
-			}
-			inline short GetAi(std::string tag)
-			{
-				for (auto com : objList)
-				{
-					if (com->tag == tag)
-					{
-						return com->GetAi();
-					}
 				}
 			}
 #endif

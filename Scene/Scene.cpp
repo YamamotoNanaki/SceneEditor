@@ -102,8 +102,8 @@ void IF::Scene::InputJson(std::string failename)
 	for (auto i : j["object"]["object"])
 	{
 		if ("Normal" == i["ObjectName"])objM->Add<Normal>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
-		else if ("Player" == i["ObjectName"])objM->Add<Player>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
-		objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
+		//else if ("Player" == i["ObjectName"])objM->Add<Player>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
+		if("Player" != i["ObjectName"])objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM->SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
 		Float4 f = { i["color"]["x"],i["color"]["y"],i["color"]["z"],i["color"]["w"] };
@@ -128,6 +128,8 @@ void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* devi
 
 void IF::Scene::Update()
 {
+	Input::Instance()->Input::Update();
+
 #ifdef _DEBUG
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();

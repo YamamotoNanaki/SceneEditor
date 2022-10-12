@@ -50,3 +50,13 @@ bool IF::Collision::CheckSphereSphere(Primitive& s1, Primitive& s2)
 		return true;
 	return false;
 }
+
+bool IF::Collision::CheckAABBAABB(const Primitive& obj1, const Primitive& obj2)
+{
+	return ((obj1.v2.x > obj2.v1.x) &&
+		(obj1.v1.x < obj2.v2.x) &&
+		(obj1.v2.y > obj2.v1.y) &&
+		(obj1.v1.y < obj2.v2.y)&& 
+		(obj1.v2.z > obj2.v1.z) &&
+		(obj1.v1.z < obj2.v2.z));
+}

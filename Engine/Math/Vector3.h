@@ -13,6 +13,7 @@ namespace IF
 	public:
 		Vector3();
 		Vector3(float x, float y, float z);
+		void Set(Float3 start, Float3 end);
 		void Set(float x, float y, float z);
 
 		float Length() const;

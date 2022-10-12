@@ -101,6 +101,7 @@ void IF::ObjectManager::GUI()
 		{
 			ImGui::RadioButton("Normel", &objn, 0);
 			ImGui::RadioButton("Player", &objn, 1);
+			ImGui::RadioButton("Enemy", &objn, 2);
 			ImGui::TreePop();
 		}
 		if (ImGui::Button("Add"))
@@ -117,13 +118,20 @@ void IF::ObjectManager::GUI()
 						error = 2;
 					}
 				}
-				if (objn == 1) {
-					Player* b = Add<Player>(ModelManager::Instance()->GetModel(model), tag, board);
-					if (b == nullptr)
-					{
-						error = 2;
-					}
-				}
+				//if (objn == 1) {
+				//	Player* b = Add<Player>(ModelManager::Instance()->GetModel(model), tag, board);
+				//	if (b == nullptr)
+				//	{
+				//		error = 2;
+				//	}
+				//}
+				//if (objn == 2) {
+				//	Enemy* b = Add<Enemy>(ModelManager::Instance()->GetModel(model), tag, board);
+				//	if (b == nullptr)
+				//	{
+				//		error = 2;
+				//	}
+				//}
 			}
 		}
 	}
