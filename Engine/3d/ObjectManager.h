@@ -34,6 +34,10 @@ namespace IF
 				com->SetCamera(camera->GetEye());
 			}
 		}
+		inline ICamera* GetCamera()
+		{
+			return camera;
+		}
 		inline void Reset()
 		{
 			for (auto com : objList)

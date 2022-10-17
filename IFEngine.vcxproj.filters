@@ -479,6 +479,9 @@
     <ClCompile Include="Engine\Math\Quaternion.cpp">
       <Filter>Source Files\Engine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Camera\ICamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Data\Shaders\ParticleGS.hlsl">

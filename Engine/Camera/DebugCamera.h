@@ -11,7 +11,6 @@ namespace IF
 	{
 		static const std::string cameraName;
 		//ƒJƒƒ‰
-		float distance = 20;
 		float scaleX = 1.0f / (float)1280;
 		float scaleY = 1.0f / (float)720;
 		Matrix matRot;
@@ -24,11 +23,15 @@ namespace IF
 			matView = DEBUG_NEW View;
 			matView->eye = { 1,1,-5.0f };
 			matView->Update();
+			cpos = SetVector3(matView->eye);
+			ctar = SetVector3(matView->target);
+			cupv = SetVector3(matView->up);
 		}
 		void Update();
 		inline ~DebugCamera() {}
-#ifdef _DEBUG
-		void GUI();
-#endif
+		inline std::string GetName()
+		{
+			return cameraName;
+		}
 	};
 }

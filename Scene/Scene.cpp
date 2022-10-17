@@ -23,7 +23,6 @@ void IF::Scene::Initialize()
 	tex->Initialize();
 	tex->LoadTexture("white.png");
 	graph->Initialize(tex->descRangeSRV, L"Data/Shaders/ModelVS.hlsl", L"Data/Shaders/ModelPS.hlsl", L"Data/Shaders/ModelGS.hlsl");
-	cameraM->Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
 	lightM->Initialize();
 	lightM->DefaultLightSetting();
 	for (int i = 0; i < 3; i++)
@@ -35,7 +34,6 @@ void IF::Scene::Initialize()
 	lightM->SetAmbientColor({ 1, 1, 1 });
 	Object::StaticInitialize(device, commandList, lightM);
 
-	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 #ifdef _DEBUG
 	gui.Initialize(this->hwnd, this->device, tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
 #endif
@@ -93,17 +91,20 @@ void IF::Scene::InputJson(std::string failename)
 	}
 	for (auto i : j["camera"])
 	{
-		cameraM->Add<Camera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+		if ("Camera" == i["CameraName"])cameraM->Add<Camera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+		else if ("Debug" == i["CameraName"])cameraM->Add<DebugCamera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+		else continue;
 		cameraM->SetEye({ i["eye"]["x"],i["eye"]["y"],i["eye"]["z"] }, i["tag"]);
 		cameraM->SetTarget({ i["target"]["x"],i["target"]["y"],i["target"]["z"] }, i["tag"]);
-		cameraM->SetRota(i["rota"], i["tag"]);
+		//cameraM->SetRota(i["rota"], i["tag"]);
 	}
 	objM->SetCamera(cameraM->GetCamera(j["object"]["camera"]));
 	for (auto i : j["object"]["object"])
 	{
 		if ("Normal" == i["ObjectName"])objM->Add<Normal>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 		//else if ("Player" == i["ObjectName"])objM->Add<Player>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
-		if("Player" != i["ObjectName"])objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
+		else continue;
+		//if ("Player" != i["ObjectName"])objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
 		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
 		objM->SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
 		Float4 f = { i["color"]["x"],i["color"]["y"],i["color"]["z"],i["color"]["w"] };
@@ -128,8 +129,6 @@ void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* devi
 
 void IF::Scene::Update()
 {
-	Input::Instance()->Input::Update();
-
 #ifdef _DEBUG
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -139,7 +138,7 @@ void IF::Scene::Update()
 	tex->GUI();
 	cameraM->GUI();
 #endif
-	cameraM->Update("mainCamera");
+	cameraM->AutoUpdate();
 	lightM->Update();
 	objM->Update();
 }

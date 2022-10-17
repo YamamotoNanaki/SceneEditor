@@ -16,6 +16,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
 		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
+		Input::Instance()->InputFlag(USE_INPUT_KEY | USE_INPUT_MOUSE);
 		Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
 		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
 		Sound::Instance()->Initialize();
@@ -29,7 +30,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 			//メッセージ
 			if (Window::Instance()->Message())break;
-			Input::Instance()->Update();
+			Input::Instance()->Input::Update();
 			sceneM->Update();
 
 			DirectX12::Instance()->DrawBefore();

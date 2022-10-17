@@ -3,6 +3,10 @@
 #include "IFMath.h"
 #include "imgui.h"
 
+using namespace IF;
+
+const std::string DebugCamera::cameraName = "Debug";
+
 void IF::DebugCamera::Update()
 {
 	Input* input = Input::Instance();
@@ -52,7 +56,7 @@ void IF::DebugCamera::Update()
 
 		if (move.z != 0)
 		{
-			distance -= move.z / 100.0f;
+			distance -= move.z / 10.0f;
 			distance = distance > 1.0f ? distance : 1.0f;
 			dirty = true;
 		}
@@ -76,28 +80,9 @@ void IF::DebugCamera::Update()
 			SetUp({ newUp.x, newUp.y, newUp.z });
 		}
 	}
+
+	cpos = SetVector3(matView->eye);
+	ctar = SetVector3(matView->target);
+	cupv = SetVector3(matView->up);
 	matView->Update();
 }
-
-#ifdef _DEBUG
-void IF::DebugCamera::GUI()
-{
-	if (ImGui::TreeNode(tag.c_str())) {
-		if (ImGui::TreeNode("Eye"))
-		{
-			float e[3] = { matView->eye.x,matView->eye.y,matView->eye.z };
-			ImGui::DragFloat3("", e, 0.05f);
-			matView->eye = { e[0],e[1],e[2] };
-			ImGui::TreePop();
-		}
-		if (ImGui::TreeNode("Target"))
-		{
-			float t[3] = { matView->target.x,matView->target.y,matView->target.z };
-			ImGui::DragFloat3("", t, 0.05f);
-			matView->target = { t[0],t[1],t[2] };
-			ImGui::TreePop();
-		}
-		ImGui::TreePop();
-	}
-}
-#endif

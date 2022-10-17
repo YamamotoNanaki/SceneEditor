@@ -17,12 +17,17 @@ namespace IF
 			matView->target = { 0,2,0 };
 			matView->eye = { 0,1,-10 };
 			matView->Update();
+			cpos = SetVector3(matView->eye);
+			ctar = SetVector3(matView->target);
+			cupv = SetVector3(matView->up);
+
 		}
 		void Update();
 		inline ~Camera() {}
+		inline std::string GetName()
+		{
+			return cameraName;
+		}
 
-#ifdef _DEBUG
-		void GUI();
-#endif
 	};
 }

@@ -29,17 +29,26 @@ Float3 Float3::operator*() const
 
 Float3& Float3::operator+=(Float3 f)
 {
-	return *this = (this->x + f.x, this->y + f.y, this->z + f.z);
+	x = x + f.x;
+	y = y + f.y;
+	z = z + f.z;
+	return *this;
 }
 
 Float3& Float3::operator-=(Float3 f)
 {
-	return *this = (this->x - f.x, this->y - f.y, this->z - f.z);
+	x = x - f.x;
+	y = y - f.y;
+	z = z - f.z;
+	return *this;
 }
 
 Float3& Float3::operator*=(Float3 f)
 {
-	return *this = (this->x * f.x, this->y * f.y, this->z * f.z);
+	x = x * f.x;
+	y = y * f.y;
+	z = z * f.z;
+	return *this;
 }
 
 Float3& Float3::operator/=(Float3 f)
@@ -47,16 +56,25 @@ Float3& Float3::operator/=(Float3 f)
 	assert(f.x == 0 && "—ëœZ");
 	assert(f.y == 0 && "—ëœZ");
 	assert(f.z == 0 && "—ëœZ");
-	return *this = (this->x / f.x, this->y / f.y, this->z / f.z);
+	x = x / f.x;
+	y = y / f.y;
+	z = z / f.z;
+	return *this;
 }
 
 Float3& Float3::operator*=(float f)
 {
-	return *this = (this->x * f, this->y * f, this->z * f);
+	x = x * f;
+	y = y * f;
+	z = z * f;
+	return *this;
 }
 
 Float3& Float3::operator/=(float f)
 {
 	assert(f == 0 && "—ëœZ");
-	return *this = (this->x / f, this->y / f, this->z / f);
+	x = x - f;
+	y = y - f;
+	z = z - f;
+	return *this;
 }

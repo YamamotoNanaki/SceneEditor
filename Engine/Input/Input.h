@@ -10,6 +10,12 @@
 
 namespace IF
 {
+	enum KEY_INPUT_FLAG
+	{
+		USE_INPUT_KEY = 0b001,
+		USE_INPUT_MOUSE = 0b010,
+		USE_INPUT_CONTROLLER = 0b100
+	};
 	namespace KEY
 	{
 		typedef char KeyCode;
@@ -60,12 +66,6 @@ namespace IF
 	public:
 		static Input* Instance();
 		static void DeleteInstance();
-		enum KEY_INPUT_FLAG
-		{
-			USE_INPUT_KEY = 0b001,
-			USE_INPUT_MOUSE = 0b010,
-			USE_INPUT_CONTROLLER = 0b100
-		};
 		void InputFlag(char flag);
 
 		void Initialize(HINSTANCE& hInstance, HWND& hwnd);

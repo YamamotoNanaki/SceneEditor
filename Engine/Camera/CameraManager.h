@@ -28,16 +28,16 @@ namespace IF
 		}
 
 	public:
-		inline float& GetRotation(std::string tag)
-		{
-			for (auto com : cameraList)
-			{
-				if (com->tag == tag)
-				{
-					return com->GetRota();
-				}
-			}
-		}
+		//inline float& GetRotation(std::string tag)
+		//{
+		//	for (auto com : cameraList)
+		//	{
+		//		if (com->tag == tag)
+		//		{
+		//			return com->GetRota();
+		//		}
+		//	}
+		//}
 		static CameraManager* Instance()
 		{
 			static CameraManager* inst = DEBUG_NEW CameraManager;
@@ -68,6 +68,7 @@ namespace IF
 				}
 			}
 		}
+		void AutoUpdate();
 		inline void Update(std::string tag)
 		{
 			for (auto com : cameraList)
@@ -118,17 +119,17 @@ namespace IF
 				}
 			}
 		}
-		inline void SetRota(float rota, std::string tag)
-		{
-			for (auto com : cameraList)
-			{
-				if (com->tag == tag)
-				{
-					com->SetRota(rota);
-					return;
-				}
-			}
-		}
+		//inline void SetRota(float rota, std::string tag)
+		//{
+		//	for (auto com : cameraList)
+		//	{
+		//		if (com->tag == tag)
+		//		{
+		//			com->SetRota(rota);
+		//			return;
+		//		}
+		//	}
+		//}
 		inline void SetUp(Float3 up, std::string tag)
 		{
 			for (auto com : cameraList)

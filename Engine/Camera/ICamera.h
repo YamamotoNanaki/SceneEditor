@@ -13,7 +13,10 @@ namespace IF
 		//ƒJƒƒ‰
 		View* matView = nullptr;
 		Projection* matPro = nullptr;
-		float rota = 90;
+		float distance = 20;
+		Vector3 cpos = {0, 0, -1};
+		Vector3 ctar = {0, 0, 0};
+		Vector3 cupv = {0, 1, 0};
 	public:
 		virtual void Initialize(float fovAngle, float winWidth, float winHeight) = 0;
 		virtual void Update() = 0;
@@ -24,14 +27,17 @@ namespace IF
 		inline void SetEye(Float3 eye)
 		{
 			matView->eye = eye;
+			cpos = SetVector3(matView->eye);
 		}
 		inline void SetTarget(Float3 target)
 		{
 			matView->target = target;
+			ctar = SetVector3(matView->target);
 		}
 		inline void SetUp(Float3 up)
 		{
 			matView->up = up;
+			cupv = SetVector3(matView->up);
 		}
 		inline void SetFarZ(float farZ)
 		{
@@ -57,14 +63,6 @@ namespace IF
 		{
 			return &matView->eye;
 		}
-		inline float& GetRota()
-		{
-			return rota;
-		}
-		inline void SetRota(float rota)
-		{
-			this->rota = rota;
-		}
 		inline Float3& GetTarget()
 		{
 			return matView->target;
@@ -81,13 +79,14 @@ namespace IF
 		{
 			return matPro->GetAddressOf();
 		}
+		virtual std::string GetName() = 0;
 		virtual ~ICamera()
 		{
 			delete matView;
 			delete matPro;
 		}
 #ifdef _DEBUG
-		virtual void GUI() = 0;
+		void GUI();
 #endif
 	};
 }

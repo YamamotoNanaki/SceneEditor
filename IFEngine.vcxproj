@@ -262,6 +262,7 @@
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Camera\CameraManager.cpp" />
     <ClCompile Include="Engine\Camera\DebugCamera.cpp" />
+    <ClCompile Include="Engine\Camera\ICamera.cpp" />
     <ClCompile Include="Engine\Camera\Projection.cpp" />
     <ClCompile Include="Engine\Camera\View.cpp" />
     <ClCompile Include="Engine\Collision\Collision.cpp" />
