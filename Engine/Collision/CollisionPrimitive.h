@@ -5,7 +5,7 @@ namespace IF
 {
 	enum primitiveType
 	{
-		SpherePri, PlanePri, RayPri, BoxPri,
+		SpherePri, PlanePri, RayPri, BoxPri,CircleXY,
 		NotPri = 65535
 	};
 	struct Primitive
@@ -117,6 +117,10 @@ namespace IF
 
 	};
 	struct Box :public Primitive
+	{
+
+	};
+	struct CircleXY :public Primitive
 	{
 
 	};

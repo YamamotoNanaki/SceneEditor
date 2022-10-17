@@ -40,7 +40,7 @@ bool IF::Collision::CheckRaySphere(Primitive& ray, Primitive& sphere, float* dis
 	return true;
 }
 
-bool IF::Collision::CheckSphereSphere(Primitive& s1, Primitive& s2)
+bool IF::Collision::CheckSphere(Primitive& s1, Primitive& s2)
 {
 	Vector3 v1 = s1.GetCenter();
 	Vector3 v2 = s2.GetCenter();
@@ -51,12 +51,19 @@ bool IF::Collision::CheckSphereSphere(Primitive& s1, Primitive& s2)
 	return false;
 }
 
-bool IF::Collision::CheckAABBAABB(const Primitive& obj1, const Primitive& obj2)
+bool IF::Collision::CheckAABB(const Primitive& obj1, const Primitive& obj2)
 {
 	return ((obj1.v2.x > obj2.v1.x) &&
 		(obj1.v1.x < obj2.v2.x) &&
 		(obj1.v2.y > obj2.v1.y) &&
-		(obj1.v1.y < obj2.v2.y)&& 
+		(obj1.v1.y < obj2.v2.y) &&
 		(obj1.v2.z > obj2.v1.z) &&
 		(obj1.v1.z < obj2.v2.z));
+}
+
+bool IF::Collision::CheckCircleXY(const Primitive& Circle1, const Primitive& Circle2)
+{
+	return ((Circle2.v1.x - Circle1.v1.x) * (Circle2.v1.x - Circle1.v1.x) +
+		(Circle2.v1.y - Circle1.v1.y) * (Circle2.v1.y - Circle1.v1.y) <= 
+		(Circle1.f + Circle2.f) * (Circle1.f + Circle2.f));
 }
