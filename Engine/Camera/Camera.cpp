@@ -7,7 +7,7 @@
 
 using namespace IF;
 
-#define seconds 50
+const std::string Camera::cameraName = "camera";
 
 static enum camerainfo
 {
@@ -16,9 +16,6 @@ static enum camerainfo
 
 void IF::Camera::Update()
 {
-	frontvec = { cosf(ConvertToRadians(rota)),0,sinf(ConvertToRadians(rota)) };
-	frontvec.Normalize();
-
 	matView->Update();
 }
 

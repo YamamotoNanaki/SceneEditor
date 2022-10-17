@@ -55,10 +55,10 @@ void View::Update()
 
 	//カメラの位置から原点へのベクトルを生成
 	Vector3 reverseEyePosition = VectorNegate(eyePosition);
-	matView._4_1 = Vector3Dot(cameraAxisX, reverseEyePosition);
-	matView._4_2 = Vector3Dot(cameraAxisY, reverseEyePosition);
-	matView._4_3 = Vector3Dot(cameraAxisZ, reverseEyePosition);
-	matView._4_4 = 1.0f;
+	matView.m[3][0] = Vector3Dot(cameraAxisX, reverseEyePosition);
+	matView.m[3][1] = Vector3Dot(cameraAxisY, reverseEyePosition);
+	matView.m[3][2] = Vector3Dot(cameraAxisZ, reverseEyePosition);
+	matView.m[3][3] = 1.0f;
 
 	matBillBoard.SetX(cameraAxisX);
 	matBillBoard.SetY(cameraAxisY);

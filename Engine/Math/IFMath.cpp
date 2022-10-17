@@ -28,7 +28,7 @@ Float3 IF::SetFloat3(Vector3 v)
 	return Float3(v.x, v.y, v.z);
 }
 
-Float2 IF::SetFloat2(Vector2 v)
+Float2 IF::SetFloat3ToVector2(Vector2 v)
 {
 	return Float2(v.x, v.y);
 }
@@ -56,11 +56,6 @@ const Vector3 IF::Vector3Zero()
 bool IF::Vector3Equal(const Vector3& v1, const Vector3& v2)
 {
 	return (((v1.x == v2.x) && (v1.y == v2.y) && (v1.z == v2.z)) != 0);
-}
-
-float IF::Vector3Length(const Vector3& v)
-{
-	return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
 Vector3& IF::Vector3Normalize(Vector3& v)
@@ -147,10 +142,10 @@ float IF::ConvertToDegrees(float fRadians)
 
 Vector3 IF::Vector3Transform(const Vector3& v, const Matrix& m)
 {
-	Vector3 mx = { m._1_1,m._1_2,m._1_3 };
-	Vector3 my = { m._2_1,m._2_2,m._2_3 };
-	Vector3 mz = { m._3_1,m._3_2,m._3_3 };
-	Vector3 mw = { m._4_1,m._4_2,m._4_3 };
+	Vector3 mx = { m.m[0][0],m.m[0][1],m.m[0][2] };
+	Vector3 my = { m.m[1][0],m.m[1][1],m.m[1][2] };
+	Vector3 mz = { m.m[2][0],m.m[2][1],m.m[2][2] };
+	Vector3 mw = { m.m[3][0],m.m[3][1],m.m[3][2] };
 
 	Vector3 Result = {
 		v.z * mz.x + mw.x,

@@ -29,8 +29,7 @@ Float3 Float3::operator*() const
 
 Float3& Float3::operator+=(Float3 f)
 {
-	this->x += f.x, this->y += f.y, this->z += f.z;
-	return *this;
+	return *this = (this->x + f.x, this->y + f.y, this->z + f.z);
 }
 
 Float3& Float3::operator-=(Float3 f)

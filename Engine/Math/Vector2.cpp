@@ -17,13 +17,14 @@ float Vector2::Length() const
 	return sqrtf(x * x + y * y);
 }
 
-void Vector2::Normalize()
+Vector2& Vector2::Normalize()
 {
 	float length = Length();
 	if (length != 0)
 	{
-		*this /= length;
+		return *this /= length;
 	}
+	return *this;
 }
 
 float Vector2::Dot(const Vector2& v) const

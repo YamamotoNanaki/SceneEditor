@@ -28,26 +28,6 @@ namespace IF
 		}
 
 	public:
-		inline Vector3& GetFront(std::string tag)
-		{
-			for (auto com : cameraList)
-			{
-				if (com->tag == tag)
-				{
-					return com->GetFront();
-				}
-			}
-		}
-		inline Float3& GetSpeed(std::string tag)
-		{
-			for (auto com : cameraList)
-			{
-				if (com->tag == tag)
-				{
-					return com->GetSpeed();
-				}
-			}
-		}
 		inline float& GetRotation(std::string tag)
 		{
 			for (auto com : cameraList)
@@ -113,17 +93,6 @@ namespace IF
 				if (com->tag == tag)
 				{
 					com->SetEye(eye);
-					return;
-				}
-			}
-		}
-		inline void SetType(short type, std::string tag)
-		{
-			for (auto com : cameraList)
-			{
-				if (com->tag == tag)
-				{
-					com->SetType(type);
 					return;
 				}
 			}

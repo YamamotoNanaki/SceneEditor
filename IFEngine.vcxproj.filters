@@ -303,6 +303,9 @@
     <ClInclude Include="Engine\Base\Component.h">
       <Filter>Header Files\Engine\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Math\Quaternion.h">
+      <Filter>Header Files\Engine\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -472,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\ComponentObj.cpp">
       <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Quaternion.cpp">
+      <Filter>Source Files\Engine\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

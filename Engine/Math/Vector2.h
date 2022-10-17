@@ -15,7 +15,7 @@ namespace IF
 		void Set(float x, float y);
 
 		float Length() const;
-		void Normalize();
+		Vector2& Normalize();
 		float Dot(const Vector2& v) const;
 		float Cross(const Vector2& v) const;
 

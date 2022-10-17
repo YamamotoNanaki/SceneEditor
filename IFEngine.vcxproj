@@ -224,6 +224,7 @@
     <ClInclude Include="Engine\Math\IFMath.h" />
     <ClInclude Include="Engine\Math\MathConvert.h" />
     <ClInclude Include="Engine\Math\Matrix.h" />
+    <ClInclude Include="Engine\Math\Quaternion.h" />
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Other\Ease.h" />
@@ -285,6 +286,7 @@
     <ClCompile Include="Engine\Math\IFMath.cpp" />
     <ClCompile Include="Engine\Math\MathConvert.cpp" />
     <ClCompile Include="Engine\Math\Matrix.cpp" />
+    <ClCompile Include="Engine\Math\Quaternion.cpp" />
     <ClCompile Include="Engine\Math\Vector2.cpp" />
     <ClCompile Include="Engine\Math\Vector3.cpp" />
     <ClCompile Include="Engine\Other\Ease.cpp" />

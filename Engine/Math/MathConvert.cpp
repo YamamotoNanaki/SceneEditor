@@ -5,16 +5,31 @@ using namespace IF;
 
 DirectX::XMMATRIX IF::MatrixConvert(Matrix m)
 {
-	return XMMatrixSet(m._1_1, m._1_2, m._1_3, m._1_4, m._2_1, m._2_2, m._2_3, m._2_4,
-		m._3_1, m._3_2, m._3_3, m._3_4, m._4_1, m._4_2, m._4_3, m._4_4);
+	return XMMatrixSet(
+		m.m[0][0],
+		m.m[0][1],
+		m.m[0][2],
+		m.m[0][3],
+		m.m[1][0],
+		m.m[1][1],
+		m.m[1][2],
+		m.m[1][3],
+		m.m[2][0],
+		m.m[2][1],
+		m.m[2][2],
+		m.m[2][3],
+		m.m[3][0],
+		m.m[3][1],
+		m.m[3][2],
+		m.m[3][3]);
 }
 
 Matrix IF::MatrixConvert(DirectX::XMMATRIX xm)
 {
-	return Matrix(xm.r[0].m128_f32[0],xm.r[0].m128_f32[1],xm.r[0].m128_f32[2],xm.r[0].m128_f32[3],
-		xm.r[1].m128_f32[0],xm.r[1].m128_f32[1],xm.r[1].m128_f32[2],xm.r[1].m128_f32[3],
-		xm.r[2].m128_f32[0],xm.r[2].m128_f32[1],xm.r[2].m128_f32[2],xm.r[2].m128_f32[3],
-		xm.r[3].m128_f32[0],xm.r[3].m128_f32[1],xm.r[3].m128_f32[2],xm.r[3].m128_f32[3]);
+	return Matrix(xm.r[0].m128_f32[0], xm.r[0].m128_f32[1], xm.r[0].m128_f32[2], xm.r[0].m128_f32[3],
+		xm.r[1].m128_f32[0], xm.r[1].m128_f32[1], xm.r[1].m128_f32[2], xm.r[1].m128_f32[3],
+		xm.r[2].m128_f32[0], xm.r[2].m128_f32[1], xm.r[2].m128_f32[2], xm.r[2].m128_f32[3],
+		xm.r[3].m128_f32[0], xm.r[3].m128_f32[1], xm.r[3].m128_f32[2], xm.r[3].m128_f32[3]);
 }
 
 DirectX::XMFLOAT3 IF::Float3Convert(Float3 m)
