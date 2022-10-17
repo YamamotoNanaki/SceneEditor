@@ -2,6 +2,8 @@
 #include "imgui_impl_win32.h"
 #include "Debug.h"
 
+#pragma comment(lib,"winmm.lib")
+
 using namespace IF;
 
 Window* IF::Window::Instance()
@@ -12,6 +14,7 @@ Window* IF::Window::Instance()
 
 void IF::Window::DeleteInstance()
 {
+	timeEndPeriod(1);
 	Window::Instance()->Unregister();
 	delete Window::Instance();
 }
@@ -19,6 +22,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 void IF::Window::Initialize(int window_width, int window_height, LPCWSTR windowName)
 {
+	timeBeginPeriod(1);
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定
 	w.lpszClassName = L"DirectX12Game"; // ウィンドウクラス名

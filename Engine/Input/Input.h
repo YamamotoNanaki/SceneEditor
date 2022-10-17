@@ -18,7 +18,7 @@ namespace IF
 	};
 	namespace KEY
 	{
-		typedef char KeyCode;
+		typedef BYTE KeyCode;
 		enum Type
 		{
 			OR,

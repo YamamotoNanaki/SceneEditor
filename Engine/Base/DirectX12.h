@@ -3,6 +3,7 @@
 #include <dxgi1_6.h>
 #include <vector>
 #include <wrl.h>
+#include <chrono>
 #include "IFMath.h"
 
 #pragma comment(lib,"d3d12.lib") 
@@ -41,6 +42,12 @@ namespace IF
 
 		// 3．画面クリア        R  G  B   A
 		float clearColor[4] = { 0.1f ,0.25f ,0.5f ,1.0f };
+
+		//FPS関連
+	private:
+		void InitializeFixFps();
+		void UpdateFixFps();
+		std::chrono::steady_clock::time_point reference_;
 
 	public:
 		static DirectX12* Instance();

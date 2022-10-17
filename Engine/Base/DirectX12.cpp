@@ -1,10 +1,35 @@
 #include "DirectX12.h"
 #include <cassert>
+#include <thread>
 #include "Debug.h"
 
 using namespace Microsoft::WRL;
 using namespace std;
+using namespace std::chrono;
 using namespace IF;
+
+void IF::DirectX12::InitializeFixFps()
+{
+	reference_ = steady_clock::now();
+}
+
+void IF::DirectX12::UpdateFixFps()
+{
+	const microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+	const microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+
+	steady_clock::time_point now = steady_clock::now();
+	microseconds elapsed = duration_cast<microseconds>(now - reference_);
+
+	if (elapsed < kMinCheckTime)
+	{
+		while (steady_clock::now() - reference_ < kMinTime)
+		{
+			this_thread::sleep_for(microseconds(1));
+		}
+	}
+	reference_ = steady_clock::now();
+}
 
 DirectX12* IF::DirectX12::Instance()
 {
@@ -20,6 +45,7 @@ void IF::DirectX12::DeleteInstance()
 
 void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
 {
+	InitializeFixFps();
 	//初期化
 	ComPtr < IDXGIAdapter4> tmpAdapter = nullptr;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
@@ -219,7 +245,7 @@ void DirectX12::DrawAfter()
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
 	// バッファをフリップ（裏表の入替え）
-	result = swapchain->Present(0, 0);
+	result = swapchain->Present(1, 0);
 	assert(SUCCEEDED(result));
 	// コマンドリストの実行完了を待つ
 	commandQueue->Signal(fence.Get(), ++fenceVal);
@@ -231,6 +257,8 @@ void DirectX12::DrawAfter()
 		WaitForSingleObject(event, INFINITE);
 		CloseHandle(event);
 	}
+
+	UpdateFixFps();
 
 	result = commandAllocator->Reset(); // キューをクリア
 	assert(SUCCEEDED(result));

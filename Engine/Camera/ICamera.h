@@ -17,6 +17,8 @@ namespace IF
 		Vector3 cpos = {0, 0, -1};
 		Vector3 ctar = {0, 0, 0};
 		Vector3 cupv = {0, 1, 0};
+		float upAngle = 0;
+		float rightAngle = 0;
 	public:
 		virtual void Initialize(float fovAngle, float winWidth, float winHeight) = 0;
 		virtual void Update() = 0;

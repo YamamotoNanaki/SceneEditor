@@ -13,13 +13,8 @@ static enum camerainfo
 static float rot = 0.01f;
 void IF::Camera::Update()
 {
-	float upAngle = 0;
-	float rightAngle = 0;
-
-	//if (Input::Instance()->KeyDown(KEY::RIGHT))rightAngle = -rot;
-	//if (Input::Instance()->KeyDown(KEY::LEFT))rightAngle = +rot;
-	//if (Input::Instance()->KeyDown(KEY::UP))upAngle = +rot;
-	//if (Input::Instance()->KeyDown(KEY::DOWN))upAngle = -rot;
+	upAngle = 0;
+	rightAngle = 0;
 
 	Quaternion qRAngle = quaternion(cupv, rightAngle);
 	Vector3 side = cupv.Cross(ctar - cpos);

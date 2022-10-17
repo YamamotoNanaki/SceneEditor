@@ -4,7 +4,6 @@
 #include "Window.h"
 #include "DirectX12.h"
 #include "Input.h"
-#include "FPS.h"
 #include "SceneManager.h"
 
 using namespace IF;
@@ -23,8 +22,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		SceneManager* sceneM = SceneManager::Instance();
 		sceneM->Initialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(),
 			DirectX12::Instance()->viewport, Window::Instance()->hwnd);
-		FPS fps;
-		fps.Initialize(60);
 
 		while (!Input::Instance()->KeyDown(KEY::ESC))
 		{
@@ -36,7 +33,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			DirectX12::Instance()->DrawBefore();
 			sceneM->Draw();
 			DirectX12::Instance()->DrawAfter();
-			fps.FPSFixed();
 		}
 		sceneM->Release();
 		LightManager::DeleteInstance();
