@@ -27,6 +27,11 @@ void IF::Normal::Update()
 			colision->SetCenter(SetVector3(obj.position));
 			colision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z + 3 }));
 		}
+		else if (ptype == CircleXYPri)
+		{
+			colision->SetCenter(SetVector3(obj.position));
+			colision->SetRadius((obj.scale.x + obj.scale.y) / 2.0f);
+		}
 		else
 		{
 			colision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));

@@ -3,7 +3,6 @@
 #include "CollisionPrimitive.h"
 #include "Model.h"
 #include "ICamera.h"
-#include "CollisionPrimitive.h"
 #include "Debug.h"
 
 namespace IF
@@ -80,6 +79,11 @@ namespace IF
 			{
 				colision = DEBUG_NEW Box;
 				ptype = BoxPri;
+			}
+			else if (type == CircleXYPri)
+			{
+				colision = DEBUG_NEW CircleXY;
+				ptype = CircleXYPri;
 			}
 			else
 			{

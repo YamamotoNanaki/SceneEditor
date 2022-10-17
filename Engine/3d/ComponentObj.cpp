@@ -75,6 +75,8 @@ void IF::CObject::GUI()
 		ImGui::RadioButton("Plane", &type, PlanePri);
 		ImGui::SameLine();
 		ImGui::RadioButton("Box", &type, BoxPri);
+		ImGui::RadioButton("CircleXY", &type, CircleXYPri);
+		ImGui::SameLine();
 		ImGui::RadioButton("Not", &type, NotPri);
 		ImGui::TreePop();
 		if (type != old)
