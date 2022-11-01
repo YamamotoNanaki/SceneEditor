@@ -78,3 +78,11 @@ Float3& Float3::operator/=(float f)
 	z = z - f;
 	return *this;
 }
+
+Float3 IF::Float3::operator=(float* f)
+{
+	x = f[0];
+	y = f[1];
+	z = f[2];
+	return *this;
+}

@@ -13,6 +13,7 @@ namespace IF
 	public:
 		Vector3();
 		Vector3(float x, float y, float z);
+		void Set(Float3 start, Float3 end);
 		void Set(float x, float y, float z);
 
 		float Length() const;
@@ -26,6 +27,7 @@ namespace IF
 		Vector3& operator-=(const Vector3& v);
 		Vector3& operator*=(float s);
 		Vector3& operator/=(float s);
+		//Vector3& operator=(const Float3 f);
 	};
 
 	Vector3 VectorSubtract(Vector3 v1, Vector3 v2);
@@ -34,7 +36,4 @@ namespace IF
 	Vector3 operator*(float s, Vector3 v);
 	Vector3 operator+(Vector3 v1, Vector3 v2);
 	Vector3 operator-(Vector3 v1, Vector3 v2);
-
-	const Vector3 Lerp(const Vector3& start, const Vector3& end, const float t);
 };
-

@@ -6,7 +6,7 @@
 #include <array>
 #include "nlohmann/json.hpp"
 
-#pragma comment(lib,"d3d12.lib") 
+#pragma comment(lib,"d3d12.lib")
 namespace IF
 {
 	class Texture
@@ -47,14 +47,14 @@ namespace IF
 		static void setDevice(ID3D12Device* device);
 		void Initialize();
 		void setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle);
-		unsigned short LoadTexture(const std::string filename);
+		unsigned short LoadTexture(const std::string filename, int number = -1);
 		void GUIInit();
 		//unsigned short folder = 0;
 		void OutputJson(nlohmann::json& j);
 		inline void TexReset()
 		{
 			textureSize = 0;
-			for (int i = 0; i < textureMax; i++) {
+			for (int i = 0; i < 1000; i++) {
 				tex[i].texbuff.Reset();
 				tex[i].CPUHandle.ptr = 0;
 				tex[i].texName.clear();
@@ -66,7 +66,6 @@ namespace IF
 		bool flag = false;
 		void GUI();
 		void TexNum(int* texNum);
-		int GetTagNum();
 #endif
 	};
 }

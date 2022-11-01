@@ -64,6 +64,29 @@ bool IF::Collision::CheckAABB(const Primitive& obj1, const Primitive& obj2)
 bool IF::Collision::CheckCircleXY(const Primitive& Circle1, const Primitive& Circle2)
 {
 	return ((Circle2.v1.x - Circle1.v1.x) * (Circle2.v1.x - Circle1.v1.x) +
-		(Circle2.v1.y - Circle1.v1.y) * (Circle2.v1.y - Circle1.v1.y) <= 
+		(Circle2.v1.y - Circle1.v1.y) * (Circle2.v1.y - Circle1.v1.y) <=
 		(Circle1.f + Circle2.f) * (Circle1.f + Circle2.f));
+}
+
+bool IF::Collision::CheckCircleXYAABB(const Primitive& Circle, const Primitive& box)
+{
+	Primitive a;
+	a.SetMinPos({ Circle.v1.x - Circle.f,Circle.v1.y - Circle.f,Circle.v1.z - Circle.f });
+	a.SetMaxPos({ Circle.v1.x + Circle.f,Circle.v1.y + Circle.f,Circle.v1.z + Circle.f });
+	if (CheckAABB(box, a))
+	{
+		if ((Circle.v1.x > box.v1.x) && (Circle.v1.x < box.v2.x) &&
+			(Circle.v1.y > box.v2.y - Circle.f) && (Circle.v1.y < box.v1.y + Circle.f))return true;
+		if ((Circle.v1.x > box.v1.x - Circle.f) && (Circle.v1.x < box.v2.x + Circle.f) &&
+			(Circle.v1.y > box.v2.y) && (Circle.v1.y < box.v1.y))return true;
+		if ((box.v1.x - Circle.v1.x) * (box.v1.x - Circle.v1.x) + (box.v2.y - Circle.v1.y) *
+			(box.v2.y - Circle.v1.y) < Circle.f * Circle.f)return true;
+		if ((box.v1.x - Circle.v1.x) * (box.v1.x - Circle.v1.x) + (box.v1.y - Circle.v1.y) *
+			(box.v1.y - Circle.v1.y) < Circle.f * Circle.f)return true;
+		if ((box.v2.x - Circle.v1.x) * (box.v2.x - Circle.v1.x) + (box.v2.y - Circle.v1.y) *
+			(box.v2.y - Circle.v1.y) < Circle.f * Circle.f)return true;
+		if ((box.v2.x - Circle.v1.x) * (box.v2.x - Circle.v1.x) + (box.v1.y - Circle.v1.y) *
+			(box.v1.y - Circle.v1.y) < Circle.f * Circle.f)return true;
+	}
+	return false;
 }

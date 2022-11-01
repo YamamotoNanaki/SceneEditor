@@ -260,7 +260,7 @@ void IF::Graphic::InitializeParticle(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 		},
 	};
 
-	GPipeline pipeline(Blobs[ShaderCode::vs].Get(), Blobs[ShaderCode::ps].Get(), Blobs[ShaderCode::gs].Get(), inputLayout, _countof(inputLayout));
+	GPipeline pipeline(Blobs[ShaderCode::vsP].Get(), Blobs[ShaderCode::psP].Get(), Blobs[ShaderCode::gsP].Get(), inputLayout, _countof(inputLayout));
 
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
 	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//‰¡ŒJ‚è•Ô‚µ

@@ -32,6 +32,7 @@ namespace IF
 		static DebugText* Instance();
 		static void DeleteInstance();
 		void Initialize(unsigned int texNum);
+		void SetColor(int r,int g,int b,int a);
 		void Print(float x, float y, float scale, const char* text, ...);
 		void Draw(std::vector<D3D12_VIEWPORT>viewport);
 	};

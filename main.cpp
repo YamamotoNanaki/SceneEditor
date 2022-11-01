@@ -26,9 +26,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		while (!Input::Instance()->KeyDown(KEY::ESC))
 		{
 			//メッセージ
-			if (Window::Instance()->Message())break;
+			//if (Window::Instance()->Message())break;
 			Input::Instance()->Input::Update();
-			sceneM->Update();
+			if (sceneM->Update())break;
 
 			DirectX12::Instance()->DrawBefore();
 			sceneM->Draw();
@@ -37,7 +37,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		sceneM->Release();
 		LightManager::DeleteInstance();
 		Input::DeleteInstance();
-		Sound::DeleteInstance();
 		Graphic::DeleteInstance();
 		Texture::DeleteInstance();
 		DirectX12::DeleteInstance();

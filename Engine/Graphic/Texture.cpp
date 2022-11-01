@@ -60,7 +60,7 @@ void IF::Texture::Initialize()
 	}
 }
 
-unsigned short Texture::LoadTexture(const std::string filename)
+unsigned short Texture::LoadTexture(const std::string filename, int number)
 {
 	assert(textureSize < textureMax && "ヒープサイズが足りません");
 
@@ -68,20 +68,27 @@ unsigned short Texture::LoadTexture(const std::string filename)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	for (int i = 1; i < textureMax; i++)
-	{
-		if (tex[i].free == false)continue;
-		if (tex[i].texName == filename)return i;
-	}
-
 	unsigned short num = 0;
-	for (int i = 1; i < textureMax; i++)
+	if (number == -1)
 	{
-		if (tex[i].free == false)
+		for (int i = 1; i < 1000; i++)
 		{
-			num = i;
-			break;
+			if (tex[i].free == false)continue;
+			if (tex[i].texName == filename)return i;
 		}
+
+		for (int i = 1; i < 1000; i++)
+		{
+			if (tex[i].free == false)
+			{
+				num = i;
+				break;
+			}
+		}
+	}
+	else
+	{
+		num = number;
 	}
 
 	Tex newtex;
@@ -305,11 +312,14 @@ void IF::Texture::GUIInit()
 
 void IF::Texture::OutputJson(nlohmann::json& j)
 {
-	short i = 0;
-	for (int i = 1; i < tex.size(); i++)
+
+	short k = 1;
+	for (int i = 1; i < 1000; i++)
 	{
 		if (tex[i].free == false)continue;
-		j["texture"]["name"][i - 1] = tex[i].texName;
+		if (tex[i].texName == "debugfont.png")continue;
+		j["texture"]["name"][k - 1] = tex[i].texName;
+		k++;
 	}
 }
 

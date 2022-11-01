@@ -1,10 +1,8 @@
 {
+    "debug": "MainScene",
     "scene": [
         {
-            "name": "MainScene",
-            "next": [
-                "MainScene"
-            ]
+            "name": "MainScene"
         }
     ],
     "start": "MainScene"

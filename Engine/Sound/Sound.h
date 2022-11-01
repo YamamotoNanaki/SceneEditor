@@ -54,7 +54,6 @@ namespace IF
 		void SoundPlay(unsigned short soundNum, bool roop = true);
 		void StopSound(unsigned short soundNum);
 		static Sound* Instance();
-		static void DeleteInstance();
 		void Reset();
 
 	private:

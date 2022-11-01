@@ -1,7 +1,5 @@
 #include "Quaternion.h"
 #include <cmath>
-#include "Quaternion.h"
-#include "Quaternion.h"
 
 using namespace IF;
 

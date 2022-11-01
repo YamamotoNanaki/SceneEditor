@@ -6,6 +6,17 @@ void Timer::Set(int end)
 	timer = 0;
 }
 
+void Timer::TimeSet(int timer, int end)
+{
+	this->timer = timer;
+	this->end = end;
+}
+
+void Timer::SetIf(int end, bool flag)
+{
+	if (flag)Set(end);
+}
+
 void Timer::Update()
 {
 	timer++;

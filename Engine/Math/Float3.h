@@ -19,5 +19,6 @@ namespace IF
 		Float3& operator/=(Float3 f);
 		Float3& operator*=(float f);
 		Float3& operator/=(float f);
+		Float3 operator=(float* f);
 	};
 };

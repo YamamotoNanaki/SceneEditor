@@ -5,7 +5,12 @@ using namespace IF;
 
 Vector3::Vector3() :x(0), y(0), z(0) {}
 Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
-
+void Vector3::Set(Float3 start, Float3 end)
+{
+	x = end.x - start.x;
+	y = end.y - start.y;
+	z = end.z - start.z;
+}
 void Vector3::Set(float x, float y, float z)
 {
 	this->x = x;
@@ -142,15 +147,10 @@ Vector3 IF::operator*(float s, Vector3 v)
 
 Vector3 IF::operator+(Vector3 v1, Vector3 v2)
 {
-	return Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+	return v1 + v2;
 }
 
 Vector3 IF::operator-(Vector3 v1, Vector3 v2)
 {
 	return Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
-}
-
-const Vector3 IF::Lerp(const Vector3& start, const Vector3& end, const float t)
-{
-	return start * (1.0f - t) + end * t;
 }

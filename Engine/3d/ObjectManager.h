@@ -13,16 +13,26 @@ namespace IF
 	{
 	private:
 		std::list<CObject*> objList;
+		int objListSize = 0;
 		ICamera* camera = nullptr;
 		ObjectManager() {}
 		ObjectManager(const ObjectManager&);
 		ObjectManager& operator=(const ObjectManager&) {}
 		~ObjectManager();
 	public:
+		inline int GetObjListSize()const
+		{
+			return objListSize;
+		}
 		static ObjectManager* Instance();
 		static void DeleteInstance();
 		void Draw();
 		void Update();
+		void CollisionInitialize();
+		inline ICamera* GetCamera()
+		{
+			return camera;
+		}
 		inline void SetCamera(ICamera* camera)
 		{
 			this->camera = camera;
@@ -34,10 +44,6 @@ namespace IF
 				com->SetCamera(camera->GetEye());
 			}
 		}
-		inline ICamera* GetCamera()
-		{
-			return camera;
-		}
 		inline void Reset()
 		{
 			for (auto com : objList)
@@ -47,6 +53,8 @@ namespace IF
 			objList.clear();
 		}
 		Primitive* GetPrimitive(std::string tag);
+		Primitive* GetPrimitiveName(std::string objName);
+		Primitive* GetPrimitiveNumber(int& num, std::string objName);
 		template<class T>inline T* GetAddress(std::string tag)
 		{
 			for (auto com : objList)
@@ -58,6 +66,50 @@ namespace IF
 				}
 			}
 			return nullptr;
+		}
+		template<class T>inline T* GetAddressName(std::string objName)
+		{
+			for (auto com : objList)
+			{
+				if (com->objName == objName)
+				{
+					T* buff = dynamic_cast<T*>(com);
+					return buff;
+				}
+			}
+			return nullptr;
+		}
+		template<class T>inline T* GetAddressNumber(int& num, std::string objName)
+		{
+			if (num >= objList.size())return nullptr;
+			auto itr = objList.begin();
+			for (int i = 0; i < num; i++)itr++;
+			auto com = *(itr);
+			if (com->GetObjName() != objName)
+			{
+				num++;
+				return GetAddressNumber<T>(num, objName);
+			}
+			T* buff = dynamic_cast<T*>(com);
+			if (buff == nullptr)
+			{
+				num++;
+				return GetAddressNumber<T>(num, objName);
+			}
+			return buff;
+		}
+		inline CObject* GetAddressNumber3(int& num, std::string objName1, std::string objName2, std::string objName3)
+		{
+			if (num >= objList.size())return nullptr;
+			auto itr = objList.begin();
+			for (int i = 0; i < num; i++)itr++;
+			auto com = *(itr);
+			if (com->GetObjName() != objName1 && com->GetObjName() != objName2 && com->GetObjName() != objName3)
+			{
+				num++;
+				return GetAddressNumber3(num, objName1, objName2, objName3);
+			}
+			return com;
 		}
 		template <class T> inline T* Add(Model* model, std::string tag, int mode = BillBoard::NOON, bool prefab = false)
 		{
@@ -199,7 +251,11 @@ namespace IF
 			auto buff = objList;
 			for (auto com : buff)
 			{
-				com->DeleteObj();
+				if (com->DeleteObj())
+				{
+					objList.remove(com);
+					delete com;
+				}
 			}
 		}
 		template<class T>inline void SetTexture(unsigned short texNum, std::string tag = "\0")
@@ -470,35 +526,37 @@ namespace IF
 					}
 				}
 			}
-			}
-			void ChangePushback(std::string tag)
+		}
+		void ChangePushback(std::string tag)
+		{
+			for (auto com : objList)
 			{
-				for (auto com : objList)
+				if (com->tag == tag)
 				{
-					if (com->tag == tag)
-					{
-						objList.remove(com);
-						objList.push_back(com);
-						return;
-					}
+					objList.remove(com);
+					objList.push_back(com);
+					return;
 				}
 			}
+		}
 #ifdef _DEBUG
-			void GUI();
-			std::string GUIRadio();
-			enum typeinfo
-			{
-				Tag,
-				Model
-			};
-			void OutputJson(nlohmann::json & j);
-			inline void SetDebugFlag(bool flag)
-			{
-				for (auto com : objList)
-				{
-					com->SetFlag(flag);
-				}
-			}
-#endif
+		void GUI();
+		std::string GUIRadio();
+		enum typeinfo
+		{
+			Tag,
+			Model
 		};
-	}
+		void OutputJson(nlohmann::json& j);
+		inline void SetDebugFlag(bool flag)
+		{
+			for (auto com : objList)
+			{
+				com->SetFlag(flag);
+			}
+		}
+		void DebugUpdate();
+		std::string GUIGetTag();
+#endif
+	};
+}

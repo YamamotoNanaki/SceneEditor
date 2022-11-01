@@ -1,0 +1,25 @@
+{
+    "model": [
+        {
+            "name": "",
+            "smooth": false,
+            "tag": "testBox",
+            "tex": 1,
+            "type": 1
+        },
+        {
+            "name": "skydome",
+            "smooth": false,
+            "tag": "dome",
+            "tex": 2,
+            "type": 0
+        },
+        {
+            "name": "",
+            "smooth": false,
+            "tag": "Sphere",
+            "tex": 1,
+            "type": 4
+        }
+    ]
+}

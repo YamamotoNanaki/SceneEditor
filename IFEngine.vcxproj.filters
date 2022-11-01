@@ -306,6 +306,12 @@
     <ClInclude Include="Engine\Math\Quaternion.h">
       <Filter>Header Files\Engine\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Efect\Emitter.h">
+      <Filter>Header Files\Engine\Efect</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Efect\ParticleManager.h">
+      <Filter>Header Files\Engine\Efect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -481,6 +487,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Camera\ICamera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Efect\Emitter.cpp">
+      <Filter>Source Files\Engine\Efect</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Efect\ParticleManager.cpp">
+      <Filter>Source Files\Engine\Efect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

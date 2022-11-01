@@ -42,6 +42,7 @@ namespace IF
 		/// <param name="time">Œ»İ‚ÌŠÔ</param>
 		/// <returns></returns>
 		Float3 OutQuadFloat3(Float3 startPos, Float3 endPos, Timer timer);
+		IF::Float3 LerpFloat3(IF::Float3 startPos, Float3 endPos, Timer timer);
 		/// <summary>
 		/// ’¼üˆÚ“®
 		/// </summary>

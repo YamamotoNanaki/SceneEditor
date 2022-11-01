@@ -11,5 +11,6 @@ namespace IF
 		static bool CheckSphere(Primitive& s1, Primitive& s2);
 		static bool CheckAABB(const Primitive& box1, const Primitive& box2);
 		static bool CheckCircleXY(const Primitive& Circle1, const Primitive& Circle2);
+		static bool CheckCircleXYAABB(const Primitive& Circle, const Primitive& box);
 	};
 }

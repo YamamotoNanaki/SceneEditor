@@ -12,6 +12,7 @@
 #include "CameraManager.h"
 #include "SpriteManager.h"
 #include "DebugText.h"
+#include "ParticleManager.h"
 
 namespace IF
 {
@@ -42,6 +43,8 @@ namespace IF
 		ModelManager* modelM = ModelManager::Instance();
 		CameraManager* cameraM = CameraManager::Instance();
 		LightManager* lightM = LightManager::Instance();
+		SpriteManager* spriteM = SpriteManager::Instance();
+		ParticleManager* particleM = ParticleManager::Instance();
 
 	public:
 		void InputJson(std::string failename);
@@ -50,11 +53,11 @@ namespace IF
 		void Update();
 		void Draw();
 		void Delete();
-		
+
 		//デバッグ用
 #ifdef _DEBUG
 		void OutputJson(std::string failename);
-
+		void DebugUpdate();
 #endif // _DEBUG
 	};
 }

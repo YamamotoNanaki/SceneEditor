@@ -22,6 +22,14 @@ void IF::DebugText::Initialize(unsigned int texNum)
 	}
 }
 
+void IF::DebugText::SetColor(int r, int g, int b, int a)
+{
+	for (int i = 0; i < spriteIndex; i++)
+	{
+		sprites[i].SetColor(r, g, b, a);
+	}
+}
+
 void IF::DebugText::Print(float x, float y, float scale, const char* text, ...)
 {
 	posX = x;

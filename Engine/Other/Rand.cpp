@@ -1,6 +1,7 @@
 #include "Rand.h"
 #include <stdlib.h>
 #include <time.h>
+#include "Ease.h"
 
 using namespace IF;
 
@@ -19,8 +20,10 @@ int Rand::GetRand(int min, int max)
 	return min + rand() % (max - min);
 }
 
-float IF::Rand::GetRandF(float min, float max)
+float IF::Rand::GetRandF(float min, float max, int resolution)
 {
-	float a = (min * 10 + rand() % (int)((max - min) * 10)) / 10.0f;
+	if (min == max)return 0;
+	int r = rand() % resolution;
+	float a = Ease::Lerp(min, max, resolution, r);
 	return a;
 }

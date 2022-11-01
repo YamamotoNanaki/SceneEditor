@@ -13,6 +13,6 @@ namespace IF
 		/// <param name="min">Å¬’l</param>
 		/// <param name="max">Å‘å’l</param>
 		/// <returns>¬”“_1Œ…‚ÌfloatŒ^—”</returns>
-		static float GetRandF(float min, float max);
+		static float GetRandF(float min, float max, int resolution = 10000);
 	};
 }

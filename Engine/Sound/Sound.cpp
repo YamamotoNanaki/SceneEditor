@@ -104,19 +104,14 @@ void IF::Sound::SoundPlay(unsigned short soundNum, bool roop)
 
 Sound* IF::Sound::Instance()
 {
-	static Sound* inst = DEBUG_NEW Sound;
-	return inst;
+	static Sound inst;
+	return &inst;
 }
 
 void IF::Sound::SetVolume(unsigned short soundNum, int volume)
 {
 	soundDatas[soundNum].volume = (float)volume / 255.0f;
 	if (soundDatas[soundNum].pSourceVoice != nullptr)soundDatas[soundNum].pSourceVoice->SetVolume(soundDatas[soundNum].volume);
-}
-
-void IF::Sound::DeleteInstance()
-{
-	delete Sound::Instance();
 }
 
 void IF::Sound::StopSound(unsigned short soundNum)

@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "SpriteManager.h"
 #include <cassert>
 #include "Texture.h"
 #include "Debug.h"
@@ -114,8 +115,20 @@ void IF::Sprite::Update()
 	matWorld *= MatrixRotationZ(rotation);
 	matWorld *= MatrixTranslation(position.x, position.y, 0);
 
-	static Float4 color{};
-	SetColor(color.x, color.y, color.z, color.w);
+	cb.SetColor(color[0], color[1], color[2], color[3]);
+
+	//定数バッファへのデータ転送
+	constMapTransform->mat = matWorld * matPro;
+}
+
+void IF::Sprite::DebugUpdate()
+{
+	matWorld = MatrixIdentity();
+	matWorld *= MatrixScaling(scale.x, scale.y, 1);
+	matWorld *= MatrixRotationZ(rotation);
+	matWorld *= MatrixTranslation(position.x, position.y, 0);
+
+	cb.SetColor(color[0], color[1], color[2], color[3]);
 
 	//定数バッファへのデータ転送
 	constMapTransform->mat = matWorld * matPro;
@@ -128,7 +141,7 @@ void IF::Sprite::SetViewport(std::vector<D3D12_VIEWPORT> viewport)
 
 void IF::Sprite::Draw()
 {
-	if (!DrawFlag)return;
+	if (!drawFlag)return;
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	//頂点バッファの設定
 	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
@@ -141,6 +154,11 @@ void IF::Sprite::Draw()
 		//描画コマンド
 		commandList->DrawInstanced(vi->GetSize(), 1, 0, 0);
 	}
+}
+
+bool IF::Sprite::DeleteSprite()
+{
+	return deleteFlag;
 }
 
 void Sprite::SetPosition(Float2 position)
@@ -180,7 +198,41 @@ void IF::Sprite::SetAlpha(int alpha)
 #ifdef _DEBUG
 void IF::Sprite::GUI()
 {
-	
+	if (ImGui::TreeNode("Position"))
+	{
+		float p[2] = { position.x,position.y };
+		ImGui::DragFloat2("", p);
+		position = { p[0],p[1] };
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("Rotation"))
+	{
+		float r = ConvertToDegrees(rotation);
+		ImGui::DragFloat("rota", &r, 0.5f);
+		if (r >= 360)r -= 360;
+		if (r < 0)r += 360;
+		rotation = ConvertToRadians(r);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("Scale"))
+	{
+		float s[2] = { scale.x,scale.y };
+		ImGui::DragFloat2("", s, 0.05f);
+		scale = { s[0],s[1] };
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("color"))
+	{
+		ImGui::ColorEdit4("color", color);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("Change Tex"))
+	{
+		static int num = texNum;
+		Texture::Instance()->TexNum(&num);
+		texNum = (unsigned int)num;
+		ImGui::TreePop();
+	}
 }
 #endif
 

@@ -4,6 +4,11 @@
 #include <fstream>
 #include <iostream>
 #include "Debug.h"
+#include "Window.h"
+#include "Ease.h"
+#include "Texture.h"
+#include "Graphic.h"
+#include "Input.h"
 
 using namespace IF;
 using namespace std;
@@ -12,6 +17,7 @@ using namespace nlohmann;
 void IF::SceneManager::Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList,
 	vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
 {
+	this->commandList = commandList;
 	Load(&now);
 	scene = make_unique<Scene>();
 	scene->StaticInitialize(winWidth, winHeight, device, commandList, viewport, hwnd);
@@ -19,21 +25,190 @@ void IF::SceneManager::Initialize(int winWidth, int winHeight, ID3D12Device* dev
 	scene->InputJson(now);
 }
 
-void IF::SceneManager::Update()
+bool IF::SceneManager::Update()
 {
-	scene->Update();
+#ifdef _DEBUG
+	static int endgui = 0;
+#endif
+	//メッセージ
+	if (Input::Instance()->KeyDown(KEY::ESC))
+	{
+		endFlag = true;
+
+#ifdef _DEBUG
+		endgui = 0;
+#endif
+	}
+	if (Window::Instance()->Message())
+	{
+#ifdef _DEBUG
+		scene->OutputJson(now);
+#endif
+		return true;
+	}
+
+#ifdef _DEBUG
+	if (isInitialized)//ゲーム画面への処理
+	{
+		if (allGreen)
+		{
+			scene->Update();
+		}
+		if (chengeFlag)
+		{
+			//ロード画面への遷移アニメーション終了後
+			if (true)
+			{
+				isInitialized = false;
+				allGreen = false;
+				sceneInitialize = std::async(std::launch::async, [this] {return SceneInitialize(); });
+			}
+			else//ロード画面への遷移アニメーション処理
+			{
+
+			}
+		}
+		else//ゲーム画面への遷移アニメーション処理
+		{
+
+		}
+	}
+	else//ロード画面の処理
+	{
+
+
+	}
+
+#else
+	if (isInitialized)//ゲーム画面への処理
+	{
+		if (sceneChengeTimer.NowTime() <= 0)
+		{
+			scene->Update();
+		}
+		if (chengeFlag)
+		{
+			//ロード画面への遷移アニメーション終了後
+			if (sceneChengeTimer.IsEnd())
+			{
+				//camera.Update();
+				isInitialized = false;
+				//loadObj.GameInit();
+				sceneInitialize = std::async(std::launch::async, [this] {return SceneInitialize(); });
+			}
+			else//ロード画面への遷移アニメーション処理
+			{
+				sceneChengeTimer.SafeUpdate();
+				//黒全画面スプライトのフェードイン
+				loadSprite.color[3] = Ease::Lerp(0, 1, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime());
+				loadSprite.Update();
+			}
+		}
+		else//ゲーム画面への遷移アニメーション処理
+		{
+			//camera.Update();
+			sceneChengeTimer.SafeDownUpdate();
+			//黒全画面スプライトのフェードアウト(絶対アルファを0にすること)
+			loadSprite.color[3] = Ease::Lerp(0, 1, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime());
+			loadSprite.Update();
+		}
+	}
+	else//ロード画面の処理
+	{
+		//camera.Update();
+		//loadObj.Update();
+
+	}
+#endif
+	//scene->Update();
+	//if (chengeFlag)
+	//{
+	//	scene->InputJson(next);
+	//	now = next;
+	//	next = "";
+	//	chengeFlag = false;
+	//	isInitialized = true;
+	//}
+
+#ifdef _DEBUG
+	ImGui::Begin("SceneSave");
+	if (ImGui::Button("SAVE"))
+	{
+		scene->OutputJson(now);
+	}
+	ImGui::End();
+	GUI();
+	if (endFlag == true)
+	{
+		ImGui::Begin("End");
+		if (endgui == 0)
+		{
+			ImGui::Text("SceneSave");
+			if (ImGui::Button("YES"))
+			{
+				Output();
+				scene->OutputJson(now);
+				endgui = 1;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+			{
+				endgui = 1;
+			}
+		}
+		if (endgui == 1)
+		{
+			ImGui::Text("ClosedWindow");
+			if (ImGui::Button("YES"))
+			{
+				return true;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+			{
+				endgui = 0;
+				endFlag = false;
+			}
+		}
+		ImGui::End();
+	}
+	return false;
+#else
+	return endFlag;
+#endif
 }
 
 void IF::SceneManager::Draw()
 {
-	scene->Draw();
+#ifdef _DEBUG
+	if (isInitialized)
+	{
+		scene->Draw();
+		allGreen = true;
+	}
+#else
+	if (isInitialized)
+	{
+		if (!chengeFlag)
+		{
+			scene->Draw();
+		}
+	}
+	//黒全画面スプライトDraw;
+	Graphic::Instance()->DrawBlendMode(commandList, Blend::NORMAL2D);
+	loadSprite.DrawBefore(Graphic::Instance()->rootsignature.Get());
+	loadSprite.Draw();
+	if (!isInitialized)
+	{
+		//Graphic::Instance()->DrawBlendMode(commandList);
+		//Object::DrawBefore(Graphic::Instance()->rootsignature.Get());
+		//loadObj.Draw();
+	}
+#endif
 }
 
 void IF::SceneManager::Delete()
 {
-#ifdef _DEBUG
-	scene->OutputJson(now);
-#endif
 	scene->Delete();
 }
 
@@ -46,43 +221,35 @@ void IF::SceneManager::Load(std::string* startscene)
 	reading_file >> j;
 	reading_file.close();
 
-	sceneList.clear();
-	int i = 0;
-	if (startscene != nullptr)*startscene = j["start"];
-	for (auto com : j["scene"])
+	for (auto i : j["scene"])
 	{
-		string a = com["name"];
-		vector<string> b;
-		for (auto com2 : com["next"])
-		{
-			b.push_back(com2);
-		}
-		sceneList.push_back({ b,a });
-		if (j["start"] == a)
-		{
-			nownext = b;
-		}
+		sceneList.push_back(i["name"]);
 	}
+
+	int i = 0;
+#ifdef _DEBUG
+	if (startscene != nullptr)*startscene = j["debug"];
+	start = j["start"];
+#else
+	if (startscene != nullptr)*startscene = j["start"];
+	debugstart = j["debug"];
+#endif
 }
 
-void IF::SceneManager::Next(unsigned short nextNum)
+void IF::SceneManager::SceneInitialize()
 {
-	if (nownext.size() < nextNum)
-	{
-		scene->InputJson(now);
-	}
-	else
-	{
-		scene->InputJson(nownext[nextNum]);
-		now = nownext[nextNum];
-		for (auto com : sceneList)
-		{
-			if (now == com.name)
-			{
-				nownext = com.next;
-			}
-		}
-	}
+	scene->InputJson(next);
+	now = next;
+	next = "";
+	chengeFlag = false;
+	isInitialized = true;
+}
+
+void IF::SceneManager::SceneChange(std::string sceneName)
+{
+	chengeFlag = true;
+	next = sceneName;
+	sceneChengeTimer.Set(20);
 }
 
 SceneManager* IF::SceneManager::Instance()
@@ -104,15 +271,15 @@ void IF::SceneManager::Output()
 	j["start"] = start;
 	for (auto com : sceneList)
 	{
-		j["scene"][i]["name"] = com.name;
-		int k = 0;
-		for (auto com2 : com.next)
-		{
-			j["scene"][i]["next"][k] = com2;
-			k++;
-		}
+		j["scene"][i]["name"] = com;
 		i++;
 	}
+
+#ifdef _DEBUG
+	j["debug"] = now;
+#else
+	j["debug"] = debugstart;
+#endif
 
 	string s = j.dump(4);
 	ofstream writing_file;
@@ -122,7 +289,7 @@ void IF::SceneManager::Output()
 	writing_file.close();
 }
 
-void IF::SceneManager::GUI(bool& flag)
+void IF::SceneManager::GUI()
 {
 	int i = 0;
 	static vector<int> mode;
@@ -132,7 +299,7 @@ void IF::SceneManager::GUI(bool& flag)
 	static int oldmode3 = 0;
 	static bool flag2 = false;
 	static string oldStart;
-	static vector<SceneDatas> next;
+	static vector<string> next;
 	static char name[256];
 	if (flag2 == false)
 	{
@@ -146,8 +313,8 @@ void IF::SceneManager::GUI(bool& flag)
 		{
 			if (i == 0)
 			{
-				if (com.name == now)mode4 = j;
-				if (com.name == _faileName)
+				if (com == now)mode4 = j;
+				if (com == _faileName)
 				{
 					i++;
 				}
@@ -155,7 +322,7 @@ void IF::SceneManager::GUI(bool& flag)
 			else
 			{
 				std::string a = _faileName + (char)(i + 48);
-				if (com.name == a)
+				if (com == a)
 				{
 					i++;
 				}
@@ -165,15 +332,14 @@ void IF::SceneManager::GUI(bool& flag)
 		if (i != 0)_faileName += (char)(i + 48);
 		strcpy_s(name, _faileName.c_str());
 	}
-	ImGui::Begin("SceneManager", (bool*)false, ImGuiWindowFlags_NoResize);
+	ImGui::Begin("SceneManager");
+	ImGui::Text("NowScene : %s", now.c_str());
 	if (ImGui::TreeNode("NewScene"))
 	{
 		ImGui::InputText("SceneName", name, sizeof(name));
 		if (ImGui::Button("add"))
 		{
-			vector<string>a;
-			next.push_back({ a,name });
-			sceneList.push_back({ a,name });
+			sceneList.push_back(name);
 		}
 		ImGui::TreePop();
 	}
@@ -183,18 +349,14 @@ void IF::SceneManager::GUI(bool& flag)
 		for (auto com : sceneList)
 		{
 			if (i % 3)ImGui::SameLine();
-			ImGui::RadioButton(com.name.c_str(), &mode4, i);
-			if (mode4 == i)
-			{
-				start = com.name;
-			}
+			ImGui::RadioButton(com.c_str(), &mode4, i);
 			i++;
 		}
 		if (ImGui::Button("Change"))
 		{
 			//scene->OutputJson(now);
-			scene->InputJson(sceneList[mode4].name);
-			now = sceneList[mode4].name;
+			scene->InputJson(sceneList[mode4]);
+			now = sceneList[mode4];
 		}
 		ImGui::TreePop();
 	}
@@ -204,82 +366,20 @@ void IF::SceneManager::GUI(bool& flag)
 		for (auto com : sceneList)
 		{
 			if (i % 3)ImGui::SameLine();
-			ImGui::RadioButton(com.name.c_str(), &mode2, i);
+			ImGui::RadioButton(com.c_str(), &mode2, i);
 			if (mode2 == i)
 			{
-				start = com.name;
+				start = com;
 			}
 			i++;
 		}
+		ImGui::Text("now start scene : %s", oldStart.c_str());
+		ImGui::Text("new start scene : %s", start.c_str());
 		ImGui::TreePop();
 	}
 	i = 0;
-	if (ImGui::TreeNode("SceneSetting"))
-	{
-		oldmode3 = mode3;
-		if (ImGui::TreeNode("Setting"))
-		{
-			for (auto com : sceneList)
-			{
-				if (i % 3)ImGui::SameLine();
-				ImGui::RadioButton(com.name.c_str(), &mode3, i);
-				i++;
-			}
-			ImGui::TreePop();
-		}
-		if (ImGui::Button("Add"))
-		{
-			next[mode3].next.push_back(sceneList[0].name);
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Delete") && next[mode3].next.size() > 1)
-		{
-			next[mode3].next.pop_back();
-		}
-		if (next[mode3].next.size() != mode.size() || oldmode3 != mode3)
-		{
-			mode.clear();
-			for (int i = 0; i < next[mode3].next.size(); i++)
-			{
-				int j = 0;
-				for (j; j < sceneList.size(); j++)if (next[mode3].next[i] == sceneList[j].name)break;
-				mode.push_back(j);
-			}
-		}
-		for (int j = 0; j < next[mode3].next.size(); j++)
-		{
-			i = 0;
-			string name = "NextScene";
-			name += (char)(j + 48);
-			if (ImGui::TreeNode(name.c_str()))
-			{
-				for (auto com : sceneList)
-				{
-					if (i % 3)ImGui::SameLine();
-					ImGui::RadioButton(com.name.c_str(), &mode[j], i);
-					if (mode[j] == i)
-					{
-						next[mode3].next[j] = com.name;
-					}
-					i++;
-				}
-				ImGui::TreePop();
-			}
-		}
-		ImGui::TreePop();
-	}
 	if (ImGui::Button("Confirm"))
 	{
-		sceneList = next;
-		for (auto com : sceneList)
-		{
-			if (com.name == now)
-			{
-				nownext = com.next;
-				break;
-			}
-		}
-		flag = false;
 		flag2 = false;
 		Output();
 	}
@@ -287,7 +387,6 @@ void IF::SceneManager::GUI(bool& flag)
 	if (ImGui::Button("Cancel"))
 	{
 		start = oldStart;
-		flag = false;
 		flag2 = false;
 	}
 	ImGui::End();

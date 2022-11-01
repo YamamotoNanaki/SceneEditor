@@ -9,6 +9,8 @@ private:
 
 public:
 	void Set(int end);
+	void TimeSet(int timer,int end);
+	void SetIf(int end, bool flag);
 	void Update();
 	void SafeDownUpdate();
 	void SafeUpdate();//タイマーがendの数値を超えてカウントされないようになっています。

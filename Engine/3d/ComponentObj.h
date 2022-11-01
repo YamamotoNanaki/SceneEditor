@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "ICamera.h"
 #include "Debug.h"
+#include "ParticleManager.h"
 
 namespace IF
 {
@@ -13,6 +14,8 @@ namespace IF
 		std::string tag;
 		bool deleteFlag = false;
 		ICamera* cameraPtr = nullptr;
+		bool particleFlag = false;
+		Emitter* emitter = nullptr;
 	protected:
 		Object obj{};
 		unsigned short texNum = 0;
@@ -22,14 +25,26 @@ namespace IF
 		static std::vector<D3D12_VIEWPORT>viewport;
 		unsigned short ptype;
 		bool prefab = false;
-		Primitive* colision = nullptr;
+		Primitive* collision = nullptr;
+
+		//!↓ワンボタン用で作ったやつ。後で消しとけ！
+		bool isActive = true;
+		//!↑ワンボタン用で作ったやつ。後で消しとけ！
 	public:
 		virtual void Initialize(Model* model, bool prefab) = 0;
 		virtual void Update() = 0;
 		virtual void Draw() = 0;
 		virtual ~CObject() = 0;
+		virtual void DebugUpdate();
 
 	public:
+		virtual void CollisionUpdate();
+		virtual bool WeightSaving(float max = 700);
+		//!↓ワンボタン用で作ったやつ。後で消しとけ！
+		inline bool IsActive() { return isActive; }
+		virtual void SetActive(bool active);
+		//!↑ワンボタン用で作ったやつ。後で消しとけ！
+		inline CObject* GetAdrres() { return this; }
 		inline void MatUpdate()
 		{
 			obj.Update(*matView, *matProjection, *cameraPos, mode);
@@ -40,7 +55,7 @@ namespace IF
 		{
 			obj.SetAlpha(a);
 		}
-		void DeleteObj();
+		bool DeleteObj();
 		inline void SetColor(Float4 color)
 		{
 			obj.SetColorF(color.x, color.y, color.z, color.w);
@@ -55,34 +70,34 @@ namespace IF
 		}
 		inline void SetCollision(unsigned short type)
 		{
-			if (colision != nullptr)
+			if (collision != nullptr)
 			{
-				delete colision;
-				colision = nullptr;
+				delete collision;
+				collision = nullptr;
 			}
 			if (type == RayPri)
 			{
-				colision = DEBUG_NEW Ray;
+				collision = DEBUG_NEW Ray;
 				ptype = RayPri;
 			}
 			else if (type == PlanePri)
 			{
-				colision = DEBUG_NEW Plane;
+				collision = DEBUG_NEW Plane;
 				ptype = PlanePri;
 			}
 			else if (type == SpherePri)
 			{
-				colision = DEBUG_NEW Sphere;
+				collision = DEBUG_NEW Sphere;
 				ptype = SpherePri;
 			}
 			else if (type == BoxPri)
 			{
-				colision = DEBUG_NEW Box;
+				collision = DEBUG_NEW Box;
 				ptype = BoxPri;
 			}
 			else if (type == CircleXYPri)
 			{
-				colision = DEBUG_NEW CircleXY;
+				collision = DEBUG_NEW CircleXY;
 				ptype = CircleXYPri;
 			}
 			else
@@ -96,8 +111,9 @@ namespace IF
 		}
 		inline Primitive* GetPrimitive()
 		{
-			return colision;
-		}inline void SetView(Matrix* matView)
+			return collision;
+		}
+		inline void SetView(Matrix* matView)
 		{
 			this->matView = matView;
 		}
@@ -151,7 +167,7 @@ namespace IF
 		}
 		inline void CObjDelete()
 		{
-			if (colision != nullptr)delete colision;
+			if (collision != nullptr)delete collision;
 		};
 		inline std::string GetModelTag()
 		{
@@ -167,7 +183,7 @@ namespace IF
 		{
 			this->flag = flag;
 		}
-		void GUI();
+		virtual void GUI();
 #endif
 	};
 }

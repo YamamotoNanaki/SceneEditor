@@ -22,6 +22,14 @@ IF::Float3 IF::Ease::OutQuadFloat3(Float3 startPos, Float3 endPos,Timer timer)
 			 (float)Ease::OutQuad(startPos.z, endPos.z, timer.GetEndTime(), timer.NowTime()) };
 };
 
+IF::Float3 IF::Ease::LerpFloat3(Float3 startPos, Float3 endPos, Timer timer)
+{
+	return { (float)Ease::Lerp(startPos.x, endPos.x, timer.GetEndTime(), timer.NowTime()),
+			 (float)Ease::Lerp(startPos.y, endPos.y, timer.GetEndTime(), timer.NowTime()),
+			 (float)Ease::Lerp(startPos.z, endPos.z, timer.GetEndTime(), timer.NowTime()) };
+};
+
+
 double IF::Ease::InOutQuad(double startPos, double endPos, double maxTime, double time) {
 	time /= maxTime / 2;
 	double change = endPos - startPos;

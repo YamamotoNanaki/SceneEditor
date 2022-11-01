@@ -1,5 +1,5 @@
 #include "ComponentObj.h"
-#include "imgui.h"
+#include "ImGui.h"
 #include "ObjectManager.h"
 
 using namespace IF;
@@ -8,16 +8,65 @@ using namespace std;
 vector<D3D12_VIEWPORT>CObject::viewport;
 
 CObject::~CObject()
-{ 
+{
 	CObjDelete();
 }
 
-void IF::CObject::DeleteObj()
+void IF::CObject::DebugUpdate()
 {
-	if (deleteFlag)
+	MatUpdate();
+}
+
+void IF::CObject::SetActive(bool active)
+{
+	isActive = active;
+	if (emitter != nullptr)emitter->DrawF = active;
+}
+
+static float offset = 0.2f;
+void IF::CObject::CollisionUpdate()
+{
+	if (collision != nullptr)
 	{
-		ObjectManager::Instance()->Delete(tag);
+		//collision->SetRadius()
+		if (ptype == NotPri);
+		else if (ptype == RayPri)
+		{
+			collision->SetCenter(SetVector3(obj.position));
+			collision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z + 3 }));
+		}
+		else if (ptype == BoxPri)
+		{
+			collision->SetMinPos({ obj.position.x - (obj.scale.x) - offset,obj.position.y -
+				(obj.scale.y) - offset,obj.position.z - (obj.scale.z) - offset });
+			collision->SetMaxPos({ obj.position.x + (obj.scale.x) + offset,obj.position.y +
+				(obj.scale.y) + offset,obj.position.z + (obj.scale.z) + offset });
+		}
+		else
+		{
+			collision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));
+			collision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f);
+		}
 	}
+}
+
+bool IF::CObject::WeightSaving(float max)
+{
+	float a = cameraPos->x - obj.position.x - obj.scale.x;
+	if (a > 0)
+	{
+		if (a < max / 4)return true;
+	}
+	else
+	{
+		if (a > -max)return true;
+	}
+	return false;
+}
+
+bool IF::CObject::DeleteObj()
+{
+	return deleteFlag;
 }
 
 void IF::CObject::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, int mode)
@@ -78,12 +127,21 @@ void IF::CObject::GUI()
 		ImGui::RadioButton("CircleXY", &type, CircleXYPri);
 		ImGui::SameLine();
 		ImGui::RadioButton("Not", &type, NotPri);
-		ImGui::TreePop();
 		if (type != old)
 		{
 			ptype = type;
 			SetCollision(type);
 		}
+		if (type != NotPri)
+		{
+			ImGui::Text("CollisionCheck");
+			ImGui::Text("v1:%0.3f,%0.3f,%0.3f", collision->v1.x, collision->v1.y, collision->v1.z);
+			ImGui::Text("v2:%0.3f,%0.3f,%0.3f", collision->v2.x, collision->v2.y, collision->v2.z);
+			ImGui::Text("f:%0.3f", collision->f);
+		}
+		ImGui::TreePop();
 	}
+
+	ImGui::Text("isActive:%s", isActive ? "true" : "false");
 }
 #endif

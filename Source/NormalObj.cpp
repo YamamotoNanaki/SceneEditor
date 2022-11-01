@@ -19,23 +19,23 @@ void IF::Normal::Initialize(Model* model, bool prefab)
 
 void IF::Normal::Update()
 {
-	if (colision != nullptr)
+	if (collision != nullptr)
 	{
 		if (ptype == NotPri);
 		else if (ptype == RayPri)
 		{
-			colision->SetCenter(SetVector3(obj.position));
-			colision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z + 3 }));
+			collision->SetCenter(SetVector3(obj.position));
+			collision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z + 3 }));
 		}
 		else if (ptype == CircleXYPri)
 		{
-			colision->SetCenter(SetVector3(obj.position));
-			colision->SetRadius((obj.scale.x + obj.scale.y) / 2.0f);
+			collision->SetCenter(SetVector3(obj.position));
+			collision->SetRadius((obj.scale.x + obj.scale.y) / 2.0f);
 		}
 		else
 		{
-			colision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));
-			colision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f);
+			collision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));
+			collision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f);
 		}
 	}
 	MatUpdate();

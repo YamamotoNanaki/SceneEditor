@@ -31,7 +31,6 @@ namespace IF
 	private:
 		SV* vi = nullptr;
 		ConstBuff cb;
-		Timer animeTimer;
 
 	public:
 		//定数バッファ
@@ -52,29 +51,31 @@ namespace IF
 		bool flipY = false;
 		std::string tag;
 		unsigned int texNum = 0;
-		bool DrawFlag = true;
-		bool f = true;
-		bool f2 = true;
+		bool deleteFlag = false;
+		float color[4] = { 1,1,1,1 };
 
 	public:
+		bool drawFlag = true;
 		~Sprite();
 		static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport, float winWidth, float winHeight);
 		static void SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList);
 		static void SetViewport(std::vector<D3D12_VIEWPORT> viewport);
-		void Initialize(unsigned int texNum, Float2 size = { 100,100 }, bool flipX = false, bool flipY = false);
-		void TransferVertex();
+		virtual void Initialize(unsigned int texNum, Float2 size = { 100,100 }, bool flipX = false, bool flipY = false);
+		virtual void TransferVertex();
 		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		void Update();
-		void Draw();
-		void SetPosition(Float2 position);
-		void SetSize(Float2 size);
-		void SetTextureRect(Float2 texBase, Float2 texSize);
-		void SetColor(int r, int g, int b, int a);
-		void SetBright(int r, int g, int b);
-		void SetAlpha(int a);
+		virtual void Update();
+		virtual void DebugUpdate();
+		virtual void Draw();
+		bool DeleteSprite();
+		virtual void SetPosition(Float2 position);
+		virtual void SetSize(Float2 size);
+		virtual void SetTextureRect(Float2 texBase, Float2 texSize);
+		virtual void SetColor(int r, int g, int b, int a);
+		virtual void SetBright(int r, int g, int b);
+		virtual void SetAlpha(int a);
 
 #ifdef _DEBUG
-		void GUI();
+		virtual void GUI();
 #endif
 	};
 }

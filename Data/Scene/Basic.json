@@ -5,7 +5,7 @@
             {
                 "BillBoard": 0,
                 "ObjectName": "Normal",
-                "collision": 65535,
+                "collision": 52685,
                 "color": {
                     "w": 1.0,
                     "x": 1.0,

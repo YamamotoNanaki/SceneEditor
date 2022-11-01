@@ -13,3 +13,4 @@ short TypeConversion255(float num)
     if (num < 0)num = 0;
     return (short)num * 255;
 }
+
