@@ -91,7 +91,7 @@ namespace IF
 		bool emitterDeleteFlag = false;
 
 	public:
-		static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport);
+		static void StaticInitialize();
 		virtual void Add();
 		virtual void Update();
 		virtual void Draw();

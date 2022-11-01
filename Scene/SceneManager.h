@@ -34,8 +34,7 @@ namespace IF
 			return now;
 		}
 		void Delete();
-		void Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList,
-			std::vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
+		void Initialize();
 		bool Update();
 		void Draw();
 		void Load(std::string* startscene = nullptr);

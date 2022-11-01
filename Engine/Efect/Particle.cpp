@@ -1,16 +1,14 @@
 #include "Particle.h"
 #include "View.h"
 #include "Ease.h"
+#include "DirectX12.h"
 #include <cassert>
 
 using namespace IF;
 using namespace std;
 
-ID3D12Device* Particle::device = nullptr;
-ID3D12GraphicsCommandList* Particle::commandList = nullptr;
-PV Particle::vi = {};
-vector<D3D12_VIEWPORT> Particle::viewport;
 ICamera* Particle::camera = nullptr;
+PV Particle::vi{};
 
 void Particle::Initialize()
 {
@@ -28,6 +26,7 @@ void Particle::Initialize()
 	resdesc.SampleDesc.Count = 1;
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//定数バッファの生成
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	result = device->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform));
@@ -36,7 +35,7 @@ void Particle::Initialize()
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));
 
-	cb.Initialize(device);
+	cb.Initialize();
 }
 
 void Particle::VIInitialize()
@@ -47,15 +46,9 @@ void Particle::VIInitialize()
 		{{0, 0, 0}},	//左下
 	};
 
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	vi.SetVerticleIndex(vertices, _countof(vertices));
-	vi.Initialize(device);
-}
-
-void IF::Particle::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport)
-{
-	Particle::device = device;
-	Particle::commandList = commandList;
-	Particle::viewport = viewport;
+	vi.Initialize();
 }
 
 void Particle::MatUpdate()
@@ -168,23 +161,21 @@ void IF::Particle::Update()
 
 void IF::Particle::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology)
 {
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	commandList->SetGraphicsRootSignature(root);
 	commandList->IASetPrimitiveTopology(topology);
 }
 
 void Particle::Draw()
 {
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
-	for (int i = 0; i < viewport.size(); i++)
-	{
-		commandList->RSSetViewports(1, &viewport[i]);
-		//頂点バッファの設定
-		commandList->IASetVertexBuffers(0, 1, &vi.GetVertexView());
-		//定数バッファビューの設定
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-		//描画コマンド
-		commandList->DrawInstanced((UINT)vi.GetSize(), 1, 0, 0);
-	}
+	//頂点バッファの設定
+	commandList->IASetVertexBuffers(0, 1, &vi.GetVertexView());
+	//定数バッファビューの設定
+	commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+	//描画コマンド
+	commandList->DrawInstanced((UINT)vi.GetSize(), 1, 0, 0);
 }
 
 Particle::~Particle()

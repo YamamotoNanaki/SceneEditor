@@ -31,8 +31,6 @@ namespace IF
 		Model* model = nullptr;
 		ConstBuff cb;
 		static LightManager* lightPtr;
-		static ID3D12Device* device;
-		static ID3D12GraphicsCommandList* commandList;
 
 	public:
 		//定数バッファ
@@ -57,15 +55,10 @@ namespace IF
 		}
 		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		void Update(Matrix matView, Matrix matProjection, Float3 comeraPos, int mode = BillBoard::NOON);
-		void Draw(vector<D3D12_VIEWPORT> viewport);
-		void Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum);
+		void Draw();
+		void Draw(unsigned short texNum);
 		~Object();
-		static inline void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, LightManager* light)
-		{
-			Object::device = device;
-			Object::commandList = commandList;
-			Object::lightPtr = light;
-		}
+		static void StaticInitialize();
 		void SetColor(int r, int g, int b, int a);
 		void SetColorF(float r, float g, float b, float a);
 		inline Float4 GetColor()

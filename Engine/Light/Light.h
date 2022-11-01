@@ -73,7 +73,6 @@ namespace IF
 		void Update();
 		void Draw(UINT rootParameterIndex);
 		static LightManager* Instance();
-		static void DeleteInstance();
 		void UnMap();
 	};
 }

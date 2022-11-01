@@ -239,13 +239,6 @@ namespace IF
 				}
 			}
 		}
-		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)
-		{
-			for (auto com : objList)
-			{
-				com->SetViewport(viewport);
-			}
-		}
 		inline void DeleteObject()
 		{
 			auto buff = objList;

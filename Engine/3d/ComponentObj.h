@@ -22,28 +22,22 @@ namespace IF
 		Matrix* matView = nullptr, * matProjection = nullptr;
 		Float3* cameraPos = nullptr;
 		int mode = BillBoard::NOON;
-		static std::vector<D3D12_VIEWPORT>viewport;
 		unsigned short ptype;
 		bool prefab = false;
 		Primitive* collision = nullptr;
-
-		//!↓ワンボタン用で作ったやつ。後で消しとけ！
-		bool isActive = true;
-		//!↑ワンボタン用で作ったやつ。後で消しとけ！
 	public:
-		virtual void Initialize(Model* model, bool prefab) = 0;
-		virtual void Update() = 0;
-		virtual void Draw() = 0;
-		virtual ~CObject() = 0;
+		virtual void Initialize(Model* model, bool prefab);
+		virtual void Update();
+		virtual void Draw();
+		virtual ~CObject();
 		virtual void DebugUpdate();
 
 	public:
+		virtual void ClassUpdate();
+		virtual void ClassInitialize();
 		virtual void CollisionUpdate();
 		virtual bool WeightSaving(float max = 700);
-		//!↓ワンボタン用で作ったやつ。後で消しとけ！
-		inline bool IsActive() { return isActive; }
-		virtual void SetActive(bool active);
-		//!↑ワンボタン用で作ったやつ。後で消しとけ！
+		bool WeightSavingXYZ(float maxX, float maxY, float maxZ);
 		inline CObject* GetAdrres() { return this; }
 		inline void MatUpdate()
 		{
@@ -132,10 +126,6 @@ namespace IF
 		inline int GetBillBoard()
 		{
 			return mode;
-		}
-		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)
-		{
-			CObject::viewport = viewport;
 		}
 		inline void SetTexture(unsigned short texNum)
 		{

@@ -28,7 +28,6 @@ namespace IF
 	private:
 		static const short textureMax = 1024;
 		unsigned short textureSize = 0;
-		static ID3D12Device* device;
 
 	public:
 		D3D12_DESCRIPTOR_RANGE descRangeSRV{};
@@ -43,10 +42,8 @@ namespace IF
 
 	public:
 		static Texture* Instance();
-		static void DeleteInstance();
-		static void setDevice(ID3D12Device* device);
 		void Initialize();
-		void setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle);
+		void SetTexture(unsigned short texHandle);
 		unsigned short LoadTexture(const std::string filename, int number = -1);
 		void GUIInit();
 		//unsigned short folder = 0;

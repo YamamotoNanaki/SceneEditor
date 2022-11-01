@@ -15,11 +15,6 @@ IF::ModelManager::~ModelManager()
 	assert(modelList.empty() && "インスタンスを破棄できません");
 }
 
-void IF::ModelManager::StaticInitialize(ID3D12Device* device)
-{
-	Model::SetDevice(device);
-}
-
 ModelManager* IF::ModelManager::Instance()
 {
 	static ModelManager* inst = DEBUG_NEW ModelManager;

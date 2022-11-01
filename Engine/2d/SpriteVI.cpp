@@ -1,7 +1,8 @@
 #include "SpriteVI.h"
+#include "DirectX12.h"
 #include <cassert>
 
-void IF::SV::Initialize(ID3D12Device* device)
+void IF::SV::Initialize()
 {
 	HRESULT result;
 
@@ -25,7 +26,7 @@ void IF::SV::Initialize(ID3D12Device* device)
 
 	// 頂点バッファの生成
 
-	result = device->CreateCommittedResource(
+	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE, &resDesc, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertBuff));

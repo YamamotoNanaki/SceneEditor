@@ -17,7 +17,7 @@ namespace IF
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 		template<class T> using vector = std::vector<T>;
 
-	public:
+	private:
 		ComPtr < ID3D12Device> device = nullptr;
 		ComPtr < IDXGIFactory6> dxgiFactory = nullptr;
 		ComPtr < IDXGISwapChain4> swapchain = nullptr;
@@ -51,12 +51,14 @@ namespace IF
 
 	public:
 		static DirectX12* Instance();
-		static void DeleteInstance();
 		void Initialize(HWND hwnd, int window_width, int window_height);
 		void DrawBefore();
+		void DrawSetViewport(int viewportNum = 0);
 		void DrawAfter();
 		void SetNewViewPort(float width, float height, float topX, float topY, float minDepth = 0.0f, float maxDepth = 1.0f);
 		void SetScissorrect(float left, float right, float top, float bottom);
+		ID3D12GraphicsCommandList* GetCmdList();
+		ID3D12Device* GetDevice();
 
 	public:
 		void SetClearColor(Float4 color);

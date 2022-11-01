@@ -274,13 +274,8 @@ void IF::LightManager::Draw(UINT rootParameterIndex)
 
 LightManager* IF::LightManager::Instance()
 {
-	static LightManager* instance = DEBUG_NEW LightManager;
-	return instance;
-}
-
-void IF::LightManager::DeleteInstance()
-{
-	delete LightManager::Instance();
+	static LightManager instance;
+	return &instance;
 }
 
 void IF::LightManager::UnMap()

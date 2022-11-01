@@ -33,6 +33,9 @@ void IF::Window::Initialize(int window_width, int window_height, LPCWSTR windowN
 	RegisterClassEx(&w);
 	// ウィンドウサイズ{ X座標 Y座標 横幅 縦幅 }
 	RECT wrc = { 0, 0, window_width, window_height };
+	winWidth = window_width;
+	winHeight = window_height;
+
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // 自動でサイズ補正
 
 	// ウィンドウオブジェクトの生成

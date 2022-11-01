@@ -7,11 +7,10 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "Debug.h"
+#include "DirectX12.h"
 
 using namespace IF;
 using namespace std;
-
-ID3D12Device* Model::device = nullptr;
 
 bool Model::LoadModel(string name, bool smoothing)
 {
@@ -178,7 +177,7 @@ bool Model::LoadModel(string name, bool smoothing)
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -215,7 +214,7 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 		{{-size, +size, -size},{},{0.0f, 0.0f}},	//左上
 		{{+size, -size, -size},{},{1.0f, 1.0f}},	//右下
 		{{+size, +size, -size},{},{1.0f, 0.0f}},	//右上
-		//後			
+		//後
 		{{+size, -size, +size},{},{1.0f, 1.0f}},	//右下
 		{{+size, +size, +size},{},{1.0f, 0.0f}},	//右上
 		{{-size, -size, +size},{},{0.0f, 1.0f}},	//左下
@@ -280,7 +279,7 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -339,7 +338,7 @@ void IF::Model::CreatePolygonSquare(unsigned short texNum, bool smoothing)
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -395,7 +394,7 @@ void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -457,7 +456,7 @@ void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -567,7 +566,7 @@ void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -618,7 +617,7 @@ void IF::Model::CreateRay()
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
 
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform1));
@@ -640,17 +639,13 @@ void IF::Model::CreateRay()
 
 void Model::VIInitialize(bool smoothing, bool normal)
 {
-	vi->Initialize(device, smoothing, normal);
+	vi->Initialize(smoothing, normal);
 }
 
-void IF::Model::SetDevice(ID3D12Device* device)
+void IF::Model::Draw(ID3D12Resource* address)
 {
-	Model::device = device;
-}
-
-void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address)
-{
-	if (material.tex == true)Texture::Instance()->setTexture(commandList, material.texNum);
+	static ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
+	if (material.tex == true)Texture::Instance()->SetTexture(material.texNum);
 	//頂点バッファの設定
 	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
 	//インデックスバッファの設定
@@ -658,17 +653,14 @@ void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPO
 	//定数バッファビューの設定
 	commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
-	for (int i = 0; i < viewport.size(); i++)
-	{
-		commandList->RSSetViewports(1, &viewport[i]);
-		//描画コマンド
-		commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
-	}
+	//描画コマンド
+	commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
 }
 
-void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, ID3D12Resource* address, unsigned short texNum)
+void IF::Model::Draw(ID3D12Resource* address, unsigned short texNum)
 {
-	Texture::Instance()->setTexture(commandList, texNum);
+	static ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
+	Texture::Instance()->SetTexture(texNum);
 	//頂点バッファの設定
 	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
 	//インデックスバッファの設定
@@ -676,12 +668,8 @@ void IF::Model::Draw(ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPO
 	//定数バッファビューの設定
 	commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
-	for (int i = 0; i < viewport.size(); i++)
-	{
-		commandList->RSSetViewports(1, &viewport[i]);
-		//描画コマンド
-		commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
-	}
+	//描画コマンド
+	commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
 }
 
 unsigned short IF::Model::GetTexNum()

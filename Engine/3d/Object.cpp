@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+#include "Light.h"
+#include "DirectX12.h"
 
 using namespace IF;
 using namespace std;
@@ -11,11 +13,10 @@ using namespace IF::BillBoard;
 using namespace Microsoft::WRL;
 
 LightManager* Object::lightPtr = nullptr;
-ID3D12Device* Object::device = nullptr;
-ID3D12GraphicsCommandList* Object::commandList = nullptr;
 
 void IF::Object::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology)
 {
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	commandList->SetGraphicsRootSignature(root);
 	commandList->IASetPrimitiveTopology(topology);
 }
@@ -41,7 +42,7 @@ void IF::Object::Initialize(Model* model)
 	resdesc.SampleDesc.Count = 1;
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//定数バッファの生成
-	result = device->CreateCommittedResource(
+	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform));
 	assert(SUCCEEDED(result));
@@ -53,7 +54,7 @@ void IF::Object::Initialize(Model* model)
 
 	this->model = model;
 
-	cb.Initialize(device);
+	cb.Initialize();
 }
 
 void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int mode)
@@ -86,7 +87,7 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->cameraPos = cameraPos;
 }
 
-void Object::Draw(vector<D3D12_VIEWPORT> viewport)
+void Object::Draw()
 {
 	if (model == nullptr)
 	{
@@ -94,12 +95,13 @@ void Object::Draw(vector<D3D12_VIEWPORT> viewport)
 		return;
 	}
 
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	lightPtr->Draw(4);
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
-	model->Draw(Object::commandList, viewport, constBuffTransform.Get());
+	model->Draw(constBuffTransform.Get());
 }
 
-void IF::Object::Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
+void IF::Object::Draw(unsigned short texNum)
 {
 	if (model == nullptr)
 	{
@@ -109,12 +111,17 @@ void IF::Object::Draw(vector<D3D12_VIEWPORT> viewport, unsigned short texNum)
 
 	lightPtr->Draw(4);
 
-	model->Draw(Object::commandList, viewport, constBuffTransform.Get(), texNum);
+	model->Draw(constBuffTransform.Get(), texNum);
 }
 
 Object::~Object()
 {
 	constBuffTransform->Unmap(0, nullptr);
+}
+
+void IF::Object::StaticInitialize()
+{
+	Object::lightPtr = LightManager::Instance();
 }
 
 void IF::Object::SetColor(int r, int g, int b, int a)

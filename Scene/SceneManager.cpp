@@ -14,13 +14,11 @@ using namespace IF;
 using namespace std;
 using namespace nlohmann;
 
-void IF::SceneManager::Initialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList,
-	vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
+void IF::SceneManager::Initialize()
 {
-	this->commandList = commandList;
 	Load(&now);
 	scene = make_unique<Scene>();
-	scene->StaticInitialize(winWidth, winHeight, device, commandList, viewport, hwnd);
+	Scene::StaticInitialize();
 	scene->Initialize();
 	scene->InputJson(now);
 }

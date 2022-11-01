@@ -12,7 +12,7 @@ namespace IF
 		ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 		ConstBufferDataColor* constMapMaterial = nullptr;
 	public:
-		void Initialize(ID3D12Device* device);
+		void Initialize();
 		~ConstBuff();
 		D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress();
 

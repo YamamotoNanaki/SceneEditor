@@ -1,4 +1,5 @@
 #include "ModelVI.h"
+#include "DirectX12.h"
 #include <cassert>
 
 using namespace std;
@@ -27,7 +28,7 @@ void IF::MVI::SetVerticleIndex(Vertex* vertices, size_t vertexCount, unsigned sh
 	}
 }
 
-void IF::MVI::Initialize(ID3D12Device* device, bool smoothing, bool flag)
+void IF::MVI::Initialize(bool smoothing, bool flag)
 {
 	HRESULT result;
 
@@ -109,7 +110,7 @@ void IF::MVI::Initialize(ID3D12Device* device, bool smoothing, bool flag)
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点バッファの生成
-
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	result = device->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE, &resDesc, // リソース設定

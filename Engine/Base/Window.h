@@ -14,6 +14,9 @@ namespace IF
 		Window(const Window&) {}
 		Window& operator=(const Window&) {}
 		~Window() {}
+	public:
+		int winWidth;
+		int winHeight;
 
 	public:
 		static Window* Instance();

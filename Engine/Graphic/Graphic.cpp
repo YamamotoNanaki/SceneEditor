@@ -2,27 +2,16 @@
 #include <cassert>
 #include <d3dcompiler.h>
 #include "Debug.h"
+#include "DirectX12.h"
 
 using namespace std;
 using namespace IF;
 using namespace Microsoft::WRL;
 
-ID3D12Device* Graphic::device = nullptr;
-
-void IF::Graphic::SetDevice(ID3D12Device* device)
-{
-	Graphic::device = device;
-}
-
 Graphic* IF::Graphic::Instance()
 {
-	static Graphic* inst = DEBUG_NEW Graphic;
-	return inst;
-}
-
-void IF::Graphic::DeleteInstance()
-{
-	delete Graphic::Instance();
+	static Graphic inst;
+	return &inst;
 }
 
 void IF::Graphic::CompillerArray(LPCWSTR fillname, int num)
@@ -175,6 +164,7 @@ void IF::Graphic::Initialize(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, L
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	ID3DBlob* rootSigBlob = nullptr;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &Blobs[ShaderCode::error]);
 	assert(SUCCEEDED(result));
@@ -229,6 +219,7 @@ void IF::Graphic::Initialize2D(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs,
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	ID3DBlob* rootSigBlob = nullptr;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &Blobs[ShaderCode::error]);
 	assert(SUCCEEDED(result));
@@ -281,6 +272,7 @@ void IF::Graphic::InitializeParticle(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	ID3DBlob* rootSigBlob = nullptr;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &Blobs[ShaderCode::error]);
 	assert(SUCCEEDED(result));
@@ -298,7 +290,7 @@ void IF::Graphic::InitializeParticle(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 	assert(SUCCEEDED(result));
 }
 
-void IF::Graphic::DrawBlendMode(ID3D12GraphicsCommandList* commandList, Blend::Blend blend)
+void IF::Graphic::DrawBlendMode(Blend::Blend blend)
 {
-	commandList->SetPipelineState(pipelinestate[blend].Get());
+	DirectX12::Instance()->GetCmdList()->SetPipelineState(pipelinestate[blend].Get());
 }

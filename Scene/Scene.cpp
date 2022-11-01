@@ -10,7 +10,7 @@
 #include "nlohmann/json.hpp"
 #include "SceneManager.h"
 #include "Collision.h"
-#include "NormalObj.h"
+#include "Window.h"
 #include <fstream>
 #include <iostream>
 
@@ -25,7 +25,9 @@ void IF::Scene::Initialize()
 	graph->Initialize(tex->descRangeSRV, L"Data/Shaders/ModelVS.hlsl", L"Data/Shaders/ModelPS.hlsl", L"Data/Shaders/ModelGS.hlsl");
 	graph->Initialize2D(tex->descRangeSRV, L"Data/Shaders/SpriteVS.hlsl", L"Data/Shaders/SpritePS.hlsl");
 	graph->InitializeParticle(tex->descRangeSRV);
-	cameraM->Add<Camera>("mainCamera", 45, (float)winWidth, (float)winHeight);
+	float winWidth = Window::Instance()->winWidth;
+	float winHeight = Window::Instance()->winHeight;
+	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
 	lightM->Initialize();
 	lightM->DefaultLightSetting();
 	for (int i = 0; i < 3; i++)
@@ -39,7 +41,7 @@ void IF::Scene::Initialize()
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
 #ifdef _DEBUG
-	gui.Initialize(this->hwnd, this->device, tex->srvHeap.Get(), DirectX12::Instance()->swapchain.Get());
+	gui.Initialize();
 #endif
 }
 #ifdef _DEBUG
@@ -222,10 +224,12 @@ void IF::Scene::InputJson(std::string failename)
 	json j3;
 	reading_file >> j3;
 	reading_file.close();
+	float winWidth = Window::Instance()->winWidth;
+	float winHeight = Window::Instance()->winHeight;
 	for (auto i : j3["camera"])
 	{
-		if ("Camera" == i["CameraName"])cameraM->Add<Camera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
-		else if ("Debug" == i["CameraName"])cameraM->Add<DebugCamera>(i["tag"], 45.0f, (float)winWidth, (float)winHeight);
+		if ("Camera" == i["CameraName"])cameraM->Add<Camera>(i["tag"], 45.0f, winWidth, winHeight);
+		else if ("Debug" == i["CameraName"])cameraM->Add<DebugCamera>(i["tag"], 45.0f, winWidth, winHeight);
 		else continue;
 		cameraM->SetEye({ i["eye"]["x"],i["eye"]["y"],i["eye"]["z"] }, i["tag"]);
 		cameraM->SetTarget({ i["target"]["x"],i["target"]["y"],i["target"]["z"] }, i["tag"]);
@@ -290,21 +294,11 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 }
 
-void IF::Scene::StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd)
+void IF::Scene::StaticInitialize()
 {
-	this->winWidth = winWidth;
-	this->winHeight = winHeight;
-	this->device = device;
-	this->commandList = commandList;
-	this->viewport = viewport;
-	this->hwnd = hwnd;
-	objM->SetViewport(viewport);
-	Texture::setDevice(device);
-	ModelManager::StaticInitialize(device);
-	Graphic::SetDevice(device);
-	Sprite::StaticInitialize(device, commandList, viewport, winWidth, winHeight);
-	Object::StaticInitialize(device, commandList, lightM);
-	Emitter::StaticInitialize(device, commandList, viewport);
+	Sprite::StaticInitialize();
+	Object::StaticInitialize();
+	Emitter::StaticInitialize();
 }
 
 void IF::Scene::Update()
@@ -326,26 +320,25 @@ void IF::Scene::Update()
 
 void IF::Scene::Draw()
 {
-	graph->DrawBlendMode(commandList, Blend::NORMAL2D);
+	DirectX12::Instance()->DrawSetViewport();
+	graph->DrawBlendMode(Blend::NORMAL2D);
 	Sprite::DrawBefore(graph->rootsignature.Get());
-	spriteM->SetViewport(viewport);
 	spriteM->BackGroundDraw();
 
-	graph->DrawBlendMode(commandList);
+	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
-	objM->SetViewport(viewport);
 	objM->Draw();
 
 	particleM->Draw(graph->rootsignature.Get());
 
 
-	graph->DrawBlendMode(commandList, Blend::NORMAL2D);
+	graph->DrawBlendMode(Blend::NORMAL2D);
 	Sprite::DrawBefore(graph->rootsignature.Get());
-	spriteM->SetViewport(viewport);
 	spriteM->ForeGroundDraw();
 
 #ifdef _DEBUG
 	ImGui::Render();
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 	//デバッグ用

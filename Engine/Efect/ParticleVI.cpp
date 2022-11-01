@@ -1,4 +1,5 @@
 #include "ParticleVI.h"
+#include "DirectX12.h"
 #include <cassert>
 
 using namespace IF;
@@ -15,7 +16,7 @@ void IF::PV::SetVerticleIndex(VertexPos* vertices, int vertexCount)
 	}
 }
 
-void PV::Initialize(ID3D12Device* device)
+void PV::Initialize()
 {
 	HRESULT result;
 
@@ -40,6 +41,7 @@ void PV::Initialize(ID3D12Device* device)
 
 	// 頂点バッファの生成
 
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	result = device->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE, &resDesc, // リソース設定

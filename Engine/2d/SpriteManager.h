@@ -68,17 +68,6 @@ namespace IF
 			else foregroundList.push_back(spr);
 			return spr;
 		}
-		inline void SetViewport(std::vector<D3D12_VIEWPORT>viewport)
-		{
-			for (auto com : foregroundList)
-			{
-				com->SetViewport(viewport);
-			}
-			for (auto com : backgroundList)
-			{
-				com->SetViewport(viewport);
-			}
-		}
 		inline void SetTexture(unsigned short texNum, std::string tag)
 		{
 			for (auto com : foregroundList)

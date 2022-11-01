@@ -5,7 +5,25 @@
 using namespace IF;
 using namespace std;
 
-vector<D3D12_VIEWPORT>CObject::viewport;
+void IF::CObject::Initialize(Model* model, bool prefab)
+{
+	obj.Initialize(model);
+	this->prefab = prefab;
+	ClassInitialize();
+}
+
+void IF::CObject::Update()
+{
+	ClassUpdate();
+	MatUpdate();
+}
+
+void IF::CObject::Draw()
+{
+	if (prefab)return;
+	if (texNum == 0)obj.Draw();
+	else obj.Draw(texNum);
+}
 
 CObject::~CObject()
 {
@@ -17,13 +35,9 @@ void IF::CObject::DebugUpdate()
 	MatUpdate();
 }
 
-void IF::CObject::SetActive(bool active)
-{
-	isActive = active;
-	if (emitter != nullptr)emitter->DrawF = active;
-}
-
 static float offset = 0.2f;
+void IF::CObject::ClassUpdate() {}
+void IF::CObject::ClassInitialize() {}
 void IF::CObject::CollisionUpdate()
 {
 	if (collision != nullptr)
@@ -53,15 +67,19 @@ void IF::CObject::CollisionUpdate()
 bool IF::CObject::WeightSaving(float max)
 {
 	float a = cameraPos->x - obj.position.x - obj.scale.x;
-	if (a > 0)
-	{
-		if (a < max / 4)return true;
-	}
-	else
-	{
-		if (a > -max)return true;
-	}
-	return false;
+	float b = cameraPos->y - obj.position.y - obj.scale.y;
+	float c = cameraPos->z - obj.position.z - obj.scale.z;
+	if ((a<-max || a>max) && (b<-max || b>max) && (c<-max || c>max))return false;
+	return true;
+}
+
+bool IF::CObject::WeightSavingXYZ(float maxX,float maxY,float maxZ)
+{
+	float a = cameraPos->x - obj.position.x - obj.scale.x;
+	float b = cameraPos->y - obj.position.y - obj.scale.y;
+	float c = cameraPos->z - obj.position.z - obj.scale.z;
+	if ((a<-maxX || a>maxX) && (b<-maxY || b>maxY) && (c<-maxZ || c>maxZ))return false;
+	return true;
 }
 
 bool IF::CObject::DeleteObj()
@@ -141,7 +159,5 @@ void IF::CObject::GUI()
 		}
 		ImGui::TreePop();
 	}
-
-	ImGui::Text("isActive:%s", isActive ? "true" : "false");
 }
 #endif

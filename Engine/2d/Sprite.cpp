@@ -4,34 +4,22 @@
 #include "Texture.h"
 #include "Debug.h"
 #include "imgui.h"
+#include "DirectX12.h"
+#include "Window.h"
 
 using namespace IF;
 using namespace Microsoft::WRL;
 
-ComPtr < ID3D12GraphicsCommandList> Sprite::commandList = nullptr;
-ComPtr < ID3D12Device> Sprite::device = nullptr;
 Matrix Sprite::matPro;
-std::vector<D3D12_VIEWPORT> Sprite::viewport;
 
-void IF::Sprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport, float winWidth, float winHeight)
+void IF::Sprite::StaticInitialize()
 {
-	SetDeviceCommand(device, commandList);
-	SetViewport(viewport);
-	Sprite::matPro = MatrixOrthoGraphicProjection(0, winWidth, 0, winHeight, 0, 1);
+	Sprite::matPro = MatrixOrthoGraphicProjection(0, Window::Instance()->winWidth, 0, Window::Instance()->winHeight, 0, 1);
 }
 
 IF::Sprite::~Sprite()
 {
 	delete vi;
-}
-
-void IF::Sprite::SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList)
-{
-	assert(device);
-	assert(commandList);
-
-	Sprite::device = device;
-	Sprite::commandList = commandList;
 }
 
 void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool flipY)
@@ -73,7 +61,7 @@ void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool f
 	vertices[RT].uv = { tex_right,	tex_top };
 
 	vi->SetVerticle(vertices);
-	vi->Initialize(device.Get());
+	vi->Initialize();
 
 	HRESULT result;
 	//定数バッファのヒープ設定
@@ -89,6 +77,7 @@ void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool f
 	resdesc.SampleDesc.Count = 1;
 	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//定数バッファの生成
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	result = device->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuffTransform));
@@ -99,17 +88,20 @@ void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool f
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));
 
-	cb.Initialize(device.Get());
+	cb.Initialize();
+	ClassInitialize();
 }
 
 void IF::Sprite::DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology)
 {
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	commandList->SetGraphicsRootSignature(root);
 	commandList->IASetPrimitiveTopology(topology);
 }
 
 void IF::Sprite::Update()
 {
+	ClassUpdate();
 	matWorld = MatrixIdentity();
 	matWorld *= MatrixScaling(scale.x, scale.y, 1);
 	matWorld *= MatrixRotationZ(rotation);
@@ -121,39 +113,26 @@ void IF::Sprite::Update()
 	constMapTransform->mat = matWorld * matPro;
 }
 
-void IF::Sprite::DebugUpdate()
+void IF::Sprite::ClassUpdate()
 {
-	matWorld = MatrixIdentity();
-	matWorld *= MatrixScaling(scale.x, scale.y, 1);
-	matWorld *= MatrixRotationZ(rotation);
-	matWorld *= MatrixTranslation(position.x, position.y, 0);
-
-	cb.SetColor(color[0], color[1], color[2], color[3]);
-
-	//定数バッファへのデータ転送
-	constMapTransform->mat = matWorld * matPro;
 }
 
-void IF::Sprite::SetViewport(std::vector<D3D12_VIEWPORT> viewport)
+void IF::Sprite::ClassInitialize()
 {
-	Sprite::viewport = viewport;
 }
 
 void IF::Sprite::Draw()
 {
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	if (!drawFlag)return;
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	//頂点バッファの設定
 	commandList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
 	//定数バッファビューの設定
 	commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-	Texture::Instance()->setTexture(commandList.Get(), texNum);
-	for (int i = 0; i < viewport.size(); i++)
-	{
-		commandList->RSSetViewports(1, &viewport[i]);
-		//描画コマンド
-		commandList->DrawInstanced(vi->GetSize(), 1, 0, 0);
-	}
+	Texture::Instance()->SetTexture(texNum);
+	//描画コマンド
+	commandList->DrawInstanced(vi->GetSize(), 1, 0, 0);
 }
 
 bool IF::Sprite::DeleteSprite()
@@ -233,6 +212,19 @@ void IF::Sprite::GUI()
 		texNum = (unsigned int)num;
 		ImGui::TreePop();
 	}
+}
+
+void IF::Sprite::DebugUpdate()
+{
+	matWorld = MatrixIdentity();
+	matWorld *= MatrixScaling(scale.x, scale.y, 1);
+	matWorld *= MatrixRotationZ(rotation);
+	matWorld *= MatrixTranslation(position.x, position.y, 0);
+
+	cb.SetColor(color[0], color[1], color[2], color[3]);
+
+	//定数バッファへのデータ転送
+	constMapTransform->mat = matWorld * matPro;
 }
 #endif
 

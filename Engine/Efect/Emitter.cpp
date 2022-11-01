@@ -9,9 +9,8 @@
 using namespace IF;
 using namespace std;
 
-void IF::Emitter::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport)
+void IF::Emitter::StaticInitialize()
 {
-	Particle::StaticInitialize(device, commandList, viewport);
 	Particle::VIInitialize();
 }
 
@@ -133,7 +132,7 @@ void IF::Emitter::Add()
 
 void IF::Emitter::DrawBefore(ID3D12RootSignature* root)
 {
-	Graphic::Instance()->DrawBlendMode(Particle::commandList, (Blend::Blend)Blendmode);
+	Graphic::Instance()->DrawBlendMode((Blend::Blend)Blendmode);
 	Particle::DrawBefore(root);
 }
 
@@ -151,7 +150,7 @@ void IF::Emitter::Update()
 
 void IF::Emitter::Draw()
 {
-	Texture::Instance()->setTexture(DirectX12::Instance()->commandList.Get(), tex);
+	Texture::Instance()->SetTexture(tex);
 	for (unique_ptr<Particle>& buff : particles)
 	{
 		buff->Draw();

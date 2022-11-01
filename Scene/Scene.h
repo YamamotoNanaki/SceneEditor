@@ -18,20 +18,9 @@ namespace IF
 {
 	class Scene
 	{
-		template <class T>using vector = std::vector<T>;
-	private:
-		int winWidth{};
-		int winHeight{};
-		ID3D12Device* device;
-		ID3D12GraphicsCommandList* commandList;
-		vector<D3D12_VIEWPORT> viewport;
-		HWND hwnd = nullptr;
-
 #ifdef _DEBUG
 		GUI gui;
 #endif
-
-
 	private:
 		//ïœêîêÈåæ
 		//-----------------------
@@ -49,7 +38,7 @@ namespace IF
 	public:
 		void InputJson(std::string failename);
 		void Initialize();
-		void StaticInitialize(int winWidth, int winHeight, ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport, HWND& hwnd);
+		static void StaticInitialize();
 		void Update();
 		void Draw();
 		void Delete();

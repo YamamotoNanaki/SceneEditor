@@ -29,11 +29,8 @@ namespace IF
 			YBOARD
 		};
 
-		static ID3D12GraphicsCommandList* commandList;
 	protected:
 		static PV vi;
-		static ID3D12Device* device;
-		static vector<D3D12_VIEWPORT> viewport;
 		ConstBuff cb;
 
 	public:
@@ -88,7 +85,6 @@ namespace IF
 		bool deleteFlag = false;
 
 	public:
-		static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, vector<D3D12_VIEWPORT> viewport);
 		void Initialize();
 		static void VIInitialize();
 		void MatUpdate();

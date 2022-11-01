@@ -15,7 +15,6 @@ namespace IF
 		ModelManager& operator=(const ModelManager&) {}
 
 	public:
-		static void StaticInitialize(ID3D12Device* device);
 		static ModelManager* Instance();
 		static void DeleteInstance();
 		inline bool Load(std::string tag, bool smoothing, std::string name)

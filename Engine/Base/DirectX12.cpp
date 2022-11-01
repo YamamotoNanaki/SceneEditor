@@ -33,14 +33,9 @@ void IF::DirectX12::UpdateFixFps()
 
 DirectX12* IF::DirectX12::Instance()
 {
-	static DirectX12* inst = DEBUG_NEW DirectX12;
+	static DirectX12 inst;
 
-	return inst;
-}
-
-void IF::DirectX12::DeleteInstance()
-{
-	delete DirectX12::Instance();
+	return &inst;
 }
 
 void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
@@ -195,11 +190,11 @@ void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(depthBuffer.Get(), &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
-//#ifdef _DEBUG
-//	SetNewViewPort(800, 450, 200, 40);
-//#else
+	//#ifdef _DEBUG
+	//	SetNewViewPort(800, 450, 200, 40);
+	//#else
 	SetNewViewPort(window_width, window_height, 0, 0);
-//#endif
+	//#endif
 	SetScissorrect(0, window_width, 0, window_height);
 }
 
@@ -228,6 +223,11 @@ void DirectX12::DrawBefore()
 	commandList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	commandList->RSSetScissorRects(1, &scissorrect);
+}
+
+void IF::DirectX12::DrawSetViewport(int viewportNum)
+{
+	commandList->RSSetViewports(1, &viewport[viewportNum]);
 }
 
 void DirectX12::DrawAfter()
@@ -286,6 +286,16 @@ void IF::DirectX12::SetScissorrect(float left, float right, float top, float bot
 	scissorrect.right = scissorrect.left + right;
 	scissorrect.top = top;
 	scissorrect.bottom = scissorrect.top + bottom;
+}
+
+ID3D12GraphicsCommandList* IF::DirectX12::GetCmdList()
+{
+	return commandList.Get();
+}
+
+ID3D12Device* IF::DirectX12::GetDevice()
+{
+	return device.Get();
 }
 
 void DirectX12::SetClearColor(Float4 color)

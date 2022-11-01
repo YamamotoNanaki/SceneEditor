@@ -29,7 +29,7 @@ namespace IF
 	public:
 		void SetVerticleIndex(std::vector<Vertex> vertices, size_t vertexCount, std::vector<unsigned short> indices, size_t indexCount);
 		void SetVerticleIndex(Vertex* vertices, size_t vertexCount, unsigned short* indices, size_t indexCount);
-		void Initialize(ID3D12Device* device, bool smoothing, bool flag = false);
+		void Initialize(bool smoothing, bool flag = false);
 		D3D12_VERTEX_BUFFER_VIEW& GetVertexView();
 		D3D12_INDEX_BUFFER_VIEW& GetIndexView();
 		size_t GetSize();

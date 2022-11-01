@@ -17,11 +17,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
 		Input::Instance()->InputFlag(USE_INPUT_KEY | USE_INPUT_MOUSE);
 		Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
-		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get());
+		LightManager::Instance()->SetDeviceCommand(DirectX12::Instance()->GetDevice(), DirectX12::Instance()->GetCmdList());
 		Sound::Instance()->Initialize();
 		SceneManager* sceneM = SceneManager::Instance();
-		sceneM->Initialize(winWidth, winHeight, DirectX12::Instance()->device.Get(), DirectX12::Instance()->commandList.Get(),
-			DirectX12::Instance()->viewport, Window::Instance()->hwnd);
+		sceneM->Initialize();
 
 		while (!Input::Instance()->KeyDown(KEY::ESC))
 		{
@@ -35,11 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			DirectX12::Instance()->DrawAfter();
 		}
 		sceneM->Release();
-		LightManager::DeleteInstance();
 		Input::DeleteInstance();
-		Graphic::DeleteInstance();
-		Texture::DeleteInstance();
-		DirectX12::DeleteInstance();
 		Window::DeleteInstance();
 	}
 	_CrtDumpMemoryLeaks();

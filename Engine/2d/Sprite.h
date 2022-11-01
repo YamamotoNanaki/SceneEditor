@@ -23,10 +23,7 @@ namespace IF
 	{
 		template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	private:
-		static ComPtr<ID3D12GraphicsCommandList> commandList;
-		static ComPtr<ID3D12Device> device;
 		static Matrix matPro;
-		static std::vector<D3D12_VIEWPORT> viewport;
 
 	private:
 		SV* vi = nullptr;
@@ -57,14 +54,13 @@ namespace IF
 	public:
 		bool drawFlag = true;
 		~Sprite();
-		static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList, std::vector<D3D12_VIEWPORT> viewport, float winWidth, float winHeight);
-		static void SetDeviceCommand(ID3D12Device* device, ID3D12GraphicsCommandList* commandList);
-		static void SetViewport(std::vector<D3D12_VIEWPORT> viewport);
+		static void StaticInitialize();
 		virtual void Initialize(unsigned int texNum, Float2 size = { 100,100 }, bool flipX = false, bool flipY = false);
 		virtual void TransferVertex();
 		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		virtual void Update();
-		virtual void DebugUpdate();
+		void Update();
+		virtual void ClassUpdate();
+		virtual void ClassInitialize();
 		virtual void Draw();
 		bool DeleteSprite();
 		virtual void SetPosition(Float2 position);
@@ -75,6 +71,7 @@ namespace IF
 		virtual void SetAlpha(int a);
 
 #ifdef _DEBUG
+		virtual void DebugUpdate();
 		virtual void GUI();
 #endif
 	};

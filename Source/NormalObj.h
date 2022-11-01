@@ -8,13 +8,9 @@ namespace IF
 		static const std::string objName;
 
 	public:
-		void Initialize(Model* model, bool prefab)override;
-		void Update()override;
-		void Draw()override;
 		const std::string GetObjName()override
 		{
 			return objName;
 		}
-		inline ~Normal() {};
 	};
 }

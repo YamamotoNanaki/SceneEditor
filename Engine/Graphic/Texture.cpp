@@ -5,13 +5,12 @@
 #include "ImGui.h"
 #include "Debug.h"
 #include "Timer.h"
+#include "DirectX12.h"
 
-using namespace DirectX;
 using namespace IF;
 using namespace Microsoft::WRL;
 using namespace std;
-
-ID3D12Device* Texture::device = nullptr;
+using namespace DirectX;
 
 IF::Texture::Texture()
 {
@@ -24,18 +23,8 @@ IF::Texture::Texture()
 
 Texture* IF::Texture::Instance()
 {
-	static Texture* inst = DEBUG_NEW Texture;
-	return inst;
-}
-
-void IF::Texture::DeleteInstance()
-{
-	delete Texture::Instance();
-}
-
-void IF::Texture::setDevice(ID3D12Device* device)
-{
-	Texture::device = device;
+	static Texture inst;
+	return &inst;
 }
 
 void IF::Texture::Initialize()
@@ -47,7 +36,7 @@ void IF::Texture::Initialize()
 	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
-	HRESULT result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	HRESULT result = DirectX12::Instance()->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 	assert(SUCCEEDED(result));
 
 	textureSize = 0;
@@ -127,6 +116,7 @@ unsigned short Texture::LoadTexture(const std::string filename, int number)
 	texresDesc.MipLevels = (UINT16)metadata.mipLevels;
 	texresDesc.SampleDesc.Count = 1;
 
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	result = device->CreateCommittedResource(		//GPUƒŠƒ\[ƒX‚Ì¶¬
 		&texHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -323,8 +313,9 @@ void IF::Texture::OutputJson(nlohmann::json& j)
 	}
 }
 
-void IF::Texture::setTexture(ID3D12GraphicsCommandList* commandList, unsigned short texHandle)
+void IF::Texture::SetTexture(unsigned short texHandle)
 {
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ID3D12DescriptorHeap* heaps[] = { srvHeap.Get() };
 	commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 

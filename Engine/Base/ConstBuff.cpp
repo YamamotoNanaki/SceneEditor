@@ -1,10 +1,11 @@
 #include "ConstBuff.h"
 #include "Util.h"
+#include "DirectX12.h"
 #include <cassert>
 
 using namespace IF;
 
-void IF::ConstBuff::Initialize(ID3D12Device* device)
+void IF::ConstBuff::Initialize()
 {
 	HRESULT result;
 	//ヒープ設定
@@ -21,6 +22,7 @@ void IF::ConstBuff::Initialize(ID3D12Device* device)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//GPUリソースの生成
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	result = device->CreateCommittedResource(
 		&cbHeapProp,	//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,

@@ -22,7 +22,7 @@ namespace IF
 		Vertex2D vertices[4];
 
 	public:
-		void Initialize(ID3D12Device* device);
+		void Initialize();
 		D3D12_VERTEX_BUFFER_VIEW& GetVertexView();
 		void SetVerticle(Vertex2D* vertices);
 		unsigned int GetSize();
