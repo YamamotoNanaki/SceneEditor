@@ -3,7 +3,6 @@
 #include "DirectX12.h"
 #include "Window.h"
 #include "Texture.h"
-#include <typeinfo>
 
 void IF::GUI::Initialize()
 {
