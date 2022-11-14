@@ -159,7 +159,7 @@ void IF::Scene::DebugUpdate()
 	if (spr)spriteM->GUI();
 	if (particle)particleM->GUI();
 
-	cameraM->AutoUpdate();
+	cameraM->AutoUpdate(flag);
 	lightM->Update();
 	if (flag)
 	{
@@ -304,6 +304,11 @@ void IF::Scene::StaticInitialize()
 void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
+	if (Input::Instance()->KeyTriggere(KEY::SPACE))
+	{
+		ParticleManager::Instance()->Start("Particle1");
+		ParticleManager::Instance()->Start("Particle2");
+	}
 
 #ifdef _DEBUG
 	DebugUpdate();

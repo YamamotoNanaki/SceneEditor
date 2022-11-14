@@ -68,7 +68,7 @@ namespace IF
 				}
 			}
 		}
-		void AutoUpdate();
+		void AutoUpdate(bool flag);
 		inline void Update(std::string tag)
 		{
 			for (auto com : cameraList)

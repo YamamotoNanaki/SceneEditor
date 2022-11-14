@@ -151,7 +151,7 @@ void IF::ObjectManager::GUI()
 		static bool flag = true;
 		if (ImGui::TreeNode("ObjectName"))
 		{
-			//ImGui::RadioButton("Normal", &objn, tagName::Normal);
+			ImGui::RadioButton("Normal", &objn, 0);
 			//ImGui::RadioButton("Player", &objn, tagName::Player);
 			//ImGui::RadioButton("Enemy", &objn, tagName::Enemy);
 			//ImGui::RadioButton("Wall", &objn, tagName::Wall);
@@ -169,7 +169,7 @@ void IF::ObjectManager::GUI()
 		}
 		if (flag == true)
 		{
-			//if (objn == tagName::Normal)tag = "Normal";
+			if (objn == 0)tag = "Normal";
 			//if (objn == tagName::Player)tag = "Player";
 			//if (objn == tagName::Enemy)tag = "Enemy";
 			//if (objn == tagName::Wall)tag = "Wall";

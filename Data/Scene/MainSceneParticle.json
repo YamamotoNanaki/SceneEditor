@@ -90,7 +90,7 @@
             "posF": false,
             "posRangeF": false,
             "position": [
-                0.0,
+                -8.0,
                 0.0,
                 0.0
             ],
@@ -152,6 +152,314 @@
                 0.0
             ],
             "tag": "Particle",
+            "tex": 3
+        },
+        {
+            "Blendmode": 9,
+            "addPosRange": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "addTime": 1,
+            "addnum": 50,
+            "addscale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "addspeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "colorEase": [
+                3,
+                0,
+                0,
+                0
+            ],
+            "colorF": true,
+            "deletePositionMax": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "deletePositionMin": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "deleteTime": 20,
+            "endScale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "endSpeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "endcolor": [
+                1.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            "endposition": [
+                0.0,
+                6.0,
+                0.0
+            ],
+            "flag": false,
+            "follow": false,
+            "followPosOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "followRangeOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "followtag": "",
+            "generateF": false,
+            "generateTime": 1,
+            "gravity": 1.0,
+            "isGravity": false,
+            "maxnum": 100,
+            "posEase": [
+                3,
+                0,
+                0
+            ],
+            "posF": true,
+            "posRangeF": false,
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rota": 0.0,
+            "rotaEase": 3,
+            "rotaF": false,
+            "rotaend": 0.0,
+            "rotarandom": 0.0,
+            "rotaspeed": 0.0,
+            "rotastart": 0.0,
+            "scale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scaleEase": [
+                3,
+                0,
+                0
+            ],
+            "scaleF": true,
+            "scaleRange": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "scaleRangeFlag": false,
+            "setSpeedPosFlag": true,
+            "speed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "speedEase": [
+                3,
+                0,
+                0
+            ],
+            "speedF": true,
+            "speedRange": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "startScale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "startSpeed": [
+                0.0,
+                0.6000000238418579,
+                0.0
+            ],
+            "startcolor": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "tag": "Particle1",
+            "tex": 3
+        },
+        {
+            "Blendmode": 9,
+            "addPosRange": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "addTime": 5,
+            "addnum": 50,
+            "addscale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "addspeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "color": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "colorEase": [
+                3,
+                0,
+                1,
+                0
+            ],
+            "colorF": true,
+            "deletePositionMax": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "deletePositionMin": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "deleteTime": 30,
+            "endScale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "endSpeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "endcolor": [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            "endposition": [
+                6.0,
+                0.0,
+                0.0
+            ],
+            "flag": false,
+            "follow": false,
+            "followPosOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "followRangeOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "followtag": "",
+            "generateF": false,
+            "generateTime": 1,
+            "gravity": 1.0,
+            "isGravity": false,
+            "maxnum": 100,
+            "posEase": [
+                3,
+                0,
+                0
+            ],
+            "posF": true,
+            "posRangeF": false,
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rota": 0.0,
+            "rotaEase": 3,
+            "rotaF": false,
+            "rotaend": 0.0,
+            "rotarandom": 0.0,
+            "rotaspeed": 0.0,
+            "rotastart": 0.0,
+            "scale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scaleEase": [
+                3,
+                0,
+                0
+            ],
+            "scaleF": true,
+            "scaleRange": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "scaleRangeFlag": false,
+            "setSpeedPosFlag": true,
+            "speed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "speedEase": [
+                3,
+                0,
+                0
+            ],
+            "speedF": true,
+            "speedRange": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "startScale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "startSpeed": [
+                0.800000011920929,
+                0.0,
+                0.0
+            ],
+            "startcolor": [
+                0.0,
+                0.0,
+                1.0,
+                1.0
+            ],
+            "tag": "Particle2",
             "tex": 3
         }
     ]

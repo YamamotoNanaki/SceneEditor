@@ -19,15 +19,15 @@ void IF::DebugCamera::Update()
 		float angleX = 0;
 		float angleY = 0;
 
-		//if (input->MLPush())
-		//{
-		//	float dy = move.x * scaleY;
-		//	float dx = move.y * scaleX;
+		if (input->MLPush())
+		{
+			float dy = move.x * scaleY;
+			float dx = move.y * scaleX;
 
-		//	angleX = -dx * M_PI;
-		//	angleY = -dy * M_PI;
-		//	dirty = true;
-		//}
+			angleX = -dx * M_PI;
+			angleY = -dy * M_PI;
+			dirty = true;
+		}
 
 		if (input->MRPush())
 		{
