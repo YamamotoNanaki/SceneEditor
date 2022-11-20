@@ -53,6 +53,13 @@ void IF::Normal::ClassUpdate()
 			obj.polygonSize = Ease::InQuad(1, 0, t.GetEndTime(), t.NowTime());
 		}
 	}
+	if (moveF)
+	{
+		if (Input::Instance()->KeyDown(DIK_W))obj.position.y += 0.25f;
+		if (Input::Instance()->KeyDown(DIK_S))obj.position.y -= 0.25f;
+		if (Input::Instance()->KeyDown(DIK_A))obj.position.x -= 0.25f;
+		if (Input::Instance()->KeyDown(DIK_D))obj.position.x += 0.25f;
+	}
 }
 
 void IF::Normal::ClassInputJson(nlohmann::json& j)

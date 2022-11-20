@@ -65,7 +65,7 @@
                 0.0
             ],
             "flag": false,
-            "follow": false,
+            "follow": true,
             "followPosOffset": [
                 0.0,
                 0.0,
@@ -76,7 +76,7 @@
                 0.0,
                 0.0
             ],
-            "followtag": "test",
+            "followtag": "Normal",
             "generateF": true,
             "generateTime": 0,
             "gravity": 1.0,
@@ -460,6 +460,160 @@
                 1.0
             ],
             "tag": "Particle2",
+            "tex": 3
+        },
+        {
+            "Blendmode": 9,
+            "addPosRange": [
+                3.0,
+                3.0,
+                3.0
+            ],
+            "addTime": 5,
+            "addnum": 10,
+            "addscale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "addspeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "color": [
+                0.5098038911819458,
+                0.3048827052116394,
+                0.3048827052116394,
+                1.0
+            ],
+            "colorEase": [
+                3,
+                0,
+                0,
+                0
+            ],
+            "colorF": true,
+            "deletePositionMax": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "deletePositionMin": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "deleteTime": 60,
+            "endScale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "endSpeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "endcolor": [
+                0.5668181777000427,
+                0.6960784196853638,
+                0.14672242105007172,
+                0.0
+            ],
+            "endposition": [
+                14.0,
+                6.5,
+                0.0
+            ],
+            "flag": false,
+            "follow": false,
+            "followPosOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "followRangeOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "followtag": "",
+            "generateF": true,
+            "generateTime": 0,
+            "gravity": 1.0,
+            "isGravity": false,
+            "maxnum": 100,
+            "posEase": [
+                3,
+                0,
+                0
+            ],
+            "posF": true,
+            "posRangeF": false,
+            "position": [
+                14.0,
+                -1.0,
+                0.0
+            ],
+            "rota": 0.0,
+            "rotaEase": 3,
+            "rotaF": false,
+            "rotaend": 0.0,
+            "rotarandom": 0.0,
+            "rotaspeed": 0.0,
+            "rotastart": 0.0,
+            "scale": [
+                0.10000000149011612,
+                0.10000000149011612,
+                0.10000000149011612
+            ],
+            "scaleEase": [
+                3,
+                0,
+                0
+            ],
+            "scaleF": false,
+            "scaleRange": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scaleRangeFlag": false,
+            "setSpeedPosFlag": false,
+            "speed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "speedEase": [
+                3,
+                0,
+                0
+            ],
+            "speedF": false,
+            "speedRange": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "startScale": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "startSpeed": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "startcolor": [
+                0.7941176295280457,
+                0.16738754510879517,
+                0.16738754510879517,
+                1.0
+            ],
+            "tag": "Particle3",
             "tex": 3
         }
     ]

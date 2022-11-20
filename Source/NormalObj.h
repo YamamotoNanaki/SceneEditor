@@ -10,6 +10,7 @@ namespace IF
 		bool polygonSizeF = false;
 
 	public:
+		bool moveF = false;
 		const std::string GetObjName()override
 		{
 			return objName;

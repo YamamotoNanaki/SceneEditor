@@ -45,7 +45,7 @@
                 "model": "Sphere",
                 "polygonSizeF": true,
                 "pos": {
-                    "x": 12.25,
+                    "x": 10.0,
                     "y": 0.0,
                     "z": 0.0
                 },
@@ -75,7 +75,7 @@
                 "model": "girl",
                 "polygonSizeF": true,
                 "pos": {
-                    "x": 0.0,
+                    "x": -8.0,
                     "y": -3.8499999046325684,
                     "z": 0.0
                 },
@@ -91,6 +91,36 @@
                     "z": 0.5
                 },
                 "tag": "girl"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "explosionF": false,
+                "model": "ground",
+                "polygonSizeF": false,
+                "pos": {
+                    "x": 0.0,
+                    "y": -5.599999904632568,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "ground"
             }
         ]
     }

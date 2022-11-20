@@ -61,7 +61,10 @@ bool IF::SceneManager::Update()
 		ImGui::Text("next scene   : Enter key");
 		if (now == "mainScene2")
 		{
-			ImGui::Text("emitter      : Space key");
+			Normal* a = ObjectManager::Instance()->GetAddress<Normal>("Normal");
+			if (a != nullptr)a->moveF = true;
+			ImGui::Text("emitter shot : Space key");
+			ImGui::Text("emitter move : WASD  key");
 		}
 		if (now == "mainScene3")
 		{
