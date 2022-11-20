@@ -47,10 +47,44 @@ bool IF::SceneManager::Update()
 
 #ifdef _DEBUG
 #else
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	string str = "now scene : ";
+	str += now;
+	std::function<void()>f = [&]()
+	{
+		ImGui::Text("camera move  : arrow key");
+		ImGui::Text("camera reset : C     key");
+		ImGui::Text("next scene   : Enter key");
+		if (now == "mainScene2")
+		{
+			ImGui::Text("emitter      : Space key");
+		}
+		if (now == "mainScene3")
+		{
+			ImGui::Text("explosion    : 1     key");
+			ImGui::Text("scale        : 2     key");
+			ImGui::Text("all          : 0     key");
+			ImGui::Text("object reset : R     key");
+		}
+	};
+	GUI::NewGui(f, str);
+	//if()
 	if (Input::Instance()->KeyTriggere(KEY::ENTER))
 	{
+		static int i = 2;
 		chengeFlag = true;
-		next = ;
+		next = "mainScene";
+		if (i > 1 && i < 4)
+		{
+			next += (i + 48);
+			i++;
+		}
+		else
+		{
+			i = 2;
+		}
 	}
 #endif
 
@@ -174,12 +208,12 @@ bool IF::SceneManager::Update()
 			}
 		}
 		ImGui::End();
-			}
+	}
 	return false;
 #else
 	return endFlag;
 #endif
-		}
+}
 
 void IF::SceneManager::Draw()
 {
@@ -196,10 +230,10 @@ void IF::SceneManager::Draw()
 		{
 			scene->Draw();
 		}
-}
+	}
 	//黒全画面スプライトDraw;
 #endif
-	}
+}
 
 void IF::SceneManager::Delete()
 {
@@ -281,7 +315,7 @@ void IF::SceneManager::Output()
 	writing_file.open(name, std::ios::out);
 	writing_file << s << std::endl;
 	writing_file.close();
-	}
+}
 
 void IF::SceneManager::GUI()
 {

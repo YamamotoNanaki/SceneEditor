@@ -40,9 +40,9 @@ void IF::Scene::Initialize()
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	gui.Initialize();
-#endif
+//#endif
 }
 #ifdef _DEBUG
 
@@ -247,19 +247,13 @@ void IF::Scene::InputJson(std::string failename)
 	json j4;
 	reading_file >> j4;
 	reading_file.close();
+#ifdef _DEBUG
+	objM->SetCamera(cameraM->GetCamera(j4["object"]["camera"]));
+#else
 	if (j4["object"]["camera"] == "debug")objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	else objM->SetCamera(cameraM->GetCamera(j4["object"]["camera"]));
-	for (auto i : j4["object"]["object"])
-	{
-		if ("Normal" == i["ObjectName"])objM->Add<Normal>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
-		if ("Player" != i["ObjectName"])objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
-		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
-		objM->SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
-		Float4 f = { i["color"]["x"],i["color"]["y"],i["color"]["z"],i["color"]["w"] };
-		objM->SetColor(f, i["tag"]);
-		objM->SetCollision(i["collision"], i["tag"]);
-	}
-	objM->CollisionInitialize();
+#endif
+	objM->IntputJson(j4);
 
 	type = "Sprite";
 	faile = name + scene + type + txt;
@@ -341,14 +335,14 @@ void IF::Scene::Draw()
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	spriteM->ForeGroundDraw();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	ImGui::Render();
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 	//デバッグ用
 
-#endif // _DEBUG
+//#endif // _DEBUG
 }
 
 void IF::Scene::Delete()

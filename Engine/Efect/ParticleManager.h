@@ -52,11 +52,11 @@ namespace IF
 			}
 		};
 
-#ifdef _DEBUG
-		bool debug = false;
 		void GUI();
-		void DebugUpdate();
+		bool debug = false;
+#ifdef _DEBUG
 		void OutputJson(nlohmann::json& j);
+		void DebugUpdate();
 #endif
 				};
 			}

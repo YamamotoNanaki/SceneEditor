@@ -45,6 +45,9 @@ namespace IF
 		Matrix matWorld{};
 		//親オブジェクトへのポインタ
 		Object* parent = nullptr;
+		float explosion = 0.f;
+		float polygonSize = 1.f;
+		float gravity = 0.f;
 
 	public:
 		void Initialize(Model* model);

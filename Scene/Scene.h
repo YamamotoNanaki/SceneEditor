@@ -18,9 +18,9 @@ namespace IF
 {
 	class Scene
 	{
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		GUI gui;
-#endif
+//#endif
 	private:
 		//•Ï”éŒ¾
 		//-----------------------

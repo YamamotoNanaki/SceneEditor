@@ -532,6 +532,7 @@ namespace IF
 				}
 			}
 		}
+		void IntputJson(nlohmann::json& j);
 #ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();
@@ -549,7 +550,7 @@ namespace IF
 			}
 		}
 		void DebugUpdate();
-		std::string GUIGetTag();
 #endif
+		std::string GUIGetTag();
 	};
 }

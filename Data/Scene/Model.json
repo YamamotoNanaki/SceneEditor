@@ -34,6 +34,20 @@
             "tag": "square",
             "tex": 5,
             "type": 6
+        },
+        {
+            "name": "girl",
+            "smooth": false,
+            "tag": "girl",
+            "tex": 1,
+            "type": 0
+        },
+        {
+            "name": "cube",
+            "smooth": false,
+            "tag": "cube",
+            "tex": 1,
+            "type": 0
         }
     ]
 }

@@ -85,6 +85,9 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->viewPro = matView * matProjection;
 	constMapTransform->world = matWorld;
 	constMapTransform->cameraPos = cameraPos;
+	constMapTransform->polygonSize = polygonSize;
+	constMapTransform->explosion = explosion;
+	constMapTransform->gravity = gravity;
 }
 
 void Object::Draw()

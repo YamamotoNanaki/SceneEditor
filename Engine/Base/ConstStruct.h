@@ -13,7 +13,11 @@ namespace IF
 		Matrix viewPro;
 		Matrix world;
 		Float3 cameraPos;
-		float pad;
+		float explosion;
+		float polygonSize;
+		float gravity;
+		float pad2;
+		float pad3;
 	};
 
 	struct ConstBufferBillboard

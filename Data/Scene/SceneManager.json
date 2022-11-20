@@ -1,11 +1,14 @@
 {
-    "debug": "MainScene2",
+    "debug": "MainScene3",
     "scene": [
         {
             "name": "MainScene"
         },
         {
             "name": "MainScene2"
+        },
+        {
+            "name": "MainScene3"
         }
     ],
     "start": "MainScene"

@@ -277,7 +277,7 @@ void IF::Texture::GUI()
 	}
 	ImGui::End();
 }
-
+#endif
 void IF::Texture::TexNum(int* texNum)
 {
 	ImGui::Text("NowTexNum : %03d", *texNum);
@@ -293,7 +293,7 @@ void IF::Texture::TexNum(int* texNum)
 		}
 	}
 }
-#endif
+//#endif
 
 void IF::Texture::GUIInit()
 {

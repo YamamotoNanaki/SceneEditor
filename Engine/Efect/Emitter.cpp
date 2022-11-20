@@ -250,7 +250,7 @@ void IF::Emitter::InputJson(nlohmann::json& j)
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::Emitter::GUI()
 {
 	static float dragspeed = 0.5f;
@@ -506,7 +506,7 @@ void IF::Emitter::GUI()
 		ImGui::TreePop();
 	}
 }
-
+#ifdef _DEBUG
 void IF::Emitter::OutputJson(nlohmann::json& j)
 {
 	j["maxnum"] = maxnum;

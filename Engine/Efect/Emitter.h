@@ -104,8 +104,8 @@ namespace IF
 		virtual bool WeightSaving(float max = 700);
 
 		virtual void InputJson(nlohmann::json& j);
-#ifdef _DEBUG
 		virtual void GUI();
+#ifdef _DEBUG
 		virtual void OutputJson(nlohmann::json& j);
 #endif
 	};

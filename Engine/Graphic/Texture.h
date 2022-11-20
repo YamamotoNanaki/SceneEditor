@@ -62,7 +62,7 @@ namespace IF
 #ifdef _DEBUG
 		bool flag = false;
 		void GUI();
-		void TexNum(int* texNum);
 #endif
+		void TexNum(int* texNum);
 	};
 }

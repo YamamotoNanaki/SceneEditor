@@ -90,6 +90,19 @@ Primitive* IF::ObjectManager::GetPrimitiveNumber(int& num, std::string objName)
 	return com->GetPrimitive();
 }
 
+void IF::ObjectManager::IntputJson(nlohmann::json& j)
+{
+	for (auto i : j["object"]["object"])
+	{
+		CObject* ptr = nullptr;
+		if ("Normal" == i["ObjectName"])ptr = Add<Normal>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
+		if (ptr != nullptr)
+		{
+			ptr->InputJson(i);
+			ptr->prefab = i["prefab"];
+		}
+	}
+}
 #ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
@@ -380,53 +393,19 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 	int i = 0;
 	//if (camera->tag == "debug")j["object"]["camera"] = "mainCamera";
 	j["object"]["camera"] = camera->tag;
+	int ashinum = 0;
 	for (auto com : objList)
 	{
+		string ashitag = "ashi";
+		if (ashinum != 0)ashitag += ashinum + 48;
+		if (com->tag == ashitag)
+		{
+			ashinum++;
+			continue;
+		}
 		string a = com->GetObjName();
 		j["object"]["object"][i]["ObjectName"] = a;
-		//if (a == "Item")
-		//{
-		//	Item* buff = dynamic_cast<Item*>(com);
-		//	j["object"]["object"][i]["Item"] = buff->itemNum;
-		//}
-		//if (a == "Wall")
-		//{
-		//	Wall* buff = dynamic_cast<Wall*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		//if (a == "NoBreakWall")
-		//{
-		//	NoBreakWall* buff = dynamic_cast<NoBreakWall*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		//if (a == "ReSpownWall")
-		//{
-		//	ReSpownWall* buff = dynamic_cast<ReSpownWall*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		//if (a == "GoleArea")
-		//{
-		//	GoleArea* buff = dynamic_cast<GoleArea*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		j["object"]["object"][i]["tag"] = com->tag;
-		j["object"]["object"][i]["model"] = com->GetModelTag();
-		j["object"]["object"][i]["pos"]["x"] = com->GetPos().x;
-		j["object"]["object"][i]["pos"]["y"] = com->GetPos().y;
-		j["object"]["object"][i]["pos"]["z"] = com->GetPos().z;
-		j["object"]["object"][i]["rot"]["x"] = com->GetRota().x;
-		j["object"]["object"][i]["rot"]["y"] = com->GetRota().y;
-		j["object"]["object"][i]["rot"]["z"] = com->GetRota().z;
-		j["object"]["object"][i]["sca"]["x"] = com->GetScale().x;
-		j["object"]["object"][i]["sca"]["y"] = com->GetScale().y;
-		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
-		j["object"]["object"][i]["color"]["x"] = com->GetColor().x;
-		j["object"]["object"][i]["color"]["y"] = com->GetColor().y;
-		j["object"]["object"][i]["color"]["z"] = com->GetColor().z;
-		j["object"]["object"][i]["color"]["w"] = com->GetColor().w;
-		j["object"]["object"][i]["BillBoard"] = (int)com->GetBillBoard();
-		j["object"]["object"][i]["collision"] = (int)com->GetCollision();
-		j["object"]["object"][i]["prefab"] = com->GetPrefab();
+		com->OutputJson(j["object"]["object"][i]);
 		i++;
 	}
 }
@@ -440,7 +419,7 @@ void IF::ObjectManager::DebugUpdate()
 	}
 	objListSize = objList.size();
 }
-
+#endif
 string IF::ObjectManager::GUIGetTag()
 {
 	int i = 0;
@@ -457,7 +436,7 @@ string IF::ObjectManager::GUIGetTag()
 	}
 	return tag;
 }
-#endif
+//#endif
 
 void IF::ObjectManager::Delete(std::string tag)
 {

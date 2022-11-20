@@ -41,11 +41,11 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "explosionF": false,
-                "model": "square",
-                "polygonSizeF": false,
+                "explosionF": true,
+                "model": "Sphere",
+                "polygonSizeF": true,
                 "pos": {
-                    "x": -3.0,
+                    "x": 12.25,
                     "y": 0.0,
                     "z": 0.0
                 },
@@ -56,39 +56,9 @@
                     "z": 0.0
                 },
                 "sca": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "tag": "Normal"
-            },
-            {
-                "BillBoard": 1,
-                "ObjectName": "Normal",
-                "color": {
-                    "w": 1.0,
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                },
-                "explosionF": false,
-                "model": "square",
-                "polygonSizeF": false,
-                "pos": {
-                    "x": 3.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "prefab": false,
-                "rot": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "sca": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
+                    "x": 5.0,
+                    "y": 5.0,
+                    "z": 5.0
                 },
                 "tag": "Normal1"
             },
@@ -101,26 +71,26 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "explosionF": false,
-                "model": "ground",
-                "polygonSizeF": false,
+                "explosionF": true,
+                "model": "girl",
+                "polygonSizeF": true,
                 "pos": {
                     "x": 0.0,
-                    "y": -10.0,
+                    "y": -3.8499999046325684,
                     "z": 0.0
                 },
                 "prefab": false,
                 "rot": {
                     "x": 0.0,
-                    "y": 0.0,
+                    "y": 3.1415927410125732,
                     "z": 0.0
                 },
                 "sca": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
                 },
-                "tag": "ground"
+                "tag": "girl"
             }
         ]
     }

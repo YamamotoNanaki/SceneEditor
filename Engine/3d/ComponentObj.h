@@ -16,6 +16,7 @@ namespace IF
 		ICamera* cameraPtr = nullptr;
 		bool particleFlag = false;
 		Emitter* emitter = nullptr;
+		bool prefab = false;
 	protected:
 		Object obj{};
 		unsigned short texNum = 0;
@@ -23,7 +24,6 @@ namespace IF
 		Float3* cameraPos = nullptr;
 		int mode = BillBoard::NOON;
 		unsigned short ptype;
-		bool prefab = false;
 		Primitive* collision = nullptr;
 	public:
 		virtual void Initialize(Model* model, bool prefab);
@@ -167,13 +167,18 @@ namespace IF
 		{
 			return obj.GetColor();
 		}
+		virtual void ClassInputJson(nlohmann::json& j);
+		void InputJson(nlohmann::json& j);
 #ifdef _DEBUG
+		void OutputJson(nlohmann::json& j);
 		bool flag = false;
 		inline void SetFlag(bool flag)
 		{
 			this->flag = flag;
 		}
 		virtual void GUI();
+		virtual void ClassUI();
+		virtual void ClassOutputJson(nlohmann::json& j);
 #endif
 	};
 }
