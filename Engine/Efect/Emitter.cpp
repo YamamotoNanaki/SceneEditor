@@ -506,7 +506,7 @@ void IF::Emitter::GUI()
 		ImGui::TreePop();
 	}
 }
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::Emitter::OutputJson(nlohmann::json& j)
 {
 	j["maxnum"] = maxnum;
@@ -570,4 +570,4 @@ void IF::Emitter::OutputJson(nlohmann::json& j)
 		j["color"][i] = color[i];
 	}
 }
-#endif
+//#endif

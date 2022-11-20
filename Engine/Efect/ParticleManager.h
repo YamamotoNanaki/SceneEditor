@@ -54,8 +54,8 @@ namespace IF
 
 		void GUI();
 		bool debug = false;
-#ifdef _DEBUG
 		void OutputJson(nlohmann::json& j);
+#ifdef _DEBUG
 		void DebugUpdate();
 #endif
 				};

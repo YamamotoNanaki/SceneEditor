@@ -224,7 +224,7 @@ void IF::ParticleManager::DebugUpdate()
 		this->Update();
 	}
 }
-
+#endif
 void IF::ParticleManager::OutputJson(nlohmann::json& j)
 {
 	int i = 0;
@@ -234,4 +234,4 @@ void IF::ParticleManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif
+//#endif

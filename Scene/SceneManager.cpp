@@ -9,6 +9,8 @@
 #include "Texture.h"
 #include "Graphic.h"
 #include "Input.h"
+#include "ParticleManager.h"
+#include <fstream>
 
 using namespace IF;
 using namespace std;
@@ -70,13 +72,16 @@ bool IF::SceneManager::Update()
 		}
 	};
 	GUI::NewGui(f, str);
-	//if()
+	if (now == "mainScene4")
+	{
+		ParticleManager::Instance()->GUI();
+	}
 	if (Input::Instance()->KeyTriggere(KEY::ENTER))
 	{
 		static int i = 2;
 		chengeFlag = true;
 		next = "mainScene";
-		if (i > 1 && i < 4)
+		if (i > 1 && i < 5)
 		{
 			next += (i + 48);
 			i++;
@@ -266,6 +271,22 @@ void IF::SceneManager::Load(std::string* startscene)
 
 void IF::SceneManager::SceneInitialize()
 {
+	if (now == "mainScene4")
+	{
+		string scene = now;
+		string txt = ".json";
+		string name = "Data/Scene/";
+		string faile;
+		ofstream writing_file;
+		json j2;
+		ParticleManager::Instance()->OutputJson(j2);
+		string s = j2.dump(4);
+		string type = "Particle";
+		faile = name + scene + type + txt;
+		writing_file.open(faile, std::ios::out);
+		writing_file << s << std::endl;
+		writing_file.close();
+	}
 	scene->InputJson(next);
 	now = next;
 	next = "";

@@ -105,8 +105,8 @@ namespace IF
 
 		virtual void InputJson(nlohmann::json& j);
 		virtual void GUI();
-#ifdef _DEBUG
 		virtual void OutputJson(nlohmann::json& j);
+#ifdef _DEBUG
 #endif
 	};
 }
