@@ -27,6 +27,13 @@
             "tag": "ground",
             "tex": 4,
             "type": 0
+        },
+        {
+            "name": "",
+            "smooth": false,
+            "tag": "square",
+            "tex": 5,
+            "type": 6
         }
     ]
 }

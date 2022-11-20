@@ -46,6 +46,15 @@ bool IF::SceneManager::Update()
 	}
 
 #ifdef _DEBUG
+#else
+	if (Input::Instance()->KeyTriggere(KEY::ENTER))
+	{
+		chengeFlag = true;
+		next = ;
+	}
+#endif
+
+#ifdef _DEBUG
 	if (isInitialized)//ゲーム画面への処理
 	{
 		if (allGreen)
@@ -165,12 +174,12 @@ bool IF::SceneManager::Update()
 			}
 		}
 		ImGui::End();
-	}
+			}
 	return false;
 #else
 	return endFlag;
 #endif
-}
+		}
 
 void IF::SceneManager::Draw()
 {
@@ -187,10 +196,10 @@ void IF::SceneManager::Draw()
 		{
 			scene->Draw();
 		}
-	}
+}
 	//黒全画面スプライトDraw;
 #endif
-}
+	}
 
 void IF::SceneManager::Delete()
 {
@@ -272,7 +281,7 @@ void IF::SceneManager::Output()
 	writing_file.open(name, std::ios::out);
 	writing_file << s << std::endl;
 	writing_file.close();
-}
+	}
 
 void IF::SceneManager::GUI()
 {

@@ -41,7 +41,7 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "model": "testBox",
+                "model": "square",
                 "pos": {
                     "x": -3.0,
                     "y": 0.0,
@@ -70,7 +70,7 @@
                     "y": 1.0,
                     "z": 1.0
                 },
-                "model": "testBox",
+                "model": "square",
                 "pos": {
                     "x": 3.0,
                     "y": 0.0,
