@@ -23,7 +23,6 @@ namespace IF
 		void ForeGroundDraw();
 		void BackGroundDraw();
 		void Update();
-		void DebugUpdate();
 		void DrawFlagChange(bool f,std::string tag);
 		inline void DeleteSprite()
 		{
@@ -281,6 +280,7 @@ namespace IF
 			Model
 		};
 		void OutputJson(nlohmann::json& j);
+		void DebugUpdate();
 #endif
 	};
 }

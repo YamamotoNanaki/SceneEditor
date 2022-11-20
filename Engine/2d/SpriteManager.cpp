@@ -48,6 +48,7 @@ void IF::SpriteManager::Update()
 	}
 }
 
+#ifdef _DEBUG
 void IF::SpriteManager::DebugUpdate()
 {
 	for (auto com : foregroundList)
@@ -59,6 +60,7 @@ void IF::SpriteManager::DebugUpdate()
 		com->DebugUpdate();
 	}
 }
+#endif
 
 void IF::SpriteManager::DrawFlagChange(bool f, std::string tag)
 {

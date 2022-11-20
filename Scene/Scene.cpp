@@ -159,7 +159,7 @@ void IF::Scene::DebugUpdate()
 	if (spr)spriteM->GUI();
 	if (particle)particleM->GUI();
 
-	cameraM->AutoUpdate(flag);
+	cameraM->AutoUpdate();
 	lightM->Update();
 	if (flag)
 	{

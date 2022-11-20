@@ -4,11 +4,9 @@
 
 using namespace ImGui;
 
-void IF::CameraManager::AutoUpdate(bool flag)
+void IF::CameraManager::AutoUpdate()
 {
 	std::string t = ObjectManager::Instance()->GetCamera()->tag;
-	if (!flag && t != "debug")
-		return;
 	for (auto com : cameraList)
 	{
 		if (com->tag == t)

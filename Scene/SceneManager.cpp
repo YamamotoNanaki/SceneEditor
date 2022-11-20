@@ -98,8 +98,6 @@ bool IF::SceneManager::Update()
 			{
 				sceneChengeTimer.SafeUpdate();
 				//黒全画面スプライトのフェードイン
-				loadSprite.color[3] = Ease::Lerp(0, 1, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime());
-				loadSprite.Update();
 			}
 		}
 		else//ゲーム画面への遷移アニメーション処理
@@ -107,8 +105,6 @@ bool IF::SceneManager::Update()
 			//camera.Update();
 			sceneChengeTimer.SafeDownUpdate();
 			//黒全画面スプライトのフェードアウト(絶対アルファを0にすること)
-			loadSprite.color[3] = Ease::Lerp(0, 1, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime());
-			loadSprite.Update();
 		}
 	}
 	else//ロード画面の処理
@@ -193,15 +189,6 @@ void IF::SceneManager::Draw()
 		}
 	}
 	//黒全画面スプライトDraw;
-	Graphic::Instance()->DrawBlendMode(commandList, Blend::NORMAL2D);
-	loadSprite.DrawBefore(Graphic::Instance()->rootsignature.Get());
-	loadSprite.Draw();
-	if (!isInitialized)
-	{
-		//Graphic::Instance()->DrawBlendMode(commandList);
-		//Object::DrawBefore(Graphic::Instance()->rootsignature.Get());
-		//loadObj.Draw();
-	}
 #endif
 }
 
