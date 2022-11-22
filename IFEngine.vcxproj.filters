@@ -312,6 +312,9 @@
     <ClInclude Include="Engine\Efect\ParticleManager.h">
       <Filter>Header Files\Engine\Efect</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\2d\SpriteBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -493,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Efect\ParticleManager.cpp">
       <Filter>Source Files\Engine\Efect</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\2d\SpriteBase.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

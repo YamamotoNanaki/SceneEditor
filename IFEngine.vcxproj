@@ -175,6 +175,7 @@
     <ClInclude Include="Engine\2d\DebugText.h" />
     <ClInclude Include="Engine\2d\GUI.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
+    <ClInclude Include="Engine\2d\SpriteBase.h" />
     <ClInclude Include="Engine\2d\SpriteManager.h" />
     <ClInclude Include="Engine\2d\SpriteVI.h" />
     <ClInclude Include="Engine\3d\ComponentObj.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="Engine\2d\DebugText.cpp" />
     <ClCompile Include="Engine\2d\GUI.cpp" />
     <ClCompile Include="Engine\2d\Sprite.cpp" />
+    <ClCompile Include="Engine\2d\SpriteBase.cpp" />
     <ClCompile Include="Engine\2d\SpriteManager.cpp" />
     <ClCompile Include="Engine\2d\SpriteVI.cpp" />
     <ClCompile Include="Engine\3d\ComponentObj.cpp" />
