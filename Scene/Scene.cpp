@@ -17,7 +17,7 @@
 using namespace std;
 using namespace ImGui;
 using namespace nlohmann;
-//ƒeƒXƒg
+
 void IF::Scene::Initialize()
 {
 	tex->Initialize();
