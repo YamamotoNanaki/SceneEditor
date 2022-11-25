@@ -95,7 +95,37 @@ void IF::CObject::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* 
 	SetBillBoard(mode);
 }
 
+void IF::CObject::ClassInputJson(nlohmann::json& j) {}
+void IF::CObject::InputJson(nlohmann::json& j)
+{
+	obj.rotation = { j["rot"]["x"],j["rot"]["y"],j["rot"]["z"] };
+	obj.position = { j["pos"]["x"],j["pos"]["y"],j["pos"]["z"] };
+	obj.scale = { j["sca"]["x"],j["sca"]["y"],j["sca"]["z"] };
+	obj.SetColorF(j["color"]["x"], j["color"]["y"], j["color"]["z"], j["color"]["w"]);
+	ClassInputJson(j);
+}
 #ifdef _DEBUG
+void IF::CObject::OutputJson(nlohmann::json& j)
+{
+	j["tag"] = tag;
+	j["model"] = GetModelTag();
+	j["pos"]["x"] = obj.position.x;
+	j["pos"]["y"] = obj.position.y;
+	j["pos"]["z"] = obj.position.z;
+	j["rot"]["x"] = obj.rotation.x;
+	j["rot"]["y"] = obj.rotation.y;
+	j["rot"]["z"] = obj.rotation.z;
+	j["sca"]["x"] = obj.scale.x;
+	j["sca"]["y"] = obj.scale.y;
+	j["sca"]["z"] = obj.scale.z;
+	j["color"]["x"] = GetColor().x;
+	j["color"]["y"] = GetColor().y;
+	j["color"]["z"] = GetColor().z;
+	j["color"]["w"] = GetColor().w;
+	j["BillBoard"] = (int)mode;
+	j["prefab"] = prefab;
+	ClassOutputJson(j);
+}
 void IF::CObject::GUI()
 {
 	if (ImGui::TreeNode("Position"))
@@ -159,5 +189,8 @@ void IF::CObject::GUI()
 		}
 		ImGui::TreePop();
 	}
+	ClassUI();
 }
+void IF::CObject::ClassUI() {}
+void IF::CObject::ClassOutputJson(nlohmann::json& j) {}
 #endif

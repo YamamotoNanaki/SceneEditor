@@ -8,6 +8,9 @@ cbuffer ConstBufferDataTransform : register(b1)
 	matrix viewPro;
 	matrix world;
 	float3 cameraPos;
+    float explosion;
+    float polygonSize;
+    float gravity;
 };
 
 cbuffer Material : register(b2)
@@ -49,7 +52,7 @@ struct SLight
 	uint active;
 };
 
-static const int CSHADOW_NUM = 1;
+static const int CSHADOW_NUM = 3;
 
 struct CShadow
 {
