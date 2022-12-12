@@ -311,7 +311,9 @@ void IF::Scene::StaticInitialize()
 void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
-	obj.Update(*cameraM->GetCamera("debug")->GetMatView(), *cameraM->GetCamera("debug")->GetMatPro(), *cameraM->GetCamera("debug")->GetEye());
+	string tag = ObjectManager::Instance()->GetCamera()->tag;
+	obj.rotation.x = ConvertToRadians(90);
+	obj.Update(*cameraM->GetCamera(tag)->GetMatView(), *cameraM->GetCamera(tag)->GetMatPro(), *cameraM->GetCamera(tag)->GetEye());
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -335,6 +337,8 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
 	objM->Draw();
+	graph->DrawBlendMode();
+	Object::DrawBefore(graph->rootsignature.Get());
 	obj.FBXDraw();
 	particleM->Draw(graph->rootsignature.Get());
 

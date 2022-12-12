@@ -39,12 +39,16 @@ Mesh* IF::ModelLoader::ProcessMesh(const aiScene* scene, aiMesh* mesh)
 	std::vector<Vertex> vertices;
 	std::vector<UINT> indices;
 
+
 	for (UINT i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
 
 		vertex.pos.x = mesh->mVertices[i].x;
 		vertex.pos.y = mesh->mVertices[i].y;
 		vertex.pos.z = mesh->mVertices[i].z;
+		vertex.normal.x = mesh->mNormals[i].x;
+		vertex.normal.y = mesh->mNormals[i].y;
+		vertex.normal.z = mesh->mNormals[i].z;
 
 		if (mesh->mTextureCoords[0]) {
 			vertex.uv.x = (float)mesh->mTextureCoords[0][i].x;

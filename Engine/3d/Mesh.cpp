@@ -63,6 +63,35 @@ void IF::Mesh::Initialize()
 {
 	HRESULT result;
 
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp2{};
+	heapProp2.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
+		&heapProp2, D3D12_HEAP_FLAG_NONE, &resdesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = material.ambient;
+	constMapMaterial->diffuse = material.diffuse;
+	constMapMaterial->specular = material.specular;
+	constMapMaterial->alpha = material.alpha;
+
+	constBuffTransform1->Unmap(0, nullptr);
+
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
 
@@ -176,35 +205,6 @@ void IF::Mesh::Initialize()
 
 	}
 
-	//定数バッファのヒープ設定
-	D3D12_HEAP_PROPERTIES heapProp2{};
-	heapProp2.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//定数バッファのリソース設定
-	D3D12_RESOURCE_DESC resdesc{};
-	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
-	resdesc.Height = 1;
-	resdesc.DepthOrArraySize = 1;
-	resdesc.MipLevels = 1;
-	resdesc.SampleDesc.Count = 1;
-	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	resdesc.Width = (sizeof(ConstBufferMaterial) + 0xff) & ~0xff;
-
-	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
-		&heapProp2, D3D12_HEAP_FLAG_NONE, &resdesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&constBuffTransform1));
-	assert(SUCCEEDED(result));
-
-	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
-	assert(SUCCEEDED(result));
-
-	constMapMaterial->ambient = material.ambient;
-	constMapMaterial->diffuse = material.diffuse;
-	constMapMaterial->specular = material.specular;
-	constMapMaterial->alpha = material.alpha;
-
-	constBuffTransform1->Unmap(0, nullptr);
 }
 
 D3D12_VERTEX_BUFFER_VIEW& IF::Mesh::GetVertexView()

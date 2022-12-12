@@ -1,6 +1,6 @@
 {
     "object": {
-        "camera": "debug",
+        "camera": "mainCamera",
         "object": [
             {
                 "BillBoard": 0,

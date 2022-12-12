@@ -29,7 +29,6 @@ namespace IF
 		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 		std::vector<Vertex> vertices;
-		std::unordered_map<UINT, std::vector<UINT>>smoothData;
 		Material material{};
 		//定数バッファ
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform1;
