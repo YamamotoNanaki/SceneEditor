@@ -40,6 +40,9 @@ void IF::Scene::Initialize()
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
+
+
+
 #ifdef _DEBUG
 	gui.Initialize();
 #endif
@@ -292,6 +295,10 @@ void IF::Scene::InputJson(std::string failename)
 	reading_file >> j7;
 	reading_file.close();
 	particleM->InputJson(j7);
+
+
+	model = loader.FBXLoad("girl");
+	obj.Initialize(model);
 }
 
 void IF::Scene::StaticInitialize()
@@ -304,7 +311,7 @@ void IF::Scene::StaticInitialize()
 void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
-
+	obj.Update(*cameraM->GetCamera("debug")->GetMatView(), *cameraM->GetCamera("debug")->GetMatPro(), *cameraM->GetCamera("debug")->GetEye());
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -328,7 +335,7 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
 	objM->Draw();
-
+	obj.FBXDraw();
 	particleM->Draw(graph->rootsignature.Get());
 
 
@@ -353,4 +360,5 @@ void IF::Scene::Delete()
 	CameraManager::DeleteInstance();
 	SpriteManager::DeleteInstance();
 	DebugText::DeleteInstance();
+	delete model;
 }

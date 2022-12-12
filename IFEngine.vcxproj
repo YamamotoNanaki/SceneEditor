@@ -80,11 +80,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Engine\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\DirectXTex;$(SolutionDir)Engine\Assimp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Engine\Assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Engine\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\DirectXTex;$(SolutionDir)Engine\Assimp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Engine\Assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -134,11 +136,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\Assimp\include;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Debug\assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -155,7 +158,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Camera;$(ProjectDir)Engine\Debug;$(ProjectDir)Engine\Efect;$(ProjectDir)Engine\Graphic;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Light;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Other;$(ProjectDir)Engine\Sound;$(ProjectDir)Engine\DirectXTex;$(ProjectDir)Engine\Assimp\include;$(ProjectDir)Engine\ImGUI;$(ProjectDir)Engine\Collision;$(ProjectDir)Engine;$(ProjectDir)Scene;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -163,6 +166,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Release\assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -179,7 +183,10 @@
     <ClInclude Include="Engine\2d\SpriteManager.h" />
     <ClInclude Include="Engine\2d\SpriteVI.h" />
     <ClInclude Include="Engine\3d\ComponentObj.h" />
+    <ClInclude Include="Engine\3d\FBXModel.h" />
+    <ClInclude Include="Engine\3d\Mesh.h" />
     <ClInclude Include="Engine\3d\Model.h" />
+    <ClInclude Include="Engine\3d\ModelLoader.h" />
     <ClInclude Include="Engine\3d\ModelManager.h" />
     <ClInclude Include="Engine\3d\ModelVI.h" />
     <ClInclude Include="Engine\3d\Object.h" />
@@ -249,7 +256,10 @@
     <ClCompile Include="Engine\2d\SpriteManager.cpp" />
     <ClCompile Include="Engine\2d\SpriteVI.cpp" />
     <ClCompile Include="Engine\3d\ComponentObj.cpp" />
+    <ClCompile Include="Engine\3d\FBXModel.cpp" />
+    <ClCompile Include="Engine\3d\Mesh.cpp" />
     <ClCompile Include="Engine\3d\Model.cpp" />
+    <ClCompile Include="Engine\3d\ModelLoader.cpp" />
     <ClCompile Include="Engine\3d\ModelManager.cpp" />
     <ClCompile Include="Engine\3d\ModelVI.cpp" />
     <ClCompile Include="Engine\3d\Object.cpp" />

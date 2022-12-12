@@ -315,6 +315,15 @@
     <ClInclude Include="Engine\2d\SpriteBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3d\ModelLoader.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\FBXModel.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Mesh.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -499,6 +508,15 @@
     </ClCompile>
     <ClCompile Include="Engine\2d\SpriteBase.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\ModelLoader.cpp">
+      <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\FBXModel.cpp">
+      <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Mesh.cpp">
+      <Filter>Source Files\Engine\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,11 @@
         "name": [
             "white.png",
             "Fine_Basin.jpg",
-            "particle.png"
+            "particle.png",
+            "girl/tex_body.png",
+            "girl/tex_facialparts.png",
+            "girl/tex_hair.png",
+            "girl/tex_cloth.png"
         ]
     }
 }

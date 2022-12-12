@@ -13,6 +13,8 @@
 #include "SpriteManager.h"
 #include "DebugText.h"
 #include "ParticleManager.h"
+#include "ModelLoader.h"
+#include "FBXModel.h"
 
 namespace IF
 {
@@ -34,6 +36,10 @@ namespace IF
 		LightManager* lightM = LightManager::Instance();
 		SpriteManager* spriteM = SpriteManager::Instance();
 		ParticleManager* particleM = ParticleManager::Instance();
+
+		Object obj;
+		FBXModel* model;
+		ModelLoader loader;
 
 	public:
 		void InputJson(std::string failename);
