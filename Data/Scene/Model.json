@@ -20,6 +20,13 @@
             "tag": "Sphere",
             "tex": 1,
             "type": 4
+        },
+        {
+            "name": "ground",
+            "smooth": false,
+            "tag": "ground",
+            "tex": 8,
+            "type": 0
         }
     ]
 }

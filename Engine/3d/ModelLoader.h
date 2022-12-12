@@ -31,6 +31,6 @@ namespace IF
 		void ParseNodeRecursive(const aiScene* scene, aiNode* node, Node* targetParent = nullptr);
 		Mesh* ProcessMesh(const aiScene* scene, aiMesh* mesh);
 	public:
-		FBXModel* FBXLoad(std::string fileName);
+		FBXModel* FBXLoad(std::string fileName, bool smooth = false);
 	};
 };

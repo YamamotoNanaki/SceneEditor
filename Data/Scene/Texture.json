@@ -7,7 +7,8 @@
             "girl/tex_body.png",
             "girl/tex_facialparts.png",
             "girl/tex_hair.png",
-            "girl/tex_cloth.png"
+            "girl/tex_cloth.png",
+            "ground.png"
         ]
     }
 }

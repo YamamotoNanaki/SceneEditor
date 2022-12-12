@@ -29,13 +29,30 @@ void IF::Scene::Initialize()
 	float winHeight = Window::Instance()->winHeight;
 	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
 	lightM->Initialize();
-	lightM->DefaultLightSetting();
+	//lightM->DefaultLightSetting();
 	for (int i = 0; i < 3; i++)
 	{
-		lightM->SetDirLightActive(i, true);
+		lightM->SetDirLightActive(i, false);
 		lightM->SetPointLightActive(i, false);
 		lightM->SetSpotLightActive(i, false);
 	}
+	lightM->SetDirLightActive(0, true);
+	lightM->SetDirLightDir(0, { 0,-1,1 });
+
+	//lightM->SetPointLightActive(0, true);
+	//lightM->SetPointLightPos(0, { 0,2,-1 });
+	//lightM->SetPointLightColor(0, { 1,0,0 });
+
+	//lightM->SetSpotLightActive(0, true);
+	//lightM->SetSpotLightDir(0, { 0,-1,1 });
+	//lightM->SetSpotLightPos(0, { 0,1,-1 });
+	//lightM->SetSpotLightColor(0, { 0,1,0 });
+
+	//lightM->SetCircleShadowActive(0, true);
+	//lightM->SetCircleShadowDir(0, { 0,-1,1 });
+	//lightM->SetCircleShadowFactorAngle(0, { 0.3,0.6 });
+	//lightM->SetCircleShadowCasterPos(0, { 0,0,0 });
+
 	lightM->SetAmbientColor({ 1, 1, 1 });
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
@@ -297,7 +314,7 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 
-	model = loader.FBXLoad("girl");
+	model = loader.FBXLoad("girl", true);
 	obj.Initialize(model);
 }
 
