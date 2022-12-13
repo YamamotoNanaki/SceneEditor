@@ -97,11 +97,11 @@ Mesh* IF::ModelLoader::ProcessMesh(const aiScene* scene, aiMesh* mesh)
 	return mesh_;
 }
 
-FBXModel* IF::ModelLoader::FBXLoad(std::string fileName,bool smooth)
+FBXModel* IF::ModelLoader::FBXLoad(std::string fileName, std::string fileType, bool smooth)
 {
 	Assimp::Importer importer;
 	string f = "Data/Resources/";
-	f += fileName + "/" + fileName + ".fbx";
+	f += fileName + "/" + fileName + fileType;
 	filename = fileName;
 	unsigned int sf = aiProcess_GenNormals;
 	if (smooth == true)
@@ -116,7 +116,9 @@ FBXModel* IF::ModelLoader::FBXLoad(std::string fileName,bool smooth)
 		sf | aiProcess_FixInfacingNormals
 	);
 
-	if (nullptr == scene) {
+	if (scene == nullptr)
+	{
+		OutputDebugStringA(importer.GetErrorString());
 		return nullptr;
 	}
 

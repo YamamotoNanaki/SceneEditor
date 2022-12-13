@@ -314,7 +314,7 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 
-	model = loader.FBXLoad("girl", true);
+	model = loader.FBXLoad("girl", FBX, true);
 	obj.Initialize(model);
 }
 

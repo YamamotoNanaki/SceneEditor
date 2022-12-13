@@ -11,6 +11,9 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
+#define FBX ".fbx"
+#define OBJ ".obj"
+
 namespace IF
 {
 	class FBXModel;
@@ -31,6 +34,6 @@ namespace IF
 		void ParseNodeRecursive(const aiScene* scene, aiNode* node, Node* targetParent = nullptr);
 		Mesh* ProcessMesh(const aiScene* scene, aiMesh* mesh);
 	public:
-		FBXModel* FBXLoad(std::string fileName, bool smooth = false);
+		FBXModel* FBXLoad(std::string fileName, std::string fileType = ".fbx", bool smooth = false);
 	};
 };
