@@ -354,9 +354,7 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
 	objM->Draw();
-	graph->DrawBlendMode();
-	Object::DrawBefore(graph->rootsignature.Get());
-	obj.FBXDraw();
+	//obj.FBXDraw();
 	particleM->Draw(graph->rootsignature.Get());
 
 

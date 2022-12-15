@@ -34,6 +34,26 @@ void IF::Camera::Update()
 
 	//cupv = GetAxis(qup);
 
+	if (Input::Instance()->KeyDown(DIK_A))
+	{
+		matView->eye.x -= 0.5f;
+		matView->target.x -= 0.5f;
+	}
+	if (Input::Instance()->KeyDown(DIK_D))
+	{
+		matView->eye.x += 0.5f;
+		matView->target.x += 0.5f;
+	}
+	if (Input::Instance()->KeyDown(DIK_W))
+	{
+		matView->eye.y += 0.5f;
+		matView->target.y += 0.5f;
+	}
+	if (Input::Instance()->KeyDown(DIK_S))
+	{
+		matView->eye.y -= 0.5f;
+		matView->target.y -= 0.5f;
+	}
 	//matView->eye = SetFloat3(cpos);
 	//matView->target = SetFloat3(ctar);
 	//matView->up = SetFloat3(cupv);
