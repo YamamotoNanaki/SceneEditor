@@ -60,8 +60,8 @@ void IF::Scene::Initialize()
 
 
 
-#ifdef _DEBUG
 	gui.Initialize();
+#ifdef _DEBUG
 #endif
 }
 #ifdef _DEBUG
@@ -132,9 +132,9 @@ void IF::Scene::OutputJson(std::string failename)
 
 void IF::Scene::DebugUpdate()
 {
-	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	NewFrame();
+	//ImGui_ImplDX12_NewFrame();
+	//ImGui_ImplWin32_NewFrame();
+	//NewFrame();
 	static bool flag = false;
 	ImGui::Begin("Debug");
 	ImGui::Text("Saved when debugging starts");
@@ -188,6 +188,12 @@ void IF::Scene::DebugUpdate()
 		spriteM->Update();
 		particleM->Update();
 		spriteM->DeleteSprite();
+		if (Input::Instance()->KeyTriggere(KEY::ENTER))
+		{
+			if (sceneF) SceneManager::Instance()->SceneChange("MainScene");
+			else SceneManager::Instance()->SceneChange("fbx");
+			sceneF = !sceneF;
+		}
 	}
 	else
 	{
@@ -327,6 +333,9 @@ void IF::Scene::StaticInitialize()
 
 void IF::Scene::Update()
 {
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	NewFrame();
 	Input::Instance()->Input::Update();
 	string tag = ObjectManager::Instance()->GetCamera()->tag;
 	obj.rotation.x = ConvertToRadians(90);
@@ -341,6 +350,13 @@ void IF::Scene::Update()
 	particleM->Update();
 	spriteM->DeleteSprite();
 	objM->DeleteObject();
+
+	if (Input::Instance()->KeyTriggere(KEY::ENTER))
+	{
+		if (sceneF) SceneManager::Instance()->SceneChange("MainScene");
+		else SceneManager::Instance()->SceneChange("fbx");
+		sceneF = !sceneF;
+	}
 #endif
 }
 
@@ -354,9 +370,10 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
 	objM->Draw();
-	graph->DrawBlendMode();
-	Object::DrawBefore(graph->rootsignature.Get());
-	obj.FBXDraw();
+	if (sceneF)
+	{
+		obj.FBXDraw();
+	}
 	particleM->Draw(graph->rootsignature.Get());
 
 
@@ -364,14 +381,17 @@ void IF::Scene::Draw()
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	spriteM->ForeGroundDraw();
 
-#ifdef _DEBUG
+	//#ifdef _DEBUG
+	ImGui::Begin("operation");
+	ImGui::Text("Next Scene : Enter");
+	ImGui::End();
 	ImGui::Render();
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 	//デバッグ用
 
-#endif // _DEBUG
+//#endif // _DEBUG
 }
 
 void IF::Scene::Delete()

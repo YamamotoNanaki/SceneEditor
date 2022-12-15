@@ -27,6 +27,20 @@
             "tag": "ground",
             "tex": 8,
             "type": 0
+        },
+        {
+            "name": "girl4",
+            "smooth": false,
+            "tag": "girl4",
+            "tex": 9,
+            "type": 0
+        },
+        {
+            "name": "monster",
+            "smooth": false,
+            "tag": "monster",
+            "tex": 1,
+            "type": 0
         }
     ]
 }

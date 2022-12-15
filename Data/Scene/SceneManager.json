@@ -3,6 +3,9 @@
     "scene": [
         {
             "name": "MainScene"
+        },
+        {
+            "name": "fbx"
         }
     ],
     "start": "MainScene"

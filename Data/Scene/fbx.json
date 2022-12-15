@@ -1,0 +1,65 @@
+{
+    "object": {
+        "camera": "mainCamera",
+        "object": [
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "collision": 65535,
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "dome",
+                "pos": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "dome"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "collision": 65535,
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "ground",
+                "pos": {
+                    "x": 0.0,
+                    "y": -1.100000023841858,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "ground"
+            }
+        ]
+    }
+}

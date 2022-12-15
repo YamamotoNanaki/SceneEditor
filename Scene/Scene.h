@@ -20,8 +20,8 @@ namespace IF
 {
 	class Scene
 	{
-#ifdef _DEBUG
 		GUI gui;
+#ifdef _DEBUG
 #endif
 	private:
 		//•Ï”éŒ¾
@@ -40,6 +40,8 @@ namespace IF
 		Object obj;
 		FBXModel* model;
 		ModelLoader loader;
+
+		bool sceneF = false;
 
 	public:
 		void InputJson(std::string failename);
