@@ -15,7 +15,7 @@ namespace IF
 {
 	enum easetype
 	{
-		EaseIn, EaseOut, EaseInOut, Lerp
+		EaseIn, EaseOut, EaseInOut, LERP
 	};
 	class Particle
 	{
@@ -53,17 +53,17 @@ namespace IF
 		float startSpeed[3]{};
 		float speed[3]{};
 		bool speedF = false;
-		int speedEase[3] = { Lerp };
+		int speedEase[3] = { LERP };
 		//色
 		float color[4]{};
 		float startcolor[4]{};
 		float endcolor[4]{};
 		bool colorF = false;
-		int colorEase[4] = { Lerp };
+		int colorEase[4] = { LERP };
 		//ポジション
 		float endposition[3]{};
 		bool posF = false;
-		int posEase[3] = { Lerp };
+		int posEase[3] = { LERP };
 		float startposition[3]{};
 		bool setSpeedPosFlag = false;
 		//スケール
@@ -71,13 +71,13 @@ namespace IF
 		float endScale[3]{};
 		float startScale[3]{};
 		bool scaleF = false;
-		int scaleEase[3] = { Lerp };
+		int scaleEase[3] = { LERP };
 		//回転
 		float rota = 0;
 		float rotastart = 0;
 		float rotaend = 0;
 		float rotaspeed = 0;
-		int rotaEase = Lerp;
+		int rotaEase = LERP;
 		bool rotaF = false;
 		//時間
 		Timer timer{};

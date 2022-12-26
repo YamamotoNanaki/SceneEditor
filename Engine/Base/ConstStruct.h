@@ -3,6 +3,7 @@
 
 namespace IF
 {
+	static const int MAX_BONES = 128;
 	struct ConstBufferDataColor
 	{
 		Float4 color;	//êF(RGBA)
@@ -33,5 +34,9 @@ namespace IF
 		float pad2;
 		Float3 specular;
 		float alpha;
+	};
+	struct ConstBufferDataSkin
+	{
+		Matrix bones[MAX_BONES];
 	};
 }

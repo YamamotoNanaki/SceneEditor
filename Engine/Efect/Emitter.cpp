@@ -321,7 +321,7 @@ void IF::Emitter::GUI()
 				{
 					if (ImGui::TreeNode("Ease Set x"))
 					{
-						ImGui::RadioButton("Lerp", &posEase[0], Lerp);
+						ImGui::RadioButton("Lerp", &posEase[0], LERP);
 						ImGui::RadioButton("EaseIn", &posEase[0], EaseIn);
 						ImGui::RadioButton("EaseOut", &posEase[0], EaseOut);
 						ImGui::RadioButton("EaseInOut", &posEase[0], EaseInOut);
@@ -329,7 +329,7 @@ void IF::Emitter::GUI()
 					}
 					if (ImGui::TreeNode("Ease Set y"))
 					{
-						ImGui::RadioButton("Lerp", &posEase[1], Lerp);
+						ImGui::RadioButton("Lerp", &posEase[1], LERP);
 						ImGui::RadioButton("EaseIn", &posEase[1], EaseIn);
 						ImGui::RadioButton("EaseOut", &posEase[1], EaseOut);
 						ImGui::RadioButton("EaseInOut", &posEase[1], EaseInOut);
@@ -337,7 +337,7 @@ void IF::Emitter::GUI()
 					}
 					if (ImGui::TreeNode("Ease Set z"))
 					{
-						ImGui::RadioButton("Lerp", &posEase[2], Lerp);
+						ImGui::RadioButton("Lerp", &posEase[2], LERP);
 						ImGui::RadioButton("EaseIn", &posEase[2], EaseIn);
 						ImGui::RadioButton("EaseOut", &posEase[2], EaseOut);
 						ImGui::RadioButton("EaseInOut", &posEase[2], EaseInOut);
@@ -360,7 +360,7 @@ void IF::Emitter::GUI()
 			{
 				if (ImGui::TreeNode("Ease Set x"))
 				{
-					ImGui::RadioButton("Lerp", &scaleEase[0], Lerp);
+					ImGui::RadioButton("Lerp", &scaleEase[0], LERP);
 					ImGui::RadioButton("EaseIn", &scaleEase[0], EaseIn);
 					ImGui::RadioButton("EaseOut", &scaleEase[0], EaseOut);
 					ImGui::RadioButton("EaseInOut", &scaleEase[0], EaseInOut);
@@ -368,7 +368,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set y"))
 				{
-					ImGui::RadioButton("Lerp", &scaleEase[1], Lerp);
+					ImGui::RadioButton("Lerp", &scaleEase[1], LERP);
 					ImGui::RadioButton("EaseIn", &scaleEase[1], EaseIn);
 					ImGui::RadioButton("EaseOut", &scaleEase[1], EaseOut);
 					ImGui::RadioButton("EaseInOut", &scaleEase[1], EaseInOut);
@@ -376,7 +376,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set z"))
 				{
-					ImGui::RadioButton("Lerp", &scaleEase[2], Lerp);
+					ImGui::RadioButton("Lerp", &scaleEase[2], LERP);
 					ImGui::RadioButton("EaseIn", &scaleEase[2], EaseIn);
 					ImGui::RadioButton("EaseOut", &scaleEase[2], EaseOut);
 					ImGui::RadioButton("EaseInOut", &scaleEase[2], EaseInOut);
@@ -407,7 +407,7 @@ void IF::Emitter::GUI()
 			{
 				if (ImGui::TreeNode("Ease Set x"))
 				{
-					ImGui::RadioButton("Lerp", &speedEase[0], Lerp);
+					ImGui::RadioButton("Lerp", &speedEase[0], LERP);
 					ImGui::RadioButton("EaseIn", &speedEase[0], EaseIn);
 					ImGui::RadioButton("EaseOut", &speedEase[0], EaseOut);
 					ImGui::RadioButton("EaseInOut", &speedEase[0], EaseInOut);
@@ -415,7 +415,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set y"))
 				{
-					ImGui::RadioButton("Lerp", &speedEase[1], Lerp);
+					ImGui::RadioButton("Lerp", &speedEase[1], LERP);
 					ImGui::RadioButton("EaseIn", &speedEase[1], EaseIn);
 					ImGui::RadioButton("EaseOut", &speedEase[1], EaseOut);
 					ImGui::RadioButton("EaseInOut", &speedEase[1], EaseInOut);
@@ -423,7 +423,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set z"))
 				{
-					ImGui::RadioButton("Lerp", &speedEase[2], Lerp);
+					ImGui::RadioButton("Lerp", &speedEase[2], LERP);
 					ImGui::RadioButton("EaseIn", &speedEase[2], EaseIn);
 					ImGui::RadioButton("EaseOut", &speedEase[2], EaseOut);
 					ImGui::RadioButton("EaseInOut", &speedEase[2], EaseInOut);
@@ -445,7 +445,7 @@ void IF::Emitter::GUI()
 			ImGui::DragFloat("end rota", &rotaend, dragspeed);
 			if (ImGui::CollapsingHeader("Ease"))
 			{
-				ImGui::RadioButton("Lerp", &rotaEase, Lerp);
+				ImGui::RadioButton("Lerp", &rotaEase, LERP);
 				ImGui::RadioButton("EaseIn", &rotaEase, EaseIn);
 				ImGui::RadioButton("EaseOut", &rotaEase, EaseOut);
 				ImGui::RadioButton("EaseInOut", &rotaEase, EaseInOut);
@@ -470,7 +470,7 @@ void IF::Emitter::GUI()
 			{
 				if (ImGui::TreeNode("Ease Set r"))
 				{
-					ImGui::RadioButton("Lerp", &colorEase[0], Lerp);
+					ImGui::RadioButton("Lerp", &colorEase[0], LERP);
 					ImGui::RadioButton("EaseIn", &colorEase[0], EaseIn);
 					ImGui::RadioButton("EaseOut", &colorEase[0], EaseOut);
 					ImGui::RadioButton("EaseInOut", &colorEase[0], EaseInOut);
@@ -478,7 +478,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set g"))
 				{
-					ImGui::RadioButton("Lerp", &colorEase[1], Lerp);
+					ImGui::RadioButton("Lerp", &colorEase[1], LERP);
 					ImGui::RadioButton("EaseIn", &colorEase[1], EaseIn);
 					ImGui::RadioButton("EaseOut", &colorEase[1], EaseOut);
 					ImGui::RadioButton("EaseInOut", &colorEase[1], EaseInOut);
@@ -486,7 +486,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set b"))
 				{
-					ImGui::RadioButton("Lerp", &colorEase[2], Lerp);
+					ImGui::RadioButton("Lerp", &colorEase[2], LERP);
 					ImGui::RadioButton("EaseIn", &colorEase[2], EaseIn);
 					ImGui::RadioButton("EaseOut", &colorEase[2], EaseOut);
 					ImGui::RadioButton("EaseInOut", &colorEase[2], EaseInOut);
@@ -494,7 +494,7 @@ void IF::Emitter::GUI()
 				}
 				if (ImGui::TreeNode("Ease Set a"))
 				{
-					ImGui::RadioButton("Lerp", &colorEase[3], Lerp);
+					ImGui::RadioButton("Lerp", &colorEase[3], LERP);
 					ImGui::RadioButton("EaseIn", &colorEase[3], EaseIn);
 					ImGui::RadioButton("EaseOut", &colorEase[3], EaseOut);
 					ImGui::RadioButton("EaseInOut", &colorEase[3], EaseInOut);

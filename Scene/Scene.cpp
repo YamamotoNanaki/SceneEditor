@@ -314,8 +314,9 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 
-	model = loader.FBXLoad("girl", FBX, true);
+	model = loader.FBXLoad("flash", FBX, true);
 	obj.Initialize(model);
+	obj.scale = { 0.01,0.01,0.01 };
 }
 
 void IF::Scene::StaticInitialize()
@@ -329,7 +330,6 @@ void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
 	string tag = ObjectManager::Instance()->GetCamera()->tag;
-	obj.rotation.x = ConvertToRadians(90);
 	obj.Update(*cameraM->GetCamera(tag)->GetMatView(), *cameraM->GetCamera(tag)->GetMatPro(), *cameraM->GetCamera(tag)->GetEye());
 #ifdef _DEBUG
 	DebugUpdate();

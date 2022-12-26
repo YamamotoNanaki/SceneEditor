@@ -47,7 +47,6 @@ void IF::Object::Initialize(Model* model)
 		IID_PPV_ARGS(&constBuffTransform));
 	assert(SUCCEEDED(result));
 
-
 	//定数バッファのマッピング
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));
@@ -78,10 +77,18 @@ void IF::Object::Initialize(FBXModel* fmodel)
 		IID_PPV_ARGS(&constBuffTransform));
 	assert(SUCCEEDED(result));
 
+	auto h = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	auto d = CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataSkin) + 0xff) & ~0xff);
+	//定数バッファの生成
+	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
+		&h, D3D12_HEAP_FLAG_NONE, &d, D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr, IID_PPV_ARGS(&constBuffSkin));
+	assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));
+	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
 
 	this->fmodel = fmodel;
 
@@ -118,6 +125,14 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->cameraPos = cameraPos;
 	constMapTransform->polygonSize = 1;
 	constMapTransform->explosion = 0;
+
+	if (fmodel == nullptr)return;
+	vector<Bone>& bones = fmodel->bones;
+	for (int i = 0; i < bones.size(); i++)
+	{
+		Matrix mat = fmodel->BoneTransform(0, bones);
+		constMapSkin->bones[i] = bones[i].invInitPose * mat;
+	}
 }
 
 void Object::Draw()
@@ -164,6 +179,8 @@ void IF::Object::Draw(unsigned short texNum)
 Object::~Object()
 {
 	constBuffTransform->Unmap(0, nullptr);
+	if (fmodel == nullptr)return;
+	constBuffSkin->Unmap(0, nullptr);
 }
 
 void IF::Object::StaticInitialize()

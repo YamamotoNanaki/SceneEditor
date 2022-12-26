@@ -10,7 +10,7 @@
 #include "FBXModel.h"
 #include "ConstBuff.h"
 
-#pragma comment(lib,"d3d12.lib") 
+#pragma comment(lib,"d3d12.lib")
 
 namespace IF
 {
@@ -37,8 +37,10 @@ namespace IF
 		FBXModel* fmodel = nullptr;
 		//定数バッファ
 		ComPtr<ID3D12Resource> constBuffTransform;
+		ComPtr<ID3D12Resource> constBuffSkin;
 		//定数バッファマップ
 		ConstBufferDataTransform* constMapTransform = nullptr;
+		ConstBufferDataSkin* constMapSkin = nullptr;
 		//アフィン変換情報
 		Float3 scale = { 1,1,1 };
 		Float3 rotation = { 0,0,0 };

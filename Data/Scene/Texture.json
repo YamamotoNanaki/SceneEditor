@@ -8,7 +8,21 @@
             "girl/tex_facialparts.png",
             "girl/tex_hair.png",
             "girl/tex_cloth.png",
-            "ground.png"
+            "ground.png",
+            "flash\\face02.png",
+            "flash\\face-02.png",
+            "flash\\body_v02.png",
+            "flash\\fk01_v03.png",
+            "flash\\sk_v03.png",
+            "flash\\hair04.png",
+            "flash\\hj2.png",
+            "flash/face02.png",
+            "flash/face-02.png",
+            "flash/body_v02.png",
+            "flash/fk01_v03.png",
+            "flash/sk_v03.png",
+            "flash/hair04.png",
+            "flash/hj2.png"
         ]
     }
 }

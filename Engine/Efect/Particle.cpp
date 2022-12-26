@@ -85,7 +85,7 @@ void IF::Particle::Update()
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			if (colorEase[i] == Lerp)ease = Ease::Lerp;
+			if (colorEase[i] == LERP)ease = Ease::Lerp;
 			else if (colorEase[i] == EaseIn)ease = Ease::InQuad;
 			else if (colorEase[i] == EaseOut)ease = Ease::OutQuad;
 			else if (colorEase[i] == EaseInOut)ease = Ease::InOutQuad;
@@ -97,7 +97,7 @@ void IF::Particle::Update()
 	//‰ñ“]
 	if (rotaF)
 	{
-		if (rotaEase == Lerp)ease = Ease::Lerp;
+		if (rotaEase == LERP)ease = Ease::Lerp;
 		else if (rotaEase == EaseIn)ease = Ease::InQuad;
 		else if (rotaEase == EaseOut)ease = Ease::OutQuad;
 		else if (rotaEase == EaseInOut)ease = Ease::InOutQuad;
@@ -113,7 +113,7 @@ void IF::Particle::Update()
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			if (scaleEase[i] == Lerp)ease = Ease::Lerp;
+			if (scaleEase[i] == LERP)ease = Ease::Lerp;
 			else if (scaleEase[i] == EaseIn)ease = Ease::InQuad;
 			else if (scaleEase[i] == EaseOut)ease = Ease::OutQuad;
 			else if (scaleEase[i] == EaseInOut)ease = Ease::InOutQuad;
@@ -128,7 +128,7 @@ void IF::Particle::Update()
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				if (speedEase[i] == Lerp)ease = Ease::Lerp;
+				if (speedEase[i] == LERP)ease = Ease::Lerp;
 				else if (speedEase[i] == EaseIn)ease = Ease::InQuad;
 				else if (speedEase[i] == EaseOut)ease = Ease::OutQuad;
 				else if (speedEase[i] == EaseInOut)ease = Ease::InOutQuad;
@@ -148,7 +148,7 @@ void IF::Particle::Update()
 			float pos[3];
 			for (int i = 0; i < 3; i++)
 			{
-				if (posEase[i] == Lerp)ease = Ease::Lerp;
+				if (posEase[i] == LERP)ease = Ease::Lerp;
 				else if (posEase[i] == EaseIn)ease = Ease::InQuad;
 				else if (posEase[i] == EaseOut)ease = Ease::OutQuad;
 				else if (posEase[i] == EaseInOut)ease = Ease::InOutQuad;

@@ -62,12 +62,13 @@ namespace IF
 
 	public:
 		ComPtr<ID3D12RootSignature> rootsignature;
-		ComPtr<ID3D12PipelineState> pipelinestate[12]{ nullptr };
+		ComPtr<ID3D12PipelineState> pipelinestate[16]{ nullptr };
 
 	public:
 		void CompillerArray(LPCWSTR fillname, int num);
 		void Compiller(LPCWSTR vs, LPCWSTR ps, LPCWSTR gs, char Compile = ShaderCompile::all);
 		void Initialize(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, LPCWSTR ps, LPCWSTR gs);
+		void InitializeFBX(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, LPCWSTR ps, LPCWSTR gs);
 		void Initialize2D(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, LPCWSTR ps);
 		void InitializeParticle(D3D12_DESCRIPTOR_RANGE& descRangeSRV);
 		void DrawBlendMode(Blend::Blend blend = Blend::NORMAL);

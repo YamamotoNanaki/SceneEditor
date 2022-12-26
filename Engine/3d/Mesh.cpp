@@ -35,7 +35,7 @@ void IF::Mesh::Draw(ID3D12Resource* address, unsigned short texNum)
 	commandList->DrawIndexedInstanced((UINT)GetSize(), 1, 0, 0, 0);
 }
 
-void IF::Mesh::SetVerticleIndex(std::vector<Vertex> vertices, size_t vertexCount, std::vector<UINT> indices, size_t indexCount)
+void IF::Mesh::SetVerticleIndex(std::vector<VertexBone> vertices, size_t vertexCount, std::vector<UINT> indices, size_t indexCount)
 {
 	for (int i = 0; i < vertexCount; i++)
 	{
@@ -47,7 +47,7 @@ void IF::Mesh::SetVerticleIndex(std::vector<Vertex> vertices, size_t vertexCount
 	}
 }
 
-void IF::Mesh::SetVerticleIndex(Vertex* vertices, size_t vertexCount, UINT* indices, size_t indexCount)
+void IF::Mesh::SetVerticleIndex(VertexBone* vertices, size_t vertexCount, UINT* indices, size_t indexCount)
 {
 	for (int i = 0; i < vertexCount; i++)
 	{
@@ -128,7 +128,7 @@ void IF::Mesh::Initialize()
 
 #pragma region 頂点バッファへのデータ転送
 // GPU上のバッファに対応した仮想メモリを取得
-	Vertex* vertMap = nullptr;
+	VertexBone* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 

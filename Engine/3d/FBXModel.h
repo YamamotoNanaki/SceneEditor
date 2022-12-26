@@ -18,10 +18,14 @@ namespace IF
 
 	public:
 		std::vector<std::unique_ptr<Node>> nodes;
+		std::vector<Bone> bones;
+		std::vector<Matrix>& Transforms;
+		std::vector<Animation> animations;
 
 	public:
 		void Draw(ID3D12Resource* address);
 		void Draw(ID3D12Resource* address, unsigned short texNum);
+		Matrix BoneTransform(float TimeInSeconds, vector<Matrix>& Transforms);
 		inline void SetTag(std::string tag)
 		{
 			this->tag = tag;
@@ -30,5 +34,7 @@ namespace IF
 		{
 			return tag;
 		}
+	private:
+		void ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const Matrix& ParentTransform);
 	};
 };

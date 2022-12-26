@@ -36,12 +36,17 @@ void IF::ModelLoader::ParseNodeRecursive(const aiScene* scene, aiNode* node, Nod
 
 Mesh* IF::ModelLoader::ProcessMesh(const aiScene* scene, aiMesh* mesh)
 {
-	std::vector<Vertex> vertices;
+	std::vector<VertexBone> vertices;
 	std::vector<UINT> indices;
 
+	struct Weight
+	{
+		UINT vertexID;
+		float weight;
+	};
 
 	for (UINT i = 0; i < mesh->mNumVertices; i++) {
-		Vertex vertex;
+		VertexBone vertex;
 
 		vertex.pos.x = mesh->mVertices[i].x;
 		vertex.pos.y = mesh->mVertices[i].y;
@@ -70,10 +75,61 @@ Mesh* IF::ModelLoader::ProcessMesh(const aiScene* scene, aiMesh* mesh)
 	for (UINT i = 0; i < material->GetTextureCount(type); i++) {
 		aiString str;
 		material->GetTexture(type, i, &str);
-		string f = filename + "/" + str.C_Str();
+		string f = /*filename + "/" +*/ str.C_Str();
+		while (f.find("\\") != std::string::npos)
+		{
+			f = f.substr(f.find("\\") + 1);
+		}
+		f = filename + "/" + f;
 		mesh_->material.textureFilename = f;
 		mesh_->material.texNum = Texture::Instance()->LoadTexture(f);
 		if (mesh_->material.texNum != 65535)mesh_->material.tex = true;
+	}
+
+	//É{Å[Éì
+	std::vector<std::list<Weight>>lists(vertices.size());
+	for (int i = 0; i < mesh->mNumBones; i++)
+	{
+		Bone b(mesh->mBones[i]->mName.C_Str());
+		b.invInitPose.SetX(mesh->mBones[i]->mOffsetMatrix[0][0], mesh->mBones[i]->mOffsetMatrix[0][1], mesh->mBones[i]->mOffsetMatrix[0][2], mesh->mBones[i]->mOffsetMatrix[0][3]);
+		b.invInitPose.SetY(mesh->mBones[i]->mOffsetMatrix[1][0], mesh->mBones[i]->mOffsetMatrix[1][1], mesh->mBones[i]->mOffsetMatrix[1][2], mesh->mBones[i]->mOffsetMatrix[1][3]);
+		b.invInitPose.SetZ(mesh->mBones[i]->mOffsetMatrix[2][0], mesh->mBones[i]->mOffsetMatrix[2][1], mesh->mBones[i]->mOffsetMatrix[2][2], mesh->mBones[i]->mOffsetMatrix[2][3]);
+		b.invInitPose.SetW(mesh->mBones[i]->mOffsetMatrix[3][0], mesh->mBones[i]->mOffsetMatrix[3][1], mesh->mBones[i]->mOffsetMatrix[3][2], mesh->mBones[i]->mOffsetMatrix[3][3]);
+		b.invInitPose = MatrixTranspose(b.invInitPose);
+		for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++)
+		{
+			Weight w;
+			w.vertexID = mesh->mBones[i]->mWeights[j].mVertexId;
+			w.weight = mesh->mBones[i]->mWeights[j].mWeight;
+			lists[i].push_back(w);
+		}
+		bones.push_back(b);
+	}
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		auto& l = lists[i];
+
+		l.sort([](auto const& lhs, auto const& rhs) {
+			return lhs.weight > rhs.weight;
+			});
+
+		int w = 0;
+		for (auto& s : l)
+		{
+			vertices[i].boneIndex[w] = s.vertexID;
+			vertices[i].boneWeight[w] = s.weight;
+			if (++w >= MAX_BONE_INDICES)
+			{
+				float we = 0.0f;
+				for (int j = 1; j < MAX_BONE_INDICES; j++)
+				{
+					we += vertices[i].boneWeight[j];
+				}
+				vertices[i].boneWeight[0] = 1.0f - we;
+				break;
+			}
+		}
 	}
 
 	aiColor3D col;
@@ -124,9 +180,61 @@ FBXModel* IF::ModelLoader::FBXLoad(std::string fileName, std::string fileType, b
 
 	ParseNodeRecursive(scene, scene->mRootNode);
 
+	for (int i = 0; i < scene->mNumAnimations; i++)
+	{
+		Animation a;
+		a.name = scene->mAnimations[i]->mName.C_Str();
+		a.duration = scene->mAnimations[i]->mDuration;
+		a.ticksPerSecond = scene->mAnimations[i]->mTicksPerSecond;
+		for (int j = 0; j < scene->mAnimations[i]->mNumChannels; j++)
+		{
+			NodeAnima n;
+			n.name = scene->mAnimations[i]->mChannels[j]->mNodeName.C_Str();
+			for (int k = 0; k < scene->mAnimations[i]->mChannels[j]->mNumPositionKeys; k++)
+			{
+				Vector3 p;
+				double t;
+				p.x = scene->mAnimations[i]->mChannels[j]->mPositionKeys[k].mValue.x;
+				p.y = scene->mAnimations[i]->mChannels[j]->mPositionKeys[k].mValue.y;
+				p.z = scene->mAnimations[i]->mChannels[j]->mPositionKeys[k].mValue.z;
+				t = scene->mAnimations[i]->mChannels[j]->mPositionKeys[k].mTime;
+				n.position.push_back(p);
+				n.positionTime.push_back(t);
+			}
+			for (int k = 0; k < scene->mAnimations[i]->mChannels[j]->mNumScalingKeys; k++)
+			{
+				Vector3 s;
+				double t;
+				s.x = scene->mAnimations[i]->mChannels[j]->mScalingKeys[k].mValue.x;
+				s.y = scene->mAnimations[i]->mChannels[j]->mScalingKeys[k].mValue.y;
+				s.z = scene->mAnimations[i]->mChannels[j]->mScalingKeys[k].mValue.z;
+				t = scene->mAnimations[i]->mChannels[j]->mScalingKeys[k].mTime;
+				n.scale.push_back(s);
+				n.scaleTime.push_back(t);
+			}
+			for (int k = 0; k < scene->mAnimations[i]->mChannels[j]->mNumRotationKeys; k++)
+			{
+				Quaternion q;
+				double t;
+				q.x = scene->mAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.x;
+				q.y = scene->mAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.y;
+				q.z = scene->mAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.z;
+				q.w = scene->mAnimations[i]->mChannels[j]->mRotationKeys[k].mValue.w;
+				t = scene->mAnimations[i]->mChannels[j]->mRotationKeys[k].mTime;
+				n.rotation.push_back(q);
+				n.rotationTime.push_back(t);
+			}
+		}
+	}
+
 	FBXModel* fbx = new FBXModel;
 	for (std::unique_ptr<Node>& node : nodes)
 		fbx->nodes.push_back(std::move(node));
+	for (auto& b : bones)
+		fbx->bones.push_back(b);
+	for (auto& a : animations)
+		fbx->animations.push_back(a);
+
 
 	nodes.clear();
 

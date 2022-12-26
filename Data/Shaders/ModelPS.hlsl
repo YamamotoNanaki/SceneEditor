@@ -85,5 +85,5 @@ float4 main(GSOutput input) : SV_TARGET
 		}
 	}
 
-	return shadecolor * texcolor * color;
+    return shadecolor * texcolor * color;
 }

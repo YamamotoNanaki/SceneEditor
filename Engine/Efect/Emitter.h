@@ -35,26 +35,26 @@ namespace IF
 		float startSpeed[3]{};
 		float speed[3]{};
 		bool speedF = false;
-		int speedEase[3] = { Lerp };
+		int speedEase[3] = { LERP };
 		//色
 		float color[4] = { 1,1,1,1 };
 		float startcolor[4] = { 1,1,1,1 };
 		float endcolor[4]{};
 		bool colorF = false;
-		int colorEase[4] = { Lerp };
+		int colorEase[4] = { LERP };
 		//ポジション
 		float position[3]{};
 		float endposition[3]{};
 		bool posF = false;
 		bool posRangeF = false;
 		bool setSpeedPosFlag = false;
-		int posEase[3] = { Lerp };
+		int posEase[3] = { LERP };
 		//スケール
 		float scale[3]{};
 		float endScale[3]{};
 		float startScale[3]{};
 		bool scaleF = false;
-		int scaleEase[3] = { Lerp };
+		int scaleEase[3] = { LERP };
 		bool scaleRangeFlag = false;
 		//回転
 		float rota = 0;
@@ -63,7 +63,7 @@ namespace IF
 		float rotaspeed = 0;
 		float rotarandom = 0;
 		bool rotaF = false;
-		int rotaEase = Lerp;
+		int rotaEase = LERP;
 		//生成時
 		float addPosRange[3]{};
 		float speedRange[3]{};
