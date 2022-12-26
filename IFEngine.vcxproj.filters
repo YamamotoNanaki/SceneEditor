@@ -544,6 +544,15 @@
     <FxCompile Include="Data\Shaders\ModelVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
+    <FxCompile Include="Data\Shaders\ModelAnimGS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shaders\ModelAnimPS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shaders\ModelAnimVS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\Sprite.hlsli">
@@ -553,6 +562,9 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Data\Shaders\Particle.hlsli">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Data\Shaders\ModelAnim.hlsli">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
