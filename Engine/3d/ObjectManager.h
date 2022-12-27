@@ -202,8 +202,7 @@ namespace IF
 			{
 				for (auto com : objList)
 				{
-					const char* ctag = com->tag.c_str();
-					if (!strcmp(ctag, tag))
+					if (com->tag == tag)
 					{
 						com->SetCamera(cameraPos);
 					}
