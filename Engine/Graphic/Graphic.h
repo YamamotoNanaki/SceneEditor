@@ -25,6 +25,10 @@ namespace IF
 			PADD,			//9
 			PSUB,			//10
 			PINVSRC,		//11
+			ANIMNORMAL,			//0
+			ANIMADD,			//1
+			ANIMSUB,			//2
+			ANIMINVSRC,			//3
 		};
 	}
 	namespace ShaderCode
@@ -40,6 +44,9 @@ namespace IF
 			vsP,		//1
 			psP,		//2
 			gsP,		//3
+			vsA,		//1
+			psA,		//2
+			gsA,		//3
 		};
 	}
 	namespace ShaderCompile

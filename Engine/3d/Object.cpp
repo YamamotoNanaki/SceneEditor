@@ -130,8 +130,8 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	vector<Bone>& bones = fmodel->bones;
 	for (int i = 0; i < bones.size(); i++)
 	{
-		//Matrix mat = fmodel->BoneTransform(0, bones);
-		//constMapSkin->bones[i] = bones[i].invInitPose * mat;
+		Matrix mat = fmodel->BoneTransform(0);
+		constMapSkin->bones[i] = bones[i].invInitPose * mat;
 	}
 }
 
@@ -160,7 +160,7 @@ void IF::Object::FBXDraw()
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	lightPtr->Draw(4);
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
-	commandList->SetGraphicsRootConstantBufferView(2, constBuffSkin->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(5, constBuffSkin->GetGPUVirtualAddress());
 	fmodel->Draw(constBuffTransform.Get());
 }
 

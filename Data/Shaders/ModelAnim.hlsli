@@ -100,7 +100,7 @@ struct VSOutput
 struct SkinOutput
 {
     float4 pos;
-	float3 normal :NORMAL;
+	float3 normal;
 };
 
 struct GSOutput

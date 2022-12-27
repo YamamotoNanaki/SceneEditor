@@ -201,13 +201,13 @@ void IF::Graphic::InitializeFBX(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs
 			"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 		{
-			"BONEINDICES",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+			"BONEINDICES",0,DXGI_FORMAT_R32G32B32A32_UINT,0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 		{
 			"BONEWEIGHTS",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		}
 	};
-	GPipeline pipeline(Blobs[ShaderCode::vs].Get(), Blobs[ShaderCode::ps].Get(), Blobs[ShaderCode::gs].Get(), inputLayout, _countof(inputLayout));
+	GPipeline pipeline(Blobs[ShaderCode::vsA].Get(), Blobs[ShaderCode::psA].Get(), Blobs[ShaderCode::gsA].Get(), inputLayout, _countof(inputLayout));
 	for (int i = 0; i < 4; i++)
 		pipeline.pipelineDesc[i].RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};

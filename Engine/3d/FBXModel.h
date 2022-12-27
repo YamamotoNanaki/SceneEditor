@@ -17,15 +17,14 @@ namespace IF
 		std::string tag;
 
 	public:
-		std::vector<std::unique_ptr<Node>> nodes;
-		std::vector<Bone> bones;
-		std::vector<Matrix>& Transforms;
-		std::vector<Animation> animations;
+		std::vector<std::unique_ptr<Node>> nodes{};
+		std::vector<Bone> bones{};
+		std::vector<Animation> animations{};
 
 	public:
 		void Draw(ID3D12Resource* address);
 		void Draw(ID3D12Resource* address, unsigned short texNum);
-		Matrix BoneTransform(float TimeInSeconds, vector<Matrix>& Transforms);
+		Matrix BoneTransform(float TimeInSeconds);
 		inline void SetTag(std::string tag)
 		{
 			this->tag = tag;

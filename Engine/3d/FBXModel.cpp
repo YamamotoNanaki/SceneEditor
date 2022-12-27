@@ -30,11 +30,11 @@ void IF::FBXModel::Draw(ID3D12Resource* address, unsigned short texNum)
 
 
 //アニメーション
-static const NodeAnima* FindNodeAnim(const Animation* pAnimation, const string& NodeName)
+static const NodeAnim* FindNodeAnim(const Animation* pAnimation, const string& NodeName)
 {
 	for (UINT i = 0; i < pAnimation->channels.size(); i++)
 	{
-		const NodeAnima* pNodeAnim = &pAnimation->channels[i];
+		const NodeAnim* pNodeAnim = &pAnimation->channels[i];
 
 		if (pNodeAnim->name == NodeName)
 		{
@@ -45,7 +45,7 @@ static const NodeAnima* FindNodeAnim(const Animation* pAnimation, const string& 
 	return NULL;
 }
 
-static UINT findScaling(float AnimationTime, const NodeAnima* pNodeAnim)
+static UINT findScaling(float AnimationTime, const NodeAnim* pNodeAnim)
 {
 	assert(pNodeAnim->scale.size() > 0);
 
@@ -60,7 +60,7 @@ static UINT findScaling(float AnimationTime, const NodeAnima* pNodeAnim)
 	return 0;
 }
 
-static void CalcInterpolatedScaling(Vector3& Out, float AnimationTime, const NodeAnima* pNodeAnim)
+static void CalcInterpolatedScaling(Vector3& Out, float AnimationTime, const NodeAnim* pNodeAnim)
 {
 	if (pNodeAnim->scale.size() == 1) {
 		Out = pNodeAnim->scale[0];
@@ -79,7 +79,7 @@ static void CalcInterpolatedScaling(Vector3& Out, float AnimationTime, const Nod
 	Out = Start + Factor * Delta;
 }
 
-static UINT findRotation(float AnimationTime, const NodeAnima* pNodeAnim)
+static UINT findRotation(float AnimationTime, const NodeAnim* pNodeAnim)
 {
 	assert(pNodeAnim->rotation.size() > 0);
 
@@ -94,7 +94,7 @@ static UINT findRotation(float AnimationTime, const NodeAnima* pNodeAnim)
 	return 0;
 }
 
-static void CalcInterpolatedRotation(Quaternion& Out, float AnimationTime, const NodeAnima* pNodeAnim)
+static void CalcInterpolatedRotation(Quaternion& Out, float AnimationTime, const NodeAnim* pNodeAnim)
 {
 	// we need at least two values to interpolate...
 	if (pNodeAnim->rotation.size() == 1) {
@@ -114,7 +114,7 @@ static void CalcInterpolatedRotation(Quaternion& Out, float AnimationTime, const
 	Out = normalize(Out);
 }
 
-static UINT findPosition(float AnimationTime, const NodeAnima* pNodeAnim)
+static UINT findPosition(float AnimationTime, const NodeAnim* pNodeAnim)
 {
 	for (UINT i = 0; i < pNodeAnim->position.size() - 1; i++) {
 		if (AnimationTime < (float)pNodeAnim->positionTime[i + 1]) {
@@ -127,7 +127,7 @@ static UINT findPosition(float AnimationTime, const NodeAnima* pNodeAnim)
 	return 0;
 }
 
-static void CalcInterpolatedPosition(Vector3& Out, float AnimationTime, const NodeAnima* pNodeAnim)
+static void CalcInterpolatedPosition(Vector3& Out, float AnimationTime, const NodeAnim* pNodeAnim)
 {
 	if (pNodeAnim->position.size() == 1)
 	{
@@ -154,7 +154,7 @@ void FBXModel::ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const M
 
 	Matrix NodeTransformation = pNode->transform;
 
-	const NodeAnima* pNodeAnim = FindNodeAnim(pAnimation, NodeName);
+	const NodeAnim* pNodeAnim = FindNodeAnim(pAnimation, NodeName);
 
 	if (pNodeAnim) {
 		// スケーリングを補間し、スケーリング変換行列を生成する
@@ -181,7 +181,7 @@ void FBXModel::ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const M
 	Matrix GlobalTransformation = ParentTransform * NodeTransformation;
 }
 
-Matrix FBXModel::BoneTransform(float TimeInSeconds, vector<Matrix>& Transforms)
+Matrix FBXModel::BoneTransform(float TimeInSeconds)
 {
 	Matrix Identity;
 

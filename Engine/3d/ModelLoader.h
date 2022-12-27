@@ -30,12 +30,13 @@ namespace IF
 	{
 		std::string name;
 		Matrix invInitPose;
+		Matrix finalMatrix;
 		Bone(const std::string& name)
 		{
 			this->name = name;
 		}
 	};
-	struct NodeAnima
+	struct NodeAnim
 	{
 		std::string name;
 		std::vector<Vector3>position;
@@ -50,7 +51,7 @@ namespace IF
 		std::string name;
 		double duration;
 		double ticksPerSecond;
-		std::vector<NodeAnima>channels;
+		std::vector<NodeAnim>channels;
 	};
 	class ModelLoader
 	{

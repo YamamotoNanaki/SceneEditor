@@ -95,15 +95,15 @@ Mesh* IF::ModelLoader::ProcessMesh(const aiScene* scene, aiMesh* mesh)
 		b.invInitPose.SetY(mesh->mBones[i]->mOffsetMatrix[1][0], mesh->mBones[i]->mOffsetMatrix[1][1], mesh->mBones[i]->mOffsetMatrix[1][2], mesh->mBones[i]->mOffsetMatrix[1][3]);
 		b.invInitPose.SetZ(mesh->mBones[i]->mOffsetMatrix[2][0], mesh->mBones[i]->mOffsetMatrix[2][1], mesh->mBones[i]->mOffsetMatrix[2][2], mesh->mBones[i]->mOffsetMatrix[2][3]);
 		b.invInitPose.SetW(mesh->mBones[i]->mOffsetMatrix[3][0], mesh->mBones[i]->mOffsetMatrix[3][1], mesh->mBones[i]->mOffsetMatrix[3][2], mesh->mBones[i]->mOffsetMatrix[3][3]);
-		b.invInitPose = MatrixTranspose(b.invInitPose);
+		b.invInitPose = b.finalMatrix = MatrixTranspose(b.invInitPose);
+		bones.push_back(b);
 		for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++)
 		{
 			Weight w;
-			w.vertexID = mesh->mBones[i]->mWeights[j].mVertexId;
+			w.vertexID = i;
 			w.weight = mesh->mBones[i]->mWeights[j].mWeight;
-			lists[i].push_back(w);
+			lists[mesh->mBones[i]->mWeights[j].mVertexId].push_back(w);
 		}
-		bones.push_back(b);
 	}
 
 	for (int i = 0; i < vertices.size(); i++)
@@ -188,7 +188,7 @@ FBXModel* IF::ModelLoader::FBXLoad(std::string fileName, std::string fileType, b
 		a.ticksPerSecond = scene->mAnimations[i]->mTicksPerSecond;
 		for (int j = 0; j < scene->mAnimations[i]->mNumChannels; j++)
 		{
-			NodeAnima n;
+			NodeAnim n;
 			n.name = scene->mAnimations[i]->mChannels[j]->mNodeName.C_Str();
 			for (int k = 0; k < scene->mAnimations[i]->mChannels[j]->mNumPositionKeys; k++)
 			{
@@ -224,7 +224,9 @@ FBXModel* IF::ModelLoader::FBXLoad(std::string fileName, std::string fileType, b
 				n.rotation.push_back(q);
 				n.rotationTime.push_back(t);
 			}
+			a.channels.push_back(n);
 		}
+		animations.push_back(a);
 	}
 
 	FBXModel* fbx = new FBXModel;

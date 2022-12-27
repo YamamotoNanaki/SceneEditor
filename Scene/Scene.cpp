@@ -25,6 +25,7 @@ void IF::Scene::Initialize()
 	graph->Initialize(tex->descRangeSRV, L"Data/Shaders/ModelVS.hlsl", L"Data/Shaders/ModelPS.hlsl", L"Data/Shaders/ModelGS.hlsl");
 	graph->Initialize2D(tex->descRangeSRV, L"Data/Shaders/SpriteVS.hlsl", L"Data/Shaders/SpritePS.hlsl");
 	graph->InitializeParticle(tex->descRangeSRV);
+	graph->InitializeFBX(tex->descRangeSRV, L"Data/Shaders/ModelAnimVS.hlsl", L"Data/Shaders/ModelAnimPS.hlsl", L"Data/Shaders/ModelAnimGS.hlsl");
 	float winWidth = Window::Instance()->winWidth;
 	float winHeight = Window::Instance()->winHeight;
 	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
@@ -314,9 +315,9 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 
-	model = loader.FBXLoad("flash", FBX, true);
+	model = loader.FBXLoad("boneTest", FBX, false);
 	obj.Initialize(model);
-	obj.scale = { 0.01,0.01,0.01 };
+	//obj.scale = { 0.01,0.01,0.01 };
 }
 
 void IF::Scene::StaticInitialize()
@@ -354,9 +355,10 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
 	objM->Draw();
-	graph->DrawBlendMode();
+	graph->DrawBlendMode(Blend::ANIMNORMAL);
 	Object::DrawBefore(graph->rootsignature.Get());
 	obj.FBXDraw();
+	graph->DrawBlendMode();
 	particleM->Draw(graph->rootsignature.Get());
 
 
