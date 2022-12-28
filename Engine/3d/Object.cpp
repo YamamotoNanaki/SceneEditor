@@ -126,12 +126,11 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->polygonSize = 1;
 	constMapTransform->explosion = 0;
 
-	if (fmodel == nullptr)return;
-	vector<Bone>& bones = fmodel->bones;
-	for (int i = 0; i < bones.size(); i++)
+	if (fmodel == nullptr || fmodel->bones.size() == 0)return;
+	fmodel->BoneTransform(0);
+	for (int i = 0; i < fmodel->bones.size(); i++)
 	{
-		Matrix mat = fmodel->BoneTransform(0);
-		constMapSkin->bones[i] = bones[i].invInitPose * mat;
+		constMapSkin->bones[i] = fmodel->bones[i].invInitPose * fmodel->bones[i].finalMatrix;
 	}
 }
 

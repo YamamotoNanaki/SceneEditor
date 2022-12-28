@@ -60,6 +60,7 @@ namespace IF
 		std::vector<Bone> bones;
 		std::vector<Animation> animations;
 		std::string filename;
+		std::vector<std::string>m_BoneMapping;
 	private:
 		void ParseNodeRecursive(const aiScene* scene, aiNode* node, Node* targetParent = nullptr);
 		Mesh* ProcessMesh(const aiScene* scene, aiMesh* mesh);

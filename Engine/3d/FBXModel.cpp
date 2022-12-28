@@ -146,7 +146,7 @@ static void CalcInterpolatedPosition(Vector3& Out, float AnimationTime, const No
 	Out = Start + Factor * Delta;
 }
 
-void FBXModel::ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const Matrix& ParentTransform)
+void FBXModel::ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const Matrix& ParentTransform, UINT num)
 {
 	string NodeName = pNode->name;
 
@@ -175,13 +175,17 @@ void FBXModel::ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const M
 		TranslationM = MatrixTranslation(Translation.x, Translation.y, Translation.z);
 
 		// ‚±‚ê‚çã‹L‚Ì•ÏŠ·‚ð‡¬‚·‚é
-		NodeTransformation = TranslationM * RotationM * ScalingM;
+		NodeTransformation = ScalingM * RotationM * TranslationM;
 	}
 
 	Matrix GlobalTransformation = ParentTransform * NodeTransformation;
+
+	bones[num].finalMatrix = pNode->globalTransform * GlobalTransformation *
+		bones[num].invInitPose;
+
 }
 
-Matrix FBXModel::BoneTransform(float TimeInSeconds)
+void FBXModel::BoneTransform(float TimeInSeconds)
 {
 	Matrix Identity;
 
@@ -191,8 +195,6 @@ Matrix FBXModel::BoneTransform(float TimeInSeconds)
 	float AnimationTime = fmod(TimeInTicks, animations[0].duration);
 
 	for (UINT i = 0; i < nodes.size(); i++) {
-		ReadNodeHeirarchy(AnimationTime, nodes[i].get(), Identity);
+		ReadNodeHeirarchy(AnimationTime, nodes[i].get(), Identity, i);
 	}
-
-	return Identity;
 }
