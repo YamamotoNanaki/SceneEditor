@@ -178,11 +178,9 @@ void FBXModel::ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const M
 		NodeTransformation = ScalingM * RotationM * TranslationM;
 	}
 
-	Matrix GlobalTransformation = ParentTransform * NodeTransformation;
+	Matrix GlobalTransformation = NodeTransformation * ParentTransform;
 
-	bones[num].finalMatrix = pNode->globalTransform * GlobalTransformation *
-		bones[num].invInitPose;
-
+	bones[num].finalMatrix = bones[num].invInitPose * GlobalTransformation;
 }
 
 void FBXModel::BoneTransform(float TimeInSeconds)
