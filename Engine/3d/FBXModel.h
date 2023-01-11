@@ -35,6 +35,6 @@ namespace IF
 			return tag;
 		}
 	private:
-		void ReadNodeHeirarchy(float AnimationTime, const Node* pNode, const Matrix& ParentTransform,UINT num);
+		void ReadNodeHeirarchy(float AnimationTime, Node* pNode, const Matrix& ParentTransform,UINT num);
 	};
 };

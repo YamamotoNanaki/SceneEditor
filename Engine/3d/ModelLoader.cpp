@@ -21,11 +21,11 @@ void IF::ModelLoader::ParseNodeRecursive(const aiScene* scene, aiNode* node, Nod
 	}
 	nodes.push_back(std::move(node_));
 	Node* parent;
-	parent = node_.get();
+	parent = nodes.back().get();
 
 	if (targetParent != nullptr)
 	{
-		targetParent->parent = parent;
+		parent->parent = targetParent;
 		targetParent->globalTransform *= parent->globalTransform;
 	}
 
@@ -88,21 +88,24 @@ Mesh* IF::ModelLoader::ProcessMesh(const aiScene* scene, aiMesh* mesh)
 
 	//É{Å[Éì
 	std::vector<std::list<Weight>>lists(vertices.size());
-	for (int i = 0; i < mesh->mNumBones; i++)
+	if (bones.size() == 0)
 	{
-		Bone b(mesh->mBones[i]->mName.C_Str());
-		b.invInitPose.SetX(mesh->mBones[i]->mOffsetMatrix[0][0], mesh->mBones[i]->mOffsetMatrix[0][1], mesh->mBones[i]->mOffsetMatrix[0][2], mesh->mBones[i]->mOffsetMatrix[0][3]);
-		b.invInitPose.SetY(mesh->mBones[i]->mOffsetMatrix[1][0], mesh->mBones[i]->mOffsetMatrix[1][1], mesh->mBones[i]->mOffsetMatrix[1][2], mesh->mBones[i]->mOffsetMatrix[1][3]);
-		b.invInitPose.SetZ(mesh->mBones[i]->mOffsetMatrix[2][0], mesh->mBones[i]->mOffsetMatrix[2][1], mesh->mBones[i]->mOffsetMatrix[2][2], mesh->mBones[i]->mOffsetMatrix[2][3]);
-		b.invInitPose.SetW(mesh->mBones[i]->mOffsetMatrix[3][0], mesh->mBones[i]->mOffsetMatrix[3][1], mesh->mBones[i]->mOffsetMatrix[3][2], mesh->mBones[i]->mOffsetMatrix[3][3]);
-		b.invInitPose = b.finalMatrix = MatrixTranspose(b.invInitPose);
-		bones.push_back(b);
-		for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++)
+		for (int i = 0; i < mesh->mNumBones; i++)
 		{
-			Weight w;
-			w.vertexID = i;
-			w.weight = mesh->mBones[i]->mWeights[j].mWeight;
-			lists[mesh->mBones[i]->mWeights[j].mVertexId].push_back(w);
+			Bone b(mesh->mBones[i]->mName.C_Str());
+			b.invInitPose.SetX(mesh->mBones[i]->mOffsetMatrix[0][0], mesh->mBones[i]->mOffsetMatrix[0][1], mesh->mBones[i]->mOffsetMatrix[0][2], mesh->mBones[i]->mOffsetMatrix[0][3]);
+			b.invInitPose.SetY(mesh->mBones[i]->mOffsetMatrix[1][0], mesh->mBones[i]->mOffsetMatrix[1][1], mesh->mBones[i]->mOffsetMatrix[1][2], mesh->mBones[i]->mOffsetMatrix[1][3]);
+			b.invInitPose.SetZ(mesh->mBones[i]->mOffsetMatrix[2][0], mesh->mBones[i]->mOffsetMatrix[2][1], mesh->mBones[i]->mOffsetMatrix[2][2], mesh->mBones[i]->mOffsetMatrix[2][3]);
+			b.invInitPose.SetW(mesh->mBones[i]->mOffsetMatrix[3][0], mesh->mBones[i]->mOffsetMatrix[3][1], mesh->mBones[i]->mOffsetMatrix[3][2], mesh->mBones[i]->mOffsetMatrix[3][3]);
+			b.invInitPose = b.finalMatrix = MatrixTranspose(b.invInitPose);
+			bones.push_back(b);
+			for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++)
+			{
+				Weight w;
+				w.vertexID = i;
+				w.weight = mesh->mBones[i]->mWeights[j].mWeight;
+				lists[mesh->mBones[i]->mWeights[j].mVertexId].push_back(w);
+			}
 		}
 	}
 

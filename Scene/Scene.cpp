@@ -315,9 +315,9 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 
-	model = loader.FBXLoad("boneTest", FBX, false);
+	model = loader.FBXLoad("girl", ".gltf", false);
 	obj.Initialize(model);
-	//obj.scale = { 0.01,0.01,0.01 };
+	obj.scale = { 20,20,20 };
 }
 
 void IF::Scene::StaticInitialize()

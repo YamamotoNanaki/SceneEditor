@@ -25,6 +25,7 @@ namespace IF
 		Matrix globalTransform;
 		std::vector<Mesh*> meshes;
 		Node* parent = nullptr;
+		Matrix animMat;
 	};
 	struct Bone
 	{

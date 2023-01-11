@@ -35,6 +35,7 @@ namespace IF
 
 	public:
 		FBXModel* fmodel = nullptr;
+		float animTimer = 0;
 		//定数バッファ
 		ComPtr<ID3D12Resource> constBuffTransform;
 		ComPtr<ID3D12Resource> constBuffSkin;
