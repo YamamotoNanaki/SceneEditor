@@ -315,9 +315,9 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 
-	model = loader.FBXLoad("girl", ".gltf", false);
-	obj.Initialize(model);
-	obj.scale = { 20,20,20 };
+	//model = loader.FBXLoad("girl", ".gltf", false);
+	//obj.Initialize(model);
+	//obj.scale = { 20,20,20 };
 }
 
 void IF::Scene::StaticInitialize()
@@ -330,8 +330,8 @@ void IF::Scene::StaticInitialize()
 void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
-	string tag = ObjectManager::Instance()->GetCamera()->tag;
-	obj.Update(*cameraM->GetCamera(tag)->GetMatView(), *cameraM->GetCamera(tag)->GetMatPro(), *cameraM->GetCamera(tag)->GetEye());
+	//string tag = ObjectManager::Instance()->GetCamera()->tag;
+	//obj.Update(*cameraM->GetCamera(tag)->GetMatView(), *cameraM->GetCamera(tag)->GetMatPro(), *cameraM->GetCamera(tag)->GetEye());
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -355,9 +355,9 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	Object::DrawBefore(graph->rootsignature.Get());
 	objM->Draw();
-	graph->DrawBlendMode(Blend::ANIMNORMAL);
-	Object::DrawBefore(graph->rootsignature.Get());
-	obj.FBXDraw();
+	//graph->DrawBlendMode(Blend::ANIMNORMAL);
+	//Object::DrawBefore(graph->rootsignature.Get());
+	//obj.FBXDraw();
 	graph->DrawBlendMode();
 	particleM->Draw(graph->rootsignature.Get());
 
@@ -383,5 +383,5 @@ void IF::Scene::Delete()
 	CameraManager::DeleteInstance();
 	SpriteManager::DeleteInstance();
 	DebugText::DeleteInstance();
-	delete model;
+	//delete model;
 }

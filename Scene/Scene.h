@@ -37,9 +37,9 @@ namespace IF
 		SpriteManager* spriteM = SpriteManager::Instance();
 		ParticleManager* particleM = ParticleManager::Instance();
 
-		Object obj;
-		FBXModel* model;
-		ModelLoader loader;
+		//Object obj;
+		//FBXModel* model;
+		//ModelLoader loader;
 
 	public:
 		void InputJson(std::string failename);
