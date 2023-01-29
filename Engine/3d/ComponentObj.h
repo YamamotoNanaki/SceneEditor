@@ -29,6 +29,7 @@ namespace IF
 		virtual void Initialize(Model* model, bool prefab);
 		virtual void Update();
 		virtual void Draw();
+		virtual void OutLineDraw();
 		virtual ~CObject();
 		virtual void DebugUpdate();
 

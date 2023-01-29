@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Graphic.h"
 #include "Input.h"
+#include "DirectX12.h"
 
 using namespace IF;
 using namespace std;
@@ -21,6 +22,11 @@ void IF::SceneManager::Initialize()
 	Scene::StaticInitialize();
 	scene->Initialize();
 	scene->InputJson(now);
+#ifdef _DEBUG
+#else
+	GameObject::Instance()->SoundStart(GameObject::Instance()->title, true);
+	DirectX12::Instance()->SetClearColor(0, 0, 0);
+#endif
 }
 
 bool IF::SceneManager::Update()
@@ -58,6 +64,7 @@ bool IF::SceneManager::Update()
 			if (true)
 			{
 				isInitialized = false;
+				scene->Reset();
 				allGreen = false;
 				sceneInitialize = std::async(std::launch::async, [this] {return SceneInitialize(); });
 			}
@@ -74,32 +81,25 @@ bool IF::SceneManager::Update()
 	else//ロード画面の処理
 	{
 
-
 	}
 
 #else
 	if (isInitialized)//ゲーム画面への処理
 	{
-		if (sceneChengeTimer.NowTime() <= 0)
-		{
-			scene->Update();
-		}
 		if (chengeFlag)
 		{
 			//ロード画面への遷移アニメーション終了後
 			if (sceneChengeTimer.IsEnd())
 			{
-				//camera.Update();
 				isInitialized = false;
-				//loadObj.GameInit();
 				sceneInitialize = std::async(std::launch::async, [this] {return SceneInitialize(); });
 			}
 			else//ロード画面への遷移アニメーション処理
 			{
 				sceneChengeTimer.SafeUpdate();
 				//黒全画面スプライトのフェードイン
-				//loadSprite.color[3] = Ease::Lerp(0, 1, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime());
-				//loadSprite.Update();
+				SpriteManager::Instance()->SetAlpha(Ease::Lerp(0, 255, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime()), "load");
+				SpriteManager::Instance()->Update();
 			}
 		}
 		else//ゲーム画面への遷移アニメーション処理
@@ -107,15 +107,9 @@ bool IF::SceneManager::Update()
 			//camera.Update();
 			sceneChengeTimer.SafeDownUpdate();
 			//黒全画面スプライトのフェードアウト(絶対アルファを0にすること)
-			//loadSprite.color[3] = Ease::Lerp(0, 1, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime());
-			//loadSprite.Update();
+			SpriteManager::Instance()->SetAlpha(Ease::Lerp(0, 255, sceneChengeTimer.GetEndTime(), sceneChengeTimer.NowTime()), "load");
+			SpriteManager::Instance()->Update();
 		}
-	}
-	else//ロード画面の処理
-	{
-		//camera.Update();
-		//loadObj.Update();
-
 	}
 #endif
 	//scene->Update();
@@ -129,49 +123,56 @@ bool IF::SceneManager::Update()
 	//}
 
 #ifdef _DEBUG
-	ImGui::Begin("SceneSave");
-	if (ImGui::Button("SAVE"))
+	if (isInitialized)
 	{
-		scene->OutputJson(now);
-	}
-	ImGui::End();
-	GUI();
-	if (endFlag == true)
-	{
-		ImGui::Begin("End");
-		if (endgui == 0)
+		ImGui::Begin("SceneSave");
+		if (ImGui::Button("SAVE"))
 		{
-			ImGui::Text("SceneSave");
-			if (ImGui::Button("YES"))
-			{
-				Output();
-				scene->OutputJson(now);
-				endgui = 1;
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("No"))
-			{
-				endgui = 1;
-			}
-		}
-		if (endgui == 1)
-		{
-			ImGui::Text("ClosedWindow");
-			if (ImGui::Button("YES"))
-			{
-				return true;
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("No"))
-			{
-				endgui = 0;
-				endFlag = false;
-			}
+			scene->OutputJson(now);
 		}
 		ImGui::End();
+		GUI();
+		if (endFlag == true)
+		{
+			ImGui::Begin("End");
+			if (endgui == 0)
+			{
+				ImGui::Text("SceneSave");
+				if (ImGui::Button("YES"))
+				{
+					Output();
+					scene->OutputJson(now);
+					endgui = 1;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("No"))
+				{
+					endgui = 1;
+				}
+			}
+			if (endgui == 1)
+			{
+				ImGui::Text("ClosedWindow");
+				if (ImGui::Button("YES"))
+				{
+					return true;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("No"))
+				{
+					endgui = 0;
+					endFlag = false;
+				}
+			}
+			ImGui::End();
+		}
 	}
 	return false;
 #else
+	if (isInitialized)
+	{
+		scene->Update();
+	}
 	return endFlag;
 #endif
 }
@@ -191,17 +192,28 @@ void IF::SceneManager::Draw()
 		{
 			scene->Draw();
 		}
+		else if (!sceneChengeTimer.IsEnd())
+		{
+			scene->Draw();
+		}
 	}
-	//黒全画面スプライトDraw;
-	//Graphic::Instance()->DrawBlendMode(commandList, Blend::NORMAL2D);
-	//loadSprite.DrawBefore(Graphic::Instance()->rootsignature.Get());
-	//loadSprite.Draw();
-	//if (!isInitialized)
-	//{
-	//	//Graphic::Instance()->DrawBlendMode(commandList);
-	//	//Object::DrawBefore(Graphic::Instance()->rootsignature.Get());
-	//	//loadObj.Draw();
-	//}
+	if (!isInitialized)
+	{
+		DirectX12::Instance()->DrawBefore();
+
+		SpriteManager::Instance()->load2.Update();
+		DirectX12::Instance()->DrawSetViewport();
+		Graphic::Instance()->DrawBlendMode(Blend::NORMAL2D);
+		SpriteManager::Instance()->load.DrawBefore(Graphic::Instance()->rootsignature.Get());
+		SpriteManager::Instance()->load.Draw();
+		SpriteManager::Instance()->load2.Draw();
+
+		//Graphic::Instance()->DrawBlendMode();
+		//Object::DrawBefore(Graphic::Instance()->rootsignature.Get());
+		//ObjectManager::Instance()->load.Draw();
+		DirectX12::Instance()->DrawAfter();
+	}
+
 #endif
 }
 
@@ -236,9 +248,10 @@ void IF::SceneManager::Load(std::string* startscene)
 
 void IF::SceneManager::SceneInitialize()
 {
+	scene->Reset();
 	scene->InputJson(next);
 	now = next;
-	next = "";
+	next = ""; 
 	chengeFlag = false;
 	isInitialized = true;
 }
@@ -247,7 +260,7 @@ void IF::SceneManager::SceneChange(std::string sceneName)
 {
 	chengeFlag = true;
 	next = sceneName;
-	sceneChengeTimer.Set(20);
+	sceneChengeTimer.Set(40);
 }
 
 SceneManager* IF::SceneManager::Instance()
@@ -353,6 +366,7 @@ void IF::SceneManager::GUI()
 		if (ImGui::Button("Change"))
 		{
 			//scene->OutputJson(now);
+			scene->Reset();
 			scene->InputJson(sceneList[mode4]);
 			now = sceneList[mode4];
 		}

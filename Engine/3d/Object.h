@@ -10,7 +10,7 @@
 #include "FBXModel.h"
 #include "ConstBuff.h"
 
-#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"d3d12.lib") 
 
 namespace IF
 {
@@ -31,16 +31,22 @@ namespace IF
 	private:
 		Model* model = nullptr;
 		ConstBuff cb;
+		ConstBuff outLineCb;
 		static LightManager* lightPtr;
+
+	protected:
+		int billbord = 0;
 
 	public:
 		FBXModel* fmodel = nullptr;
 		float animTimer = 0;
 		//定数バッファ
 		ComPtr<ID3D12Resource> constBuffTransform;
+		ComPtr<ID3D12Resource> constBuffOutLine;
 		ComPtr<ID3D12Resource> constBuffSkin;
 		//定数バッファマップ
 		ConstBufferDataTransform* constMapTransform = nullptr;
+		ConstBufferDataTransform* OutLineTransform = nullptr;
 		ConstBufferDataSkin* constMapSkin = nullptr;
 		//アフィン変換情報
 		Float3 scale = { 1,1,1 };
@@ -52,6 +58,14 @@ namespace IF
 		Object* parent = nullptr;
 
 	public:
+		float outLineWidth = 0.2f;
+		Float4 outLineColor = { 0,0,0,1 };
+		bool outLineFlag = true;
+		float polygonsize = 1;
+		float explosion = 0;
+		float polygonRota = 0;
+
+	public:
 		void Initialize(Model* model);
 		void Initialize(FBXModel* fmodel);
 		void SetModel(Model* model);
@@ -61,8 +75,10 @@ namespace IF
 		}
 		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		void Update(Matrix matView, Matrix matProjection, Float3 comeraPos, int mode = BillBoard::NOON);
+		void MatWorldUpdate();
 		void Draw();
 		void FBXDraw();
+		void OutLineDraw();
 		void Draw(unsigned short texNum);
 		~Object();
 		static void StaticInitialize();

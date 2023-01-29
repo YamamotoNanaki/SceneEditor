@@ -75,38 +75,31 @@ Vector2& Vector2::operator/=(float s)
 	return *this;
 }
 
-Vector2& Vector2::operator=(const Float2 f)
-{
-	x = f.x;
-	y = f.y;
-	return *this;
-}
-
-const Vector2 operator+(const Vector2& v1, const Vector2& v2)
+const Vector2 IF::operator+(const Vector2& v1, const Vector2& v2)
 {
 	Vector2 temp(v1);
 	return temp += v2;
 }
 
-const Vector2 operator-(const Vector2& v1, const Vector2& v2)
+const Vector2 IF::operator-(const Vector2& v1, const Vector2& v2)
 {
 	Vector2 temp(v1);
 	return temp -= v2;
 }
 
-const Vector2 operator*(const Vector2& v, float s)
+const Vector2 IF::operator*(const Vector2& v, float s)
 {
 	Vector2 temp(v);
 	return temp *= s;
 }
 
-const Vector2 operator*(float s, const Vector2& v)
+const Vector2 IF::operator*(float s, const Vector2& v)
 {
 	Vector2 temp(v);
 	return temp *= s;
 }
 
-const Vector2 operator/(const Vector2& v, float s)
+const Vector2 IF::operator/(const Vector2& v, float s)
 {
 	Vector2 temp(v);
 	return temp /= s;

@@ -89,7 +89,12 @@ void IF::ConstBuff::SetColor(float red, float green, float blue, float alpha)
 	constMapMaterial->color = Float4(r, g, b, a);					//RGBA‚Å”¼“§–¾‚ÌÔ
 }
 
+void IF::ConstBuff::SetColor(Float4 color)
+{
+	constMapMaterial->color = color;
+}
+
 Float4 IF::ConstBuff::GetColor()
 {
-		return Float4(r, g, b, a);
+	return constMapMaterial->color;
 }

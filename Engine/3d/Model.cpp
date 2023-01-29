@@ -198,6 +198,11 @@ bool Model::LoadModel(string name, bool smoothing)
 	this->name = name;
 	smooth = smoothing;
 	type = LOAD_MODEL;
+	if (material.tex == false)
+	{
+		material.texNum = 1;
+		material.tex = true;
+	}
 	return true;
 }
 

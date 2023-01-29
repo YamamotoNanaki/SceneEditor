@@ -27,6 +27,7 @@ namespace IF
 		static ObjectManager* Instance();
 		static void DeleteInstance();
 		void Draw();
+		void OutLineDraw();
 		void Update();
 		void CollisionInitialize();
 		inline ICamera* GetCamera()
@@ -71,7 +72,7 @@ namespace IF
 		{
 			for (auto com : objList)
 			{
-				if (com->objName == objName)
+				if (com->GetObjName() == objName)
 				{
 					T* buff = dynamic_cast<T*>(com);
 					return buff;
@@ -96,6 +97,7 @@ namespace IF
 				num++;
 				return GetAddressNumber<T>(num, objName);
 			}
+			num++;
 			return buff;
 		}
 		inline CObject* GetAddressNumber3(int& num, std::string objName1, std::string objName2, std::string objName3)
@@ -202,7 +204,9 @@ namespace IF
 			{
 				for (auto com : objList)
 				{
-					if (com->tag == tag)
+					//const char* ctag = com->tag.c_str();
+					//if (!strcmp(ctag, tag))
+					if(tag == com->tag)
 					{
 						com->SetCamera(cameraPos);
 					}
@@ -531,6 +535,7 @@ namespace IF
 				}
 			}
 		}
+		void IntputJson(nlohmann::json& j);
 #ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();

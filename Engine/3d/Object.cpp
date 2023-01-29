@@ -47,14 +47,30 @@ void IF::Object::Initialize(Model* model)
 		IID_PPV_ARGS(&constBuffTransform));
 	assert(SUCCEEDED(result));
 
+
 	//定数バッファのマッピング
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));
 
+	//アウトライン
+	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffOutLine));
+	assert(SUCCEEDED(result));
+
+
+	//定数バッファのマッピング
+	result = constBuffOutLine->Map(0, nullptr, (void**)&OutLineTransform);
+	assert(SUCCEEDED(result));
+
+	OutLineTransform->lightFlag = false;
+
 	this->model = model;
 
 	cb.Initialize();
+	outLineCb.Initialize();
 }
+
 
 void IF::Object::Initialize(FBXModel* fmodel)
 {
@@ -90,9 +106,23 @@ void IF::Object::Initialize(FBXModel* fmodel)
 	assert(SUCCEEDED(result));
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
 
+	//アウトライン
+	result = DirectX12::Instance()->GetDevice()->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffOutLine));
+	assert(SUCCEEDED(result));
+
+
+	//定数バッファのマッピング
+	result = constBuffOutLine->Map(0, nullptr, (void**)&OutLineTransform);
+	assert(SUCCEEDED(result));
+
+	OutLineTransform->lightFlag = false;
+
 	this->fmodel = fmodel;
 
 	cb.Initialize();
+	outLineCb.Initialize();
 }
 
 void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int mode)
@@ -108,6 +138,7 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	matTrams = MatrixTranslation(position.x, position.y, position.z);
 	//ワールド行列の合成
 	matWorld = MatrixIdentity();
+	billbord = mode;
 	if (mode == BILLBOARD)matWorld *= View::matBillBoard;
 	else if (mode == YBOARD)matWorld *= View::matBillBoardY;
 	matWorld *= matScale;
@@ -123,8 +154,10 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->viewPro = matView * matProjection;
 	constMapTransform->world = matWorld;
 	constMapTransform->cameraPos = cameraPos;
-	constMapTransform->polygonSize = 1;
-	constMapTransform->explosion = 0;
+	constMapTransform->polygonSize = polygonsize;
+	constMapTransform->lightFlag = true;
+	constMapTransform->explosion = explosion;
+	constMapTransform->rotation = polygonRota;
 
 	if (fmodel == nullptr || fmodel->bones.size() == 0)return;
 	animTimer += 0.01f;
@@ -136,8 +169,35 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	}
 }
 
+void IF::Object::MatWorldUpdate()
+{
+	Matrix matScale, matRot, matTrams;
+
+	//スケール、回転、平行移動
+	matScale = MatrixScaling(scale.x, scale.y, scale.z);
+	matRot = MatrixIdentity();
+	matRot *= MatrixRotationZ(rotation.z);
+	matRot *= MatrixRotationX(rotation.x);
+	matRot *= MatrixRotationY(rotation.y);
+	matTrams = MatrixTranslation(position.x, position.y, position.z);
+	//ワールド行列の合成
+	matWorld = MatrixIdentity();
+	if (billbord == BILLBOARD)matWorld *= View::matBillBoard;
+	else if (billbord == YBOARD)matWorld *= View::matBillBoardY;
+	matWorld *= matScale;
+	matWorld *= matRot;
+	matWorld *= matTrams;
+	//親オブジェクトがあれば
+	if (parent != nullptr)
+	{
+		matWorld *= parent->matWorld;
+	}
+	constMapTransform->world = matWorld;
+}
+
 void Object::Draw()
 {
+	MatWorldUpdate();
 	if (model == nullptr)
 	{
 		assert(0 && "モデルがセットされていません");
@@ -148,6 +208,66 @@ void Object::Draw()
 	lightPtr->Draw(4);
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	model->Draw(constBuffTransform.Get());
+}
+
+void IF::Object::OutLineDraw()
+{
+	if (!outLineFlag)return;
+	if (model == nullptr)
+	{
+		assert(0 && "モデルがセットされていません");
+		return;
+	}
+
+	*OutLineTransform = *constMapTransform;
+	OutLineTransform->lightFlag = false;
+	scale += outLineWidth;
+
+	Matrix matScale, matRot, matTrams;
+
+	//スケール、回転、平行移動
+	matScale = MatrixScaling(scale.x, scale.y, scale.z);
+	matRot = MatrixIdentity();
+	matRot *= MatrixRotationZ(rotation.z);
+	matRot *= MatrixRotationX(rotation.x);
+	matRot *= MatrixRotationY(rotation.y);
+	matTrams = MatrixTranslation(position.x, position.y, position.z);
+	//ワールド行列の合成
+	matWorld = MatrixIdentity();
+	matWorld *= matScale;
+	matWorld *= matRot;
+	matWorld *= matTrams;
+	//親オブジェクトがあれば
+	if (parent != nullptr)
+	{
+		matWorld *= parent->matWorld;
+	}
+
+	OutLineTransform->world = matWorld;
+
+	outLineCb.SetColor(outLineColor);
+
+
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
+	lightPtr->Draw(4);
+	commandList->SetGraphicsRootConstantBufferView(0, outLineCb.GetGPUAddress());
+	model->Draw(constBuffOutLine.Get(), 1);
+
+	scale -= outLineWidth;
+}
+
+void IF::Object::Draw(unsigned short texNum)
+{
+	MatWorldUpdate();
+	if (model == nullptr)
+	{
+		assert(0 && "モデルがセットされていません");
+		return;
+	}
+
+	lightPtr->Draw(4);
+
+	model->Draw(constBuffTransform.Get(), texNum);
 }
 
 void IF::Object::FBXDraw()
@@ -163,19 +283,6 @@ void IF::Object::FBXDraw()
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());
 	commandList->SetGraphicsRootConstantBufferView(5, constBuffSkin->GetGPUVirtualAddress());
 	fmodel->Draw(constBuffTransform.Get());
-}
-
-void IF::Object::Draw(unsigned short texNum)
-{
-	if (model == nullptr)
-	{
-		assert(0 && "モデルがセットされていません");
-		return;
-	}
-
-	lightPtr->Draw(4);
-
-	model->Draw(constBuffTransform.Get(), texNum);
 }
 
 Object::~Object()

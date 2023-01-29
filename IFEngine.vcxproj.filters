@@ -324,6 +324,9 @@
     <ClInclude Include="Engine\3d\Mesh.h">
       <Filter>Header Files\Engine\3d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\2d\PostEffect.h">
+      <Filter>Header Files\Engine\2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -517,6 +520,9 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\Mesh.cpp">
       <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\2d\PostEffect.cpp">
+      <Filter>Source Files\Engine\2d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -73,18 +73,30 @@ void IF::ParticleManager::Update()
 	for (unique_ptr<Emitter>& buff : emitterList)
 	{
 		buff->SetPositionFollow();
-		if(buff->WeightSaving(800))buff->Update();
+		/*if(buff->WeightSaving(800))*/buff->Update();
 	}
 }
 
-void IF::ParticleManager::Draw(ID3D12RootSignature* root)
+void IF::ParticleManager::Draw()
 {
 	for (unique_ptr<Emitter>& buff : emitterList)
 	{
-		if (buff->WeightSaving(800))
+		//if (buff->WeightSaving(800))
+		{
+			buff->Draw();
+		}
+	}
+}
+
+void IF::ParticleManager::DrawPostEffect(ID3D12RootSignature* root)
+{
+	for (unique_ptr<Emitter>& buff : emitterList)
+	{
+		//if (buff->WeightSaving(800))
 		{
 			buff->DrawBefore(root);
-			buff->Draw();
+			buff->DrawPostEffect();
+			buff->DrawAfter();
 		}
 	}
 }

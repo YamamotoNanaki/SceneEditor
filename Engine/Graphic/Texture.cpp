@@ -321,3 +321,13 @@ void IF::Texture::SetTexture(unsigned short texHandle)
 
 	commandList->SetGraphicsRootDescriptorTable(1, tex[texHandle].GPUHandle);
 }
+
+unsigned short IF::Texture::GetTexture(const std::string filename)
+{
+	for (int i = 1; i < 1000; i++)
+	{
+		if (tex[i].free == false)continue;
+		if (tex[i].texName == filename)return i;
+	}
+	return -1;
+}

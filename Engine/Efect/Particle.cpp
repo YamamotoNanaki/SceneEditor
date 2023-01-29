@@ -79,7 +79,7 @@ void IF::Particle::Update()
 		return;
 	}
 	//F
-	double (*ease)(double, double, double, double);
+	float (*ease)(float, float, float, float);
 	ease = Ease::Lerp;
 	if (colorF)
 	{

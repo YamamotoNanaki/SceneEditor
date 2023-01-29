@@ -1,42 +1,42 @@
 #include "Ease.h"
 
-double IF::Ease::Lerp(double startPos, double endPos, double maxTime, double time) {
+float IF::Ease::Lerp(float startPos, float endPos, float maxTime, float time) {
 	time /= maxTime;
-	double change = endPos - startPos;
+	float change = endPos - startPos;
 	return change * time + startPos;
 }
-double IF::Ease::InQuad(double startPos, double endPos, double maxTime, double time) {
+float IF::Ease::InQuad(float startPos, float endPos, float maxTime, float time) {
 	time /= maxTime;
-	double change = endPos - startPos;
+	float change = endPos - startPos;
 	return change * time * time + startPos;
 }
-double IF::Ease::OutQuad(double startPos, double endPos, double maxTime, double time) {
+float IF::Ease::OutQuad(float startPos, float endPos, float maxTime, float time) {
 	time /= maxTime;
-	double change = endPos - startPos;
+	float change = endPos - startPos;
 	return -change * time * (time - 2) + startPos;
 }
 IF::Float3 IF::Ease::OutQuadFloat3(Float3 startPos, Float3 endPos,Timer timer)
 {
-	return { (float)Ease::OutQuad(startPos.x, endPos.x, timer.GetEndTime(), timer.NowTime()),
-			 (float)Ease::OutQuad(startPos.y, endPos.y, timer.GetEndTime(), timer.NowTime()),
-			 (float)Ease::OutQuad(startPos.z, endPos.z, timer.GetEndTime(), timer.NowTime()) };
+	return { Ease::OutQuad(startPos.x, endPos.x, timer.GetEndTime(), timer.NowTime()),
+			 Ease::OutQuad(startPos.y, endPos.y, timer.GetEndTime(), timer.NowTime()),
+			 Ease::OutQuad(startPos.z, endPos.z, timer.GetEndTime(), timer.NowTime()) };
 };
 
 IF::Float3 IF::Ease::LerpFloat3(Float3 startPos, Float3 endPos, Timer timer)
 {
-	return { (float)Ease::Lerp(startPos.x, endPos.x, timer.GetEndTime(), timer.NowTime()),
-			 (float)Ease::Lerp(startPos.y, endPos.y, timer.GetEndTime(), timer.NowTime()),
-			 (float)Ease::Lerp(startPos.z, endPos.z, timer.GetEndTime(), timer.NowTime()) };
+	return { Ease::Lerp(startPos.x, endPos.x, timer.GetEndTime(), timer.NowTime()),
+			 Ease::Lerp(startPos.y, endPos.y, timer.GetEndTime(), timer.NowTime()),
+			 Ease::Lerp(startPos.z, endPos.z, timer.GetEndTime(), timer.NowTime()) };
 };
 
 
-double IF::Ease::InOutQuad(double startPos, double endPos, double maxTime, double time) {
+float IF::Ease::InOutQuad(float startPos, float endPos, float maxTime, float time) {
 	time /= maxTime / 2;
-	double change = endPos - startPos;
+	float change = endPos - startPos;
 	if (time < 1) return change / 2 * time * time + startPos;
 	return -change / 2 * ((--time) * (time - 2) - 1) + startPos;
 }
-double IF::Ease::OutInRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time) {
+float IF::Ease::OutInRelayQuad(float startPos, float endPos, float relayPos, float maxTime, float relayTime, float time) {
 	if (time < relayTime) {
 		return IF::Ease::OutQuad(relayPos, startPos, relayTime, time);
 	}
@@ -45,7 +45,7 @@ double IF::Ease::OutInRelayQuad(double startPos, double endPos, double relayPos,
 	}
 }
 
-double IF::Ease::InOutRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time) {
+float IF::Ease::InOutRelayQuad(float startPos, float endPos, float relayPos, float maxTime, float relayTime, float time) {
 	if (time < relayTime) {
 		return IF::Ease::InQuad(relayPos, startPos, relayTime, time);
 	}
@@ -53,7 +53,7 @@ double IF::Ease::InOutRelayQuad(double startPos, double endPos, double relayPos,
 		return IF::Ease::OutQuad(endPos, relayPos, maxTime - relayTime, time - relayTime);
 	}
 }
-double IF::Ease::OutOutRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time) {
+float IF::Ease::OutOutRelayQuad(float startPos, float endPos, float relayPos, float maxTime, float relayTime, float time) {
 	if (time < relayTime) {
 		return IF::Ease::OutQuad(relayPos, startPos, relayTime, time);
 	}
@@ -61,25 +61,25 @@ double IF::Ease::OutOutRelayQuad(double startPos, double endPos, double relayPos
 		return IF::Ease::OutQuad(endPos, relayPos, maxTime - relayTime, time - relayTime);
 	}
 }
-double IF::Ease::EaseInBack(double startPos, double endPos, double maxTime, double time) {
+float IF::Ease::EaseInBack(float startPos, float endPos, float maxTime, float time) {
 	time /= maxTime;
-	double change = endPos - startPos;
-	double c1 = 1.70158;
-	double c3 = c1 + 1;
+	float change = endPos - startPos;
+	float c1 = 1.70158;
+	float c3 = c1 + 1;
 	return change * (c3 * time * time * time - c1 * time * time) + startPos;
 }
-double IF::Ease::EaseInBack2(double startPos, double endPos, double maxTime, double time) {
+float IF::Ease::EaseInBack2(float startPos, float endPos, float maxTime, float time) {
 	time /= maxTime;
-	double change = endPos - startPos;
-	double c1 = 1.2;
-	double c3 = c1 + 0.8;
+	float change = endPos - startPos;
+	float c1 = 1.2;
+	float c3 = c1 + 0.8;
 	return change * (c3 * time * time * time - c1 * time * time) + startPos;
 }
-double IF::Ease::EaseOutBounce(double startPos, double endPos, double time, double maxTime) {
+float IF::Ease::EaseOutBounce(float startPos, float endPos, float time, float maxTime) {
 	time /= maxTime;
-	double change = endPos - startPos;
-	double n1 = 7.5625;
-	double d1 = 2.75;
+	float change = endPos - startPos;
+	float n1 = 7.5625;
+	float d1 = 2.75;
 
 	if (time < 1 / d1) {
 		return n1 * time * time + startPos + change;

@@ -25,6 +25,7 @@ namespace IF
 		void SetAlpha(int alpha);
 		void SetColor(int red, int green, int blue, int alpha);
 		void SetColor(float red, float green, float blue, float alpha);
+		void SetColor(Float4 color);
 		Float4 GetColor();
 	};
 }

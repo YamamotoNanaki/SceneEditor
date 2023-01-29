@@ -29,6 +29,6 @@ namespace IF
 		static void InputTextString(std::string label, std::string inputtext, ImGuiInputTextFlags flag = 0);
 		static void DrawImage(unsigned short texnum, Float2 size, Float2 uv1, Float2 uv2, Float4 tint_col, Float4 border_col);
 		static bool DrawImageButton(unsigned short texnum, Float2 size, Float2 uv1, Float2 uv2, Float4 tint_col, Float4 border_col);
-		static bool ButtonString(std::string label, Float2 size);
+		static bool ButtonString(std::string label, Float2 size = { 0,0 });
 	};
 }

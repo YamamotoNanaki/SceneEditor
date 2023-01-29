@@ -17,12 +17,79 @@ void IF::Sprite::StaticInitialize()
 	Sprite::matPro = MatrixOrthoGraphicProjection(0, Window::Instance()->winWidth, 0, Window::Instance()->winHeight, 0, 1);
 }
 
+void IF::Sprite::BufferInitialize()
+{
+	Vertex2D vertices[4];
+
+	enum { LB, LT, RB, RT };
+
+	float left = (0.0f - anchorpoint.x) * size.x;
+	float right = (1.0f - anchorpoint.x) * size.x;
+	float top = (0.0f - anchorpoint.y) * size.y;
+	float bottom = (1.0f - anchorpoint.y) * size.y;
+
+	if (flipX)
+	{
+		left = -left;
+		right = -right;
+	}
+
+	if (flipY)
+	{
+		top = -top;
+		bottom = -bottom;
+	}
+
+	vertices[LB].pos = { left,	bottom,	0.0f };
+	vertices[LT].pos = { left,	top,	0.0f };
+	vertices[RB].pos = { right,	bottom,	0.0f };
+	vertices[RT].pos = { right,	top,	0.0f };
+	float tex_left = 0;
+	float tex_right = 1;
+	float tex_top = 0;
+	float tex_bottom = 1;
+	vertices[LB].uv = { tex_left,	tex_bottom };
+	vertices[LT].uv = { tex_left,	tex_top };
+	vertices[RB].uv = { tex_right,	tex_bottom };
+	vertices[RT].uv = { tex_right,	tex_top };
+
+	vi->SetVerticle(vertices);
+	vi->Initialize();
+
+	HRESULT result;
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferMatrix) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//定数バッファの生成
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
+	result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuffTransform));
+	assert(SUCCEEDED(result));
+
+
+	//定数バッファのマッピング
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
+	assert(SUCCEEDED(result));
+
+	cb.Initialize();
+}
+
 IF::Sprite::~Sprite()
 {
 	delete vi;
 }
 
-void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool flipY)
+void IF::Sprite::Initialize(unsigned int texNum, Float2 size, Float2 anchorpoint, bool flipX, bool flipY)
 {
 	vi = DEBUG_NEW SV;
 
@@ -30,6 +97,8 @@ void IF::Sprite::Initialize(unsigned int texNum, Float2 size, bool flipX, bool f
 
 	enum { LB, LT, RB, RT };
 	Vertex2D vertices[4];
+
+	this->anchorpoint = anchorpoint;
 
 	float left = (0.0f - anchorpoint.x) * size.x;
 	float right = (1.0f - anchorpoint.x) * size.x;
@@ -161,17 +230,22 @@ void Sprite::SetTextureRect(Float2 texBase, Float2 texSize)
 
 void IF::Sprite::SetColor(int r, int g, int b, int a)
 {
-	cb.SetColor(r, g, b, a);
+	color[0] = (float)r / 255.f;
+	color[1] = (float)g / 255.f;
+	color[2] = (float)b / 255.f;
+	color[3] = (float)a / 255.f;
 }
 
 void IF::Sprite::SetBright(int r, int g, int b)
 {
-	cb.SetBright(r, g, b);
+	color[0] = (float)r / 255.f;
+	color[1] = (float)g / 255.f;
+	color[2] = (float)b / 255.f;
 }
 
 void IF::Sprite::SetAlpha(int alpha)
 {
-	cb.SetAlpha(alpha);
+	color[3] = (float)alpha / 255.f;
 }
 
 #ifdef _DEBUG

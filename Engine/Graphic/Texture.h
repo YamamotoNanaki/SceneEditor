@@ -44,6 +44,7 @@ namespace IF
 		static Texture* Instance();
 		void Initialize();
 		void SetTexture(unsigned short texHandle);
+		unsigned short GetTexture(const std::string filename);
 		unsigned short LoadTexture(const std::string filename, int number = -1);
 		void GUIInit();
 		//unsigned short folder = 0;

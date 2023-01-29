@@ -12,19 +12,50 @@ namespace IF
 	public:
 		std::list<Sprite*>backgroundList;
 		std::list<Sprite*>foregroundList;
+		Sprite load;
+		Sprite load2;
 	private:
-		SpriteManager() {}
+		SpriteManager()
+		{
+			load.Initialize(1);
+			load.scale = { 20,15 };
+			load.position = { 1920 / 2,1080 / 2 };
+			for (int i = 0; i < 4; i++)load.color[i] = 0;
+			load2.Initialize(1);
+			load2.scale = { 1,1 };
+			load2.position = { 1920 / 2,1080 / 2 };
+			for (int i = 0; i < 4; i++)load2.color[i] = 1;
+		}
 		SpriteManager(const Sprite&) {}
 		SpriteManager& operator=(const SpriteManager&) {}
 		~SpriteManager();
+		Float2 anchorpoint = { 0.5f,0.5f };
 	public:
 		static SpriteManager* Instance();
 		static void DeleteInstance();
+		inline Sprite* GetAddress(std::string tag)
+		{
+			for (auto com : foregroundList)
+			{
+				if (com->tag == tag)
+				{
+					return com;
+				}
+			}
+			for (auto com : backgroundList)
+			{
+				if (com->tag == tag)
+				{
+					return com;
+				}
+			}
+			return nullptr;
+		}
 		void ForeGroundDraw();
 		void BackGroundDraw();
 		void Update();
 		void DebugUpdate();
-		void DrawFlagChange(bool f,std::string tag);
+		void DrawFlagChange(bool f, std::string tag);
 		inline void DeleteSprite()
 		{
 			auto buff = backgroundList;
@@ -37,13 +68,50 @@ namespace IF
 				}
 			}
 			auto buff2 = foregroundList;
-			for (auto com : buff)
+			for (auto com : buff2)
 			{
 				if (com->DeleteSprite())
 				{
 					foregroundList.remove(com);
 					delete com;
 				}
+			}
+		}
+		inline void SetBright(float r, float g, float b, std::string tag, bool all = false)
+		{
+			if (all)
+			{
+				for (auto com : foregroundList)
+				{
+					com->SetBright(r, g, b);
+				}
+				for (auto com : backgroundList)
+				{
+					com->SetBright(r, g, b);
+				}
+			}
+			else
+			{
+				for (auto com : foregroundList)
+				{
+					if (com->tag == tag)
+					{
+						com->SetBright(r, g, b);
+						return;
+					}
+				}
+				for (auto com : backgroundList)
+				{
+					if (com->tag == tag)
+					{
+						com->SetBright(r, g, b);
+						return;
+					}
+				}
+			}
+			if ("load" == tag)
+			{
+				load.SetBright(r, g, b);
 			}
 		}
 		inline void Reset()
@@ -62,7 +130,25 @@ namespace IF
 		inline Sprite* Add(unsigned short texNum, std::string tag, bool back)
 		{
 			Sprite* spr = DEBUG_NEW Sprite;
+			spr->Initialize(texNum, { 100,100 }, anchorpoint);
+			spr->tag = tag;
+			if (back)backgroundList.push_back(spr);
+			else foregroundList.push_back(spr);
+			return spr;
+		}
+		inline Sprite* AddFront(unsigned short texNum, std::string tag, bool back)
+		{
+			Sprite* spr = DEBUG_NEW Sprite;
 			spr->Initialize(texNum);
+			spr->tag = tag;
+			if (back)backgroundList.push_front(spr);
+			else foregroundList.push_front(spr);
+			return spr;
+		}
+		inline Sprite* Add(unsigned short texNum, std::string tag, bool back, Float2 anchorpoint)
+		{
+			Sprite* spr = DEBUG_NEW Sprite;
+			spr->Initialize(texNum, { 100,100 }, anchorpoint);
 			spr->tag = tag;
 			if (back)backgroundList.push_back(spr);
 			else foregroundList.push_back(spr);
@@ -158,6 +244,10 @@ namespace IF
 						return;
 					}
 				}
+			}
+			if ("load" == tag)
+			{
+				load.SetAlpha(a);
 			}
 		}
 		inline void SetRotation(float rota, std::string tag)

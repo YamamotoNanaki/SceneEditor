@@ -18,7 +18,7 @@ Float2 Float2::operator+() const
 
 Float2 Float2::operator-() const
 {
-	return *this;
+	return Float2(-x, -y);
 }
 
 Float2 Float2::operator*() const

@@ -25,10 +25,12 @@ namespace IF
 			PADD,			//9
 			PSUB,			//10
 			PINVSRC,		//11
-			ANIMNORMAL,			//0
-			ANIMADD,			//1
-			ANIMSUB,			//2
-			ANIMINVSRC,			//3
+			ANIMNORMAL,		//12
+			ANIMADD,		//13
+			ANIMSUB,		//14
+			ANIMINVSRC,		//15
+			OUTLINE,		//16
+			NOBLEND,		//17
 		};
 	}
 	namespace ShaderCode
@@ -41,12 +43,12 @@ namespace IF
 			gs,			//3
 			vs2d,		//4
 			ps2d,		//5
-			vsP,		//1
-			psP,		//2
-			gsP,		//3
-			vsA,		//1
-			psA,		//2
-			gsA,		//3
+			vsP,		//6
+			psP,		//7
+			gsP,		//8
+			vsA,		//9
+			psA,		//10
+			gsA,		//11
 		};
 	}
 	namespace ShaderCompile
@@ -69,7 +71,7 @@ namespace IF
 
 	public:
 		ComPtr<ID3D12RootSignature> rootsignature;
-		ComPtr<ID3D12PipelineState> pipelinestate[16]{ nullptr };
+		ComPtr<ID3D12PipelineState> pipelinestate[18]{ nullptr };
 
 	public:
 		void CompillerArray(LPCWSTR fillname, int num);

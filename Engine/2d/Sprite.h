@@ -21,11 +21,12 @@ namespace IF
 
 	class Sprite
 	{
+	protected:
 		template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
-	private:
+	protected:
 		static Matrix matPro;
 
-	private:
+	protected:
 		SV* vi = nullptr;
 		ConstBuff cb;
 
@@ -55,7 +56,8 @@ namespace IF
 		bool drawFlag = true;
 		~Sprite();
 		static void StaticInitialize();
-		virtual void Initialize(unsigned int texNum, Float2 size = { 100,100 }, bool flipX = false, bool flipY = false);
+		void BufferInitialize();
+		virtual void Initialize(unsigned int texNum, Float2 size = { 100,100 }, Float2 anchorpoint = { 0.5,0.5 }, bool flipX = false, bool flipY = false);
 		virtual void TransferVertex();
 		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		void Update();

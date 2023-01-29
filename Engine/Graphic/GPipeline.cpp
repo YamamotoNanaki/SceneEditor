@@ -1,6 +1,5 @@
 #include "GPipeline.h"
 
-
 using namespace IF;
 
 GPipeline::GPipeline(ID3DBlob* vsBlob, ID3DBlob* psBlob, ID3DBlob* gsBlob, D3D12_INPUT_ELEMENT_DESC* inputLayout, int layoutCount)

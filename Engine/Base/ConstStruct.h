@@ -17,8 +17,8 @@ namespace IF
 		float explosion;
 		float polygonSize;
 		float gravity;
-		float pad2;
-		float pad3;
+		float rotation;
+		bool lightFlag = true;
 	};
 
 	struct ConstBufferBillboard
@@ -34,6 +34,14 @@ namespace IF
 		float pad2;
 		Float3 specular;
 		float alpha;
+	};
+	struct ConstBufferPostEffect
+	{
+		//0~0.005‚­‚ç‚¢‚Å
+		float shift;
+		float pad1;
+		float pad2;
+		float pad3;
 	};
 	struct ConstBufferDataSkin
 	{

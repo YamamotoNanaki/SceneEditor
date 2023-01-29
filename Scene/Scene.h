@@ -13,8 +13,7 @@
 #include "SpriteManager.h"
 #include "DebugText.h"
 #include "ParticleManager.h"
-#include "ModelLoader.h"
-#include "FBXModel.h"
+#include "PostEffect.h"
 
 namespace IF
 {
@@ -37,9 +36,10 @@ namespace IF
 		SpriteManager* spriteM = SpriteManager::Instance();
 		ParticleManager* particleM = ParticleManager::Instance();
 
-		//Object obj;
-		//FBXModel* model;
-		//ModelLoader loader;
+	private:
+		std::string nowScene;
+		PostEffect* postEffect = nullptr;
+		Normal* background = nullptr;
 
 	public:
 		void InputJson(std::string failename);
@@ -48,6 +48,7 @@ namespace IF
 		void Update();
 		void Draw();
 		void Delete();
+		void Reset();
 
 		//デバッグ用
 #ifdef _DEBUG

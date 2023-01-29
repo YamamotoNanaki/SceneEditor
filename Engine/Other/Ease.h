@@ -13,7 +13,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double Lerp(double startPos, double endPos, double maxTime, double time);
+		float Lerp(float startPos, float endPos, float maxTime, float time);
 		/// <summary>
 		/// 直線移動
 		/// </summary>
@@ -22,7 +22,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double InQuad(double startPos, double endPos, double maxTime, double time);
+		float InQuad(float startPos, float endPos, float maxTime, float time);
 		/// <summary>
 		/// 直線移動
 		/// </summary>
@@ -31,7 +31,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double OutQuad(double startPos, double endPos, double maxTime, double time);
+		float OutQuad(float startPos, float endPos, float maxTime, float time);
 
 		/// <summary>
 		/// 直線移動
@@ -51,7 +51,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double InOutQuad(double startPos, double endPos, double maxTime, double time);
+		float InOutQuad(float startPos, float endPos, float maxTime, float time);
 		/// <summary>
 		/// 直線移動
 		/// </summary>
@@ -60,7 +60,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double EaseInBack(double startPos, double endPos, double maxTime, double time);
+		float EaseInBack(float startPos, float endPos, float maxTime, float time);
 		/// <summary>
 		/// 直線移動
 		/// </summary>
@@ -69,7 +69,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double EaseInBack2(double startPos, double endPos, double maxTime, double time);
+		float EaseInBack2(float startPos, float endPos, float maxTime, float time);
 		/// <summary>
 		/// 直線移動
 		/// </summary>
@@ -78,21 +78,7 @@ namespace IF
 		/// <param name="maxTime">最大時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double EaseOutBounce(double startPos, double endPos, double maxTime, double time);
-		/// <summary>
-		/// 直線移動
-		/// </summary>
-		/// <param name="startPos">初期地点</param>
-		/// <param name="endPos">終了地点</param>
-		/// <param name="relayPos">中継地点</param>
-		/// <param name="maxTime">最大時間</param>
-		/// <param name="relayTime">中継地点を通過する時間</param>
-		/// <param name="time">現在の時間</param>
-		/// <returns></returns>
-		double OutInRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time);
-
-		double InOutRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time);
-
+		float EaseOutBounce(float startPos, float endPos, float maxTime, float time);
 		/// <summary>
 		/// 直線移動
 		/// </summary>
@@ -103,6 +89,20 @@ namespace IF
 		/// <param name="relayTime">中継地点を通過する時間</param>
 		/// <param name="time">現在の時間</param>
 		/// <returns></returns>
-		double OutOutRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time);
+		float OutInRelayQuad(float startPos, float endPos, float relayPos, float maxTime, float relayTime, float time);
+
+		float InOutRelayQuad(float startPos, float endPos, float relayPos, float maxTime, float relayTime, float time);
+
+		/// <summary>
+		/// 直線移動
+		/// </summary>
+		/// <param name="startPos">初期地点</param>
+		/// <param name="endPos">終了地点</param>
+		/// <param name="relayPos">中継地点</param>
+		/// <param name="maxTime">最大時間</param>
+		/// <param name="relayTime">中継地点を通過する時間</param>
+		/// <param name="time">現在の時間</param>
+		/// <returns></returns>
+		float OutOutRelayQuad(float startPos, float endPos, float relayPos, float maxTime, float relayTime, float time);
 	}
 }

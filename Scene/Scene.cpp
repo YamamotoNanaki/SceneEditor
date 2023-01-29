@@ -30,40 +30,25 @@ void IF::Scene::Initialize()
 	float winHeight = Window::Instance()->winHeight;
 	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
 	lightM->Initialize();
-	//lightM->DefaultLightSetting();
+	lightM->DefaultLightSetting();
 	for (int i = 0; i < 3; i++)
 	{
 		lightM->SetDirLightActive(i, false);
 		lightM->SetPointLightActive(i, false);
 		lightM->SetSpotLightActive(i, false);
 	}
-	lightM->SetDirLightActive(0, true);
-	lightM->SetDirLightDir(0, { 0,-1,1 });
-
-	//lightM->SetPointLightActive(0, true);
-	//lightM->SetPointLightPos(0, { 0,2,-1 });
-	//lightM->SetPointLightColor(0, { 1,0,0 });
-
-	//lightM->SetSpotLightActive(0, true);
-	//lightM->SetSpotLightDir(0, { 0,-1,1 });
-	//lightM->SetSpotLightPos(0, { 0,1,-1 });
-	//lightM->SetSpotLightColor(0, { 0,1,0 });
-
-	//lightM->SetCircleShadowActive(0, true);
-	//lightM->SetCircleShadowDir(0, { 0,-1,1 });
-	//lightM->SetCircleShadowFactorAngle(0, { 0.3,0.6 });
-	//lightM->SetCircleShadowCasterPos(0, { 0,0,0 });
-
 	lightM->SetAmbientColor({ 1, 1, 1 });
+	lightM->SetDirLightActive(0, true);
+	lightM->SetDirLightDir(0, { -1,-1,0.7 });
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
-
-
-
 #ifdef _DEBUG
 	gui.Initialize();
 #endif
+	postEffect = DEBUG_NEW PostEffect;
+	postEffect->Initialize();
+
 }
 #ifdef _DEBUG
 
@@ -152,6 +137,7 @@ void IF::Scene::DebugUpdate()
 		if (ImGui::Button("DebugStop") || (Input::Instance()->KeyDown(DIK_LCONTROL) && Input::Instance()->KeyTriggere(DIK_RETURN)))
 		{
 			flag = false;
+			Reset();
 			InputJson(SceneManager::Instance()->GetNowScene());
 		}
 	}
@@ -185,6 +171,7 @@ void IF::Scene::DebugUpdate()
 	if (flag)
 	{
 		objM->Update();
+
 		objM->DeleteObject();
 		spriteM->Update();
 		particleM->Update();
@@ -200,12 +187,6 @@ void IF::Scene::DebugUpdate()
 #endif
 void IF::Scene::InputJson(std::string failename)
 {
-	objM->Reset();
-	tex->TexReset();
-	cameraM->Reset();
-	modelM->Reset();
-	spriteM->Reset();
-	particleM->Reset();
 	std::ifstream reading_file;
 	string scene = failename;
 	string txt = ".json";
@@ -213,14 +194,19 @@ void IF::Scene::InputJson(std::string failename)
 	string type = "Texture";
 	string error = "Basic";
 	string faile;
-	faile = name + type + txt;
-	reading_file.open(faile, std::ios::in);
-	json j;
-	reading_file >> j;
-	reading_file.close();
-	for (auto& i : j["texture"]["name"])
+	static bool once = false;
+	if (!once)
 	{
-		tex->LoadTexture(i);
+		faile = name + type + txt;
+		reading_file.open(faile, std::ios::in);
+		json j;
+		reading_file >> j;
+		reading_file.close();
+		for (auto& i : j["texture"]["name"])
+		{
+			tex->LoadTexture(i);
+		}
+		once = true;
 	}
 
 	type = "Model";
@@ -270,17 +256,7 @@ void IF::Scene::InputJson(std::string failename)
 	reading_file.close();
 	if (j4["object"]["camera"] == "debug")objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	else objM->SetCamera(cameraM->GetCamera(j4["object"]["camera"]));
-	for (auto i : j4["object"]["object"])
-	{
-		if ("Normal" == i["ObjectName"])objM->Add<Normal>(modelM->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
-		if ("Player" != i["ObjectName"])objM->SetPosition({ i["pos"]["x"],i["pos"]["y"],i["pos"]["z"] }, i["tag"]);
-		objM->SetRotation({ i["rot"]["x"],i["rot"]["y"],i["rot"]["z"] }, i["tag"]);
-		objM->SetScale({ i["sca"]["x"],i["sca"]["y"],i["sca"]["z"] }, i["tag"]);
-		Float4 f = { i["color"]["x"],i["color"]["y"],i["color"]["z"],i["color"]["w"] };
-		objM->SetColor(f, i["tag"]);
-		objM->SetCollision(i["collision"], i["tag"]);
-	}
-	objM->CollisionInitialize();
+	objM->IntputJson(j4);
 
 	type = "Sprite";
 	faile = name + scene + type + txt;
@@ -295,10 +271,14 @@ void IF::Scene::InputJson(std::string failename)
 	reading_file.close();
 	for (auto i : j5["sprite"])
 	{
-		spriteM->Add(i["tex"], i["tag"], i["type"]);
+		Sprite* s = spriteM->Add(i["tex"], i["tag"], i["type"], { i["anchorpoint"]["x"],i["anchorpoint"]["y"] });
 		spriteM->SetPosition({ i["pos"]["x"],i["pos"]["y"] }, i["tag"]);
 		spriteM->SetRotation(i["rot"], i["tag"]);
 		spriteM->SetScale({ i["sca"]["x"],i["sca"]["y"] }, i["tag"]);
+		s->color[0] = i["color"]["r"];
+		s->color[1] = i["color"]["g"];
+		s->color[2] = i["color"]["b"];
+		s->color[3] = i["color"]["a"];
 	}
 
 	type = "Particle";
@@ -314,10 +294,7 @@ void IF::Scene::InputJson(std::string failename)
 	reading_file.close();
 	particleM->InputJson(j7);
 
-
-	//model = loader.FBXLoad("girl", ".gltf", false);
-	//obj.Initialize(model);
-	//obj.scale = { 20,20,20 };
+	nowScene = failename;
 }
 
 void IF::Scene::StaticInitialize()
@@ -330,8 +307,7 @@ void IF::Scene::StaticInitialize()
 void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
-	//string tag = ObjectManager::Instance()->GetCamera()->tag;
-	//obj.Update(*cameraM->GetCamera(tag)->GetMatView(), *cameraM->GetCamera(tag)->GetMatPro(), *cameraM->GetCamera(tag)->GetEye());
+
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -342,28 +318,38 @@ void IF::Scene::Update()
 	particleM->Update();
 	spriteM->DeleteSprite();
 	objM->DeleteObject();
+	gameObj->Update();
 #endif
 }
 
 void IF::Scene::Draw()
 {
+	particleM->DrawPostEffect(graph->rootsignature.Get());
+	// ポストエフェクト
+	Object::DrawBefore(graph->rootsignature.Get());
+	postEffect->DrawBefore();
+
+	graph->DrawBlendMode(Blend::OUTLINE);
+	objM->OutLineDraw();
+
+	graph->DrawBlendMode();
+	objM->Draw();
+
+	postEffect->DrawAfter();
+
+	DirectX12::Instance()->DrawBefore();
 	DirectX12::Instance()->DrawSetViewport();
+
 	graph->DrawBlendMode(Blend::NORMAL2D);
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	spriteM->BackGroundDraw();
 
-	graph->DrawBlendMode();
-	Object::DrawBefore(graph->rootsignature.Get());
-	objM->Draw();
-	//graph->DrawBlendMode(Blend::ANIMNORMAL);
-	//Object::DrawBefore(graph->rootsignature.Get());
-	//obj.FBXDraw();
-	graph->DrawBlendMode();
-	particleM->Draw(graph->rootsignature.Get());
+	graph->DrawBlendMode(Blend::NOBLEND);
+	postEffect->Draw();
+	particleM->Draw();
 
-
-	graph->DrawBlendMode(Blend::NORMAL2D);
 	Sprite::DrawBefore(graph->rootsignature.Get());
+	graph->DrawBlendMode(Blend::NORMAL2D);
 	spriteM->ForeGroundDraw();
 
 #ifdef _DEBUG
@@ -374,6 +360,8 @@ void IF::Scene::Draw()
 	//デバッグ用
 
 #endif // _DEBUG
+
+	DirectX12::Instance()->DrawAfter();
 }
 
 void IF::Scene::Delete()
@@ -383,5 +371,15 @@ void IF::Scene::Delete()
 	CameraManager::DeleteInstance();
 	SpriteManager::DeleteInstance();
 	DebugText::DeleteInstance();
-	//delete model;
+	delete postEffect;
+}
+
+void IF::Scene::Reset()
+{
+	objM->Reset();
+	//tex->TexReset();
+	cameraM->Reset();
+	modelM->Reset();
+	spriteM->Reset();
+	particleM->Reset();
 }

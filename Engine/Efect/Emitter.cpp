@@ -9,6 +9,12 @@
 using namespace IF;
 using namespace std;
 
+IF::Emitter::Emitter()
+{
+	postEffect = DEBUG_NEW PostEffect;
+	postEffect->Initialize();
+}
+
 void IF::Emitter::StaticInitialize()
 {
 	Particle::VIInitialize();
@@ -34,6 +40,7 @@ void IF::Emitter::Add()
 
 				float spe[3];
 				float sca[3];
+				float end[3];
 				buff->speedF = speedF;
 				buff->colorF = colorF;
 				for (int i = 0; i < 3; i++)
@@ -44,7 +51,8 @@ void IF::Emitter::Add()
 					buff->endSpeed[i] = endSpeed[i];
 					buff->startSpeed[i] = spe[i];
 					buff->speedEase[i] = speedEase[i];
-					buff->endposition[i] = endposition[i];
+					end[i] = Rand::GetRandF(-endPosRange[i], endPosRange[i]) + endposition[i];
+					buff->endposition[i] = end[i];
 					buff->posEase[i] = posEase[i];
 					sca[i] = Rand::GetRandF(-scaleRange[i], scaleRange[i]) + scale[i];
 					buff->scale[i] = sca[i];
@@ -132,8 +140,14 @@ void IF::Emitter::Add()
 
 void IF::Emitter::DrawBefore(ID3D12RootSignature* root)
 {
-	Graphic::Instance()->DrawBlendMode((Blend::Blend)Blendmode);
 	Particle::DrawBefore(root);
+	postEffect->DrawBefore();
+	Graphic::Instance()->DrawBlendMode((Blend::Blend)Blendmode);
+}
+
+void IF::Emitter::DrawAfter()
+{
+	postEffect->DrawAfter();
 }
 
 void IF::Emitter::Update()
@@ -148,13 +162,19 @@ void IF::Emitter::Update()
 	particles.remove_if([](std::unique_ptr<Particle>& p) {return p->deleteFlag; });
 }
 
-void IF::Emitter::Draw()
+void IF::Emitter::DrawPostEffect()
 {
 	Texture::Instance()->SetTexture(tex);
 	for (unique_ptr<Particle>& buff : particles)
 	{
 		buff->Draw();
 	}
+}
+
+void IF::Emitter::Draw()
+{
+	if (particles.size() == 0)return;
+	postEffect->Draw(true);
 }
 
 void IF::Emitter::SetPositionFollow()
@@ -171,6 +191,47 @@ void IF::Emitter::SetPositionFollow()
 	position[0] = p.x;
 	position[1] = p.y;
 	position[2] = p.z;
+}
+
+void IF::Emitter::SetPosition(const Float3& pos)
+{
+	position[0] = pos.x;
+	position[1] = pos.y;
+	position[2] = pos.z;
+}
+
+void IF::Emitter::SetPositionRange(const Float3& posRange)
+{
+	addPosRange[0] = posRange.x;
+	addPosRange[1] = posRange.y;
+	addPosRange[2] = posRange.z;
+}
+
+void IF::Emitter::SetEndPosition(const Float3& pos)
+{
+	endposition[0] = pos.x;
+	endposition[1] = pos.y;
+	endposition[2] = pos.z;
+}
+
+void IF::Emitter::SetEndPositionRange(const Float3& posRange)
+{
+	endPosRange[0] = posRange.x;
+	endPosRange[1] = posRange.y;
+	endPosRange[2] = posRange.z;
+}
+
+void IF::Emitter::SetRota(const float& rota)
+{
+	this->rota = rota;
+}
+
+void IF::Emitter::SetColor(const Float4& color)
+{
+	this->color[0] = color.x;
+	this->color[1] = color.y;
+	this->color[2] = color.z;
+	this->color[3] = color.w;
 }
 
 bool IF::Emitter::WeightSaving(float max)
@@ -226,6 +287,7 @@ void IF::Emitter::InputJson(nlohmann::json& j)
 		speedEase[i] = j["speedEase"][i];
 		position[i] = j["position"][i];
 		endposition[i] = j["endposition"][i];
+		endPosRange[i] = j["endPosRange"][i];
 		posEase[i] = j["posEase"][i];
 		scale[i] = j["scale"][i];
 		endScale[i] = j["endScale"][i];
@@ -317,6 +379,7 @@ void IF::Emitter::GUI()
 			if (posF)
 			{
 				ImGui::DragFloat3("endposition", endposition, dragspeed);
+				ImGui::DragFloat3("endPosRange", endPosRange, dragspeed);
 				if (ImGui::CollapsingHeader("Easing set"))
 				{
 					if (ImGui::TreeNode("Ease Set x"))
@@ -547,6 +610,7 @@ void IF::Emitter::OutputJson(nlohmann::json& j)
 		j["speedEase"][i] = speedEase[i];
 		j["position"][i] = position[i];
 		j["endposition"][i] = endposition[i];
+		j["endPosRange"][i] = endPosRange[i];
 		j["posEase"][i] = posEase[i];
 		j["scale"][i] = scale[i];
 		j["endScale"][i] = endScale[i];

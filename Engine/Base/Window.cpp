@@ -36,6 +36,24 @@ void IF::Window::Initialize(int window_width, int window_height, LPCWSTR windowN
 	winWidth = window_width;
 	winHeight = window_height;
 
+	//タイトルバー削除
+	//AdjustWindowRect(&wrc, WS_POPUP, false); // 自動でサイズ補正
+
+	//// ウィンドウオブジェクトの生成
+	//hwnd = CreateWindow(w.lpszClassName, // クラス名
+	//	windowName,			        // タイトルバーの文字
+	//	WS_POPUP,        // 標準的なウィンドウスタイル
+	//	CW_USEDEFAULT,              // 表示X座標（OSに任せる）
+	//	CW_USEDEFAULT,              // 表示Y座標（OSに任せる）
+	//	wrc.right - wrc.left,       // ウィンドウ横幅
+	//	wrc.bottom - wrc.top,   // ウィンドウ縦幅
+	//	nullptr,                // 親ウィンドウハンドル
+	//	nullptr,                // メニューハンドル
+	//	w.hInstance,            // 呼び出しアプリケーションハンドル
+	//	nullptr);               // オプション
+
+
+
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false); // 自動でサイズ補正
 
 	// ウィンドウオブジェクトの生成

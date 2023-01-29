@@ -117,7 +117,7 @@ void Graphic::Compiller(LPCWSTR vs, LPCWSTR ps, LPCWSTR gs, char compile)
 //		result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[j], IID_PPV_ARGS(&pipelinestate[j]));
 //	}
 //	assert(SUCCEEDED(result));
-//
+// 
 //	delete rootSigBlob;
 //
 //	return result;
@@ -179,6 +179,13 @@ void IF::Graphic::Initialize(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, L
 		int j = i;
 		result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[j], IID_PPV_ARGS(&pipelinestate[j]));
 	}
+	assert(SUCCEEDED(result));
+
+	pipeline.pipelineDesc[0].RasterizerState.CullMode = D3D12_CULL_MODE_FRONT;
+	pipeline.pipelineDesc[0].DepthStencilState.DepthEnable = false;		//深度テストを行わない
+	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[0], IID_PPV_ARGS(&pipelinestate[16]));
+	pipeline.pipelineDesc->BlendState.RenderTarget[0].BlendEnable = false;
+	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[0], IID_PPV_ARGS(&pipelinestate[17]));
 	assert(SUCCEEDED(result));
 }
 

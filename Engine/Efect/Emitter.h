@@ -6,6 +6,7 @@
 #include <d3d12.h>
 #include "nlohmann/json.hpp"
 #include "Graphic.h"
+#include "PostEffect.h"
 
 namespace IF
 {
@@ -35,26 +36,26 @@ namespace IF
 		float startSpeed[3]{};
 		float speed[3]{};
 		bool speedF = false;
-		int speedEase[3] = { LERP };
+		int speedEase[3] = {};
 		//色
 		float color[4] = { 1,1,1,1 };
 		float startcolor[4] = { 1,1,1,1 };
 		float endcolor[4]{};
 		bool colorF = false;
-		int colorEase[4] = { LERP };
+		int colorEase[4] = {};
 		//ポジション
 		float position[3]{};
 		float endposition[3]{};
 		bool posF = false;
 		bool posRangeF = false;
 		bool setSpeedPosFlag = false;
-		int posEase[3] = { LERP };
+		int posEase[3] = {};
 		//スケール
 		float scale[3]{};
 		float endScale[3]{};
 		float startScale[3]{};
 		bool scaleF = false;
-		int scaleEase[3] = { LERP };
+		int scaleEase[3] = {};
 		bool scaleRangeFlag = false;
 		//回転
 		float rota = 0;
@@ -66,6 +67,7 @@ namespace IF
 		int rotaEase = LERP;
 		//生成時
 		float addPosRange[3]{};
+		float endPosRange[3]{};
 		float speedRange[3]{};
 		float addspeed[3]{};
 		float scaleRange[3]{};
@@ -90,16 +92,29 @@ namespace IF
 	public:
 		bool emitterDeleteFlag = false;
 
+	protected:
+		PostEffect* postEffect = nullptr;
+
 	public:
+		Emitter();
 		static void StaticInitialize();
 		virtual void Add();
 		virtual void Update();
+		virtual void DrawPostEffect();
 		virtual void Draw();
 		virtual void SetPositionFollow();
+		virtual void SetPosition(const Float3& pos);
+		virtual void SetPositionRange(const Float3& pos);
+		virtual void SetEndPosition(const Float3& pos);
+		virtual void SetEndPositionRange(const Float3& pos);
+		virtual void SetRota(const float& rota);
+		virtual void SetColor(const Float4& color);
 		virtual void DrawBefore(ID3D12RootSignature* root);
+		virtual void DrawAfter();
 		virtual ~Emitter()
 		{
 			particles.clear();
+			delete postEffect;
 		}
 		virtual bool WeightSaving(float max = 700);
 

@@ -1,11 +1,10 @@
 {
     "object": {
-        "camera": "debug",
+        "camera": "mainCamera",
         "object": [
             {
                 "BillBoard": 0,
                 "ObjectName": "Normal",
-                "collision": 65535,
                 "color": {
                     "w": 1.0,
                     "x": 1.0,
@@ -13,6 +12,14 @@
                     "z": 1.0
                 },
                 "model": "dome",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
                 "pos": {
                     "x": 0.0,
                     "y": 0.0,
@@ -34,7 +41,6 @@
             {
                 "BillBoard": 0,
                 "ObjectName": "Normal",
-                "collision": 65535,
                 "color": {
                     "w": 1.0,
                     "x": 1.0,
@@ -42,6 +48,14 @@
                     "z": 1.0
                 },
                 "model": "ground",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
                 "pos": {
                     "x": 0.0,
                     "y": -9.0,

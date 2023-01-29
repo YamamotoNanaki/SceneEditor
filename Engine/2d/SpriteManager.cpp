@@ -26,6 +26,7 @@ void IF::SpriteManager::ForeGroundDraw()
 	{
 		com->Draw();
 	}
+	load.Draw();
 }
 
 void IF::SpriteManager::BackGroundDraw()
@@ -46,9 +47,11 @@ void IF::SpriteManager::Update()
 	{
 		com->Update();
 	}
+	load.Update();
 }
 
 #ifdef _DEBUG
+
 void IF::SpriteManager::DebugUpdate()
 {
 	for (auto com : foregroundList)
@@ -60,6 +63,7 @@ void IF::SpriteManager::DebugUpdate()
 		com->DebugUpdate();
 	}
 }
+
 #endif
 
 void IF::SpriteManager::DrawFlagChange(bool f, std::string tag)
@@ -172,11 +176,26 @@ void IF::SpriteManager::GUI()
 			ImGui::RadioButton("fore", &back, 0);
 			ImGui::TreePop();
 		}
+		if (ImGui::TreeNode("anchorpoint"))
+		{
+			static int num = 0;
+			ImGui::RadioButton("Center", &num, 0);
+			ImGui::RadioButton("left  top", &num, 1);
+			ImGui::RadioButton("left  bottom", &num, 2);
+			ImGui::RadioButton("right top", &num, 3);
+			ImGui::RadioButton("right bottom", &num, 4);
+			if (num == 0)anchorpoint = { 0.5f,0.5f };
+			else if (num == 1)anchorpoint = { 0.f,0.f };
+			else if (num == 2)anchorpoint = { 0.f,1.f };
+			else if (num == 3)anchorpoint = { 1.f,0.f };
+			else anchorpoint = { 1.f,1.f };
+			ImGui::TreePop();
+		}
 		if (old != cla)
 		{
 			flag = true;
 		}
-		if (flag = true)
+		if (flag == true)
 		{
 			std::string tag;
 			if (cla == 0)tag = "Sprite";
@@ -204,6 +223,11 @@ void IF::SpriteManager::GUI()
 			Sprite* spr = Add(tex, tagC, back);
 			spr->SetPosition({ 1280 / 2,720 / 2 });
 		}
+		if (ImGui::Button("AddFront"))
+		{
+			Sprite* spr = AddFront(tex, tagC, back);
+			spr->SetPosition({ 1280 / 2,720 / 2 });
+		}
 	}
 	ImGui::End();
 }
@@ -220,6 +244,12 @@ void IF::SpriteManager::OutputJson(nlohmann::json& j)
 		j["sprite"][i]["rot"] = com->rotation;
 		j["sprite"][i]["sca"]["x"] = com->scale.x;
 		j["sprite"][i]["sca"]["y"] = com->scale.y;
+		j["sprite"][i]["anchorpoint"]["x"] = com->anchorpoint.x;
+		j["sprite"][i]["anchorpoint"]["y"] = com->anchorpoint.y;
+		j["sprite"][i]["color"]["r"] = com->color[0];
+		j["sprite"][i]["color"]["g"] = com->color[1];
+		j["sprite"][i]["color"]["b"] = com->color[2];
+		j["sprite"][i]["color"]["a"] = com->color[3];
 		j["sprite"][i]["type"] = false;
 		i++;
 	}
@@ -232,6 +262,12 @@ void IF::SpriteManager::OutputJson(nlohmann::json& j)
 		j["sprite"][i]["rot"] = com->rotation;
 		j["sprite"][i]["sca"]["x"] = com->scale.x;
 		j["sprite"][i]["sca"]["y"] = com->scale.y;
+		j["sprite"][i]["anchorpoint"]["x"] = com->anchorpoint.x;
+		j["sprite"][i]["anchorpoint"]["y"] = com->anchorpoint.y;
+		j["sprite"][i]["color"]["r"] = com->color[0];
+		j["sprite"][i]["color"]["g"] = com->color[1];
+		j["sprite"][i]["color"]["b"] = com->color[2];
+		j["sprite"][i]["color"]["a"] = com->color[3];
 		j["sprite"][i]["type"] = true;
 		i++;
 	}

@@ -1,10 +1,13 @@
 #include "ObjectManager.h"
-#include "ObjectManager.h"
 #include "ModelManager.h"
 #include <cassert>
 #include "imgui.h"
 #include "Debug.h"
 
+enum tagName
+{
+	Normal
+};
 
 using namespace IF;
 using namespace std;
@@ -32,6 +35,14 @@ void IF::ObjectManager::Draw()
 	for (auto com : objList)
 	{
 		if (com->WeightSaving(800))com->Draw();
+	}
+}
+
+void IF::ObjectManager::OutLineDraw()
+{
+	for (auto com : objList)
+	{
+		if (com->WeightSaving(800))com->OutLineDraw();
 	}
 }
 
@@ -89,6 +100,21 @@ Primitive* IF::ObjectManager::GetPrimitiveNumber(int& num, std::string objName)
 		return GetPrimitiveNumber(num, objName);
 	}
 	return com->GetPrimitive();
+}
+
+void IF::ObjectManager::IntputJson(nlohmann::json& j)
+{
+	for (auto i : j["object"]["object"])
+	{
+		CObject* ptr = nullptr;
+		if ("Normal" == i["ObjectName"])ptr = Add<Normal>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
+
+		if (ptr != nullptr)
+		{
+			ptr->InputJson(i);
+			ptr->prefab = i["prefab"];
+		}
+	}
 }
 
 #ifdef _DEBUG
@@ -152,8 +178,8 @@ void IF::ObjectManager::GUI()
 		static bool flag = true;
 		if (ImGui::TreeNode("ObjectName"))
 		{
-			//ImGui::RadioButton("Normal", &objn, tagName::Normal);
-			//ImGui::RadioButton("Player", &objn, tagName::Player);
+			ImGui::RadioButton("Normal", &objn, tagName::Normal);
+
 			//ImGui::RadioButton("Enemy", &objn, tagName::Enemy);
 			//ImGui::RadioButton("Wall", &objn, tagName::Wall);
 			//ImGui::RadioButton("NoBreakWall", &objn, tagName::NoBreakWall);
@@ -170,8 +196,8 @@ void IF::ObjectManager::GUI()
 		}
 		if (flag == true)
 		{
-			//if (objn == tagName::Normal)tag = "Normal";
-			//if (objn == tagName::Player)tag = "Player";
+			if (objn == tagName::Normal)tag = "Normal";
+
 			//if (objn == tagName::Enemy)tag = "Enemy";
 			//if (objn == tagName::Wall)tag = "Wall";
 			//if (objn == tagName::NoBreakWall)tag = "NoBreakWall";
@@ -209,137 +235,21 @@ void IF::ObjectManager::GUI()
 			{
 				Float3 startpos = camera->GetTarget();
 				startpos.z = 0;
-				if (objn == 0)
+				CObject* b = nullptr;
+				if (objn == tagName::Normal)
 				{
-					Normal* b = Add<Normal>(ModelManager::Instance()->GetModel(model), tag, board);
-					if (b == nullptr)
-					{
-						error = 2;
-					}
-					flag = true;
-					if (type != NotPri)
-					{
-						b->SetCollision(type);
-					}
-					b->SetPos(startpos);
+					b = Add<Normal>(ModelManager::Instance()->GetModel(model), tag, board);
 				}
-				//if (objn == tagName::Player) {
-				//	Player* b = Add<Player>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::Enemy) {
-				//	Enemy* b = Add<Enemy>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::Wall) {
-				//	Wall* b = Add<Wall>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::NoBreakWall) {
-				//	NoBreakWall* b = Add<NoBreakWall>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::JumpPad) {
-				//	JumpPad* b = Add<JumpPad>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::DashArea) {
-				//	DashArea* b = Add<DashArea>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::ReSpownWall) {
-				//	ReSpownWall* b = Add<ReSpownWall>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::Item) {
-				//	Item* b = Add<Item>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
-				//if (objn == tagName::GoleArea) {
-				//	GoleArea* b = Add<GoleArea>(ModelManager::Instance()->GetModel(model), tag, board);
-				//	if (b == nullptr)
-				//	{
-				//		error = 2;
-				//	}
-				//	flag = true;
-				//	if (type != NotPri)
-				//	{
-				//		b->SetCollision(type);
-				//	}
-				//	b->SetPos(startpos);
-				//}
+				if (b == nullptr)
+				{
+					error = 2;
+				}
+				flag = true;
+				if (type != NotPri)
+				{
+					b->SetCollision(type);
+				}
+				b->SetPos(startpos);
 			}
 		}
 	}
@@ -385,49 +295,7 @@ void IF::ObjectManager::OutputJson(nlohmann::json& j)
 	{
 		string a = com->GetObjName();
 		j["object"]["object"][i]["ObjectName"] = a;
-		//if (a == "Item")
-		//{
-		//	Item* buff = dynamic_cast<Item*>(com);
-		//	j["object"]["object"][i]["Item"] = buff->itemNum;
-		//}
-		//if (a == "Wall")
-		//{
-		//	Wall* buff = dynamic_cast<Wall*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		//if (a == "NoBreakWall")
-		//{
-		//	NoBreakWall* buff = dynamic_cast<NoBreakWall*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		//if (a == "ReSpownWall")
-		//{
-		//	ReSpownWall* buff = dynamic_cast<ReSpownWall*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		//if (a == "GoleArea")
-		//{
-		//	GoleArea* buff = dynamic_cast<GoleArea*>(com);
-		//	buff->OutputJson(j, i);
-		//}
-		j["object"]["object"][i]["tag"] = com->tag;
-		j["object"]["object"][i]["model"] = com->GetModelTag();
-		j["object"]["object"][i]["pos"]["x"] = com->GetPos().x;
-		j["object"]["object"][i]["pos"]["y"] = com->GetPos().y;
-		j["object"]["object"][i]["pos"]["z"] = com->GetPos().z;
-		j["object"]["object"][i]["rot"]["x"] = com->GetRota().x;
-		j["object"]["object"][i]["rot"]["y"] = com->GetRota().y;
-		j["object"]["object"][i]["rot"]["z"] = com->GetRota().z;
-		j["object"]["object"][i]["sca"]["x"] = com->GetScale().x;
-		j["object"]["object"][i]["sca"]["y"] = com->GetScale().y;
-		j["object"]["object"][i]["sca"]["z"] = com->GetScale().z;
-		j["object"]["object"][i]["color"]["x"] = com->GetColor().x;
-		j["object"]["object"][i]["color"]["y"] = com->GetColor().y;
-		j["object"]["object"][i]["color"]["z"] = com->GetColor().z;
-		j["object"]["object"][i]["color"]["w"] = com->GetColor().w;
-		j["object"]["object"][i]["BillBoard"] = (int)com->GetBillBoard();
-		j["object"]["object"][i]["collision"] = (int)com->GetCollision();
-		j["object"]["object"][i]["prefab"] = com->GetPrefab();
+		com->OutputJson(j["object"]["object"][i]);
 		i++;
 	}
 }

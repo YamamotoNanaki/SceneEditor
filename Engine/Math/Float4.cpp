@@ -20,7 +20,7 @@ Float4 Float4::operator+() const
 
 Float4 Float4::operator-() const
 {
-	return *this;
+	return Float4(-x, -y, -z, -w);
 }
 
 Float4 Float4::operator*() const

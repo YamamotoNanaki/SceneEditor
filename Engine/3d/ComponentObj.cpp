@@ -1,6 +1,7 @@
 #include "ComponentObj.h"
-#include "ImGui.h"
+#include "GUI.h"
 #include "ObjectManager.h"
+#include "ModelManager.h"
 
 using namespace IF;
 using namespace std;
@@ -14,6 +15,8 @@ void IF::CObject::Initialize(Model* model, bool prefab)
 
 void IF::CObject::Update()
 {
+	if (prefab)return;
+
 	ClassUpdate();
 	MatUpdate();
 }
@@ -23,6 +26,12 @@ void IF::CObject::Draw()
 	if (prefab)return;
 	if (texNum == 0)obj.Draw();
 	else obj.Draw(texNum);
+}
+
+void IF::CObject::OutLineDraw()
+{
+	if (prefab)return;
+	obj.OutLineDraw();
 }
 
 CObject::~CObject()
@@ -73,7 +82,7 @@ bool IF::CObject::WeightSaving(float max)
 	return true;
 }
 
-bool IF::CObject::WeightSavingXYZ(float maxX,float maxY,float maxZ)
+bool IF::CObject::WeightSavingXYZ(float maxX, float maxY, float maxZ)
 {
 	float a = cameraPos->x - obj.position.x - obj.scale.x;
 	float b = cameraPos->y - obj.position.y - obj.scale.y;
@@ -101,6 +110,9 @@ void IF::CObject::InputJson(nlohmann::json& j)
 	obj.rotation = { j["rot"]["x"],j["rot"]["y"],j["rot"]["z"] };
 	obj.position = { j["pos"]["x"],j["pos"]["y"],j["pos"]["z"] };
 	obj.scale = { j["sca"]["x"],j["sca"]["y"],j["sca"]["z"] };
+	obj.outLineColor = { j["outLineColor"]["x"],j["outLineColor"]["y"],j["outLineColor"]["z"],j["outLineColor"]["w"]};
+	obj.outLineFlag = j["outLineFlag"];
+	obj.outLineWidth = j["outLineSize"];
 	obj.SetColorF(j["color"]["x"], j["color"]["y"], j["color"]["z"], j["color"]["w"]);
 	ClassInputJson(j);
 }
@@ -118,6 +130,12 @@ void IF::CObject::OutputJson(nlohmann::json& j)
 	j["sca"]["x"] = obj.scale.x;
 	j["sca"]["y"] = obj.scale.y;
 	j["sca"]["z"] = obj.scale.z;
+	j["outLineFlag"] = obj.outLineFlag;
+	j["outLineSize"] = obj.outLineWidth;
+	j["outLineColor"]["x"] = obj.outLineColor.x;
+	j["outLineColor"]["y"] = obj.outLineColor.y;
+	j["outLineColor"]["z"] = obj.outLineColor.z;
+	j["outLineColor"]["w"] = obj.outLineColor.w;
 	j["color"]["x"] = GetColor().x;
 	j["color"]["y"] = GetColor().y;
 	j["color"]["z"] = GetColor().z;
@@ -128,6 +146,8 @@ void IF::CObject::OutputJson(nlohmann::json& j)
 }
 void IF::CObject::GUI()
 {
+	static string m;
+	GUI::CheckBox("prefab", &prefab);
 	if (ImGui::TreeNode("Position"))
 	{
 		float p[3] = { obj.position.x,obj.position.y,obj.position.z };
@@ -161,34 +181,60 @@ void IF::CObject::GUI()
 		obj.SetColorF(s[0], s[1], s[2], s[3]);
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("Collision"))
+	if (ImGui::TreeNode("OutLine"))
 	{
-		static int type = NotPri;
-		static int old = 0;
-		type = old = ptype;
-		ImGui::RadioButton("Ray", &type, RayPri);
-		ImGui::SameLine();
-		ImGui::RadioButton("Sphere", &type, SpherePri);
-		ImGui::RadioButton("Plane", &type, PlanePri);
-		ImGui::SameLine();
-		ImGui::RadioButton("Box", &type, BoxPri);
-		ImGui::RadioButton("CircleXY", &type, CircleXYPri);
-		ImGui::SameLine();
-		ImGui::RadioButton("Not", &type, NotPri);
-		if (type != old)
+		if (ImGui::Checkbox("OutLineFlag", &obj.outLineFlag));
+		if (ImGui::TreeNode("OutLineSize"))
 		{
-			ptype = type;
-			SetCollision(type);
+			static float* s = &obj.outLineWidth;
+			ImGui::DragFloat("outLineSize", s);
+			ImGui::TreePop();
 		}
-		if (type != NotPri)
+		if (ImGui::TreeNode("OutLineColor"))
 		{
-			ImGui::Text("CollisionCheck");
-			ImGui::Text("v1:%0.3f,%0.3f,%0.3f", collision->v1.x, collision->v1.y, collision->v1.z);
-			ImGui::Text("v2:%0.3f,%0.3f,%0.3f", collision->v2.x, collision->v2.y, collision->v2.z);
-			ImGui::Text("f:%0.3f", collision->f);
+			static float s[4] = { obj.outLineColor.x,obj.outLineColor.y,obj.outLineColor.z,obj.outLineColor.w };
+			ImGui::ColorEdit4("", s);
+			obj.outLineColor = { s[0], s[1], s[2], s[3] };
+			ImGui::TreePop();
 		}
 		ImGui::TreePop();
 	}
+	if (ImGui::CollapsingHeader("Change Model"))
+	{
+		m = ModelManager::Instance()->GUIRadio();
+		if (GUI::ButtonString("Change"))
+		{
+			obj.SetModel(ModelManager::Instance()->GetModel(m));
+		}
+	}
+	//if (ImGui::TreeNode("Collision"))
+	//{
+	//	static int type = NotPri;
+	//	static int old = 0;
+	//	type = old = ptype;
+	//	ImGui::RadioButton("Ray", &type, RayPri);
+	//	ImGui::SameLine();
+	//	ImGui::RadioButton("Sphere", &type, SpherePri);
+	//	ImGui::RadioButton("Plane", &type, PlanePri);
+	//	ImGui::SameLine();
+	//	ImGui::RadioButton("Box", &type, BoxPri);
+	//	ImGui::RadioButton("CircleXY", &type, CircleXYPri);
+	//	ImGui::SameLine();
+	//	ImGui::RadioButton("Not", &type, NotPri);
+	//	if (type != old)
+	//	{
+	//		ptype = type;
+	//		SetCollision(type);
+	//	}
+	//	if (type != NotPri)
+	//	{
+	//		ImGui::Text("CollisionCheck");
+	//		ImGui::Text("v1:%0.3f,%0.3f,%0.3f", collision->v1.x, collision->v1.y, collision->v1.z);
+	//		ImGui::Text("v2:%0.3f,%0.3f,%0.3f", collision->v2.x, collision->v2.y, collision->v2.z);
+	//		ImGui::Text("f:%0.3f", collision->f);
+	//	}
+	//	ImGui::TreePop();
+	//}
 	ClassUI();
 }
 void IF::CObject::ClassUI() {}
