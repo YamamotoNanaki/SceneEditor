@@ -27,6 +27,20 @@
             "tag": "ground",
             "tex": 8,
             "type": 0
+        },
+        {
+            "name": "lowPolySphere",
+            "smooth": false,
+            "tag": "lowPolySphere",
+            "tex": 1,
+            "type": 0
+        },
+        {
+            "name": "lowPolySphere",
+            "smooth": true,
+            "tag": "lowPolySmooth",
+            "tex": 1,
+            "type": 0
         }
     ]
 }

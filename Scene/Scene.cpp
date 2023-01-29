@@ -43,9 +43,9 @@ void IF::Scene::Initialize()
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	gui.Initialize();
-#endif
+//#endif
 	postEffect = DEBUG_NEW PostEffect;
 	postEffect->Initialize();
 
@@ -318,7 +318,14 @@ void IF::Scene::Update()
 	particleM->Update();
 	spriteM->DeleteSprite();
 	objM->DeleteObject();
-	gameObj->Update();
+
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	ImGui::Begin("test");
+	ImGui::Text("test");
+	ImGui::End();
 #endif
 }
 
@@ -352,14 +359,14 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(Blend::NORMAL2D);
 	spriteM->ForeGroundDraw();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	ImGui::Render();
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 	//デバッグ用
 
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	DirectX12::Instance()->DrawAfter();
 }

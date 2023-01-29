@@ -13,6 +13,7 @@ cbuffer ConstBufferDataTransform : register(b1)
     float gravity;
     float rotation;
     bool lightFlag;
+    bool toonFlag;
 };
 
 cbuffer Material : register(b2)

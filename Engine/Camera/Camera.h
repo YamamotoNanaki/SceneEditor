@@ -8,6 +8,10 @@ namespace IF
 	{
 	private:
 		static const std::string cameraName;
+		Vector3 spos;
+		Vector3 star;
+		Vector3 supv;
+		bool once = false;
 	public:
 		Camera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)

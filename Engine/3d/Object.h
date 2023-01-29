@@ -56,6 +56,8 @@ namespace IF
 		Matrix matWorld{};
 		//親オブジェクトへのポインタ
 		Object* parent = nullptr;
+		bool lightFlag = true;
+		bool toonFlag = false;
 
 	public:
 		float outLineWidth = 0.2f;

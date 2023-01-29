@@ -19,6 +19,7 @@ namespace IF
 		float gravity;
 		float rotation;
 		bool lightFlag = true;
+		bool toonFlag = false;
 	};
 
 	struct ConstBufferBillboard

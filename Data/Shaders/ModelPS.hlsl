@@ -97,7 +97,7 @@ float4 main(GSOutput input) : SV_TARGET
                 shadecolor.rgb -= atten;
             }
         }
-        if (true)
+        if (toonFlag)
         {
             float4 toon = shadecolor;
             toon.r = step(0.4, shadecolor.r);

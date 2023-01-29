@@ -155,7 +155,8 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->world = matWorld;
 	constMapTransform->cameraPos = cameraPos;
 	constMapTransform->polygonSize = polygonsize;
-	constMapTransform->lightFlag = true;
+	constMapTransform->lightFlag = lightFlag;
+	constMapTransform->toonFlag = toonFlag;
 	constMapTransform->explosion = explosion;
 	constMapTransform->rotation = polygonRota;
 
