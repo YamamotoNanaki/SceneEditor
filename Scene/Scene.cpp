@@ -346,6 +346,7 @@ void IF::Scene::Update()
 	ImGui::Begin(s.c_str());
 	ImGui::Text("camera : arrow keys");
 	ImGui::Text("camera reset : C key");
+	ImGui::Text("Next Scene : Enter key");
 	ImGui::End();
 	static float ambient[3] = { 0.4, 0.4, 0.4 };
 	static bool dirLActive[3] = { true,false,false };
