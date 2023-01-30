@@ -27,6 +27,7 @@ namespace IF
 		Primitive* collision = nullptr;
 	public:
 		virtual void Initialize(Model* model, bool prefab);
+		virtual void FBXInitialize(FBXModel* model, bool prefab);
 		virtual void Update();
 		virtual void Draw();
 		virtual void OutLineDraw();
@@ -51,6 +52,10 @@ namespace IF
 			obj.SetAlpha(a);
 		}
 		bool DeleteObj();
+		inline void SetToon(bool toon)
+		{
+			obj.toonFlag = toon;
+		}
 		inline void SetColor(Float4 color)
 		{
 			obj.SetColorF(color.x, color.y, color.z, color.w);
@@ -170,6 +175,10 @@ namespace IF
 		}
 		virtual void ClassInputJson(nlohmann::json& j);
 		void InputJson(nlohmann::json& j);
+		inline void SetFBXModel(FBXModel* fbxModel)
+		{
+			obj.fmodel = fbxModel;
+		}
 #ifdef _DEBUG
 		void OutputJson(nlohmann::json& j);
 		bool flag = false;

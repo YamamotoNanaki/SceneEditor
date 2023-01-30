@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "Collision.h"
 #include "Window.h"
+#include "Ease.h"
 #include <fstream>
 #include <iostream>
 
@@ -37,15 +38,14 @@ void IF::Scene::Initialize()
 		lightM->SetPointLightActive(i, false);
 		lightM->SetSpotLightActive(i, false);
 	}
-	lightM->SetAmbientColor({ 1, 1, 1 });
 	lightM->SetDirLightActive(0, true);
 	lightM->SetDirLightDir(0, { -1,-1,0.7 });
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	gui.Initialize();
-//#endif
+	//#endif
 	postEffect = DEBUG_NEW PostEffect;
 	postEffect->Initialize();
 
@@ -295,6 +295,23 @@ void IF::Scene::InputJson(std::string failename)
 	particleM->InputJson(j7);
 
 	nowScene = failename;
+	if (nowScene == "scene")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		Normal* obj1 = objM->GetAddress<Normal>("Normal1");
+		obj0->SetToon(true);
+		obj1->SetToon(true);
+	}
+	if (nowScene == "scene2")
+	{
+		FBXModel* fmodel = modelLoader.FBXLoad("simple", ".gltf", true);
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		if (obj0 && fmodel)
+		{
+			obj0->FBXInitialize(fmodel, false);
+		}
+	}
+	sceneChange = false;
 }
 
 void IF::Scene::StaticInitialize()
@@ -312,7 +329,6 @@ void IF::Scene::Update()
 	DebugUpdate();
 #else
 	cameraM->AutoUpdate();
-	lightM->Update();
 	objM->Update();
 	spriteM->Update();
 	particleM->Update();
@@ -323,9 +339,248 @@ void IF::Scene::Update()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("test");
-	ImGui::Text("test");
+	string s = "scene";
+	s += std::to_string(sceneNumber);
+
+
+	ImGui::Begin(s.c_str());
+	ImGui::Text("camera : arrow keys");
+	ImGui::Text("camera reset : C key");
 	ImGui::End();
+	static float ambient[3] = { 0.4, 0.4, 0.4 };
+	static bool dirLActive[3] = { true,false,false };
+	static float dirLDir[3][3] = { {-1,-1,-1},{1,1,0.7},{0,0,1} };
+	static float dirLColor[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
+	static bool pointLActive[3] = { false,false,false };
+	static float pointLPos[3][3] = { {-1,-1,-1},{1,1,0.7},{0,-1,1} };
+	static float pointLAtten[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
+	static float pointLColor[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
+	static bool spotLActive[3] = { false,false,false };
+	static float spotLPos[3][3] = { {0,5,0},{0,5,0},{0,5,0} };
+	static float spotDir[3][3] = { {0,-1,0},{0,-1,0},{0,-1,0} };
+	static float spotLAtten[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
+	static float spotLFactorAngle[3][2] = { {20,30},{20,30},{20,30} };
+	static float spotLColor[3][3] = { {1,1,0},{0,1,1},{1,0,1} };
+	static bool shadowActive[3] = { true,true,false };
+	static float shadowPos[3][3] = { {0,5,0},{0,5,0},{0,5,0} };
+	static float shadowDir[3][3] = { { 0,-1,0},{ 0,-1,0},{ 0,-1,0} };
+	static float shadowAtten[3][3] = { {0.5,0.6,0}, {0.5,0.6,0}, {0.5,0.6,0} };
+	static float shadowFactorAngle[3][2] = { {0,0.5},{0,0.5},{0,0.5} };
+	ImGui::Begin("Light Settings");
+	ImGui::ColorEdit3("ambient color", ambient);
+	if (ImGui::CollapsingHeader("Directional Light"))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			string s2 = "dirLight";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &dirLActive[i]);
+				ImGui::DragFloat3("Dir", dirLDir[i], 0.01);
+				ImGui::ColorEdit3("color", dirLColor[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	if (ImGui::CollapsingHeader("Point Light"))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			string s2 = "pointLight";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &pointLActive[i]);
+				ImGui::DragFloat3("Pos", pointLPos[i], 0.01);
+				ImGui::DragFloat3("atten", pointLAtten[i], 0.01);
+				ImGui::ColorEdit3("color", pointLColor[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	if (ImGui::CollapsingHeader("Spot Light"))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			string s2 = "spotLight";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &spotLActive[i]);
+				ImGui::DragFloat3("Pos", spotLPos[i], 0.01);
+				ImGui::DragFloat3("Dir", spotDir[i], 0.01);
+				ImGui::DragFloat3("atten", spotLAtten[i], 0.01);
+				ImGui::DragFloat2("FactorAngle", spotLFactorAngle[i], 0.01);
+				ImGui::ColorEdit3("color", spotLColor[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	if (ImGui::CollapsingHeader("Circle Shadow"))
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			string s2 = "CircleShadow";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &shadowActive[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	ImGui::End();
+	if (nowScene == "MainScene" || nowScene == "scene")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		Normal* obj1 = objM->GetAddress<Normal>("Normal1");
+		ImGui::Begin("Object Settings");
+		if (obj0)
+		{
+			Float3 pos = obj0->GetPos();
+			Float3 rot = obj0->GetRota();
+			float p[3] = { pos.x,pos.y,pos.z };
+			float r[3] = { rot.x,rot.y,rot.z };
+			if (ImGui::TreeNode("obj0"))
+			{
+				ImGui::DragFloat3("Pos", p, 0.01);
+				ImGui::DragFloat3("Rot", r, 0.01);
+				ImGui::TreePop();
+			}
+			shadowPos[0][0] = p[0];
+			shadowPos[0][1] = p[1] - obj0->GetScale().y;
+			shadowPos[0][2] = p[2];
+			obj0->SetPos({ p[0], p[1], p[2] });
+			obj0->SetRota({ r[0], r[1], r[2] });
+		}
+		if (obj1)
+		{
+			Float3 pos = obj1->GetPos();
+			Float3 rot = obj1->GetRota();
+			float p[3] = { pos.x,pos.y,pos.z };
+			float r[3] = { rot.x,rot.y,rot.z };
+			if (ImGui::TreeNode("obj1"))
+			{
+				ImGui::DragFloat3("Pos", p, 0.01);
+				ImGui::DragFloat3("Rot", r, 0.01);
+				ImGui::TreePop();
+			}
+			shadowPos[1][0] = p[0];
+			shadowPos[1][1] = p[1] - obj1->GetScale().y;
+			shadowPos[1][2] = p[2];
+			obj1->SetPos({ p[0], p[1], p[2] });
+			obj1->SetRota({ r[0], r[1], r[2] });
+		}
+		ImGui::End();
+	}
+	else if (nowScene == "scene1")
+	{
+		static float shift = 0;
+		static bool s = false;
+		static Timer t;
+		ImGui::Begin("PostEffect");
+		if (ImGui::TreeNode("RGBShift"))
+		{
+			ImGui::DragFloat("RGBShift", &shift, 0.001);
+			if (ImGui::Button("RGBShift ex effect start"))
+			{
+				s = true;
+				t.Set(60);
+			}
+			ImGui::TreePop();
+		}
+		static bool g = false;
+		static float sepia = false;
+		if (ImGui::TreeNode("grayscale"))
+		{
+			ImGui::Checkbox("grayscale", &g);
+			ImGui::DragFloat("Sepia", &sepia, 0.001);
+			ImGui::TreePop();
+		}
+		static bool n = false;
+		if (ImGui::TreeNode("negative-positive conversion"))
+		{
+			ImGui::Checkbox("negative", &n);
+			ImGui::TreePop();
+		}
+		ImGui::End();
+		if (s)
+		{
+			t.SafeUpdate();
+			int timer = t.NowTime();
+			if (timer < 30)
+			{
+				shift = Ease::Lerp(0, 0.005f, 30, timer);
+			}
+			else
+			{
+				shift = Ease::Lerp(0.005f, 0, 30, timer - 30);
+			}
+			if (t.IsEnd())
+			{
+				s = false;
+				shift = 0;
+			}
+		}
+		postEffect->SetRGBShift(shift);
+		postEffect->SetNega(n);
+		postEffect->SetGrayscale(g);
+		postEffect->SetSepia(sepia);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		lightM->SetDirLightActive(i, dirLActive[i]);
+		lightM->SetDirLightDir(i, { dirLDir[i][0],dirLDir[i][1],dirLDir[i][2] });
+		lightM->SetDirLightColor(i, { dirLColor[i][0],dirLColor[i][1],dirLColor[i][2] });
+		lightM->SetPointLightActive(i, pointLActive[i]);
+		lightM->SetPointLightAtten(i, { pointLAtten[i][0],pointLAtten[i][1],pointLAtten[i][2] });
+		lightM->SetPointLightColor(i, { pointLColor[i][0],pointLColor[i][1],pointLColor[i][2] });
+		lightM->SetPointLightPos(i, { pointLPos[i][0],pointLPos[i][1],pointLPos[i][2] });
+		lightM->SetSpotLightActive(i, spotLActive[i]);
+		lightM->SetSpotLightAtten(i, { spotLAtten[i][0],spotLAtten[i][1],spotLAtten[i][2] });
+		lightM->SetSpotLightColor(i, { spotLColor[i][0],spotLColor[i][1],spotLColor[i][2] });
+		lightM->SetSpotLightPos(i, { spotLPos[i][0],spotLPos[i][1],spotLPos[i][2] });
+		lightM->SetSpotLightDir(i, { spotDir[i][0],spotDir[i][1],spotDir[i][2] });
+		lightM->SetSpotLightFactorAngle(i, { spotLFactorAngle[i][0],spotLFactorAngle[i][1] });
+		lightM->SetCircleShadowActive(i, shadowActive[i]);
+		lightM->SetCircleShadowAtten(i, { shadowAtten[i][0],shadowAtten[i][1],shadowAtten[i][2] });
+		lightM->SetCircleShadowCasterPos(i, { shadowPos[i][0],shadowPos[i][1],shadowPos[i][2] });
+		lightM->SetCircleShadowDir(i, { shadowDir[i][0],shadowDir[i][1],shadowDir[i][2] });
+		lightM->SetCircleShadowFactorAngle(i, { shadowFactorAngle[i][0],shadowFactorAngle[i][1] });
+	}
+	lightM->SetAmbientColor({ ambient[0],ambient[1],ambient[2] });
+	lightM->Update();
+
+	if (Input::Instance()->KeyTriggere(KEY::ENTER) && !sceneChange)
+	{
+		sceneChange = true;
+		sceneNumber++;
+		if (sceneNumber == 1)
+		{
+			SceneManager::Instance()->SceneChange("scene");
+		}
+		else if (sceneNumber == 2)
+		{
+			SceneManager::Instance()->SceneChange("scene1");
+		}
+		else if (sceneNumber == 3)
+		{
+			SceneManager::Instance()->SceneChange("scene2");
+		}
+		else
+		{
+			SceneManager::Instance()->SceneChange("MainScene");
+			sceneNumber = 0;
+		}
+	}
+	if (sceneChange)
+	{
+		postEffect->SetRGBShift(0);
+		postEffect->SetNega(false);
+		postEffect->SetGrayscale(false);
+		postEffect->SetSepia(0);
+	}
 #endif
 }
 
@@ -359,7 +614,7 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(Blend::NORMAL2D);
 	spriteM->ForeGroundDraw();
 
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	ImGui::Render();
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);

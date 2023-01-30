@@ -18,8 +18,11 @@ namespace IF
 		float polygonSize;
 		float gravity;
 		float rotation;
-		bool lightFlag = true;
-		bool toonFlag = false;
+		unsigned int lightFlag = 1;
+		unsigned int toonFlag = 0;
+		float pad;
+		float pad1;
+		float pad2;
 	};
 
 	struct ConstBufferBillboard
@@ -40,9 +43,9 @@ namespace IF
 	{
 		//0~0.005‚­‚ç‚¢‚Å
 		float shift;
-		float pad1;
-		float pad2;
-		float pad3;
+		unsigned int nega = 0;
+		unsigned int grayscale = 0;
+		float sepia = 0;
 	};
 	struct ConstBufferDataSkin
 	{

@@ -5,6 +5,7 @@
 #include <string>
 #include <cassert>
 #include "Light.h"
+#include "Graphic.h"
 #include "DirectX12.h"
 
 using namespace IF;
@@ -278,7 +279,7 @@ void IF::Object::FBXDraw()
 		assert(0 && "モデルがセットされていません");
 		return;
 	}
-
+	Graphic::Instance()->DrawBlendMode(Blend::ANIMNORMAL);
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	lightPtr->Draw(4);
 	commandList->SetGraphicsRootConstantBufferView(0, cb.GetGPUAddress());

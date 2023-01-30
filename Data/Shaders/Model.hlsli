@@ -12,8 +12,8 @@ cbuffer ConstBufferDataTransform : register(b1)
     float polygonSize;
     float gravity;
     float rotation;
-    bool lightFlag;
-    bool toonFlag;
+    uint lightFlag;
+    uint toonFlag;
 };
 
 cbuffer Material : register(b2)

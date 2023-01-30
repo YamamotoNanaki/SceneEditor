@@ -134,6 +134,27 @@ namespace IF
 			objList.push_back(obj);
 			return obj;
 		}
+		template <class T> inline T* Add(FBXModel* model, std::string tag, int mode = BillBoard::NOON, bool prefab = false)
+		{
+			if (model == nullptr)return nullptr;
+			T* obj = DEBUG_NEW T;
+			BillBoard::BillBoardMode a = BillBoard::NOON;
+			if (mode == BillBoard::BILLBOARD)
+			{
+				a = BillBoard::BILLBOARD;
+			}
+			if (mode == BillBoard::YBOARD)
+			{
+				a = BillBoard::YBOARD;
+			}
+			obj->MatInitialize(camera->GetMatView(), camera->GetMatPro(), camera->GetEye(), a);
+			obj->Initialize(model, prefab);
+			obj->tag = tag;
+			//obj->SetCollision(NotPri);
+			obj->cameraPtr = camera;
+			objList.push_back(obj);
+			return obj;
+		}
 		template <class T> inline T* CopyAdd(std::string copytag, std::string addtag, bool prefab = false)
 		{
 			T* obj = DEBUG_NEW T;

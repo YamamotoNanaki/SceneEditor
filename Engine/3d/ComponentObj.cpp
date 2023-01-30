@@ -13,6 +13,13 @@ void IF::CObject::Initialize(Model* model, bool prefab)
 	ClassInitialize();
 }
 
+void IF::CObject::FBXInitialize(FBXModel* model, bool prefab)
+{
+	obj.Initialize(model);
+	this->prefab = prefab;
+	ClassInitialize();
+}
+
 void IF::CObject::Update()
 {
 	if (prefab)return;
@@ -24,6 +31,11 @@ void IF::CObject::Update()
 void IF::CObject::Draw()
 {
 	if (prefab)return;
+	if (obj.fmodel)
+	{
+		obj.FBXDraw();
+		return;
+	}
 	if (texNum == 0)obj.Draw();
 	else obj.Draw(texNum);
 }
@@ -31,6 +43,7 @@ void IF::CObject::Draw()
 void IF::CObject::OutLineDraw()
 {
 	if (prefab)return;
+	if (obj.fmodel)return;
 	obj.OutLineDraw();
 }
 

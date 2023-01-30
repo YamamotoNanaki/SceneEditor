@@ -1,6 +1,9 @@
 cbuffer cbuff0 : register(b0)
 {
     float shift;
+    uint nega;
+    uint grayscale;
+    float sepia;
 };
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

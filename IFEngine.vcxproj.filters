@@ -559,6 +559,12 @@
     <FxCompile Include="Data\Shaders\ModelAnimVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
+    <FxCompile Include="Data\Shaders\PostEffectPS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shaders\PostEffectVS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\Sprite.hlsli">
@@ -571,6 +577,12 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Data\Shaders\ModelAnim.hlsli">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Data\Shaders\Util.hlsli">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Data\Shaders\PostEffect.hlsli">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

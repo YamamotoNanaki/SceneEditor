@@ -83,7 +83,7 @@ void IF::LightManager::TransferConstBuffer()
 			constMap->cShadows[i].shadowFactorAngleCos = cShadow[i].GetShadowFactorAngle();
 		}
 		else {
-			constMap->sLights[i].active = 0;
+			constMap->cShadows[i].active = 0;
 		}
 	}
 }

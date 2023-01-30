@@ -35,11 +35,13 @@ namespace IF
 		LightManager* lightM = LightManager::Instance();
 		SpriteManager* spriteM = SpriteManager::Instance();
 		ParticleManager* particleM = ParticleManager::Instance();
+		ModelLoader modelLoader;
 
 	private:
 		std::string nowScene;
 		PostEffect* postEffect = nullptr;
 		Normal* background = nullptr;
+		bool sceneChange = false;
 
 	public:
 		void InputJson(std::string failename);
@@ -49,6 +51,9 @@ namespace IF
 		void Draw();
 		void Delete();
 		void Reset();
+
+		//評価課題用
+		int sceneNumber = 0;
 
 		//デバッグ用
 #ifdef _DEBUG

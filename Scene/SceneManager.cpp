@@ -24,7 +24,7 @@ void IF::SceneManager::Initialize()
 	scene->InputJson(now);
 #ifdef _DEBUG
 #else
-	DirectX12::Instance()->SetClearColor(0, 0, 0);
+	//DirectX12::Instance()->SetClearColor(0, 0, 0);
 #endif
 }
 
@@ -91,6 +91,7 @@ bool IF::SceneManager::Update()
 			if (sceneChengeTimer.IsEnd())
 			{
 				isInitialized = false;
+				DirectX12::Instance()->SetClearColor(0, 0, 0);
 				sceneInitialize = std::async(std::launch::async, [this] {return SceneInitialize(); });
 			}
 			else//ロード画面への遷移アニメーション処理
@@ -250,7 +251,8 @@ void IF::SceneManager::SceneInitialize()
 	scene->Reset();
 	scene->InputJson(next);
 	now = next;
-	next = ""; 
+	next = "";
+	DirectX12::Instance()->SetClearColor(0.1f, 0.25f, 0.5f);
 	chengeFlag = false;
 	isInitialized = true;
 }

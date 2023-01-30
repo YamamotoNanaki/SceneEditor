@@ -233,6 +233,21 @@ void IF::PostEffect::SetRGBShift(float shift)
 	constMapPostEffect->shift = shift;
 }
 
+void IF::PostEffect::SetNega(bool nega)
+{
+	constMapPostEffect->nega = nega;
+}
+
+void IF::PostEffect::SetGrayscale(bool grayscale)
+{
+	constMapPostEffect->grayscale = grayscale;
+}
+
+void IF::PostEffect::SetSepia(float sepia)
+{
+	constMapPostEffect->sepia = sepia;
+}
+
 void PostEffect::CreateGraphicsPipelineState()
 {
 	ID3D12Device* device = DirectX12::Instance()->GetDevice();
