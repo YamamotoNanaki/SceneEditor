@@ -22,8 +22,8 @@ namespace IF
 			load.position = { 1920 / 2,1080 / 2 };
 			for (int i = 0; i < 4; i++)load.color[i] = 0;
 			load2.Initialize(1);
-			load2.scale = { 1,1 };
-			load2.position = { 1920 / 2,1080 / 2 };
+			load2.scale = { 2,2 };
+			load2.position = { 1280 / 2,720 / 2 };
 			for (int i = 0; i < 4; i++)load2.color[i] = 1;
 		}
 		SpriteManager(const Sprite&) {}

@@ -199,8 +199,11 @@ void IF::SceneManager::Draw()
 	}
 	if (!isInitialized)
 	{
+		static float rota = 0;
+		rota += 10;
+		if (rota >= 360)rota -= 360;
 		DirectX12::Instance()->DrawBefore();
-
+		SpriteManager::Instance()->load2.rotation = ConvertToRadians(rota);
 		SpriteManager::Instance()->load2.Update();
 		DirectX12::Instance()->DrawSetViewport();
 		Graphic::Instance()->DrawBlendMode(Blend::NORMAL2D);
