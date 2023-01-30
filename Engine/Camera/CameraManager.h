@@ -12,7 +12,8 @@ namespace IF
 	{
 	private:
 		std::list<ICamera*>cameraList;
-
+	public:
+		Camera load;
 
 	private:
 		CameraManager() {}
@@ -86,6 +87,10 @@ namespace IF
 			{
 				com->Update();
 			}
+		}
+		inline void LoadUpdate()
+		{
+			load.Update();
 		}
 		inline void SetEye(Float3 eye, std::string tag)
 		{

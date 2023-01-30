@@ -12,6 +12,8 @@ namespace IF
 	public:
 		std::list<Sprite*>backgroundList;
 		std::list<Sprite*>foregroundList;
+		Sprite load;
+		Sprite load2;
 	private:
 		SpriteManager() {}
 		SpriteManager(const Sprite&) {}
@@ -24,7 +26,25 @@ namespace IF
 		void BackGroundDraw();
 		void Update();
 		void DebugUpdate();
-		void DrawFlagChange(bool f,std::string tag);
+		void DrawFlagChange(bool f, std::string tag);
+		inline Sprite* GetAddress(std::string tag)
+		{
+			for (auto com : foregroundList)
+			{
+				if (com->tag == tag)
+				{
+					return com;
+				}
+			}
+			for (auto com : backgroundList)
+			{
+				if (com->tag == tag)
+				{
+					return com;
+				}
+			}
+			return nullptr;
+		}
 		inline void DeleteSprite()
 		{
 			auto buff = backgroundList;
@@ -66,6 +86,15 @@ namespace IF
 			spr->tag = tag;
 			if (back)backgroundList.push_back(spr);
 			else foregroundList.push_back(spr);
+			return spr;
+		}
+		inline Sprite* AddFront(unsigned short texNum, std::string tag, bool back)
+		{
+			Sprite* spr = DEBUG_NEW Sprite;
+			spr->Initialize(texNum);
+			spr->tag = tag;
+			if (back)backgroundList.push_front(spr);
+			else foregroundList.push_front(spr);
 			return spr;
 		}
 		inline void SetTexture(unsigned short texNum, std::string tag)
@@ -155,6 +184,39 @@ namespace IF
 					if (com->tag == tag)
 					{
 						com->SetAlpha(a);
+						return;
+					}
+				}
+			}
+		}
+		inline void SetBright(float r, float g, float b, std::string tag, bool all = false)
+		{
+			if (all)
+			{
+				for (auto com : foregroundList)
+				{
+					com->SetBright(r, g, b);
+				}
+				for (auto com : backgroundList)
+				{
+					com->SetBright(r, g, b);
+				}
+			}
+			else
+			{
+				for (auto com : foregroundList)
+				{
+					if (com->tag == tag)
+					{
+						com->SetBright(r, g, b);
+						return;
+					}
+				}
+				for (auto com : backgroundList)
+				{
+					if (com->tag == tag)
+					{
+						com->SetBright(r, g, b);
 						return;
 					}
 				}

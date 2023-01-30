@@ -36,6 +36,8 @@ namespace IF
 
 	// 単位行列を求める
 	Matrix MatrixIdentity();
+	// 逆行列を求める
+	Matrix MatrixInverse(const Matrix m);
 	// 転置行列を求める
 	Matrix MatrixTranspose(const Matrix& m);
 

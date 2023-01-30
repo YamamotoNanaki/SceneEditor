@@ -176,7 +176,7 @@ void IF::SpriteManager::GUI()
 		{
 			flag = true;
 		}
-		if (flag = true)
+		if (flag == true)
 		{
 			std::string tag;
 			if (cla == 0)tag = "Sprite";
@@ -202,6 +202,11 @@ void IF::SpriteManager::GUI()
 		if (ImGui::Button("Add"))
 		{
 			Sprite* spr = Add(tex, tagC, back);
+			spr->SetPosition({ 1280 / 2,720 / 2 });
+		}
+		if (ImGui::Button("AddFront"))
+		{
+			Sprite* spr = AddFront(tex, tagC, back);
 			spr->SetPosition({ 1280 / 2,720 / 2 });
 		}
 	}

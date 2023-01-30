@@ -20,6 +20,8 @@ namespace IF
 		ObjectManager& operator=(const ObjectManager&) {}
 		~ObjectManager();
 	public:
+		//Normal load;
+	public:
 		inline int GetObjListSize()const
 		{
 			return objListSize;
@@ -28,7 +30,6 @@ namespace IF
 		static void DeleteInstance();
 		void Draw();
 		void Update();
-		void CollisionInitialize();
 		inline ICamera* GetCamera()
 		{
 			return camera;
@@ -52,9 +53,6 @@ namespace IF
 			}
 			objList.clear();
 		}
-		Primitive* GetPrimitive(std::string tag);
-		Primitive* GetPrimitiveName(std::string objName);
-		Primitive* GetPrimitiveNumber(int& num, std::string objName);
 		template<class T>inline T* GetAddress(std::string tag)
 		{
 			for (auto com : objList)
@@ -71,7 +69,7 @@ namespace IF
 		{
 			for (auto com : objList)
 			{
-				if (com->objName == objName)
+				if (com->GetObjName() == objName)
 				{
 					T* buff = dynamic_cast<T*>(com);
 					return buff;
@@ -127,7 +125,6 @@ namespace IF
 			obj->MatInitialize(camera->GetMatView(), camera->GetMatPro(), camera->GetEye(), a);
 			obj->Initialize(model, prefab);
 			obj->tag = tag;
-			//obj->SetCollision(NotPri);
 			obj->cameraPtr = camera;
 			objList.push_back(obj);
 			return obj;
@@ -142,7 +139,6 @@ namespace IF
 					obj->Initialize(com->GetModelAddress(), prefab);
 					obj->MatInitialize(camera->GetMatView(), camera->GetMatPro(), camera->GetEye(), com->GetBillBoard());
 					obj->tag = addtag;
-					obj->SetCollision(com->GetCollision());
 					objList.push_back(obj);
 					return obj;
 				}
@@ -343,17 +339,6 @@ namespace IF
 				if (com->tag == tag)
 				{
 					return com->GetScale();
-				}
-			}
-		}
-		inline void SetCollision(unsigned short ptype, std::string tag)
-		{
-			for (auto com : objList)
-			{
-				if (com->tag == tag)
-				{
-					com->SetCollision(ptype);
-					return;
 				}
 			}
 		}

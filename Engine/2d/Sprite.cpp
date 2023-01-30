@@ -161,17 +161,22 @@ void Sprite::SetTextureRect(Float2 texBase, Float2 texSize)
 
 void IF::Sprite::SetColor(int r, int g, int b, int a)
 {
-	cb.SetColor(r, g, b, a);
+	color[0] = (float)r / 255.f;
+	color[1] = (float)g / 255.f;
+	color[2] = (float)b / 255.f;
+	color[3] = (float)a / 255.f;
 }
 
 void IF::Sprite::SetBright(int r, int g, int b)
 {
-	cb.SetBright(r, g, b);
+	color[0] = (float)r / 255.f;
+	color[1] = (float)g / 255.f;
+	color[2] = (float)b / 255.f;
 }
 
 void IF::Sprite::SetAlpha(int alpha)
 {
-	cb.SetAlpha(alpha);
+	color[3] = (float)alpha / 255.f;
 }
 
 #ifdef _DEBUG

@@ -1,6 +1,8 @@
 #include "ComponentObj.h"
 #include "ImGui.h"
 #include "ObjectManager.h"
+#include "CollisionManager.h"
+#include "BaseCollider.h"
 
 using namespace IF;
 using namespace std;
@@ -16,6 +18,7 @@ void IF::CObject::Update()
 {
 	ClassUpdate();
 	MatUpdate();
+	if (collider)collider->Update();
 }
 
 void IF::CObject::Draw()
@@ -25,9 +28,13 @@ void IF::CObject::Draw()
 	else obj.Draw(texNum);
 }
 
-CObject::~CObject()
+IF::CObject::~CObject()
 {
-	CObjDelete();
+	if (collider)
+	{
+		CollisionManager::Instance()->RemoveCollider(collider);
+		delete collider;
+	}
 }
 
 void IF::CObject::DebugUpdate()
@@ -35,34 +42,22 @@ void IF::CObject::DebugUpdate()
 	MatUpdate();
 }
 
+void IF::CObject::SetCollider(BaseCollider* collider)
+{
+	collider->SetObject(this);
+	this->collider = collider;
+	CollisionManager::Instance()->AddCollider(collider);
+	UpdateWorldMatrix();
+	collider->Update();
+}
+
 static float offset = 0.2f;
 void IF::CObject::ClassUpdate() {}
-void IF::CObject::ClassInitialize() {}
-void IF::CObject::CollisionUpdate()
+Matrix IF::CObject::GetMatWorld()
 {
-	if (collision != nullptr)
-	{
-		//collision->SetRadius()
-		if (ptype == NotPri);
-		else if (ptype == RayPri)
-		{
-			collision->SetCenter(SetVector3(obj.position));
-			collision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z + 3 }));
-		}
-		else if (ptype == BoxPri)
-		{
-			collision->SetMinPos({ obj.position.x - (obj.scale.x) - offset,obj.position.y -
-				(obj.scale.y) - offset,obj.position.z - (obj.scale.z) - offset });
-			collision->SetMaxPos({ obj.position.x + (obj.scale.x) + offset,obj.position.y +
-				(obj.scale.y) + offset,obj.position.z + (obj.scale.z) + offset });
-		}
-		else
-		{
-			collision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));
-			collision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f);
-		}
-	}
+	return obj.matWorld;
 }
+void IF::CObject::ClassInitialize() {}
 
 bool IF::CObject::WeightSaving(float max)
 {
@@ -159,34 +154,6 @@ void IF::CObject::GUI()
 		static float s[4] = { obj.GetColor().x,obj.GetColor().y,obj.GetColor().z,obj.GetColor().w };
 		ImGui::ColorEdit4("", s);
 		obj.SetColorF(s[0], s[1], s[2], s[3]);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Collision"))
-	{
-		static int type = NotPri;
-		static int old = 0;
-		type = old = ptype;
-		ImGui::RadioButton("Ray", &type, RayPri);
-		ImGui::SameLine();
-		ImGui::RadioButton("Sphere", &type, SpherePri);
-		ImGui::RadioButton("Plane", &type, PlanePri);
-		ImGui::SameLine();
-		ImGui::RadioButton("Box", &type, BoxPri);
-		ImGui::RadioButton("CircleXY", &type, CircleXYPri);
-		ImGui::SameLine();
-		ImGui::RadioButton("Not", &type, NotPri);
-		if (type != old)
-		{
-			ptype = type;
-			SetCollision(type);
-		}
-		if (type != NotPri)
-		{
-			ImGui::Text("CollisionCheck");
-			ImGui::Text("v1:%0.3f,%0.3f,%0.3f", collision->v1.x, collision->v1.y, collision->v1.z);
-			ImGui::Text("v2:%0.3f,%0.3f,%0.3f", collision->v2.x, collision->v2.y, collision->v2.z);
-			ImGui::Text("f:%0.3f", collision->f);
-		}
 		ImGui::TreePop();
 	}
 	ClassUI();

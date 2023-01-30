@@ -20,8 +20,8 @@ namespace IF
 		bool active = false;
 
 	public:
-		inline void SetLightDir(const Vector3& lightDir) 
-		{ 
+		inline void SetLightDir(const Vector3& lightDir)
+		{
 			this->lightDir = lightDir;
 			this->lightDir = Vector3Normalize(this->lightDir);
 		}

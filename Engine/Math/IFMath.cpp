@@ -58,7 +58,23 @@ bool IF::Vector3Equal(const Vector3& v1, const Vector3& v2)
 	return (((v1.x == v2.x) && (v1.y == v2.y) && (v1.z == v2.z)) != 0);
 }
 
-Vector3& IF::Vector3Normalize(Vector3& v)
+float IF::Vector3Length(const Vector3& v)
+{
+	return v.Length();
+}
+//
+//Vector3& IF::Vector3Normalize(Vector3& v)
+//{
+//	float length = v.Length();
+//	if (length != 0)
+//	{
+//		Vector3 a = v / length;
+//		return a;
+//	}
+//	return v;
+//}
+
+Vector3 IF::Vector3Normalize(Vector3 v)
 {
 	float length = v.Length();
 	if (length != 0)
@@ -163,9 +179,28 @@ Vector3 IF::Vector3Transform(const Vector3& v, const Matrix& m)
 	return Result;
 }
 
+Vector3 IF::Vector3TransformNormal(const Vector3& v, const Matrix& m)
+{
+	float Z = v.z;
+	float Y = v.y;
+	float X = v.x;
+
+	Vector3 Result = { Z * m.m[2][0],Z * m.m[2][1],Z * m.m[2][2] };
+	Result += { Y* m.m[1][0], Y* m.m[1][1], Y* m.m[1][2] };
+	Result += { X* m.m[0][0], X* m.m[0][1], X* m.m[0][2] };
+
+	return Result;
+}
+
 Vector3 IF::VectorNegate(Vector3 m)
 {
 	return -m;
+}
+
+Vector3 IF::VectorLerp(Vector3 v0, Vector3 v1, float t)
+{
+	Vector3 length = VectorSubtract(v1, v0);
+	return Vector3(length.x * t + v0.x, length.y * t + v0.y, length.z * t + v0.z);
 }
 
 Matrix IF::MatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ)
@@ -184,4 +219,9 @@ Matrix IF::MatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float Near
 	float fRange = FarZ / (FarZ - NearZ);
 
 	return Matrix(Width, 0, 0, 0, 0, Height, 0, 0, 0, 0, fRange, 1, 0, 0, -fRange * NearZ, 0);
+}
+
+Float3 IF::operator+(Float3 f, Vector2 v)
+{
+	return Float3(f.x + v.x, f.y + v.y, f.z);
 }

@@ -61,6 +61,7 @@ namespace IF
 		}
 		static void DrawBefore(ID3D12RootSignature* root, D3D_PRIMITIVE_TOPOLOGY topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		void Update(Matrix matView, Matrix matProjection, Float3 comeraPos, int mode = BillBoard::NOON);
+		void UpdateWorldMatrix(int mode = BillBoard::NOON);
 		void Draw();
 		void FBXDraw();
 		void Draw(unsigned short texNum);
