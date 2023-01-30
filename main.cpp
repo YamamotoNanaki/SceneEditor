@@ -13,7 +13,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	{
 		const int winWidth = 1280, winHeight = 720;  // 縦幅
 
-		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
+		Window::Instance()->Initialize(winWidth, winHeight, L"LE2A_22_ヤマモト_ナナキ : CG3評価課題2");
 		DirectX12::Instance()->Initialize(Window::Instance()->hwnd, winWidth, winHeight);
 		Input::Instance()->InputFlag(USE_INPUT_KEY | USE_INPUT_MOUSE);
 		Input::Instance()->Initialize(Window::Instance()->w.hInstance, Window::Instance()->hwnd);
