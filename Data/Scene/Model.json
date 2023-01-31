@@ -41,6 +41,13 @@
             "tag": "lowPolySmooth",
             "tex": 1,
             "type": 0
+        },
+        {
+            "name": "",
+            "smooth": false,
+            "tag": "triangle",
+            "tex": 1,
+            "type": 2
         }
     ]
 }

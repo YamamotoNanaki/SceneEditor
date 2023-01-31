@@ -7,8 +7,7 @@ namespace IF
 	class PlaneCollider : public BaseCollider, public Plane
 	{
 	public:
-		PlaneCollider(Vector3 offset = { 0,0,0 }, float distance = 1.0f) :
-			offset(offset),
+		PlaneCollider(float distance = 1.0f) :
 			distance(distance)
 		{
 			// 球形状をセット
@@ -23,8 +22,6 @@ namespace IF
 		inline void SetDistance(float distance) { this->distance = distance; }
 
 	private:
-		// オブジェクト中心からのオフセット
-		Vector3 offset;
 		// 半径
 		float distance;
 	};

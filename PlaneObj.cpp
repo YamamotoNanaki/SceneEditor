@@ -10,7 +10,7 @@ const std::string PlaneObj::objName = "PlaneObj";
 
 void IF::PlaneObj::ClassInitialize()
 {
-	SetCollider(new PlaneCollider({ 0,1,0 }));
+	SetCollider(new PlaneCollider());
 }
 
 void IF::PlaneObj::ClassUpdate()

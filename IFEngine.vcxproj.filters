@@ -369,6 +369,12 @@
     <ClInclude Include="SphereObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TriangleObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\TriangleCollider.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -589,6 +595,12 @@
     </ClCompile>
     <ClCompile Include="SphereObject.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\TriangleCollider.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

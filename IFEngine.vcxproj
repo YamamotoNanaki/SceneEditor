@@ -143,6 +143,7 @@
     <ClInclude Include="Engine\Collision\QueryCallback.h" />
     <ClInclude Include="Engine\Collision\RaycastHit.h" />
     <ClInclude Include="Engine\Collision\SphereCollider.h" />
+    <ClInclude Include="Engine\Collision\TriangleCollider.h" />
     <ClInclude Include="Engine\Efect\Emitter.h" />
     <ClInclude Include="Engine\Efect\Particle.h" />
     <ClInclude Include="Engine\Efect\ParticleManager.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Source\Fire.h" />
     <ClInclude Include="Source\NormalObj.h" />
     <ClInclude Include="SphereObject.h" />
+    <ClInclude Include="TriangleObj.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionObj.cpp" />
@@ -225,6 +227,7 @@
     <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
     <ClCompile Include="Engine\Collision\PlaneCollider.cpp" />
     <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
+    <ClCompile Include="Engine\Collision\TriangleCollider.cpp" />
     <ClCompile Include="Engine\Efect\Emitter.cpp" />
     <ClCompile Include="Engine\Efect\Particle.cpp" />
     <ClCompile Include="Engine\Efect\ParticleManager.cpp" />
@@ -262,6 +265,7 @@
     <ClCompile Include="Source\Fire.cpp" />
     <ClCompile Include="Source\NormalObj.cpp" />
     <ClCompile Include="SphereObject.cpp" />
+    <ClCompile Include="TriangleObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Engine\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

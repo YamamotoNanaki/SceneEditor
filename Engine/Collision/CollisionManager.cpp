@@ -83,6 +83,28 @@ void IF::CollisionManager::CheckAllCollisions()
 					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
 				}
 			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE && colB->GetShapeType() == COLLISIONSHAPE_TRIANGLE)
+			{
+				Sphere* sphere = dynamic_cast<Sphere*>(colA);
+				Triangle* triangle = dynamic_cast<Triangle*>(colB);
+				Vector3 inter;
+				if (Collision::CheckSphereTriangle(*sphere, *triangle, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_TRIANGLE && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
+			{
+				Sphere* sphere = dynamic_cast<Sphere*>(colB);
+				Triangle * triangle = dynamic_cast<Triangle*>(colA);
+				Vector3 inter;
+				if (Collision::CheckSphereTriangle(*sphere, *triangle, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+			}
         }
     }
 }
