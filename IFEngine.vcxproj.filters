@@ -381,6 +381,9 @@
     <ClInclude Include="Engine\Collision\RayCollider.h">
       <Filter>Header Files\Engine\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="RayCastObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -613,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Collision\RayCollider.cpp">
       <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="RayCastObj.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,7 @@ namespace IF
 		bool particleFlag = false;
 		Emitter* emitter = nullptr;
 		bool prefab = false;
+		bool rayHit = false;
 	protected:
 		Object obj{};
 		unsigned short texNum = 0;

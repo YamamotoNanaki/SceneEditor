@@ -15,9 +15,10 @@ void IF::SphereObject::ClassInitialize()
 
 void IF::SphereObject::ClassUpdate()
 {
-	obj.SetBright(255, 255, 255);
+	if (!rayHit)obj.SetBright(255, 255, 255);
 	UpdateWorldMatrix();
 	collider->Update();
+	rayHit = false;
 }
 
 void IF::SphereObject::OnCollision(const CollisionInfo& info)

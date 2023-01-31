@@ -153,6 +153,30 @@ void IF::CollisionManager::CheckAllCollisions()
 					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
 				}
 			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_RAY && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
+			{
+				Sphere* triangle = dynamic_cast<Sphere*>(colB);
+				Ray* ray = dynamic_cast<Ray*>(colA);
+				Vector3 inter;
+				float distance;
+				if (Collision::CheckRaySphere(*ray, *triangle, &distance, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter, &distance));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
+				}
+			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE && colB->GetShapeType() == COLLISIONSHAPE_RAY)
+			{
+				Sphere* triangle = dynamic_cast<Sphere*>(colA);
+				Ray* ray = dynamic_cast<Ray*>(colB);
+				Vector3 inter;
+				float distance;
+				if (Collision::CheckRaySphere(*ray, *triangle, &distance, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter, &distance));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
+				}
+			}
 		}
 	}
 }
@@ -187,6 +211,7 @@ bool IF::CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Ray
 			Vector3 tempInter;
 
 			if (!Collision::CheckRaySphere(ray, *sphere, &tempDistance, &tempInter)) continue;
+			hitInfo->allcollider.push_front(*it);
 			if (tempDistance >= distance) continue;
 
 			result = true;
@@ -200,6 +225,35 @@ bool IF::CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Ray
 			float tempDistance;
 			Vector3 tempInter;
 			if (!meshCollider->CheckCollisionRay(ray, &tempDistance, &tempInter)) continue;
+			hitInfo->allcollider.push_front(*it);
+			if (tempDistance >= distance) continue;
+
+			result = true;
+			distance = tempDistance;
+			inter = tempInter;
+			it_hit = it;
+		}
+		else if (colA->GetShapeType() == COLLISIONSHAPE_PLANE) {
+			Plane* plane = dynamic_cast<Plane*>(colA);
+
+			float tempDistance;
+			Vector3 tempInter;
+			if (!Collision::CheckRayPlane(ray, *plane, &tempDistance, &tempInter)) continue;
+			hitInfo->allcollider.push_front(*it);
+			if (tempDistance >= distance) continue;
+
+			result = true;
+			distance = tempDistance;
+			inter = tempInter;
+			it_hit = it;
+		}
+		else if (colA->GetShapeType() == COLLISIONSHAPE_TRIANGLE) {
+			Triangle* triangle = dynamic_cast<Triangle*>(colA);
+
+			float tempDistance;
+			Vector3 tempInter;
+			if (!Collision::CheckRayTriangle(ray, *triangle, &tempDistance, &tempInter)) continue;
+			hitInfo->allcollider.push_front(*it);
 			if (tempDistance >= distance) continue;
 
 			result = true;
@@ -214,6 +268,10 @@ bool IF::CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Ray
 		hitInfo->inter = inter;
 		hitInfo->collider = *it_hit;
 		hitInfo->object = hitInfo->collider->GetObject3d();
+		for (auto& itr : hitInfo->allcollider)
+		{
+			hitInfo->allobject.push_back(itr->object);
+		}
 	}
 
 	return result;

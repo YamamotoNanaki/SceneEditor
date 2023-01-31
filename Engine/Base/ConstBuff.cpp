@@ -35,9 +35,6 @@ void IF::ConstBuff::Initialize()
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);	//マッピング
 	assert(SUCCEEDED(result));
 	constMapMaterial->color = Float4(1, 1, 1, 1);					//RGBAで半透明の赤
-
-	R = 255, G = 255, B = 255, A = 255;
-	r = 1, g = 1, b = 1, a = 1;
 }
 
 IF::ConstBuff::~ConstBuff()
@@ -52,41 +49,23 @@ D3D12_GPU_VIRTUAL_ADDRESS IF::ConstBuff::GetGPUAddress()
 
 void IF::ConstBuff::SetBright(int red, int green, int blue)
 {
-	if (red == R && green == G && blue == B)return;
-	if (red != R)r = TypeConversionByte(red);
-	if (green != G)g = TypeConversionByte(green);
-	if (blue != B)b = TypeConversionByte(blue);
-	R = red, G = green, B = blue;
-	constMapMaterial->color = Float4(r, g, b, a);					//RGBAで半透明の赤
+	constMapMaterial->color.x = red / 255.f;
+	constMapMaterial->color.y = green / 255.f;
+	constMapMaterial->color.z = blue / 255.f;
 }
 
 void IF::ConstBuff::SetAlpha(int alpha)
 {
-	if (alpha == A);
-	a = TypeConversionByte(alpha);
-	A = alpha;
-	constMapMaterial->color = Float4(r, g, b, a);					//RGBAで半透明の赤
+	constMapMaterial->color.w = alpha / 255.f;
 }
 
 void IF::ConstBuff::SetColor(int red, int green, int blue, int alpha)
 {
-	if (red == R && green == G && blue == B && alpha == A) return;
-	if (red != R)r = TypeConversionByte(red);
-	if (green != G)g = TypeConversionByte(green);
-	if (blue != B)b = TypeConversionByte(blue);
-	if (alpha != A)a = TypeConversionByte(alpha);
-	R = red, G = green, B = blue, A = alpha;
-	constMapMaterial->color = Float4(r, g, b, a);					//RGBAで半透明の赤
+	constMapMaterial->color = Float4(red / 255.f, green / 255.f, blue / 255.f, alpha / 255.f);
 }
 void IF::ConstBuff::SetColor(float red, float green, float blue, float alpha)
 {
-	if (red == r && green == g && blue == b && alpha == a) return;
-	r = red, g = green, b = blue, a = alpha;
-	if (red != r)R = TypeConversion255(red);
-	if (green != g)G = TypeConversion255(green);
-	if (blue != b)B = TypeConversion255(blue);
-	if (alpha != a)A = TypeConversion255(alpha);
-	constMapMaterial->color = Float4(r, g, b, a);					//RGBAで半透明の赤
+	constMapMaterial->color = Float4(red, green, blue, alpha);
 }
 
 void IF::ConstBuff::SetColor(Float4 color)

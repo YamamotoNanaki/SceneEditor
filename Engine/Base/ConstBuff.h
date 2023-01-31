@@ -16,10 +16,6 @@ namespace IF
 		~ConstBuff();
 		D3D12_GPU_VIRTUAL_ADDRESS GetGPUAddress();
 
-	private:
-		short R = 0, G = 0, B = 0, A = 0;
-		float r = 0.0f, g = 0.0f, b = 0.0f, a = 0.0f;
-
 	public:
 		void SetBright(int red, int green, int blue);
 		void SetAlpha(int alpha);

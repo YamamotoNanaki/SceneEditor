@@ -14,6 +14,8 @@
 #include "CollisionObj.h"
 #include "Ease.h"
 #include "RayObj.h"
+#include "RayCastObj.h"
+#include "SphereObject.h"
 #include <fstream>
 #include <iostream>
 
@@ -183,6 +185,14 @@ void IF::Scene::DebugUpdate()
 		{
 			Normal* obj0 = objM->GetAddress<Normal>("Normal");
 			RayObj* ray = objM->GetAddress< RayObj>("RayObj");
+			Float3 r = ray->GetPos();
+			obj0->SetPos({ r.x,r.y - obj0->GetScale().y,r.z });
+			obj0->SetColor(ray->GetColor());
+		}
+		if (nowScene == "scene7")
+		{
+			Normal* obj0 = objM->GetAddress<Normal>("Normal");
+			RayCastObj* ray = objM->GetAddress< RayCastObj>("RayCastObj");
 			Float3 r = ray->GetPos();
 			obj0->SetPos({ r.x,r.y - obj0->GetScale().y,r.z });
 			obj0->SetColor(ray->GetColor());
@@ -359,29 +369,33 @@ void IF::Scene::Update()
 		}
 		else if (sceneNumber == 2)
 		{
-			SceneManager::Instance()->SceneChange("scene");
+			SceneManager::Instance()->SceneChange("scene7");
 		}
 		else if (sceneNumber == 3)
 		{
-			SceneManager::Instance()->SceneChange("scene1");
+			SceneManager::Instance()->SceneChange("scene3");
 		}
 		else if (sceneNumber == 4)
 		{
-			SceneManager::Instance()->SceneChange("scene2");
+			SceneManager::Instance()->SceneChange("MainScene");
 		}
 		else if (sceneNumber == 5)
 		{
-			SceneManager::Instance()->SceneChange("scene3");
+			SceneManager::Instance()->SceneChange("scene");
 		}
 		else if (sceneNumber == 6)
 		{
-			SceneManager::Instance()->SceneChange("scene5");
+			SceneManager::Instance()->SceneChange("scene1");
 		}
 		else if (sceneNumber == 7)
 		{
-			SceneManager::Instance()->SceneChange("MainScene");
+			SceneManager::Instance()->SceneChange("scene2");
 		}
 		else if (sceneNumber == 8)
+		{
+			SceneManager::Instance()->SceneChange("scene5");
+		}
+		else if (sceneNumber == 9)
 		{
 			SceneManager::Instance()->SceneChange("scene4");
 		}
@@ -630,6 +644,51 @@ void IF::Scene::Update()
 		shadowPos[1][1] = pos2.y - obj1->GetScale().y;
 		shadowPos[1][2] = pos2.z;
 	}
+	if (nowScene == "scene6")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		RayObj* ray = objM->GetAddress<RayObj>("RayObj");
+		Float3 r = ray->GetPos();
+		float p[3] = { r.x,r.y,r.z };
+		ImGui::Begin("object move");
+		ImGui::DragFloat3("Ray", p, 0.1);
+		ImGui::End();
+		ray->SetPos({ p[0],p[1],p[2] });
+		obj0->SetPos({ p[0],p[1] - obj0->GetScale().y,p[2] });
+		obj0->SetColor(ray->GetColor());
+		shadowActive[0] = false;
+		shadowActive[1] = false;
+	}
+	if (nowScene == "scene7")
+	{
+		//ImGuiØ‚è‘Ö‚¦ˆ—
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		RayCastObj* ray = objM->GetAddress<RayCastObj>("RayCastObj");
+		Float3 r = ray->GetPos();
+		float p[3] = { r.x,r.y,r.z };
+		static bool b = false;
+		ImGui::Begin("object move");
+		ImGui::DragFloat3("Ray", p, 0.1);
+		ImGui::Checkbox("All", &b);
+		ImGui::End();
+		ray->SetPos({ p[0],p[1],p[2] });
+		ray->isOnce = !b;
+		obj0->SetPos({ p[0],p[1] - obj0->GetScale().y,p[2] });
+		obj0->SetColor(ray->GetColor());
+		shadowActive[0] = false;
+		shadowActive[1] = false;
+	}
+	if (nowScene == "startScene")
+	{
+		SphereObject* s = objM->GetAddress<SphereObject>("SphereObject");
+		float p[3] = { s->GetPos().x,s->GetPos().y,s->GetPos().z };
+		ImGui::Begin("object move");
+		ImGui::DragFloat3("Sphere", p, 0.1);
+		ImGui::End();
+		s->SetPos({ p[0],p[1],p[2] });
+		shadowActive[0] = false;
+		shadowActive[1] = false;
+	}
 	for (int i = 0; i < 3; i++)
 	{
 		lightM->SetDirLightActive(i, dirLActive[i]);
@@ -684,15 +743,6 @@ void IF::Scene::Update()
 		ImGui::End();
 	}
 	colM->CheckAllCollisions();
-	if (nowScene == "scene6")
-	{
-		Normal* obj0 = objM->GetAddress<Normal>("Normal");
-		RayObj* ray = objM->GetAddress< RayObj>("RayObj");
-		Float3 r = ray->GetPos();
-		obj0->SetPos({ r.x,r.y - obj0->GetScale().y,r.z });
-		obj0->SetColor(ray->GetColor());
-	}
-
 
 #endif
 }

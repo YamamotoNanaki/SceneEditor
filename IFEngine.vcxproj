@@ -181,6 +181,7 @@
     <ClInclude Include="Engine\Other\Util.h" />
     <ClInclude Include="Engine\Sound\Sound.h" />
     <ClInclude Include="PlaneObj.h" />
+    <ClInclude Include="RayCastObj.h" />
     <ClInclude Include="RayObj.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Scene\Scene.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="Engine\Sound\Sound.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlaneObj.cpp" />
+    <ClCompile Include="RayCastObj.cpp" />
     <ClCompile Include="RayObj.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
