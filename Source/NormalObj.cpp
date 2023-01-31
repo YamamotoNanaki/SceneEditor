@@ -28,7 +28,7 @@ void IF::Normal::ClassUpdate()
 
 void IF::Normal::NormalUpdate()
 {
-	Float2 analog = Input::Instance()->GetLAnalog(800);
+	Float2 analog = Input::Instance()->GetLAnalog(6000);
 	obj.position.x += analog.x * 0.25f;
 	obj.position.z += analog.y * 0.25f;
 
