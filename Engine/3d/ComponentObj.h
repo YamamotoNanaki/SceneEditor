@@ -137,7 +137,7 @@ namespace IF
 		{
 			obj.fmodel = fbxModel;
 		}
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void OutputJson(nlohmann::json& j);
 		bool flag = false;
 		inline void SetFlag(bool flag)
@@ -147,6 +147,6 @@ namespace IF
 		virtual void GUI();
 		virtual void ClassUI();
 		virtual void ClassOutputJson(nlohmann::json& j);
-#endif
+//#endif
 	};
 }

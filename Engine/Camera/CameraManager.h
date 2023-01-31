@@ -211,9 +211,9 @@ namespace IF
 			cameraList.clear();
 		}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void OutputJson(nlohmann::json& j);
 		void GUI();
-#endif
+//#endif
 	};
 }

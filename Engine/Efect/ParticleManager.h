@@ -64,11 +64,11 @@ namespace IF
 			}
 		};
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		bool debug = false;
 		void GUI();
 		void DebugUpdate();
 		void OutputJson(nlohmann::json& j);
-#endif
+//#endif
 				};
 			}

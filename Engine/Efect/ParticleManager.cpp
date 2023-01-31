@@ -159,7 +159,7 @@ void IF::ParticleManager::InputJson(nlohmann::json& j)
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::ParticleManager::GUI()
 {
 	static bool d = false;
@@ -246,4 +246,4 @@ void IF::ParticleManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif
+//#endif

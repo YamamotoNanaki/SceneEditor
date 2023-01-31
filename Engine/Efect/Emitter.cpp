@@ -312,7 +312,7 @@ void IF::Emitter::InputJson(nlohmann::json& j)
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::Emitter::GUI()
 {
 	static float dragspeed = 0.5f;
@@ -634,4 +634,4 @@ void IF::Emitter::OutputJson(nlohmann::json& j)
 		j["color"][i] = color[i];
 	}
 }
-#endif
+//#endif

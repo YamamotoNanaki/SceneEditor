@@ -111,9 +111,9 @@ namespace IF
 			return texNum;
 		}
 		void OutputJson(nlohmann::json& j);
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();
-#endif
+//#endif
 	};
 }

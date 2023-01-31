@@ -50,7 +50,7 @@ void IF::SpriteManager::Update()
 	load.Update();
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 
 void IF::SpriteManager::DebugUpdate()
 {
@@ -64,7 +64,7 @@ void IF::SpriteManager::DebugUpdate()
 	}
 }
 
-#endif
+//#endif
 
 void IF::SpriteManager::DrawFlagChange(bool f, std::string tag)
 {
@@ -86,7 +86,7 @@ void IF::SpriteManager::DrawFlagChange(bool f, std::string tag)
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::SpriteManager::GUI()
 {
 	ImGui::Begin("SpriteManager");
@@ -272,4 +272,4 @@ void IF::SpriteManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif
+//#endif

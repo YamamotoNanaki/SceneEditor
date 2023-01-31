@@ -542,7 +542,7 @@ namespace IF
 			}
 		}
 		void IntputJson(nlohmann::json& j);
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();
 		enum typeinfo
@@ -560,6 +560,6 @@ namespace IF
 		}
 		void DebugUpdate();
 		std::string GUIGetTag();
-#endif
+//#endif
 	};
 }

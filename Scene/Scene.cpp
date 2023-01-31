@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "Collision.h"
 #include "Window.h"
+#include "CollisionObj.h"
 #include "Ease.h"
 #include <fstream>
 #include <iostream>
@@ -50,7 +51,7 @@ void IF::Scene::Initialize()
 	postEffect->Initialize();
 
 }
-#ifdef _DEBUG
+//#ifdef _DEBUG
 
 void IF::Scene::OutputJson(std::string failename)
 {
@@ -184,7 +185,7 @@ void IF::Scene::DebugUpdate()
 		particleM->DebugUpdate();
 	}
 }
-#endif
+//#endif
 void IF::Scene::InputJson(std::string failename)
 {
 	std::ifstream reading_file;
@@ -311,6 +312,20 @@ void IF::Scene::InputJson(std::string failename)
 			obj0->FBXInitialize(fmodel, false);
 		}
 	}
+	if (nowScene == "scene3")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		obj0->NormalInitialize();
+	}
+	if (nowScene == "scene5")
+	{
+		for (int i = 0; i < soundNums.size(); i++)
+		{
+			string s = "testsound";
+			s += to_string(i);
+			soundNums[i] = Sound::Instance()->LoadWave(s);
+		}
+	}
 	sceneChange = false;
 }
 
@@ -324,10 +339,60 @@ void IF::Scene::StaticInitialize()
 void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
+	if (Input::Instance()->KeyTriggere(KEY::ENTER) && !sceneChange)
+	{
+		sceneChange = true;
+		sceneNumber++;
+		if (sceneNumber == 1)
+		{
+			SceneManager::Instance()->SceneChange("MainScene");
+		}
+		else if (sceneNumber == 2)
+		{
+			SceneManager::Instance()->SceneChange("scene");
+		}
+		else if (sceneNumber == 3)
+		{
+			SceneManager::Instance()->SceneChange("scene1");
+		}
+		else if (sceneNumber == 4)
+		{
+			SceneManager::Instance()->SceneChange("scene2");
+		}
+		else if (sceneNumber == 5)
+		{
+			SceneManager::Instance()->SceneChange("scene3");
+		}
+		else if (sceneNumber == 6)
+		{
+			SceneManager::Instance()->SceneChange("scene5");
+		}
+		else if (sceneNumber == 7)
+		{
+			SceneManager::Instance()->SceneChange("scene4");
+		}
+		else
+		{
+			SceneManager::Instance()->SceneChange("startScene");
+			sceneNumber = 0;
+		}
+	}
+	if (sceneChange)
+	{
+		postEffect->SetRGBShift(0);
+		postEffect->SetNega(false);
+		postEffect->SetGrayscale(false);
+		postEffect->SetSepia(0);
+	}
 
 #ifdef _DEBUG
 	DebugUpdate();
 #else
+	if (nowScene == "scene4")
+	{
+		DebugUpdate();
+		return;
+	}
 	cameraM->AutoUpdate();
 	objM->Update();
 	spriteM->Update();
@@ -347,6 +412,11 @@ void IF::Scene::Update()
 	ImGui::Text("camera : arrow keys");
 	ImGui::Text("camera reset : C key");
 	ImGui::Text("Next Scene : Enter key");
+	if (nowScene == "scene3")
+	{
+		ImGui::Text("ball movement : Controller L stick");
+		ImGui::Text("ball jump : Controller ABXY");
+	}
 	ImGui::End();
 	static float ambient[3] = { 0.4, 0.4, 0.4 };
 	static bool dirLActive[3] = { true,false,false };
@@ -529,6 +599,23 @@ void IF::Scene::Update()
 		postEffect->SetGrayscale(g);
 		postEffect->SetSepia(sepia);
 	}
+	if (nowScene == "scene3")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		CollisionObj* obj1 = objM->GetAddress<CollisionObj>("CollisionObj");
+
+		obj0->NormalUpdate();
+
+		Float3 pos = obj0->GetPos();
+		shadowPos[0][0] = pos.x;
+		shadowPos[0][1] = pos.y - obj0->GetScale().y;
+		shadowPos[0][2] = pos.z;
+
+		Float3 pos2 = obj1->GetPos();
+		shadowPos[1][0] = pos2.x;
+		shadowPos[1][1] = pos2.y - obj1->GetScale().y;
+		shadowPos[1][2] = pos2.z;
+	}
 	for (int i = 0; i < 3; i++)
 	{
 		lightM->SetDirLightActive(i, dirLActive[i]);
@@ -553,35 +640,36 @@ void IF::Scene::Update()
 	lightM->SetAmbientColor({ ambient[0],ambient[1],ambient[2] });
 	lightM->Update();
 
-	if (Input::Instance()->KeyTriggere(KEY::ENTER) && !sceneChange)
+	if (nowScene == "scene5")
 	{
-		sceneChange = true;
-		sceneNumber++;
-		if (sceneNumber == 1)
+		Sound* inst = Sound::Instance();
+		static int v[4] = { 120,50,120,120 };
+		static bool r[4] = { false,false,false,false };
+		ImGui::Begin("Sound Settings");
+		ImGui::Text("\"isRoop\" should be set on playback");
+		for (int i = 0; i < soundNums.size(); i++)
 		{
-			SceneManager::Instance()->SceneChange("scene");
+			string s = "testsound";
+			s += to_string(i);
+			if (ImGui::TreeNode(s.c_str()))
+			{
+				ImGui::Checkbox("isRoop", &r[i]);
+				ImGui::DragInt("volume", &v[i]);
+				inst->SetVolume(soundNums[i], v[i]);
+				if (ImGui::Button("BGM Start"))
+				{
+					inst->SoundPlay(soundNums[i], r[i]);
+				}
+				if (ImGui::Button("BGM Stop"))
+				{
+					inst->StopSound(soundNums[i]);
+				}
+				ImGui::TreePop();
+			}
 		}
-		else if (sceneNumber == 2)
-		{
-			SceneManager::Instance()->SceneChange("scene1");
-		}
-		else if (sceneNumber == 3)
-		{
-			SceneManager::Instance()->SceneChange("scene2");
-		}
-		else
-		{
-			SceneManager::Instance()->SceneChange("MainScene");
-			sceneNumber = 0;
-		}
+		ImGui::End();
 	}
-	if (sceneChange)
-	{
-		postEffect->SetRGBShift(0);
-		postEffect->SetNega(false);
-		postEffect->SetGrayscale(false);
-		postEffect->SetSepia(0);
-	}
+
 #endif
 }
 
@@ -639,10 +727,19 @@ void IF::Scene::Delete()
 
 void IF::Scene::Reset()
 {
+	Sound* inst = Sound::Instance();
 	objM->Reset();
 	//tex->TexReset();
 	cameraM->Reset();
 	modelM->Reset();
 	spriteM->Reset();
 	particleM->Reset();
+	if (nowScene == "scene5")
+	{
+		for (int i = 0; i < soundNums.size(); i++)
+		{
+			inst->StopSound(soundNums[i]);
+			inst->SoundUnLoad(soundNums[i]);
+		}
+	}
 }

@@ -124,7 +124,7 @@ void IF::CObject::InputJson(nlohmann::json& j)
 	obj.SetColorF(j["color"]["x"], j["color"]["y"], j["color"]["z"], j["color"]["w"]);
 	ClassInputJson(j);
 }
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::CObject::OutputJson(nlohmann::json& j)
 {
 	j["tag"] = tag;
@@ -247,4 +247,4 @@ void IF::CObject::GUI()
 }
 void IF::CObject::ClassUI() {}
 void IF::CObject::ClassOutputJson(nlohmann::json& j) {}
-#endif
+//#endif

@@ -357,6 +357,12 @@
     <ClInclude Include="Engine\2d\PostEffect.h">
       <Filter>Header Files\Engine\2d</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\TouchableObject.h">
+      <Filter>Header Files\Engine\3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -565,6 +571,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Collision\SphereCollider.cpp">
       <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\TouchableObject.cpp">
+      <Filter>Source Files\Engine\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

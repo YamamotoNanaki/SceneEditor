@@ -54,11 +54,12 @@ namespace IF
 
 		//評価課題用
 		int sceneNumber = 0;
+		std::array<unsigned short, 4> soundNums;
 
 		//デバッグ用
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void OutputJson(std::string failename);
 		void DebugUpdate();
-#endif // _DEBUG
+//#endif // _DEBUG
 	};
 }

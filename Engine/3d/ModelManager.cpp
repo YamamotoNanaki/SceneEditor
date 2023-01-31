@@ -26,7 +26,7 @@ void IF::ModelManager::DeleteInstance()
 	delete ModelManager::Instance();
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::ModelManager::GUI()
 {
 	ImGui::Begin("ModelList");
@@ -160,7 +160,7 @@ std::string IF::ModelManager::GUIRadio()
 	}
 	return r;
 }
-#endif
+//#endif
 
 void IF::ModelManager::OutputJson(nlohmann::json& j)
 {

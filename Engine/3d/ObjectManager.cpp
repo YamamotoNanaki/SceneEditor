@@ -3,6 +3,7 @@
 #include <cassert>
 #include "imgui.h"
 #include "Debug.h"
+#include "CollisionObj.h"
 
 
 using namespace IF;
@@ -10,7 +11,7 @@ using namespace std;
 
 enum tagName
 {
-	Normal
+	Normal, CollisionObj
 };
 
 IF::ObjectManager::~ObjectManager()
@@ -63,6 +64,7 @@ void IF::ObjectManager::IntputJson(nlohmann::json& j)
 	{
 		CObject* ptr = nullptr;
 		if ("Normal" == i["ObjectName"])ptr = Add<Normal>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
+		else if ("CollisionObj" == i["ObjectName"])ptr = Add<CollisionObj>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 
 		if (ptr != nullptr)
 		{
@@ -72,7 +74,7 @@ void IF::ObjectManager::IntputJson(nlohmann::json& j)
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
 	auto buff = objList;
@@ -121,6 +123,7 @@ void IF::ObjectManager::GUI()
 		if (ImGui::TreeNode("ObjectName"))
 		{
 			ImGui::RadioButton("Normal", &objn, tagName::Normal);
+			ImGui::RadioButton("CollisionObj", &objn, tagName::CollisionObj);
 			//ImGui::RadioButton("Enemy", &objn, tagName::Enemy);
 			//ImGui::RadioButton("Wall", &objn, tagName::Wall);
 			//ImGui::RadioButton("NoBreakWall", &objn, tagName::NoBreakWall);
@@ -138,6 +141,7 @@ void IF::ObjectManager::GUI()
 		if (flag == true)
 		{
 			if (objn == tagName::Normal)tag = "Normal";
+			if (objn == tagName::CollisionObj)tag = "CollisionObj";
 
 			//if (objn == tagName::Enemy)tag = "Enemy";
 			//if (objn == tagName::Wall)tag = "Wall";
@@ -180,6 +184,10 @@ void IF::ObjectManager::GUI()
 				if (objn == tagName::Normal)
 				{
 					b = Add<Normal>(ModelManager::Instance()->GetModel(model), tag, board);
+				}
+				else if (objn == tagName::CollisionObj)
+				{
+					b = Add<CollisionObj>(ModelManager::Instance()->GetModel(model), tag, board);
 				}
 				if (b == nullptr)
 				{
@@ -263,7 +271,7 @@ string IF::ObjectManager::GUIGetTag()
 	}
 	return tag;
 }
-#endif
+//#endif
 
 void IF::ObjectManager::Delete(std::string tag)
 {

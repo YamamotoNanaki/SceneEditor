@@ -87,8 +87,8 @@ namespace IF
 			delete matView;
 			delete matPro;
 		}
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		void GUI();
-#endif
+//#endif
 	};
 }

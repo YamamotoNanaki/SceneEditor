@@ -17,7 +17,7 @@ void IF::CameraManager::AutoUpdate()
 	}
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::CameraManager::GUI()
 {
 	ImGui::Begin("Camera");
@@ -46,4 +46,4 @@ void IF::CameraManager::OutputJson(nlohmann::json& j)
 		i++;
 	}
 }
-#endif
+//#endif

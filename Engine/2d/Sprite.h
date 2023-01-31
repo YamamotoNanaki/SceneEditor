@@ -72,9 +72,9 @@ namespace IF
 		virtual void SetBright(int r, int g, int b);
 		virtual void SetAlpha(int a);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		virtual void DebugUpdate();
 		virtual void GUI();
-#endif
+//#endif
 	};
 }

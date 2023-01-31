@@ -248,7 +248,7 @@ void IF::Sprite::SetAlpha(int alpha)
 	color[3] = (float)alpha / 255.f;
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::Sprite::GUI()
 {
 	if (ImGui::TreeNode("Position"))
@@ -300,7 +300,7 @@ void IF::Sprite::DebugUpdate()
 	//定数バッファへのデータ転送
 	constMapTransform->mat = matWorld * matPro;
 }
-#endif
+//#endif
 
 void Sprite::TransferVertex()
 {

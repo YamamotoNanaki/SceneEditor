@@ -2,7 +2,7 @@
 #include "imgui.h"
 #include "ObjectManager.h"
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::ICamera::GUI()
 {
 	if (ImGui::TreeNode(tag.c_str())) {
@@ -34,4 +34,4 @@ void IF::ICamera::GUI()
 		ImGui::TreePop();
 	}
 }
-#endif
+//#endif

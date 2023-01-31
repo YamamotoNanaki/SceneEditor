@@ -167,7 +167,7 @@ unsigned short Texture::LoadTexture(const std::string filename, int number)
 	return num;
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 void IF::Texture::GUI()
 {
 	static int num = 0;
@@ -293,7 +293,7 @@ void IF::Texture::TexNum(int* texNum)
 		}
 	}
 }
-#endif
+//#endif
 
 void IF::Texture::GUIInit()
 {

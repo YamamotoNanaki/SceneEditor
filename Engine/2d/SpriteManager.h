@@ -54,7 +54,6 @@ namespace IF
 		void ForeGroundDraw();
 		void BackGroundDraw();
 		void Update();
-		void DebugUpdate();
 		void DrawFlagChange(bool f, std::string tag);
 		inline void DeleteSprite()
 		{
@@ -363,9 +362,10 @@ namespace IF
 			return i;
 		}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		bool drawflag = false;
 
+		void DebugUpdate();
 		void GUI();
 		enum typeinfo
 		{
@@ -373,6 +373,6 @@ namespace IF
 			Model
 		};
 		void OutputJson(nlohmann::json& j);
-#endif
+//#endif
 	};
 }
