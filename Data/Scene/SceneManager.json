@@ -1,5 +1,5 @@
 {
-    "debug": "scene5",
+    "debug": "startScene",
     "scene": [
         {
             "name": "MainScene"

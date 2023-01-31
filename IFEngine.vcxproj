@@ -178,11 +178,13 @@
     <ClInclude Include="Engine\Other\Timer.h" />
     <ClInclude Include="Engine\Other\Util.h" />
     <ClInclude Include="Engine\Sound\Sound.h" />
+    <ClInclude Include="PlaneObj.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Source\Fire.h" />
     <ClInclude Include="Source\NormalObj.h" />
+    <ClInclude Include="SphereObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionObj.cpp" />
@@ -254,10 +256,12 @@
     <ClCompile Include="Engine\Other\Util.cpp" />
     <ClCompile Include="Engine\Sound\Sound.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PlaneObj.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Fire.cpp" />
     <ClCompile Include="Source\NormalObj.cpp" />
+    <ClCompile Include="SphereObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Engine\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

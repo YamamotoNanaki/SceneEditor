@@ -177,6 +177,7 @@ void IF::Scene::DebugUpdate()
 		spriteM->Update();
 		particleM->Update();
 		spriteM->DeleteSprite();
+		colM->CheckAllCollisions();
 	}
 	else
 	{
@@ -669,6 +670,7 @@ void IF::Scene::Update()
 		}
 		ImGui::End();
 	}
+	colM->CheckAllCollisions();
 
 #endif
 }

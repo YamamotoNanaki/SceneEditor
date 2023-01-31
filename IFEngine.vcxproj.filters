@@ -363,6 +363,12 @@
     <ClInclude Include="Engine\3d\TouchableObject.h">
       <Filter>Header Files\Engine\3d</Filter>
     </ClInclude>
+    <ClInclude Include="PlaneObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -577,6 +583,12 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\TouchableObject.cpp">
       <Filter>Source Files\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereObject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

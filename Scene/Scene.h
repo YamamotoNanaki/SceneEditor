@@ -14,6 +14,7 @@
 #include "DebugText.h"
 #include "ParticleManager.h"
 #include "PostEffect.h"
+#include "CollisionManager.h"
 
 namespace IF
 {
@@ -35,6 +36,7 @@ namespace IF
 		LightManager* lightM = LightManager::Instance();
 		SpriteManager* spriteM = SpriteManager::Instance();
 		ParticleManager* particleM = ParticleManager::Instance();
+		CollisionManager* colM = CollisionManager::Instance();
 		ModelLoader modelLoader;
 
 	private:
