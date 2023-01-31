@@ -128,6 +128,29 @@ void IF::Object::Initialize(FBXModel* fmodel)
 
 void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int mode)
 {
+	UpdateWorldMatrix(mode);
+
+	//定数バッファへのデータ転送
+	constMapTransform->viewPro = matView * matProjection;
+	constMapTransform->world = matWorld;
+	constMapTransform->cameraPos = cameraPos;
+	constMapTransform->polygonSize = 1;
+	constMapTransform->explosion = 0;
+	constMapTransform->lightFlag = lightFlag;
+	constMapTransform->toonFlag = toonFlag;
+
+	if (fmodel == nullptr || fmodel->bones.size() == 0)return;
+	animTimer += 0.01f;
+	if (animTimer > fmodel->animations[0].duration)animTimer = 0;
+	fmodel->BoneTransform(animTimer);
+	for (int i = 0; i < fmodel->bones.size(); i++)
+	{
+		constMapSkin->bones[i] = fmodel->bones[i].finalMatrix;
+	}
+}
+
+void IF::Object::UpdateWorldMatrix(int mode)
+{
 	Matrix matScale, matRot, matTrams;
 
 	//スケール、回転、平行移動
@@ -149,25 +172,6 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	if (parent != nullptr)
 	{
 		matWorld *= parent->matWorld;
-	}
-
-	//定数バッファへのデータ転送
-	constMapTransform->viewPro = matView * matProjection;
-	constMapTransform->world = matWorld;
-	constMapTransform->cameraPos = cameraPos;
-	constMapTransform->polygonSize = polygonsize;
-	constMapTransform->lightFlag = lightFlag;
-	constMapTransform->toonFlag = toonFlag;
-	constMapTransform->explosion = explosion;
-	constMapTransform->rotation = polygonRota;
-
-	if (fmodel == nullptr || fmodel->bones.size() == 0)return;
-	animTimer += 0.01f;
-	if (animTimer > fmodel->animations[0].duration)animTimer = 0;
-	fmodel->BoneTransform(animTimer);
-	for (int i = 0; i < fmodel->bones.size(); i++)
-	{
-		constMapSkin->bones[i] = fmodel->bones[i].finalMatrix;
 	}
 }
 

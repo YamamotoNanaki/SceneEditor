@@ -28,7 +28,8 @@ namespace IF
 	// ’·‚³‚ğ‹‚ß‚é
 	float Vector3Length(const Vector3& v);
 	// ³‹K‰»‚·‚é
-	Vector3& Vector3Normalize(Vector3& v);
+	//Vector3& Vector3Normalize(Vector3& v);
+	Vector3 Vector3Normalize(Vector3 v);
 	// “àÏ‚ğ‹‚ß‚é
 	float Vector3Dot(const Vector3& v1, const Vector3& v2);
 	// ŠOÏ‚ğ‹‚ß‚é
@@ -51,9 +52,12 @@ namespace IF
 
 	Vector3 VectorNegate(Vector3 m);
 
+	Vector3 VectorLerp(Vector3 v0,Vector3 v1,float t);
+
 	Matrix MatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ);
 	bool NearEqual(float S1, float S2, float Epsilon);
 	void ScalarSinCos(float* pSin, float* pCos, float  Value);
 	float ConvertToRadians(float fDegrees);
 	float ConvertToDegrees(float fRadians);
+	Float3 operator+(Float3 f, Vector2 v);
 };

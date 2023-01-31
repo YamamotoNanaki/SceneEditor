@@ -5,12 +5,15 @@ cbuffer cbuff0:register(b0)
 
 cbuffer ConstBufferDataTransform : register(b1)
 {
-	matrix viewPro;
-	matrix world;
-	float3 cameraPos;
+    matrix viewPro;
+    matrix world;
+    float3 cameraPos;
     float explosion;
     float polygonSize;
     float gravity;
+    float rotation;
+    uint lightFlag;
+    uint toonFlag;
 };
 
 cbuffer Material : register(b2)

@@ -4,13 +4,14 @@
 #include "imgui.h"
 #include "Debug.h"
 
+
+using namespace IF;
+using namespace std;
+
 enum tagName
 {
 	Normal
 };
-
-using namespace IF;
-using namespace std;
 
 IF::ObjectManager::~ObjectManager()
 {
@@ -34,7 +35,7 @@ void IF::ObjectManager::Draw()
 {
 	for (auto com : objList)
 	{
-		if (com->WeightSaving(800))com->Draw();
+		if (com->WeightSaving(150))com->Draw();
 	}
 }
 
@@ -51,55 +52,9 @@ void IF::ObjectManager::Update()
 	auto buff = objList;
 	for (auto com : buff)
 	{
-		if (com->WeightSaving(800))com->Update();
+		if (com->WeightSaving(150))com->Update();
 	}
 	objListSize = objList.size();
-}
-
-void IF::ObjectManager::CollisionInitialize()
-{
-	for (auto com : objList)
-	{
-		com->CollisionUpdate();
-	}
-}
-
-Primitive* IF::ObjectManager::GetPrimitive(std::string tag)
-{
-	for (auto com : objList)
-	{
-		if (com->tag == tag)
-		{
-			return com->GetPrimitive();
-		}
-	}
-	return nullptr;
-}
-
-Primitive* IF::ObjectManager::GetPrimitiveName(std::string objName)
-{
-	for (auto com : objList)
-	{
-		if (com->GetObjName() == objName)
-		{
-			return com->GetPrimitive();
-		}
-	}
-	return nullptr;
-}
-
-Primitive* IF::ObjectManager::GetPrimitiveNumber(int& num, std::string objName)
-{
-	if (num >= objList.size())return nullptr;
-	auto itr = objList.begin();
-	for (int i = 0; i < num; i++)itr++;
-	auto com = *(itr);
-	if (com->GetObjName() != objName)
-	{
-		num++;
-		return GetPrimitiveNumber(num, objName);
-	}
-	return com->GetPrimitive();
 }
 
 void IF::ObjectManager::IntputJson(nlohmann::json& j)
@@ -160,26 +115,12 @@ void IF::ObjectManager::GUI()
 			ImGui::RadioButton("YBillBoard", &board, 2);
 			ImGui::TreePop();
 		}
-		static int type = NotPri;
-		if (ImGui::TreeNode("Collision"))
-		{
-			ImGui::RadioButton("Ray", &type, RayPri);
-			ImGui::SameLine();
-			ImGui::RadioButton("Sphere", &type, SpherePri);
-			ImGui::RadioButton("Plane", &type, PlanePri);
-			ImGui::SameLine();
-			ImGui::RadioButton("Box", &type, BoxPri);
-			ImGui::RadioButton("CircleXY", &type, CircleXYPri);
-			ImGui::SameLine();
-			ImGui::RadioButton("Not", &type, NotPri);
-			ImGui::TreePop();
-		}
 		int old = objn;
 		static bool flag = true;
+
 		if (ImGui::TreeNode("ObjectName"))
 		{
 			ImGui::RadioButton("Normal", &objn, tagName::Normal);
-
 			//ImGui::RadioButton("Enemy", &objn, tagName::Enemy);
 			//ImGui::RadioButton("Wall", &objn, tagName::Wall);
 			//ImGui::RadioButton("NoBreakWall", &objn, tagName::NoBreakWall);
@@ -245,10 +186,6 @@ void IF::ObjectManager::GUI()
 					error = 2;
 				}
 				flag = true;
-				if (type != NotPri)
-				{
-					b->SetCollision(type);
-				}
 				b->SetPos(startpos);
 			}
 		}

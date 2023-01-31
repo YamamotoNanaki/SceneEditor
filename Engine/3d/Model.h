@@ -80,5 +80,9 @@ namespace IF
 		{
 			return tag;
 		}
+		inline MVI* GetMeshes()
+		{
+			return vi;
+		}
 	};
 }

@@ -18,10 +18,10 @@ namespace IF
 	private:
 		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
-		std::vector<Vertex> vertices;
 		std::unordered_map<unsigned short, std::vector<unsigned short>>smoothData;
 
 	public:
+		std::vector<Vertex> vertices;
 		std::vector<unsigned short> indices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		D3D12_INDEX_BUFFER_VIEW ibView{};
