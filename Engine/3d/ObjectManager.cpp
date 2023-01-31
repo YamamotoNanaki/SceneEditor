@@ -7,6 +7,7 @@
 #include "SphereObject.h"
 #include "PlaneObj.h"
 #include "TriangleObj.h"
+#include "RayObj.h"
 
 
 using namespace IF;
@@ -14,7 +15,7 @@ using namespace std;
 
 enum tagName
 {
-	Normal, CollisionObj, SphereObject, PlaneObj, TriangleObj
+	Normal, CollisionObj, SphereObject, PlaneObj, TriangleObj, RayObj
 };
 
 IF::ObjectManager::~ObjectManager()
@@ -71,6 +72,7 @@ void IF::ObjectManager::IntputJson(nlohmann::json& j)
 		else if ("SphereObject" == i["ObjectName"])ptr = Add<SphereObject>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 		else if ("PlaneObj" == i["ObjectName"])ptr = Add<PlaneObj>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 		else if ("TriangleObj" == i["ObjectName"])ptr = Add<TriangleObj>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
+		else if ("RayObj" == i["ObjectName"])ptr = Add<RayObj>(ModelManager::Instance()->GetModel(i["model"]), i["tag"], i["BillBoard"], 0);
 
 		if (ptr != nullptr)
 		{
@@ -133,6 +135,7 @@ void IF::ObjectManager::GUI()
 			ImGui::RadioButton("PlaneObj", &objn, tagName::PlaneObj);
 			ImGui::RadioButton("SphereObject", &objn, tagName::SphereObject);
 			ImGui::RadioButton("TriangleObj", &objn, tagName::TriangleObj);
+			ImGui::RadioButton("RayObj", &objn, tagName::RayObj);
 			//ImGui::RadioButton("Enemy", &objn, tagName::Enemy);
 			//ImGui::RadioButton("Wall", &objn, tagName::Wall);
 			//ImGui::RadioButton("NoBreakWall", &objn, tagName::NoBreakWall);
@@ -154,6 +157,7 @@ void IF::ObjectManager::GUI()
 			if (objn == tagName::PlaneObj)tag = "PlaneObj";
 			if (objn == tagName::SphereObject)tag = "SphereObject";
 			if (objn == tagName::TriangleObj)tag = "TriangleObj";
+			if (objn == tagName::RayObj)tag = "RayObj";
 
 			//if (objn == tagName::Enemy)tag = "Enemy";
 			//if (objn == tagName::Wall)tag = "Wall";
@@ -212,6 +216,10 @@ void IF::ObjectManager::GUI()
 				else if (objn == tagName::TriangleObj)
 				{
 					b = Add<TriangleObj>(ModelManager::Instance()->GetModel(model), tag, board);
+				}
+				else if (objn == tagName::RayObj)
+				{
+					b = Add<RayObj>(ModelManager::Instance()->GetModel(model), tag, board);
 				}
 				if (b == nullptr)
 				{

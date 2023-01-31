@@ -1,0 +1,187 @@
+{
+    "object": {
+        "camera": "mainCamera",
+        "object": [
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "dome",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "dome"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "PlaneObj",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "ground",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": -1.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "PlaneObj"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "RayObj",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "testBox",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.2499999850988388,
+                    "y": 0.2499999850988388,
+                    "z": 0.2499999850988388
+                },
+                "tag": "RayObj"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "testBox",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": -10.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.10000000894069672,
+                    "y": 10.0,
+                    "z": 0.10000000894069672
+                },
+                "tag": "Normal"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "TriangleObj",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "triangle",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": -5.199999809265137,
+                    "y": 1.0499999523162842,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "TriangleObj"
+            }
+        ]
+    }
+}

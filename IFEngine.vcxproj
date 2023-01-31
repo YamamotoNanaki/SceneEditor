@@ -142,6 +142,7 @@
     <ClInclude Include="Engine\Collision\PlaneCollider.h" />
     <ClInclude Include="Engine\Collision\QueryCallback.h" />
     <ClInclude Include="Engine\Collision\RaycastHit.h" />
+    <ClInclude Include="Engine\Collision\RayCollider.h" />
     <ClInclude Include="Engine\Collision\SphereCollider.h" />
     <ClInclude Include="Engine\Collision\TriangleCollider.h" />
     <ClInclude Include="Engine\Efect\Emitter.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Engine\Other\Util.h" />
     <ClInclude Include="Engine\Sound\Sound.h" />
     <ClInclude Include="PlaneObj.h" />
+    <ClInclude Include="RayObj.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
@@ -226,6 +228,7 @@
     <ClCompile Include="Engine\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="Engine\Collision\MeshCollider.cpp" />
     <ClCompile Include="Engine\Collision\PlaneCollider.cpp" />
+    <ClCompile Include="Engine\Collision\RayCollider.cpp" />
     <ClCompile Include="Engine\Collision\SphereCollider.cpp" />
     <ClCompile Include="Engine\Collision\TriangleCollider.cpp" />
     <ClCompile Include="Engine\Efect\Emitter.cpp" />
@@ -260,6 +263,7 @@
     <ClCompile Include="Engine\Sound\Sound.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlaneObj.cpp" />
+    <ClCompile Include="RayObj.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Fire.cpp" />

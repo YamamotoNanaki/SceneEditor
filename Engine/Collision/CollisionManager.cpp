@@ -8,37 +8,37 @@ using namespace std;
 
 CollisionManager* IF::CollisionManager::Instance()
 {
-    static CollisionManager instance;
-    return &instance;
+	static CollisionManager instance;
+	return &instance;
 }
 
 void IF::CollisionManager::CheckAllCollisions()
 {
-    forward_list<BaseCollider*>::iterator itA;
-    forward_list<BaseCollider*>::iterator itB;
+	forward_list<BaseCollider*>::iterator itA;
+	forward_list<BaseCollider*>::iterator itB;
 
-    itA = colliders.begin();
-    for (; itA != colliders.end(); ++itA)
-    {
-        itB = itA;
-        ++itB;
-        for (;itB != colliders.end(); ++itB)
-        {
-            BaseCollider* colA = *itA;
-            BaseCollider* colB = *itB;
+	itA = colliders.begin();
+	for (; itA != colliders.end(); ++itA)
+	{
+		itB = itA;
+		++itB;
+		for (; itB != colliders.end(); ++itB)
+		{
+			BaseCollider* colA = *itA;
+			BaseCollider* colB = *itB;
 
-            //‚Æ‚à‚É‹…
-            if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
-            {
-                Sphere* SphereA = dynamic_cast<Sphere*>(colA);
-                Sphere* SphereB = dynamic_cast<Sphere*>(colB);
+			//‚Æ‚à‚É‹…
+			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
+			{
+				Sphere* SphereA = dynamic_cast<Sphere*>(colA);
+				Sphere* SphereB = dynamic_cast<Sphere*>(colB);
 				Vector3 inter;
-                if (Collision::CheckSphere(*SphereA, *SphereB, &inter))
-                {
-                    colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
-                    colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
-                }
-            }
+				if (Collision::CheckSphere(*SphereA, *SphereB, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+			}
 			else if (colA->GetShapeType() == COLLISIONSHAPE_MESH && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
 			{
 				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
@@ -64,7 +64,7 @@ void IF::CollisionManager::CheckAllCollisions()
 			else if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE && colB->GetShapeType() == COLLISIONSHAPE_PLANE)
 			{
 				Sphere* sphere = dynamic_cast<Sphere*>(colA);
-				Plane * plane = dynamic_cast<Plane*>(colB);
+				Plane* plane = dynamic_cast<Plane*>(colB);
 				Vector3 inter;
 				if (Collision::CheckSpherePlane(*sphere, *plane, &inter))
 				{
@@ -75,7 +75,7 @@ void IF::CollisionManager::CheckAllCollisions()
 			else if (colA->GetShapeType() == COLLISIONSHAPE_PLANE && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
 			{
 				Sphere* sphere = dynamic_cast<Sphere*>(colB);
-				Plane * plane = dynamic_cast<Plane*>(colA);
+				Plane* plane = dynamic_cast<Plane*>(colA);
 				Vector3 inter;
 				if (Collision::CheckSpherePlane(*sphere, *plane, &inter))
 				{
@@ -97,7 +97,7 @@ void IF::CollisionManager::CheckAllCollisions()
 			else if (colA->GetShapeType() == COLLISIONSHAPE_TRIANGLE && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
 			{
 				Sphere* sphere = dynamic_cast<Sphere*>(colB);
-				Triangle * triangle = dynamic_cast<Triangle*>(colA);
+				Triangle* triangle = dynamic_cast<Triangle*>(colA);
 				Vector3 inter;
 				if (Collision::CheckSphereTriangle(*sphere, *triangle, &inter))
 				{
@@ -105,8 +105,56 @@ void IF::CollisionManager::CheckAllCollisions()
 					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
 				}
 			}
-        }
-    }
+			else if (colA->GetShapeType() == COLLISIONSHAPE_RAY && colB->GetShapeType() == COLLISIONSHAPE_PLANE)
+			{
+				Plane* plane = dynamic_cast<Plane*>(colB);
+				Ray* ray = dynamic_cast<Ray*>(colA);
+				Vector3 inter;
+				float distance;
+				if (Collision::CheckRayPlane(*ray, *plane, &distance, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter, &distance));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
+				}
+			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_PLANE && colB->GetShapeType() == COLLISIONSHAPE_RAY)
+			{
+				Plane* plane = dynamic_cast<Plane*>(colA);
+				Ray* ray = dynamic_cast<Ray*>(colB);
+				Vector3 inter;
+				float distance;
+				if (Collision::CheckRayPlane(*ray, *plane, &distance, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter, &distance));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
+				}
+			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_RAY && colB->GetShapeType() == COLLISIONSHAPE_TRIANGLE)
+			{
+				Triangle* triangle = dynamic_cast<Triangle*>(colB);
+				Ray* ray = dynamic_cast<Ray*>(colA);
+				Vector3 inter;
+				float distance;
+				if (Collision::CheckRayTriangle(*ray, *triangle, &distance, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter, &distance));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
+				}
+			}
+			else if (colA->GetShapeType() == COLLISIONSHAPE_TRIANGLE && colB->GetShapeType() == COLLISIONSHAPE_RAY)
+			{
+				Triangle* triangle = dynamic_cast<Triangle*>(colA);
+				Ray* ray = dynamic_cast<Ray*>(colB);
+				Vector3 inter;
+				float distance;
+				if (Collision::CheckRayTriangle(*ray, *triangle, &distance, &inter))
+				{
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter, &distance));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter, &distance));
+				}
+			}
+		}
+	}
 }
 
 bool IF::CollisionManager::Raycast(const Ray& ray, RaycastHit* hitInfo, float maxDistance)

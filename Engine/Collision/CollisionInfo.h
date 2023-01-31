@@ -12,11 +12,12 @@ namespace IF
 	struct CollisionInfo
 	{
 	public:
-		CollisionInfo(CObject* object, BaseCollider* collider, const Vector3& inter)
+		CollisionInfo(CObject* object, BaseCollider* collider, const Vector3& inter, float* distance = nullptr)
 		{
 			this->object = object;
 			this->collider = collider;
 			this->inter = inter;
+			if (distance)this->distance = *distance;
 		}
 
 		// 衝突相手のオブジェクト
@@ -25,5 +26,6 @@ namespace IF
 		BaseCollider* collider = nullptr;
 		// 衝突点
 		Vector3 inter;
+		float distance;
 	};
 }

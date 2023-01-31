@@ -13,6 +13,7 @@
 #include "Window.h"
 #include "CollisionObj.h"
 #include "Ease.h"
+#include "RayObj.h"
 #include <fstream>
 #include <iostream>
 
@@ -178,6 +179,14 @@ void IF::Scene::DebugUpdate()
 		particleM->Update();
 		spriteM->DeleteSprite();
 		colM->CheckAllCollisions();
+		if (nowScene == "scene6")
+		{
+			Normal* obj0 = objM->GetAddress<Normal>("Normal");
+			RayObj* ray = objM->GetAddress< RayObj>("RayObj");
+			Float3 r = ray->GetPos();
+			obj0->SetPos({ r.x,r.y - obj0->GetScale().y,r.z });
+			obj0->SetColor(ray->GetColor());
+		}
 	}
 	else
 	{
@@ -346,7 +355,7 @@ void IF::Scene::Update()
 		sceneNumber++;
 		if (sceneNumber == 1)
 		{
-			SceneManager::Instance()->SceneChange("MainScene");
+			SceneManager::Instance()->SceneChange("scene6");
 		}
 		else if (sceneNumber == 2)
 		{
@@ -369,6 +378,10 @@ void IF::Scene::Update()
 			SceneManager::Instance()->SceneChange("scene5");
 		}
 		else if (sceneNumber == 7)
+		{
+			SceneManager::Instance()->SceneChange("MainScene");
+		}
+		else if (sceneNumber == 8)
 		{
 			SceneManager::Instance()->SceneChange("scene4");
 		}
@@ -671,6 +684,15 @@ void IF::Scene::Update()
 		ImGui::End();
 	}
 	colM->CheckAllCollisions();
+	if (nowScene == "scene6")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		RayObj* ray = objM->GetAddress< RayObj>("RayObj");
+		Float3 r = ray->GetPos();
+		obj0->SetPos({ r.x,r.y - obj0->GetScale().y,r.z });
+		obj0->SetColor(ray->GetColor());
+	}
+
 
 #endif
 }
