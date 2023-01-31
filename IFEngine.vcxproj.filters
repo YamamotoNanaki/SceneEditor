@@ -324,6 +324,36 @@
     <ClInclude Include="Engine\3d\Mesh.h">
       <Filter>Header Files\Engine\3d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionManager.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionTypes.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\MeshCollider.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\PlaneCollider.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\QueryCallback.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\RaycastHit.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\SphereCollider.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\BaseCollider.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionAttribute.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionInfo.h">
+      <Filter>Header Files\Engine\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\2d\PostEffect.h">
       <Filter>Header Files\Engine\2d</Filter>
     </ClInclude>
@@ -523,6 +553,18 @@
     </ClCompile>
     <ClCompile Include="Engine\2d\PostEffect.cpp">
       <Filter>Source Files\Engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionManager.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\MeshCollider.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\PlaneCollider.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\SphereCollider.cpp">
+      <Filter>Source Files\Engine\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

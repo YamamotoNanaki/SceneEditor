@@ -5,9 +5,11 @@
 #include "ICamera.h"
 #include "Debug.h"
 #include "ParticleManager.h"
+#include "CollisionInfo.h"
 
 namespace IF
 {
+	class BaseCollider;
 	class CObject
 	{
 	public:
@@ -23,8 +25,7 @@ namespace IF
 		Matrix* matView = nullptr, * matProjection = nullptr;
 		Float3* cameraPos = nullptr;
 		int mode = BillBoard::NOON;
-		unsigned short ptype;
-		Primitive* collision = nullptr;
+		BaseCollider* collider = nullptr;
 	public:
 		virtual void Initialize(Model* model, bool prefab);
 		virtual void Update();
@@ -32,17 +33,23 @@ namespace IF
 		virtual void OutLineDraw();
 		virtual ~CObject();
 		virtual void DebugUpdate();
+		void SetCollider(BaseCollider* collider);
+		virtual void OnCollision(const CollisionInfo& info) {}
 
 	public:
 		virtual void ClassUpdate();
+		Matrix GetMatWorld();
 		virtual void ClassInitialize();
-		virtual void CollisionUpdate();
 		virtual bool WeightSaving(float max = 700);
 		bool WeightSavingXYZ(float maxX, float maxY, float maxZ);
 		inline CObject* GetAdrres() { return this; }
 		inline void MatUpdate()
 		{
 			obj.Update(*matView, *matProjection, *cameraPos, mode);
+		}
+		inline void UpdateWorldMatrix()
+		{
+			obj.UpdateWorldMatrix(mode);
 		}
 		void MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, int mode = BillBoard::NOON);
 		virtual const std::string GetObjName() = 0;
@@ -62,51 +69,6 @@ namespace IF
 		inline Model* GetModelAddress()
 		{
 			return obj.GetModel();
-		}
-		inline void SetCollision(unsigned short type)
-		{
-			if (collision != nullptr)
-			{
-				delete collision;
-				collision = nullptr;
-			}
-			if (type == RayPri)
-			{
-				collision = DEBUG_NEW Ray;
-				ptype = RayPri;
-			}
-			else if (type == PlanePri)
-			{
-				collision = DEBUG_NEW Plane;
-				ptype = PlanePri;
-			}
-			else if (type == SpherePri)
-			{
-				collision = DEBUG_NEW Sphere;
-				ptype = SpherePri;
-			}
-			else if (type == BoxPri)
-			{
-				collision = DEBUG_NEW Box;
-				ptype = BoxPri;
-			}
-			else if (type == CircleXYPri)
-			{
-				collision = DEBUG_NEW CircleXY;
-				ptype = CircleXYPri;
-			}
-			else
-			{
-				ptype = NotPri;
-			}
-		}
-		inline unsigned short GetCollision()
-		{
-			return ptype;
-		}
-		inline Primitive* GetPrimitive()
-		{
-			return collision;
 		}
 		inline void SetView(Matrix* matView)
 		{
@@ -156,10 +118,6 @@ namespace IF
 		{
 			this->obj.scale = scale;
 		}
-		inline void CObjDelete()
-		{
-			if (collision != nullptr)delete collision;
-		};
 		inline std::string GetModelTag()
 		{
 			return obj.GetModelTag();

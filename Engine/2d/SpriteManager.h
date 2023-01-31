@@ -89,6 +89,8 @@ namespace IF
 				{
 					com->SetBright(r, g, b);
 				}
+				load.SetBright(r, g, b);
+				return;
 			}
 			else
 			{

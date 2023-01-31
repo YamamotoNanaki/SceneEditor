@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include "Input.h"
 #include "Quaternion.h"
+#include "ObjectManager.h"
+#include "Ease.h"
 
 using namespace IF;
 

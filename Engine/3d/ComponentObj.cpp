@@ -2,6 +2,8 @@
 #include "GUI.h"
 #include "ObjectManager.h"
 #include "ModelManager.h"
+#include "CollisionManager.h"
+#include "BaseCollider.h"
 
 using namespace IF;
 using namespace std;
@@ -19,6 +21,7 @@ void IF::CObject::Update()
 
 	ClassUpdate();
 	MatUpdate();
+	if (collider)collider->Update();
 }
 
 void IF::CObject::Draw()
@@ -36,7 +39,11 @@ void IF::CObject::OutLineDraw()
 
 CObject::~CObject()
 {
-	CObjDelete();
+	if (collider)
+	{
+		CollisionManager::Instance()->RemoveCollider(collider);
+		delete collider;
+	}
 }
 
 void IF::CObject::DebugUpdate()
@@ -44,34 +51,22 @@ void IF::CObject::DebugUpdate()
 	MatUpdate();
 }
 
+void IF::CObject::SetCollider(BaseCollider* collider)
+{
+	collider->SetObject(this);
+	this->collider = collider;
+	CollisionManager::Instance()->AddCollider(collider);
+	UpdateWorldMatrix();
+	collider->Update();
+}
+
 static float offset = 0.2f;
 void IF::CObject::ClassUpdate() {}
-void IF::CObject::ClassInitialize() {}
-void IF::CObject::CollisionUpdate()
+Matrix IF::CObject::GetMatWorld()
 {
-	if (collision != nullptr)
-	{
-		//collision->SetRadius()
-		if (ptype == NotPri);
-		else if (ptype == RayPri)
-		{
-			collision->SetCenter(SetVector3(obj.position));
-			collision->SetDir(SetVector3({ obj.position.x + obj.scale.x, obj.position.y + obj.scale.y, obj.position.z + obj.scale.z + 3 }));
-		}
-		else if (ptype == BoxPri)
-		{
-			collision->SetMinPos({ obj.position.x - (obj.scale.x) - offset,obj.position.y -
-				(obj.scale.y) - offset,obj.position.z - (obj.scale.z) - offset });
-			collision->SetMaxPos({ obj.position.x + (obj.scale.x) + offset,obj.position.y +
-				(obj.scale.y) + offset,obj.position.z + (obj.scale.z) + offset });
-		}
-		else
-		{
-			collision->SetCenter(SetVector3({ obj.position.x,obj.position.y + 1,obj.position.z }));
-			collision->SetRadius((obj.scale.x + obj.scale.y + obj.scale.z) / 3.0f);
-		}
-	}
+	return obj.matWorld;
 }
+void IF::CObject::ClassInitialize() {}
 
 bool IF::CObject::WeightSaving(float max)
 {

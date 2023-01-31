@@ -157,6 +157,31 @@ Matrix IF::MatrixIdentity()
 	return Matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
 
+Matrix IF::MatrixInverse(const Matrix m)
+{
+	Matrix mat = m;
+	Matrix inv;
+	float buf;
+	for (int i = 0; i < 4; i++) {
+		buf = 1 / mat.m[i][i];
+		for (int j = 0; j < 4; j++) {
+			mat.m[i][j] *= buf;
+			inv.m[i][j] *= buf;
+		}
+		for (int j = 0; j < 4; j++) {
+			if (i != j) {
+				buf = mat.m[j][i];
+				for (int k = 0; k < 4; k++) {
+					mat.m[j][k] -= mat.m[i][k] * buf;
+					inv.m[j][k] -= inv.m[i][k] * buf;
+				}
+			}
+		}
+	}
+
+	return inv;
+}
+
 Matrix IF::MatrixTranspose(const Matrix& m)
 {
 	return Matrix(
