@@ -187,7 +187,11 @@ namespace IF
 			F9 = DIK_F9,
 			F10 = DIK_F10,
 			F11 = DIK_F11,
-			F12 = DIK_F12
+			F12 = DIK_F12,
+			W = DIK_W,
+			A = DIK_A,
+			S = DIK_S,
+			D = DIK_D
 		};
 	}
 }

@@ -48,6 +48,20 @@
             "tag": "triangle",
             "tex": 1,
             "type": 2
+        },
+        {
+            "name": "sankaku",
+            "smooth": true,
+            "tag": "sankaku",
+            "tex": 27,
+            "type": 0
+        },
+        {
+            "name": "yuka",
+            "smooth": true,
+            "tag": "yuka",
+            "tex": 1,
+            "type": 0
         }
     ]
 }

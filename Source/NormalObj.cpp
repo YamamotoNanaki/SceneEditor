@@ -29,6 +29,11 @@ void IF::Normal::ClassUpdate()
 void IF::Normal::NormalUpdate()
 {
 	Float2 analog = Input::Instance()->GetLAnalog(6000);
+	if (analog.x == 0 && analog.y == 0)
+	{
+		analog.x = Input::Instance()->KeyDown(KEY::D) - Input::Instance()->KeyDown(KEY::A);
+		analog.y = Input::Instance()->KeyDown(KEY::W) - Input::Instance()->KeyDown(KEY::S);
+	}
 	obj.position.x += analog.x * 0.25f;
 	obj.position.z += analog.y * 0.25f;
 
@@ -45,7 +50,7 @@ void IF::Normal::NormalUpdate()
 		obj.position.y += gravity;
 	}
 	// ƒWƒƒƒ“ƒv‘€ì
-	else if (Input::Instance()->PadTriggere(PAD::A | PAD::B | PAD::X | PAD::Y))
+	else if (Input::Instance()->PadTriggere(PAD::A | PAD::B | PAD::X | PAD::Y) || Input::Instance()->KeyTriggere(KEY::SPACE))
 	{
 		onGround = false;
 		const float jumpVYFist = 0.3f;

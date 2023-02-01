@@ -4,6 +4,7 @@
 
 namespace IF
 {
+	class Normal;
 	class Camera :public ICamera
 	{
 	private:
@@ -12,6 +13,7 @@ namespace IF
 		Vector3 star;
 		Vector3 supv;
 		bool once = false;
+		bool camera = false;
 	public:
 		Camera() {}
 		inline void Initialize(float fovAngle, float winWidth, float winHeight)
@@ -27,11 +29,13 @@ namespace IF
 
 		}
 		void Update();
-		inline ~Camera() {}
+		~Camera();
 		inline std::string GetName()
 		{
 			return cameraName;
 		}
+
+		void CameraInitialize(Normal* normal);
 
 	};
 }

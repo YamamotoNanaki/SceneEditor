@@ -26,7 +26,8 @@
             "box/box.png",
             "cube.png",
             "gameclear.png",
-            "gameover.png"
+            "gameover.png",
+            "sankaku.png"
         ]
     }
 }

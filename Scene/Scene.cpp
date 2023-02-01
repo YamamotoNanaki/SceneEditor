@@ -346,7 +346,61 @@ void IF::Scene::InputJson(std::string failename)
 			soundNums[i] = Sound::Instance()->LoadWave(s);
 		}
 	}
+
 	sceneChange = false;
+
+#ifdef _DEBUG
+#else
+	if (scene == "scene8")
+	{
+		faile = name + "stage.csv";
+		reading_file.open(faile, std::ios::in);
+		string s;
+		vector<vector<short>>map;
+		while (getline(reading_file, s))
+		{
+			string tmp = "";
+			istringstream stream(s);
+			vector<short> m;
+			// ‹æØ‚è•¶š‚ª‚È‚­‚È‚é‚Ü‚Å•¶š‚ğ‹æØ‚Á‚Ä‚¢‚­
+			while (getline(stream, tmp, ','))
+			{
+				// ‹æØ‚ç‚ê‚½•¶š‚ªtmp‚É“ü‚é
+				m.push_back(atoi(tmp.c_str()));
+			}
+			map.push_back(m);
+		}
+		reading_file.close();
+		for (int i = 0; i < map.size(); i++)
+		{
+			for (int j = 0; j < map[i].size(); j++)
+			{
+				CollisionObj* c = nullptr;
+				if (map[i][j] == 0)
+				{
+					c = objM->CopyAdd<CollisionObj>("YUKA", "B");
+				}
+				else if (map[i][j] == 1)
+				{
+					c = objM->CopyAdd<CollisionObj>("BOX", "B");
+				}
+				else if (map[i][j] == 2)
+				{
+					c = objM->CopyAdd<CollisionObj>("SANKAKU", "B");
+					CollisionObj* d = objM->CopyAdd<CollisionObj>("YUKA", "B");
+					d->SetPos({ 4.f * j - 20,-5,20.f - 4.f * i + 20 });
+					d->SetScale({ 2,1,2 });
+				}
+				c->SetPos({ 4.f * j - 20,-5,20.f - 4.f * i + 20 });
+				c->SetScale({ 2,1,2 });
+			}
+		}
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		obj0->NormalInitialize();
+		Camera* c = dynamic_cast<Camera*>(cameraM->GetCamera("mainCamera"));
+		c->CameraInitialize(obj0);
+	}
+#endif
 }
 
 void IF::Scene::StaticInitialize()
@@ -377,25 +431,29 @@ void IF::Scene::Update()
 		}
 		else if (sceneNumber == 4)
 		{
-			SceneManager::Instance()->SceneChange("MainScene");
+			SceneManager::Instance()->SceneChange("scene8");
 		}
 		else if (sceneNumber == 5)
 		{
-			SceneManager::Instance()->SceneChange("scene");
+			SceneManager::Instance()->SceneChange("MainScene");
 		}
 		else if (sceneNumber == 6)
 		{
-			SceneManager::Instance()->SceneChange("scene1");
+			SceneManager::Instance()->SceneChange("scene");
 		}
 		else if (sceneNumber == 7)
 		{
-			SceneManager::Instance()->SceneChange("scene2");
+			SceneManager::Instance()->SceneChange("scene1");
 		}
 		else if (sceneNumber == 8)
 		{
-			SceneManager::Instance()->SceneChange("scene5");
+			SceneManager::Instance()->SceneChange("scene2");
 		}
 		else if (sceneNumber == 9)
+		{
+			SceneManager::Instance()->SceneChange("scene5");
+		}
+		else if (sceneNumber == 10)
 		{
 			SceneManager::Instance()->SceneChange("scene4");
 		}
@@ -421,6 +479,14 @@ void IF::Scene::Update()
 		DebugUpdate();
 		return;
 	}
+
+	if (nowScene == "scene8")
+	{
+		Normal* obj0 = objM->GetAddress<Normal>("Normal");
+		obj0->NormalUpdate();
+		if (Input::Input::Instance()->KeyTriggere(DIK_R))obj0->SetPos({0,0,10});
+	}
+
 	cameraM->AutoUpdate();
 	objM->Update();
 	spriteM->Update();
@@ -437,13 +503,23 @@ void IF::Scene::Update()
 
 
 	ImGui::Begin(s.c_str());
-	ImGui::Text("camera : arrow keys");
-	ImGui::Text("camera reset : C key");
-	ImGui::Text("Next Scene : Enter key");
-	if (nowScene == "scene3")
+	if (nowScene == "scene8")
 	{
+		ImGui::Text("object reset : R key");
+		ImGui::Text("Next Scene : Enter key");
 		ImGui::Text("ball movement : Controller L stick");
 		ImGui::Text("ball jump : Controller ABXY");
+	}
+	else
+	{
+		ImGui::Text("camera : arrow keys");
+		ImGui::Text("camera reset : C key");
+		ImGui::Text("Next Scene : Enter key");
+		if (nowScene == "scene3")
+		{
+			ImGui::Text("ball movement : Controller L stick");
+			ImGui::Text("ball jump : Controller ABXY");
+		}
 	}
 	ImGui::End();
 	static float ambient[3] = { 0.4, 0.4, 0.4 };
