@@ -103,15 +103,8 @@ bool IF::MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector
 
 	vector<Triangle>::const_iterator it = triangles.cbegin();
 
-	int i = 0;
 	for (; it != triangles.cend(); ++it)
 	{
-		if (i == 5 || i == 9) {
-			static int a = 0;
-			a++;
-		}
-		i++;
-
 		Vector3 tempInter;
 		const Triangle& triangle = *it;
 		if (Collision::CheckRayTriangle(localRay, triangle, nullptr, &tempInter))

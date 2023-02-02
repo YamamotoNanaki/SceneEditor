@@ -484,7 +484,7 @@ void IF::Scene::Update()
 	{
 		Normal* obj0 = objM->GetAddress<Normal>("Normal");
 		obj0->NormalUpdate();
-		if (Input::Input::Instance()->KeyTriggere(DIK_R))obj0->SetPos({0,0,10});
+		if (Input::Input::Instance()->KeyTriggere(DIK_R))obj0->SetPos({ 0,0,10 });
 	}
 
 	cameraM->AutoUpdate();
@@ -726,9 +726,50 @@ void IF::Scene::Update()
 		RayObj* ray = objM->GetAddress<RayObj>("RayObj");
 		Float3 r = ray->GetPos();
 		float p[3] = { r.x,r.y,r.z };
+		static bool a = true;
 		ImGui::Begin("object move");
+		ImGui::Checkbox("auto", &a);
 		ImGui::DragFloat3("Ray", p, 0.1);
 		ImGui::End();
+		if (a)
+		{
+			static int m = 0;
+			switch (m)
+			{
+			case 0:
+				p[0] -= 0.1f;
+				if (p[0] < -10)
+				{
+					p[0] = -10;
+					m++;
+				}
+				break;
+			case 1:
+				p[1] -= 0.1f;
+				if (p[1] < -5.5)
+				{
+					p[1] = -5.5;
+					m++;
+				}
+				break;
+			case 2:
+				p[0] += 0.1f;
+				if (p[0] > 10)
+				{
+					p[0] = 10;
+					m++;
+				}
+				break;
+			case 3:
+				p[1] += 0.1f;
+				if (p[1] > 5)
+				{
+					p[1] = 5;
+					m = 0;
+				}
+				break;
+			}
+		}
 		ray->SetPos({ p[0],p[1],p[2] });
 		obj0->SetPos({ p[0],p[1] - obj0->GetScale().y,p[2] });
 		obj0->SetColor(ray->GetColor());
@@ -743,10 +784,35 @@ void IF::Scene::Update()
 		Float3 r = ray->GetPos();
 		float p[3] = { r.x,r.y,r.z };
 		static bool b = false;
+		static bool a = true;
 		ImGui::Begin("object move");
+		ImGui::Checkbox("auto", &a);
 		ImGui::DragFloat3("Ray", p, 0.1);
 		ImGui::Checkbox("All", &b);
 		ImGui::End();
+		if (a)
+		{
+			static int m = 0;
+			switch (m)
+			{
+			case 0:
+				p[0] -= 0.1f;
+				if (p[0] < -10)
+				{
+					p[0] = -10;
+					m++;
+				}
+				break;
+			case 1:
+				p[0] += 0.1f;
+				if (p[0] > 0)
+				{
+					p[0] = 0;
+					m = 0;
+				}
+				break;
+			}
+		}
 		ray->SetPos({ p[0],p[1],p[2] });
 		ray->isOnce = !b;
 		obj0->SetPos({ p[0],p[1] - obj0->GetScale().y,p[2] });
@@ -758,9 +824,50 @@ void IF::Scene::Update()
 	{
 		SphereObject* s = objM->GetAddress<SphereObject>("SphereObject");
 		float p[3] = { s->GetPos().x,s->GetPos().y,s->GetPos().z };
+		static bool a = true;
 		ImGui::Begin("object move");
+		ImGui::Checkbox("auto", &a);
 		ImGui::DragFloat3("Sphere", p, 0.1);
 		ImGui::End();
+		if (a)
+		{
+			static int m = 0;
+			switch (m)
+			{
+			case 0:
+				p[0] -= 0.1f;
+				if (p[0] < -10)
+				{
+					p[0] = -10;
+					m++;
+				}
+				break;
+			case 1:
+				p[1] -= 0.1f;
+				if (p[1] < -5.5)
+				{
+					p[1] = -5.5;
+					m++;
+				}
+				break;
+			case 2:
+				p[0] += 0.1f;
+				if (p[0] > 0)
+				{
+					p[0] = 0;
+					m++;
+				}
+				break;
+			case 3:
+				p[1] += 0.1f;
+				if (p[1] > 0)
+				{
+					p[1] = 0;
+					m = 0;
+				}
+				break;
+			}
+		}
 		s->SetPos({ p[0],p[1],p[2] });
 		shadowActive[0] = false;
 		shadowActive[1] = false;
