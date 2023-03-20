@@ -357,6 +357,9 @@
     <ClInclude Include="Engine\2d\PostEffect.h">
       <Filter>Header Files\Engine\2d</Filter>
     </ClInclude>
+    <ClInclude Include="Metaball.h">
+      <Filter>Header Files\Engine\Efect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\2d\DebugText.cpp">
@@ -565,6 +568,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Collision\SphereCollider.cpp">
       <Filter>Source Files\Engine\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Metaball.cpp">
+      <Filter>Source Files\Engine\Efect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -85,7 +85,7 @@ namespace IF
 		bool deleteFlag = false;
 
 	public:
-		void Initialize();
+		virtual void Initialize();
 		static void VIInitialize();
 		void MatUpdate();
 		virtual void Update();

@@ -33,13 +33,13 @@ void IF::Scene::Initialize()
 	lightM->DefaultLightSetting();
 	for (int i = 0; i < 3; i++)
 	{
-		lightM->SetDirLightActive(i, false);
+		lightM->SetDirLightActive(i, true);
 		lightM->SetPointLightActive(i, false);
 		lightM->SetSpotLightActive(i, false);
 	}
 	lightM->SetAmbientColor({ 1, 1, 1 });
-	lightM->SetDirLightActive(0, true);
-	lightM->SetDirLightDir(0, { -1,-1,0.7 });
+	//lightM->SetDirLightActive(0, true);
+	//lightM->SetDirLightDir(0, { -1,-1,0.7 });
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));

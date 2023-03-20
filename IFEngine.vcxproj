@@ -253,6 +253,7 @@
     <ClInclude Include="Engine\Other\Timer.h" />
     <ClInclude Include="Engine\Other\Util.h" />
     <ClInclude Include="Engine\Sound\Sound.h" />
+    <ClInclude Include="Metaball.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="Engine\Other\Util.cpp" />
     <ClCompile Include="Engine\Sound\Sound.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Metaball.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Fire.cpp" />
