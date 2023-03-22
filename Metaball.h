@@ -19,6 +19,6 @@ namespace IF
 
 	private:
 		static Vector3 VertexInterp(float isolevel, Vector3 p1, Vector3 p2, float valp1, float valp2);
-		static void CreateTexture();
+		static void DataTransferGPU();
 	};
 }
