@@ -607,6 +607,15 @@
     <FxCompile Include="Data\Shaders\ModelAnimVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
+    <FxCompile Include="Data\Shaders\MetaballGS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shaders\MetaballPS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shaders\MetaballVS.hlsl">
+      <Filter>Shader Files</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\Sprite.hlsli">
@@ -619,6 +628,9 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Data\Shaders\ModelAnim.hlsli">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Data\Shaders\Metaball.hlsli">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "Metaball.h"
 #include "Texture.h"
+#include "Graphic.h"
 #include <cstdint>
 
 using namespace IF;
@@ -13,6 +14,7 @@ void IF::Metaball::StaticInitialize()
 {
 	//ルックアップテーブルをテクスチャにして送信
 	DataTransferGPU();
+	Graphic::Instance()->InitializeMetaball(Texture::Instance()->descRangeSRV);
 }
 
 void IF::Metaball::DataTransferGPU()

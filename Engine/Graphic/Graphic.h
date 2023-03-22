@@ -31,6 +31,7 @@ namespace IF
 			ANIMINVSRC,		//15
 			OUTLINE,		//16
 			NOBLEND,		//17
+			METABALL,		//18
 		};
 	}
 	namespace ShaderCode
@@ -49,6 +50,9 @@ namespace IF
 			vsA,		//9
 			psA,		//10
 			gsA,		//11
+			vsM,		//9
+			psM,		//10
+			gsM,		//11
 		};
 	}
 	namespace ShaderCompile
@@ -71,7 +75,7 @@ namespace IF
 
 	public:
 		ComPtr<ID3D12RootSignature> rootsignature;
-		ComPtr<ID3D12PipelineState> pipelinestate[18]{ nullptr };
+		ComPtr<ID3D12PipelineState> pipelinestate[19]{ nullptr };
 
 	public:
 		void CompillerArray(LPCWSTR fillname, int num);
@@ -80,6 +84,7 @@ namespace IF
 		void InitializeFBX(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, LPCWSTR ps, LPCWSTR gs);
 		void Initialize2D(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs, LPCWSTR ps);
 		void InitializeParticle(D3D12_DESCRIPTOR_RANGE& descRangeSRV);
+		void InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV);
 		void DrawBlendMode(Blend::Blend blend = Blend::NORMAL);
 		static Graphic* Instance();
 
