@@ -11,7 +11,6 @@
 #include "SceneManager.h"
 #include "Collision.h"
 #include "Window.h"
-#include "Metaball.h"
 #include <fstream>
 #include <iostream>
 
@@ -208,7 +207,7 @@ void IF::Scene::InputJson(std::string failename)
 			tex->LoadTexture(i);
 		}
 		once = true;
-		Metaball::StaticInitialize();
+		metaball.Initialize();
 	}
 
 	type = "Model";

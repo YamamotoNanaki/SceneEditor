@@ -8,13 +8,130 @@ using namespace std;
 
 void IF::Metaball::Initialize()
 {
-}
-
-void IF::Metaball::StaticInitialize()
-{
 	//ルックアップテーブルをテクスチャにして送信
 	DataTransferGPU();
 	Graphic::Instance()->InitializeMetaball(Texture::Instance()->descRangeSRV);
+
+	TransferConstBuffer();
+
+	VertexPos vertices[] = {
+		// x   y   z        u    v
+		//前
+		{{0, 0, 0}},	//左下
+	};
+
+	vi.SetVerticleIndex(vertices, _countof(vertices));
+	vi.Initialize();
+
+	//
+	UpdateMargingCubesSpace();
+	UpdateNumSpheres();
+}
+
+void IF::Metaball::Update()
+{
+	Matrix matWorld,matScale, matTrams, matRot;
+
+	//スケール、回転、平行移動
+	matScale = MatrixScaling(scale.x, scale.y, scale.z);
+	matTrams = MatrixTranslation(pos.x, pos.y, pos.z);
+	matRot = MatrixIdentity();
+	matRot *= MatrixRotationZ(rota.z);
+	matRot *= MatrixRotationX(rota.x);
+	matRot *= MatrixRotationY(rota.y);
+	//ワールド行列の合成
+	matWorld = MatrixIdentity();
+	matWorld *= matScale;
+	matWorld *= matRot;
+	matWorld *= matTrams;
+
+	//定数バッファへのデータ転送
+	constMapMatrix->mat = matWorld * *camera->GetMatView() * *camera->GetMatPro();
+}
+
+IF::Metaball::~Metaball()
+{
+	matrixTransform->Unmap(0, nullptr);
+	margingCubesSpaceTransform->Unmap(0, nullptr);
+	numSpheresTransform->Unmap(0, nullptr);
+}
+
+void IF::Metaball::Draw()
+{
+}
+
+void IF::Metaball::UpdateMargingCubesSpace()
+{
+	const Vector3 marchingSpace = { margingSpaceSize, margingSpaceSize, margingSpaceSize };
+	const Vector3 numCells = Vector3(numMarchingSegments, numMarchingSegments, numMarchingSegments);
+	const Vector3 cellSize = Vector3(marchingSpace.x / numCells.x, marchingSpace.y / numCells.y, marchingSpace.z / numCells.z);
+
+	const float numVertices = numCells.x * numCells.y * numCells.z * 15;  // 1セルの頂点の数は15個
+
+	//constbufferに転送
+	constMapMargingCubesSpace->cellSize = cellSize;
+	constMapMargingCubesSpace->numVertices = numVertices;
+	constMapMargingCubesSpace->numCells = numCells;
+}
+
+void IF::Metaball::UpdateNumSpheres()
+{
+	MetaballSpheres m;
+	m.pos = { 0,0,0 };
+	m.scale = { 1,1,1 };
+	m.color = { 0.7,0.4,0.2,1 };
+	m.activ = true;
+	//constbufferに転送
+	constMapNumSpheres->sphere[0] = m;
+}
+
+void IF::Metaball::TransferConstBuffer()
+{
+	HRESULT result;
+	//定数バッファのヒープ設定
+	D3D12_HEAP_PROPERTIES heapProp{};
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//定数バッファのリソース設定
+	D3D12_RESOURCE_DESC resdesc{};
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = (sizeof(ConstBufferMatrix) + 0xff) & ~0xff;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//定数バッファの生成
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
+	result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&matrixTransform));
+	assert(SUCCEEDED(result));
+	//定数バッファのマッピング
+	result = matrixTransform->Map(0, nullptr, (void**)&constMapMatrix);
+	assert(SUCCEEDED(result));
+
+	resdesc.Width = (sizeof(ConstBufferMargingCubesSpace) + 0xff) & ~0xff;
+	//定数バッファの生成
+	device = DirectX12::Instance()->GetDevice();
+	result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&margingCubesSpaceTransform));
+	assert(SUCCEEDED(result));
+	//定数バッファのマッピング
+	result = margingCubesSpaceTransform->Map(0, nullptr, (void**)&constMapMargingCubesSpace);
+	assert(SUCCEEDED(result));
+
+	resdesc.Width = (sizeof(ConstBufferNumSpheres) + 0xff) & ~0xff;
+	//定数バッファの生成
+	device = DirectX12::Instance()->GetDevice();
+	result = device->CreateCommittedResource(
+		&heapProp, D3D12_HEAP_FLAG_NONE, &resdesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&numSpheresTransform));
+	assert(SUCCEEDED(result));
+	//定数バッファのマッピング
+	result = numSpheresTransform->Map(0, nullptr, (void**)&constMapNumSpheres);
+	assert(SUCCEEDED(result));
+
 }
 
 void IF::Metaball::DataTransferGPU()

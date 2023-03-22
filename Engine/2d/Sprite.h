@@ -14,11 +14,6 @@ namespace IF
 		Float4 color;	//êF(RGBA)
 	};
 
-	struct ConstBufferMatrix
-	{
-		Matrix mat;
-	};
-
 	class Sprite
 	{
 	protected:

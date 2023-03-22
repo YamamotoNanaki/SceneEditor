@@ -14,6 +14,7 @@
 #include "DebugText.h"
 #include "ParticleManager.h"
 #include "PostEffect.h"
+#include "Metaball.h"
 
 namespace IF
 {
@@ -40,6 +41,8 @@ namespace IF
 		std::string nowScene;
 		PostEffect* postEffect = nullptr;
 		Normal* background = nullptr;
+
+		Metaball metaball;
 
 	public:
 		void InputJson(std::string failename);

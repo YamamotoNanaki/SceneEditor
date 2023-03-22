@@ -4,6 +4,7 @@
 namespace IF
 {
 	static const int MAX_BONES = 128;
+	static const int MAX_METABALL = 128;
 	struct ConstBufferDataColor
 	{
 		Float4 color;	//êF(RGBA)
@@ -47,5 +48,30 @@ namespace IF
 	struct ConstBufferDataSkin
 	{
 		Matrix bones[MAX_BONES];
+	};
+	struct ConstBufferMatrix
+	{
+		Matrix mat;
+	};
+	struct ConstBufferMargingCubesSpace
+	{
+		Vector3 numCells;
+		float numVertices;
+		Vector3 cellSize;
+		float pad;
+	};
+
+	struct MetaballSpheres
+	{
+		Float3 pos = { 0,0,0 };
+		bool activ = false;
+		Float4 color = { 1,1,1,1 };
+		Float3 scale = { 1,1,1 };
+		float pad;
+	};
+
+	struct ConstBufferNumSpheres
+	{
+		MetaballSpheres sphere[MAX_METABALL];
 	};
 }
