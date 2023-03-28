@@ -15,7 +15,7 @@ void IF::Metaball::Initialize()
 	TransferConstBuffer();
 
 	VertexPos vertices[] = {
-		// x   y   z        u    v
+		// x   y   z
 		//ëO
 		{{0, 0, 0}},	//ç∂â∫
 	};
