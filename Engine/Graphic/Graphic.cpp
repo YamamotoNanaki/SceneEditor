@@ -387,7 +387,7 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;									//ミップマップ最大値
 	samplerDesc.MinLOD = 0.0f;												//ミップマップ最小値
 	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;			//ピクセルシェーダーからのみ可視
+	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;			//全てのシェーダーから可視
 
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;

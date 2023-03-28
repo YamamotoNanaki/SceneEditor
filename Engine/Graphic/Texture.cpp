@@ -313,13 +313,13 @@ void IF::Texture::OutputJson(nlohmann::json& j)
 	}
 }
 
-void IF::Texture::SetTexture(unsigned short texHandle)
+void IF::Texture::SetTexture(unsigned short texHandle,UINT rootParameterIndex)
 {
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ID3D12DescriptorHeap* heaps[] = { srvHeap.Get() };
 	commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 
-	commandList->SetGraphicsRootDescriptorTable(1, tex[texHandle].GPUHandle);
+	commandList->SetGraphicsRootDescriptorTable(rootParameterIndex, tex[texHandle].GPUHandle);
 }
 
 unsigned short IF::Texture::GetTexture(const std::string filename)

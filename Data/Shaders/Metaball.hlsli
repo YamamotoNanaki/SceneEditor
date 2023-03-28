@@ -1,13 +1,30 @@
-cbuffer cbuff0 : register(b0)
+cbuffer ConstBufferBillboard : register(b0)
 {
-    float4 color; //色(RGBA)
+    matrix mat; //行列
+    matrix matBillboard;
 };
 
-cbuffer ConstBufferDataTransform : register(b1)
+cbuffer ConstBufferMargingCubesSpace : register(b1)
 {
-    matrix mat; //3D変換行列
-    matrix matBillboard; //ビルボード行列
+    float3 numCells;
+    float numVertices;
+    float3 cellSize;
+}
+
+struct MetaballSpheres
+{
+    float3 pos;
+    bool activ;
+    float4 color;
+    float3 scale;
 };
+
+static const int MAX_METABALL = 128;
+
+cbuffer ConstBufferNumSpheres : register(b2)
+{
+    MetaballSpheres sphere[MAX_METABALL];
+}
 
 struct VSOutput
 {

@@ -1,4 +1,4 @@
-#include "Particle.hlsli"
+#include "Metaball.hlsli"
 
 //矩形の頂点数
 static const uint vnum = 4;
@@ -32,7 +32,7 @@ void main(
     for (uint i = 0; i < vnum; i++)
     {
         float4 offset = mul(matBillboard, offset_array[i]); //ビルボード化
-        element.svpos = input[0].pos + offset; //頂点をずらす
+        element.svpos = input[0].pos + offset_array[i]; //頂点をずらす
         element.svpos = mul(mat, element.svpos); //ワールド変換
         element.uv = uv_array[i]; //テクスチャを張る
         output.Append(element); //出力

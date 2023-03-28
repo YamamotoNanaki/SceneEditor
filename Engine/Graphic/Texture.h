@@ -43,7 +43,7 @@ namespace IF
 	public:
 		static Texture* Instance();
 		void Initialize();
-		void SetTexture(unsigned short texHandle);
+		void SetTexture(unsigned short texHandle, UINT rootParameterIndex = 1);
 		unsigned short GetTexture(const std::string filename);
 		unsigned short LoadTexture(const std::string filename, int number = -1);
 		void GUIInit();

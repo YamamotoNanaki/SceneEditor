@@ -1,4 +1,4 @@
-#include "Particle.hlsli"
+#include "Metaball.hlsli"
 
 VSOutput main(float4 pos : POSITION)
 {

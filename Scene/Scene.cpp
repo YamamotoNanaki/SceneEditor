@@ -311,6 +311,7 @@ void IF::Scene::Update()
 
 #ifdef _DEBUG
 	DebugUpdate();
+	metaball.Update();
 #else
 	cameraM->AutoUpdate();
 	lightM->Update();
@@ -355,6 +356,9 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(Blend::NOBLEND);
 	postEffect->Draw();
 	particleM->Draw();
+
+	metaball.DrawBefore();
+	metaball.Draw();
 
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	graph->DrawBlendMode(Blend::NORMAL2D);

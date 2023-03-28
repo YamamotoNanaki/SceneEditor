@@ -1,5 +1,6 @@
 #pragma once
 //#include "Particle.h"
+#include "Texture.h"
 #include "ComponentObj.h"
 #include <wrl.h>
 
@@ -9,7 +10,7 @@ namespace IF
 	{
 	private:
 		Vector3 pos;
-		Vector3 scale;
+		Vector3 scale = { 1,1,1 };
 		Vector3 rota;
 
 		uint16_t numMarchingSegments = 30;  // セルの分割数
@@ -18,11 +19,10 @@ namespace IF
 		uint16_t smoothUnionValue = 6;            // メタボールの結合の度合い
 		Float3 sphereColor = { 255, 0, 0 };  // メタボールの色
 		PV vi;
-		ConstBuff cb;
 		ICamera* camera;
 		//定数バッファとマップ
 		Microsoft::WRL::ComPtr<ID3D12Resource> matrixTransform;
-		ConstBufferMatrix* constMapMatrix;
+		ConstBufferBillboard* constMapMatrix;
 
 		//定数バッファとマップ
 		Microsoft::WRL::ComPtr<ID3D12Resource> margingCubesSpaceTransform;
@@ -32,11 +32,16 @@ namespace IF
 		Microsoft::WRL::ComPtr<ID3D12Resource> numSpheresTransform;
 		ConstBufferNumSpheres* constMapNumSpheres;
 
+		Texture::Tex* tex;
+		const short texNum = 1023;
+
 	public:
 		void Initialize()/*override*/;
 		void Update();
 		~Metaball();
 		void Draw();
+		void DrawBefore();
+		void DrawAfter();
 
 	private:
 		void UpdateMargingCubesSpace();
