@@ -81,7 +81,7 @@ void IF::Metaball::DrawBefore()
 	commandList->SetGraphicsRootSignature(g->rootsignature.Get());
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	//‰¼
-	Texture::Instance()->SetTexture(1);
+	Texture::Instance()->SetTexture(texNum);
 	//Texture::Instance()->SetTexture(texNum, 2);
 }
 

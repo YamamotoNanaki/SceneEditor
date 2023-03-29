@@ -1,6 +1,6 @@
 cbuffer ConstBufferBillboard : register(b0)
 {
-    matrix mat; //行列
+    matrix mat; //変換行列
     matrix matBillboard;
 };
 
@@ -29,10 +29,11 @@ cbuffer ConstBufferNumSpheres : register(b2)
 struct VSOutput
 {
     float4 pos : POSITION; //頂点座標
+    float vDiscard : PSIZE;
 };
 
-struct GSOutput
-{
-    float4 svpos : SV_POSITION; //頂点座標
-    float2 uv : TEXCOORD; //uv値
-};
+//struct GSOutput
+//{
+//    float4 svpos : SV_POSITION; //頂点座標
+//    float2 uv : TEXCOORD; //uv値
+//};

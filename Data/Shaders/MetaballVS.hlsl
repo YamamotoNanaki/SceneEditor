@@ -1,9 +1,10 @@
-float3 position;
+#include "Metaball.hlsli"
+
 float vertexId;
 
+Texture2D<float> tex : register(t0);
+
 uniform float time;
-uniform float3 numCells;
-uniform float3 cellSize;
 uniform sampler2D triTableTexture;
 
 uniform float effectValue;
@@ -13,14 +14,31 @@ uniform float4x4 modelViewMatrix;
 uniform float3x3 normalMatrix;
 uniform float4x4 projectionMatrix;
 uniform float3 cameraPosition;
-uniform float4 randomValues[NUM_SPHERES];
+uniform float4 randomValues[MAX_METABALL];
 
-float3 vPos;
-float3 vNormal;
-float vDiscard;
+//float3 vPos;
+//float3 vNormal;
 
-//#pragma glslify: PI = require('../../_utils/glsl/PI.glsl)
-//#pragma glslify: rotateVec3 = require('../../_utils/glsl/rotateVec3.glsl)
+float3 rotateVec3(float3 p, float angle, float3 axis)
+{
+    float3 a = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float r = 1.0 - c;
+    float3x3 m = float3x3(
+    a.x * a.x * r + c,
+    a.y * a.x * r + a.z * s,
+    a.z * a.x * r - a.y * s,
+    a.x * a.y * r - a.z * s,
+    a.y * a.y * r + c,
+    a.z * a.y * r + a.x * s,
+    a.x * a.z * r + a.y * s,
+    a.y * a.z * r - a.x * s,
+    a.z * a.z * r + c
+  );
+    return mul(m, p);
+}
+
 static const float PI = acos(-1);
 const float PI2 = PI * 2.0;
 const float3 AXIS_X = float3(1.0, 0.0, 0.0);
@@ -28,21 +46,21 @@ const float3 AXIS_Y = float3(0.0, 1.0, 0.0);
 const float3 AXIS_Z = float3(0.0, 0.0, 1.0);
 
 // 球の距離関数
-float sphere(float3 p, float r)
+float sphere_func(float3 p, float r)
 {
     return length(p) - r;
 }
 
 // メタボールをランダムに動かす
-//float randomObj(float3 p, int i, float4 randomValues)
-//{
-//    float t = fmod(time * 0.002 * (0.2 + randomValues.w) + randomValues.z * 100.0, PI2);
-//    float3 translate = (randomValues.xyz * 2.0 - 1.0) * 20.0 * sin(t);
-//    float r = 6.0 + randomValues.x * 6.0;
-//    float l = cellSize.x;
-//    p -= translate;
-//    return sphere(p, r);
-//}
+float randomObj(float3 p, int i, float4 randomValues)
+{
+    float t = fmod(time * 0.002 * (0.2 + randomValues.w) + randomValues.z * 100.0, PI2);
+    float3 translate = (randomValues.xyz * 2.0 - 1.0) * 20.0 * sin(t);
+    float r = 6.0 + randomValues.x * 6.0;
+    float l = cellSize.x;
+    p -= translate;
+    return sphere_func(p, r);
+}
 
 // Smooth Union
 float opSmoothUnion(float d1, float d2, float k)
@@ -61,7 +79,7 @@ float getDistance(float3 p)
 
     float result = 0.0;
     float d;
-    for (int i = 0; i < NUM_SPHERES; i++)
+    for (int i = 0; i < MAX_METABALL; i++)
     {
         d = randomObj(p, i, randomValues[i]);
         if (result == 0.0)
@@ -113,8 +131,9 @@ int or(int a, int b)
     return result;
 }
 
-void main()
+VSOutput main()
 {
+    VSOutput vsout;
     float cellId = floor(vertexId / 15.0); // セルのID
     float vertexIdInCell = fmod(vertexId, 15.0); // セル内での頂点のID
 
@@ -163,22 +182,16 @@ void main()
 
   // 続いて現在の頂点がどの辺上に配置されるかを調べる
   // つまり、ルックアップテーブルのどの値を参照するかのインデックスを求める
-    float edgeIndex =
+    float edgeIndex = tex[float2((cubeIndex * 16.0 + vertexIdInCell) / 4096.0, 0.0)] * 255.0;
+    float3 pos = sphere[0].pos;
 
-    texture2D( triTableTexture,
-
-    float2
-    ((cubeIndex * 16.0 + vertexIdInCell) / 4096.0, 0.0)).
-    a * 255.0;
-    float3 pos = position;
-
-    vDiscard = 0.0;
+    vsout.vDiscard = 0.0;
     if (edgeIndex == 255.0)
     {
     // edgeIndexが255の場合、頂点は破棄
-        vNormal = float3(0.0, 0.0, 1.0);
-        pos = position;
-        vDiscard = 1.0;
+        //vNormal = float3(0.0, 0.0, 1.0);
+        pos = sphere[0].pos;
+        vsout.vDiscard = 1.0;
     }
     else if (edgeIndex == 0.0)
     {
@@ -229,13 +242,15 @@ void main()
         pos = interpolate(c3, c7, v3, v7);
     }
 
-    vNormal = getNormal(pos);
+    //vNormal = getNormal(pos);
 
   // エフェクト
-    vec3 effectSize = cellSize * 1.5;
+    float3 effectSize = cellSize * 1.5;
     pos = lerp(pos, floor(pos / effectSize + 0.5) * effectSize, effectValue);
 
-    vPos = pos;
+    //vPos = pos;
 
-    gl_Position = projectionMatrix * modelViewMatrix * float4(pos, 1.0);
+    vsout.pos = mul(mat, float4(pos, 1.0));
+    
+    return vsout;
 }

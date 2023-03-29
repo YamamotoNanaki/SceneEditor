@@ -607,9 +607,6 @@
     <FxCompile Include="Data\Shaders\ModelAnimVS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
-    <FxCompile Include="Data\Shaders\MetaballGS.hlsl">
-      <Filter>Shader Files</Filter>
-    </FxCompile>
     <FxCompile Include="Data\Shaders\MetaballPS.hlsl">
       <Filter>Shader Files</Filter>
     </FxCompile>
