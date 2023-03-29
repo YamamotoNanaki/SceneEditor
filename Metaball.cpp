@@ -40,6 +40,11 @@ void IF::Metaball::Update()
 	//定数バッファへのデータ転送
 	constMapMatrix->mat = matWorld * *camera->GetMatView() * *camera->GetMatPro();
 	constMapMatrix->matBillboard = View::matBillBoard;
+
+	static float _ftime = 0;
+	constMapNumSpheres->time = _ftime;
+	_ftime+=0.2;
+	if (_ftime >= D3D12_FLOAT32_MAX)_ftime = 0;
 }
 
 IF::Metaball::~Metaball()
