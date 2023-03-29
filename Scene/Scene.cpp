@@ -295,6 +295,7 @@ void IF::Scene::InputJson(std::string failename)
 	reading_file.close();
 	particleM->InputJson(j7);
 
+	metaball.GetCamera();
 	nowScene = failename;
 }
 
@@ -344,6 +345,10 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode();
 	objM->Draw();
 
+	metaball.DrawBefore();
+	metaball.Draw();
+
+
 	postEffect->DrawAfter();
 
 	DirectX12::Instance()->DrawBefore();
@@ -356,9 +361,6 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(Blend::NOBLEND);
 	postEffect->Draw();
 	particleM->Draw();
-
-	metaball.DrawBefore();
-	metaball.Draw();
 
 	Sprite::DrawBefore(graph->rootsignature.Get());
 	graph->DrawBlendMode(Blend::NORMAL2D);

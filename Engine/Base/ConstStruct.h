@@ -66,6 +66,7 @@ namespace IF
 		Float3 pos = { 0,0,0 };
 		bool activ = false;
 		Float4 color = { 1,1,1,1 };
+		Float4 randomValues;
 		Float3 scale = { 1,1,1 };
 		float pad;
 	};
@@ -73,5 +74,9 @@ namespace IF
 	struct ConstBufferNumSpheres
 	{
 		MetaballSpheres sphere[MAX_METABALL];
+		float vertexId;
+		float time;
+		float effectValue;
+		float smoothUnionValue;
 	};
 }

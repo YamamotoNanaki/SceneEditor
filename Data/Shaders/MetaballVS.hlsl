@@ -1,23 +1,7 @@
 #include "Metaball.hlsli"
 
-float vertexId;
 
 Texture2D<float> tex : register(t0);
-
-uniform float time;
-uniform sampler2D triTableTexture;
-
-uniform float effectValue;
-uniform float smoothUnionValue;
-
-uniform float4x4 modelViewMatrix;
-uniform float3x3 normalMatrix;
-uniform float4x4 projectionMatrix;
-uniform float3 cameraPosition;
-uniform float4 randomValues[MAX_METABALL];
-
-//float3 vPos;
-//float3 vNormal;
 
 float3 rotateVec3(float3 p, float angle, float3 axis)
 {
@@ -39,11 +23,6 @@ float3 rotateVec3(float3 p, float angle, float3 axis)
     return mul(m, p);
 }
 
-static const float PI = acos(-1);
-const float PI2 = PI * 2.0;
-const float3 AXIS_X = float3(1.0, 0.0, 0.0);
-const float3 AXIS_Y = float3(0.0, 1.0, 0.0);
-const float3 AXIS_Z = float3(0.0, 0.0, 1.0);
 
 // 球の距離関数
 float sphere_func(float3 p, float r)
@@ -54,6 +33,8 @@ float sphere_func(float3 p, float r)
 // メタボールをランダムに動かす
 float randomObj(float3 p, int i, float4 randomValues)
 {
+    static const float PI = acos(-1);
+    static const float PI2 = PI * 2.0;
     float t = fmod(time * 0.002 * (0.2 + randomValues.w) + randomValues.z * 100.0, PI2);
     float3 translate = (randomValues.xyz * 2.0 - 1.0) * 20.0 * sin(t);
     float r = 6.0 + randomValues.x * 6.0;
@@ -72,16 +53,18 @@ float opSmoothUnion(float d1, float d2, float k)
 // 最終的な距離関数
 float getDistance(float3 p)
 {
+    static const float PI = acos(-1);
+    static const float PI2 = PI * 2.0;
   // 適当に回転
     float theta = fmod(time * 0.001, PI2);
-    p = rotateVec3(p, theta, AXIS_Z);
-    p = rotateVec3(p, theta, AXIS_X);
+    p = rotateVec3(p, theta, float3(0.0, 0.0, 1.0));
+    p = rotateVec3(p, theta, float3(1.0, 0.0, 0.0));
 
     float result = 0.0;
     float d;
     for (int i = 0; i < MAX_METABALL; i++)
     {
-        d = randomObj(p, i, randomValues[i]);
+        d = randomObj(p, i, sphere[i].randomValues);
         if (result == 0.0)
             result = d;
         result = opSmoothUnion(result, d, smoothUnionValue);
@@ -131,7 +114,7 @@ int or(int a, int b)
     return result;
 }
 
-VSOutput main()
+VSOutput main(float4 pos : POSITION)
 {
     VSOutput vsout;
     float cellId = floor(vertexId / 15.0); // セルのID
@@ -183,74 +166,74 @@ VSOutput main()
   // 続いて現在の頂点がどの辺上に配置されるかを調べる
   // つまり、ルックアップテーブルのどの値を参照するかのインデックスを求める
     float edgeIndex = tex[float2((cubeIndex * 16.0 + vertexIdInCell) / 4096.0, 0.0)] * 255.0;
-    float3 pos = sphere[0].pos;
+    float3 fpos = sphere[0].pos;
 
     vsout.vDiscard = 0.0;
     if (edgeIndex == 255.0)
     {
     // edgeIndexが255の場合、頂点は破棄
         //vNormal = float3(0.0, 0.0, 1.0);
-        pos = sphere[0].pos;
+        fpos = sphere[0].pos;
         vsout.vDiscard = 1.0;
     }
     else if (edgeIndex == 0.0)
     {
-        pos = interpolate(c0, c1, v0, v1);
+        fpos = interpolate(c0, c1, v0, v1);
     }
     else if (edgeIndex == 1.0)
     {
-        pos = interpolate(c1, c2, v1, v2);
+        fpos = interpolate(c1, c2, v1, v2);
     }
     else if (edgeIndex == 2.0)
     {
-        pos = interpolate(c2, c3, v2, v3);
+        fpos = interpolate(c2, c3, v2, v3);
     }
     else if (edgeIndex == 3.0)
     {
-        pos = interpolate(c3, c0, v3, v0);
+        fpos = interpolate(c3, c0, v3, v0);
     }
     else if (edgeIndex == 4.0)
     {
-        pos = interpolate(c4, c5, v4, v5);
+        fpos = interpolate(c4, c5, v4, v5);
     }
     else if (edgeIndex == 5.0)
     {
-        pos = interpolate(c5, c6, v5, v6);
+        fpos = interpolate(c5, c6, v5, v6);
     }
     else if (edgeIndex == 6.0)
     {
-        pos = interpolate(c6, c7, v6, v7);
+        fpos = interpolate(c6, c7, v6, v7);
     }
     else if (edgeIndex == 7.0)
     {
-        pos = interpolate(c4, c7, v4, v7);
+        fpos = interpolate(c4, c7, v4, v7);
     }
     else if (edgeIndex == 8.0)
     {
-        pos = interpolate(c0, c4, v0, v4);
+        fpos = interpolate(c0, c4, v0, v4);
     }
     else if (edgeIndex == 9.0)
     {
-        pos = interpolate(c1, c5, v1, v5);
+        fpos = interpolate(c1, c5, v1, v5);
     }
     else if (edgeIndex == 10.0)
     {
-        pos = interpolate(c2, c6, v2, v6);
+        fpos = interpolate(c2, c6, v2, v6);
     }
     else if (edgeIndex == 11.0)
     {
-        pos = interpolate(c3, c7, v3, v7);
+        fpos = interpolate(c3, c7, v3, v7);
     }
 
     //vNormal = getNormal(pos);
 
   // エフェクト
     float3 effectSize = cellSize * 1.5;
-    pos = lerp(pos, floor(pos / effectSize + 0.5) * effectSize, effectValue);
+    fpos = lerp(fpos, floor(fpos / effectSize + 0.5) * effectSize, effectValue);
 
     //vPos = pos;
 
-    vsout.pos = mul(mat, float4(pos, 1.0));
-    
+    vsout.pos = mul(mat, float4(fpos, 1.0));
+    //vsout.pos = pos;
     return vsout;
 }

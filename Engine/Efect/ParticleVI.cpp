@@ -7,6 +7,7 @@ using namespace std;
 
 std::vector<VertexPos> PV::vertices;
 D3D12_VERTEX_BUFFER_VIEW PV::vbView{};
+Microsoft::WRL::ComPtr<ID3D12Resource> PV::vertBuff = nullptr;
 
 void IF::PV::SetVerticleIndex(VertexPos* vertices, int vertexCount)
 {

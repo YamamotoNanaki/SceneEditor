@@ -16,6 +16,7 @@ struct MetaballSpheres
     float3 pos;
     bool activ;
     float4 color;
+    float4 randomValues;
     float3 scale;
 };
 
@@ -24,6 +25,10 @@ static const int MAX_METABALL = 128;
 cbuffer ConstBufferNumSpheres : register(b2)
 {
     MetaballSpheres sphere[MAX_METABALL];
+    float vertexId;
+    float time;
+    float effectValue;
+    float smoothUnionValue;
 }
 
 struct VSOutput
@@ -32,8 +37,9 @@ struct VSOutput
     float vDiscard : PSIZE;
 };
 
-//struct GSOutput
-//{
-//    float4 svpos : SV_POSITION; //í∏ì_ç¿ïW
-//    float2 uv : TEXCOORD; //uvíl
-//};
+struct GSOutput
+{
+    float4 svpos : SV_POSITION;
+    float vDiscard : PSIZE;
+};
+

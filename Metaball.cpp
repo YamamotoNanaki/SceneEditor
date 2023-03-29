@@ -6,6 +6,11 @@
 using namespace IF;
 using namespace std;
 
+void IF::Metaball::GetCamera()
+{
+	camera = ObjectManager::Instance()->GetCamera();
+}
+
 void IF::Metaball::Initialize()
 {
 	//ルックアップテーブルをテクスチャにして送信
@@ -14,20 +19,10 @@ void IF::Metaball::Initialize()
 
 	TransferConstBuffer();
 
-	VertexPos vertices[] = {
-		// x   y   z
-		//前
-		{{0, 0, 0}},	//左下
-	};
-
-	vi.SetVerticleIndex(vertices, _countof(vertices));
-	vi.Initialize();
-
 	//
 	UpdateMargingCubesSpace();
 	UpdateNumSpheres();
-
-	camera = ObjectManager::Instance()->GetCamera();
+	GetCamera();
 }
 
 void IF::Metaball::Update()
@@ -37,14 +32,9 @@ void IF::Metaball::Update()
 	//スケール、回転、平行移動
 	matScale = MatrixScaling(scale.x, scale.y, scale.z);
 	matTrams = MatrixTranslation(pos.x, pos.y, pos.z);
-	matRot = MatrixIdentity();
-	matRot *= MatrixRotationZ(rota.z);
-	matRot *= MatrixRotationX(rota.x);
-	matRot *= MatrixRotationY(rota.y);
 	//ワールド行列の合成
 	matWorld = MatrixIdentity();
 	matWorld *= matScale;
-	matWorld *= matRot;
 	matWorld *= matTrams;
 
 	//定数バッファへのデータ転送
@@ -66,8 +56,8 @@ void IF::Metaball::Draw()
 	commandList->IASetVertexBuffers(0, 1, &vi.GetVertexView());
 	//定数バッファビューの設定
 	commandList->SetGraphicsRootConstantBufferView(0, matrixTransform->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(3, margingCubesSpaceTransform->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(4, numSpheresTransform->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(2, margingCubesSpaceTransform->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, numSpheresTransform->GetGPUVirtualAddress());
 	//描画コマンド
 	commandList->DrawInstanced((UINT)vi.GetSize(), 1, 0, 0);
 }
@@ -82,7 +72,6 @@ void IF::Metaball::DrawBefore()
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	//仮
 	Texture::Instance()->SetTexture(texNum);
-	//Texture::Instance()->SetTexture(texNum, 2);
 }
 
 void IF::Metaball::DrawAfter()

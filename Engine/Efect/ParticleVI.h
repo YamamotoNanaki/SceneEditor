@@ -13,7 +13,7 @@ namespace IF
 	class PV
 	{
 	private:
-		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
+		static Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff;
 
 	public:
 		static std::vector<VertexPos> vertices;

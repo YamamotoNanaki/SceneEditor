@@ -10,7 +10,7 @@ namespace IF
 	{
 	private:
 		Vector3 pos;
-		Vector3 scale = { 1,1,1 };
+		Vector3 scale = { 1,1,0 };
 		Vector3 rota;
 
 		uint16_t numMarchingSegments = 30;  // ƒZƒ‹‚Ì•ªŠ„”
@@ -36,6 +36,7 @@ namespace IF
 		const short texNum = 1023;
 
 	public:
+		void GetCamera();
 		void Initialize()/*override*/;
 		void Update();
 		~Metaball();
