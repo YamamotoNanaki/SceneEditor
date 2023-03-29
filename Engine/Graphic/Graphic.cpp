@@ -368,55 +368,7 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 
 	RootParam root(descRangeSRV, 1);
 
-	Blobs.emplace_back(nullptr);
-
-	size_t vsnum = Blobs.size() - 1;
-	// シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(L"Data/Shaders/MetaballVS.hlsl",  // シェーダファイル名
-		nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル	指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0, &Blobs[vsnum], &Blobs[ShaderCode::error]);
-
-	//-------------------------
-
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
-		string error;
-		error.resize(Blobs[ShaderCode::error]->GetBufferSize());
-
-		copy_n((char*)Blobs[ShaderCode::error]->GetBufferPointer(),
-			Blobs[ShaderCode::error]->GetBufferSize(),
-			error.begin());
-		error += "\n";
-		// エラー内容を出力ウィンドウに表示
-		OutputDebugStringA(error.c_str());
-		assert(0);
-	}
-
-	Blobs.emplace_back(nullptr);
-	// シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(L"Data/Shaders/MetaballPS.hlsl",  // シェーダファイル名
-		nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル	指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0, &Blobs[vsnum + 1], &Blobs[ShaderCode::error]);
-
-	//-------------------------
-
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
-		string error;
-		error.resize(Blobs[ShaderCode::error]->GetBufferSize());
-
-		copy_n((char*)Blobs[ShaderCode::error]->GetBufferPointer(),
-			Blobs[ShaderCode::error]->GetBufferSize(),
-			error.begin());
-		error += "\n";
-		// エラー内容を出力ウィンドウに表示
-		OutputDebugStringA(error.c_str());
-		assert(0);
-	}
+	Compiller(L"Data/Shaders/MetaballVS.hlsl", L"Data/Shaders/MetaballPS.hlsl", L"Data/Shaders/MetaballGS.hlsl");
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{// xyz座標
@@ -424,43 +376,7 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 		},
 	};
 
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = {};
-	pipelineDesc.VS.pShaderBytecode = Blobs[vsnum]->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = Blobs[vsnum]->GetBufferSize();
-
-	pipelineDesc.PS.pShaderBytecode = Blobs[vsnum + 1]->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = Blobs[vsnum + 1]->GetBufferSize();
-	//デプスステンシルステートの設定
-	pipelineDesc.DepthStencilState.DepthEnable = true;		//深度テストを行う
-	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;		//深度値フォーマット
-
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;  // 背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
-
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-
-	blenddesc.BlendEnable = true;						//ブレンドを有効にする
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;			//加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;			//ソースの値を100%使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;			//デストの値を  0%使う
-
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;		//1.0f-ソースのアルファ値
-	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	//書き込み許可
-
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
-
-	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
-	pipelineDesc.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
+	GPipeline pipeline(Blobs[ShaderCode::vsM].Get(), Blobs[ShaderCode::psM].Get(), Blobs[ShaderCode::gsM].Get(), inputLayout, _countof(inputLayout));
 
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
 	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//横繰り返し
@@ -489,9 +405,9 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 	assert(SUCCEEDED(result));
 	rootSigBlob->Release();
 
-	pipelineDesc.pRootSignature = rootsignature.Get();
+	pipeline.RootSignature(*rootsignature.Get());
 
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelinestate[18]));
+	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[8], IID_PPV_ARGS(&pipelinestate[18]));
 	assert(SUCCEEDED(result));
 }
 
