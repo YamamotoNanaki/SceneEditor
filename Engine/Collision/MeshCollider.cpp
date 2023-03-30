@@ -15,7 +15,7 @@ void IF::MeshCollider::ConstructTriangle(Model* model)
 
 	for (auto itr : meshes)
 	{
-		vector<unsigned short>& indices = itr->indices;
+		vector<unsigned int>& indices = itr->indices;
 		vector<Vertex>& vertices = itr->vertices;
 		size_t triangleNum = indices.size() / 3;
 		triangles.resize(triangles.size() + triangleNum);

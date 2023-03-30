@@ -31,9 +31,9 @@ bool Model::LoadModel(string name, bool smoothing)
 	vector<Float2> texcode;
 
 	vector<Vertex> vertices;
-	vector<unsigned short> indices;
+	vector<unsigned int> indices;
 
-	short indexCount = 0;
+	int indexCount = 0;
 
 	string line;
 	while (getline(file, line))
@@ -74,7 +74,7 @@ bool Model::LoadModel(string name, bool smoothing)
 			while (getline(line_stream, index_string, ' '))
 			{
 				istringstream index_stream(index_string);
-				unsigned short inP, inT, inN;
+				unsigned int inP, inT, inN;
 				index_stream >> inP;
 				index_stream.seekg(1, ios_base::cur);
 				index_stream >> inT;
@@ -89,7 +89,7 @@ bool Model::LoadModel(string name, bool smoothing)
 
 				if (smoothing)
 				{
-					vi->AddSmoothData(inP, (unsigned short)vertices.size() - 1);
+					vi->AddSmoothData(inP, (unsigned int)vertices.size() - 1);
 				}
 
 				//四角形ポリゴン
@@ -247,7 +247,7 @@ void IF::Model::CreateCube(unsigned short texNum, bool smoothing)
 	};
 
 	//インデックスデータ
-	unsigned short indices[] = {
+	unsigned int indices[] = {
 		//前
 		0,1,2,
 		2,1,3,
@@ -321,7 +321,7 @@ void IF::Model::CreatePolygonSquare(unsigned short texNum, bool smoothing)
 	};
 
 	//インデックスデータ
-	unsigned short indices[] = {
+	unsigned int indices[] = {
 		//前
 		0,1,2,
 		2,1,3
@@ -378,7 +378,7 @@ void IF::Model::CreateTriangle(unsigned short texNum, bool smoothing)
 	};
 
 	//インデックスデータ
-	unsigned short indices[] = {
+	unsigned int indices[] = {
 		//前
 		0,1,2
 	};
@@ -435,7 +435,7 @@ void IF::Model::CreateCircle(unsigned short texNum, bool smoothing)
 	}
 	vertices[DIV] = { 0,0,0 };
 
-	unsigned short indices[DIV * 3]{};
+	unsigned int indices[DIV * 3]{};
 
 	for (int i = 0; i < DIV; i++)
 	{
@@ -504,7 +504,7 @@ void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 	}
 	vertices.push_back({ { 0,-radius,0 },{},{0,0} });
 
-	std::vector< unsigned short> indices{};
+	std::vector< unsigned int> indices{};
 
 	for (int i = 0; i < DIV; i++)
 	{
@@ -601,7 +601,7 @@ void IF::Model::CreateRay()
 	{
 		{{0, 0, 0},{},{0.0f, 0.0f}},
 	};
-	unsigned short indices[] =
+	unsigned int indices[] =
 	{
 		0,0,0
 	};

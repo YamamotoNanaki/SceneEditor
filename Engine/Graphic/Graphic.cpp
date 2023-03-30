@@ -371,9 +371,12 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 	Compiller(L"Data/Shaders/MetaballVS.hlsl", L"Data/Shaders/MetaballPS.hlsl", L"Data/Shaders/MetaballGS.hlsl");
 
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+		{//
+			"BLENDINDICES", 0, DXGI_FORMAT_R32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
 		{// xyzÀ•W
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
+		}
 	};
 
 	GPipeline pipeline(Blobs[ShaderCode::vsM].Get(), Blobs[ShaderCode::psM].Get(), Blobs[ShaderCode::gsM].Get(), inputLayout, _countof(inputLayout));
@@ -407,7 +410,7 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 
 	pipeline.RootSignature(*rootsignature.Get());
 
-	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[8], IID_PPV_ARGS(&pipelinestate[18]));
+	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[0], IID_PPV_ARGS(&pipelinestate[18]));
 	assert(SUCCEEDED(result));
 }
 

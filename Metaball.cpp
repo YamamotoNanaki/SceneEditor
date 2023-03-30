@@ -1,6 +1,7 @@
 #include "Metaball.h"
 #include "Graphic.h"
 #include "ObjectManager.h"
+#include "Rand.h"
 #include <cstdint>
 
 using namespace IF;
@@ -43,8 +44,9 @@ void IF::Metaball::Update()
 
 	static float _ftime = 0;
 	constMapNumSpheres->time = _ftime;
-	_ftime+=0.2;
+	_ftime += 0.2;
 	if (_ftime >= D3D12_FLOAT32_MAX)_ftime = 0;
+	constMapNumSpheres->smoothUnionValue = 6;
 }
 
 IF::Metaball::~Metaball()
@@ -74,7 +76,7 @@ void IF::Metaball::DrawBefore()
 	Graphic* g = Graphic::Instance();
 	g->DrawBlendMode(Blend::METABALL);
 	commandList->SetGraphicsRootSignature(g->rootsignature.Get());
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//‰¼
 	Texture::Instance()->SetTexture(texNum);
 }
@@ -91,9 +93,19 @@ void IF::Metaball::UpdateMargingCubesSpace()
 
 	const float numVertices = numCells.x * numCells.y * numCells.z * 15;  // 1ƒZƒ‹‚Ì’¸“_‚Ì”‚Í15ŒÂ
 
+	vi.ResetVerticle();
+	vector<VertexID> vertices;
+	for (size_t i = 0; i < numVertices; i++) {
+		VertexID a = { i,{} };
+		vertices.push_back(a);
+		vertices.push_back(a);
+		vertices.push_back(a);
+	}
+	vi.SetVerticle(vertices, vertices.size());
+	vi.Initialize();
+
 	//constbuffer‚É“]‘—
 	constMapMargingCubesSpace->cellSize = cellSize;
-	constMapMargingCubesSpace->numVertices = numVertices;
 	constMapMargingCubesSpace->numCells = numCells;
 }
 
@@ -105,7 +117,12 @@ void IF::Metaball::UpdateNumSpheres()
 	m.color = { 0.7,0.4,0.2,1 };
 	m.activ = true;
 	//constbuffer‚É“]‘—
-	constMapNumSpheres->sphere[0] = m;
+	for (size_t i = 0; i < numSpheres; i++)
+	{
+		m.randomValues = { ((float)Rand::GetRand(0,1001)) / 1000,((float)Rand::GetRand(0,1001)) / 1000,((float)Rand::GetRand(0,1001)) / 1000,((float)Rand::GetRand(0,1001)) / 1000 };
+		constMapNumSpheres->sphere[i] = m;
+	}
+	constMapNumSpheres->numSpheres = numSpheres;
 }
 
 void IF::Metaball::TransferConstBuffer()

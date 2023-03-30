@@ -7,7 +7,6 @@ cbuffer ConstBufferBillboard : register(b0)
 cbuffer ConstBufferMargingCubesSpace : register(b1)
 {
     float3 numCells;
-    float numVertices;
     float3 cellSize;
 }
 
@@ -18,6 +17,7 @@ struct MetaballSpheres
     float4 color;
     float4 randomValues;
     float3 scale;
+    float pad;
 };
 
 static const int MAX_METABALL = 128;
@@ -25,10 +25,10 @@ static const int MAX_METABALL = 128;
 cbuffer ConstBufferNumSpheres : register(b2)
 {
     MetaballSpheres sphere[MAX_METABALL];
-    float vertexId;
     float time;
     float effectValue;
     float smoothUnionValue;
+    float numSpheres;
 }
 
 struct VSOutput

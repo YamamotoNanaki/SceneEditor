@@ -56,9 +56,9 @@ namespace IF
 	struct ConstBufferMargingCubesSpace
 	{
 		Vector3 numCells;
-		float numVertices;
-		Vector3 cellSize;
 		float pad;
+		Vector3 cellSize;
+		float pad1;
 	};
 
 	struct MetaballSpheres
@@ -74,9 +74,9 @@ namespace IF
 	struct ConstBufferNumSpheres
 	{
 		MetaballSpheres sphere[MAX_METABALL];
-		float vertexId;
 		float time;
 		float effectValue;
 		float smoothUnionValue;
+		float numSpheres;
 	};
 }

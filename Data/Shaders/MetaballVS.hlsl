@@ -62,7 +62,7 @@ float getDistance(float3 p)
 
     float result = 0.0;
     float d;
-    for (int i = 0; i < MAX_METABALL; i++)
+    for (int i = 0; i < numSpheres; i++)
     {
         d = randomObj(p, i, sphere[i].randomValues);
         if (result == 0.0)
@@ -114,7 +114,7 @@ int or(int a, int b)
     return result;
 }
 
-VSOutput main(float4 pos : POSITION)
+VSOutput main(float vertexId : BLENDINDICES, float4 pos : POSITION)
 {
     VSOutput vsout;
     float cellId = floor(vertexId / 15.0); // ƒZƒ‹‚ÌID

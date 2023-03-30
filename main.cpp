@@ -5,12 +5,14 @@
 #include "DirectX12.h"
 #include "Input.h"
 #include "SceneManager.h"
+#include "Rand.h"
 
 using namespace IF;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	{
+		Rand::Initialize();
 		const int winWidth = 1280, winHeight = 720;  // c•
 
 		Window::Instance()->Initialize(winWidth, winHeight, L"SceneEditor");
