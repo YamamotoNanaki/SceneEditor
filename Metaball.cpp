@@ -95,12 +95,19 @@ void IF::Metaball::UpdateMargingCubesSpace()
 
 	vi.ResetVerticle();
 	vector<VertexID> vertices;
-	for (size_t i = 0; i < numVertices; i++) {
-		VertexID a = { i,{} };
-		vertices.push_back(a);
-		vertices.push_back(a);
-		vertices.push_back(a);
-	}
+	//for (size_t i = 0; i < numVertices; i++) {
+		VertexID a = { 0,{} };
+	//	vertices.push_back(a);
+	//	vertices.push_back(a);
+	//	vertices.push_back(a);
+	//}
+	vertices.push_back(a);
+	a.pos = { 0,1,0 };
+	vertices.push_back(a);
+	a.pos = { 1,0,0 };
+	vertices.push_back(a);
+	a.pos = { 1,1,0 };
+	vertices.push_back(a);
 	vi.SetVerticle(vertices, vertices.size());
 	vi.Initialize();
 

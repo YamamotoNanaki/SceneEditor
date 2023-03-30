@@ -1,7 +1,7 @@
 #include "Metaball.hlsli"
 
-
 Texture2D<float> tex : register(t0);
+SamplerState smp : register(s0);
 
 float3 rotateVec3(float3 p, float angle, float3 axis)
 {
@@ -154,26 +154,31 @@ VSOutput main(float vertexId : BLENDINDICES, float4 pos : POSITION)
 
   // まずはポリゴンの張り方の256通りのうちどのパターンになるか調べる
     float cubeIndex = 0.0;
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 1)), 1.0 - step(0.0, v0));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 2)), 1.0 - step(0.0, v1));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 4)), 1.0 - step(0.0, v2));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 8)), 1.0 - step(0.0, v3));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 16)), 1.0 - step(0.0, v4));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 32)), 1.0 - step(0.0, v5));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 64)), 1.0 - step(0.0, v6));
-    cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 128)), 1.0 - step(0.0, v7));
+    //float cubeIndex = 16.0;
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 1)), 1.0 - step(0.0, v0));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 2)), 1.0 - step(0.0, v1));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 4)), 1.0 - step(0.0, v2));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 8)), 1.0 - step(0.0, v3));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 16)), 1.0 - step(0.0, v4));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 32)), 1.0 - step(0.0, v5));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 64)), 1.0 - step(0.0, v6));
+    //cubeIndex = lerp(cubeIndex, float(or(int(cubeIndex), 128)), 1.0 - step(0.0, v7));
 
   // 続いて現在の頂点がどの辺上に配置されるかを調べる
   // つまり、ルックアップテーブルのどの値を参照するかのインデックスを求める
-    float edgeIndex = tex[float2((cubeIndex * 16.0 + vertexIdInCell) / 4096.0, 0.0)] * 255.0;
-    float3 fpos = sphere[0].pos;
+    //float edgeIndex = tex[float2((cubeIndex * 16.0 + vertexIdInCell) / 4096.0, 0.0)] * 255.0;
+    //float edgeIndex = float4(tex.SampleLevel(smp, float2(cubeIndex / 4096, 0.5), 0.0)).a * 255.0;
+    float4 e = tex.GatherRed(smp, float2(cubeIndex / 4096.0, 0.0));
+    float edgeIndex = e.r;
+    edgeIndex *= 255;
+    float3 fpos = pos.xyz;
 
     vsout.vDiscard = 0.0;
     if (edgeIndex == 255.0)
     {
     // edgeIndexが255の場合、頂点は破棄
         //vNormal = float3(0.0, 0.0, 1.0);
-        fpos = sphere[0].pos;
+        fpos = pos.xyz;
         vsout.vDiscard = 1.0;
     }
     else if (edgeIndex == 0.0)
@@ -227,13 +232,13 @@ VSOutput main(float vertexId : BLENDINDICES, float4 pos : POSITION)
 
     //vNormal = getNormal(pos);
 
-  // エフェクト
+    // エフェクト
     float3 effectSize = cellSize * 1.5;
     fpos = lerp(fpos, floor(fpos / effectSize + 0.5) * effectSize, effectValue);
 
     //vPos = pos;
 
     vsout.pos = mul(mat, float4(fpos, 1.0));
-    //vsout.pos = pos;
+    //vsout.pos = float4(fpos, 1.0);
     return vsout;
 }

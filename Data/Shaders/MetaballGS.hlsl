@@ -9,7 +9,7 @@ void main(
     for (uint i = 0; i < 3; i++)
     {
         GSOutput element;
-        element.svpos = mul(mat, input[i].pos);
+        element.svpos = input[i].pos;
         element.vDiscard = input[i].vDiscard;
         output.Append(element);
     }
