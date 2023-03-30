@@ -168,8 +168,7 @@ VSOutput main(float vertexId : BLENDINDICES, float4 pos : POSITION)
   // つまり、ルックアップテーブルのどの値を参照するかのインデックスを求める
     //float edgeIndex = tex[float2((cubeIndex * 16.0 + vertexIdInCell) / 4096.0, 0.0)] * 255.0;
     //float edgeIndex = float4(tex.SampleLevel(smp, float2(cubeIndex / 4096, 0.5), 0.0)).a * 255.0;
-    float4 e = tex.GatherRed(smp, float2(cubeIndex / 4096.0, 0.0));
-    float edgeIndex = e.r;
+    float edgeIndex = tex.GatherRed(smp, float2(cubeIndex / 4096.0, 0.0)).r;
     edgeIndex *= 255;
     float3 fpos = pos.xyz;
 
