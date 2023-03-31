@@ -83,6 +83,17 @@ void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
 
 	D3D_FEATURE_LEVEL featureLevel;
 
+#ifdef _DEBUG
+
+	ID3D12Debug1* debugController;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	{
+		debugController->EnableDebugLayer();
+		debugController->SetEnableGPUBasedValidation(TRUE);
+	}
+
+#endif
+
 	for (size_t i = 0; i < _countof(levels); i++)
 	{
 		// 採用したアダプターでデバイスを生成
