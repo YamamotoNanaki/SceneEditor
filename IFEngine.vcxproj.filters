@@ -12,9 +12,6 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{c99fc13b-d9f3-4138-afdf-e686383085a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\2d">
-      <UniqueIdentifier>{1d93b784-48c3-4b91-8b2f-4d8274e76a30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Engine\3d">
       <UniqueIdentifier>{b9f64e66-e6ed-4c9e-b41d-47434aa67066}</UniqueIdentifier>
     </Filter>
@@ -108,6 +105,9 @@
     </Filter>
     <Filter Include="Header Files\Engine\Collision">
       <UniqueIdentifier>{efd67f1d-d680-4068-aeb0-e664ecf470dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\2d">
+      <UniqueIdentifier>{1d93b784-48c3-4b91-8b2f-4d8274e76a30}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

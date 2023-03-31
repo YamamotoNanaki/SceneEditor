@@ -258,7 +258,25 @@ void IF::Graphic::Initialize2D(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs,
 {
 	HRESULT result;
 
-	RootParam root(descRangeSRV, 1);
+	//RootParam root(descRangeSRV, 1);
+	vector<D3D12_ROOT_PARAMETER> rootParams;
+
+	D3D12_ROOT_PARAMETER rootParamSeed;
+	//定数用
+	rootParamSeed.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;				//種類
+	rootParamSeed.Descriptor.ShaderRegister = 0;								//デスクリプタレンジ
+	rootParamSeed.Descriptor.RegisterSpace = 0;									//デスクリプタレンジ数
+	rootParamSeed.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//すべてのシェーダーから見える
+	rootParams.push_back(rootParamSeed);
+
+	D3D12_ROOT_PARAMETER rootParamSeed2;
+	rootParamSeed2.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		//種類
+	rootParamSeed2.DescriptorTable.pDescriptorRanges = &descRangeSRV;				//デスクリプタレンジ
+	rootParamSeed2.DescriptorTable.NumDescriptorRanges = 1;							//デスクリプタレンジ数
+	rootParamSeed2.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					//すべてのシェーダーから見える
+	rootParams.push_back(rootParamSeed2);
+	rootParamSeed.Descriptor.ShaderRegister = 1;
+	rootParams.push_back(rootParamSeed);
 
 	Compiller(vs, ps, 0, ShaderCompile::vsps);
 
@@ -285,8 +303,8 @@ void IF::Graphic::Initialize2D(D3D12_DESCRIPTOR_RANGE& descRangeSRV, LPCWSTR vs,
 
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	rootSignatureDesc.pParameters = &root.rootParams.front();
-	rootSignatureDesc.NumParameters = root.rootParams.size();
+	rootSignatureDesc.pParameters = &rootParams.front();
+	rootSignatureDesc.NumParameters = rootParams.size();
 	//テクスチャ追加
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
@@ -411,7 +429,7 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 	pipeline.RootSignature(*rootsignature.Get());
 
 	pipeline.pipelineDesc[0].BlendState.RenderTarget[0] = {};
-	pipeline.pipelineDesc[0].RTVFormats[0] = DXGI_FORMAT_R8_UINT;
+	pipeline.pipelineDesc[0].RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[0], IID_PPV_ARGS(&pipelinestate[18]));
 	assert(SUCCEEDED(result));
