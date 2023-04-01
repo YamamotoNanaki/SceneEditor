@@ -43,9 +43,9 @@ void IF::Scene::Initialize()
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	gui.Initialize();
-//#endif
+	//#endif
 	postEffect = DEBUG_NEW PostEffect;
 	postEffect->Initialize();
 
@@ -368,8 +368,10 @@ void IF::Scene::Draw()
 
 #ifdef _DEBUG
 	ImGui::Render();
-	//ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
-	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
+	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
+	ID3D12DescriptorHeap* heaps[] = { tex->srvHeap.Get() };
+	commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 	//デバッグ用
 
