@@ -187,6 +187,7 @@ VSOutput main(float vertexId : BLENDINDICES, float4 pos : POSITION)
     {
         fpos.x -= 7;
         vsout.pos = float4(fpos, 1.0);
+        return vsout;
     }
     //else if (edgeIndex == 0.0)
     //{

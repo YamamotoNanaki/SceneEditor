@@ -26,7 +26,7 @@ void IF::SpriteManager::ForeGroundDraw()
 	{
 		com->Draw();
 	}
-	load.Draw();
+	//load.Draw();
 }
 
 void IF::SpriteManager::BackGroundDraw()
