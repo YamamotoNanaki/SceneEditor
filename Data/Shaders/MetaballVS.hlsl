@@ -170,73 +170,74 @@ VSOutput main(float vertexId : BLENDINDICES, float4 pos : POSITION)
     //float edgeIndex = float4(tex.SampleLevel(smp, float2(cubeIndex / 4096, 0.5), 0.0)).a * 255.0;
     float edgeIndex = tex.SampleLevel(smp, float2(cubeIndex / 4096.0, 0.0), 0).r;
     edgeIndex *= 255;
+    edgeIndex = floor(edgeIndex);
     float3 fpos = pos.xyz;
 
     vsout.vDiscard = 0.0;
     if (edgeIndex == 255.0)
     {
-        fpos.x += 7;
-        vsout.pos = float4(fpos, 1.0);
-        return vsout;
+        //fpos.x += 1;
+        //vsout.pos = float4(fpos, 1.0);
+        //return vsout;
     // edgeIndexÇ™255ÇÃèÍçáÅAí∏ì_ÇÕîjä¸
         //vNormal = float3(0.0, 0.0, 1.0);
         fpos = pos.xyz;
         vsout.vDiscard = 1.0;
     }
-    else
+    //else
+    //{
+    //    fpos.x -= 1;
+    //    vsout.pos = float4(fpos, 1.0);
+    //    return vsout;
+    //}
+    else if (edgeIndex == 0.0)
     {
-        fpos.x -= 7;
-        vsout.pos = float4(fpos, 1.0);
-        return vsout;
+        fpos = interpolate(c0, c1, v0, v1);
     }
-    //else if (edgeIndex == 0.0)
-    //{
-    //    fpos = interpolate(c0, c1, v0, v1);
-    //}
-    //else if (edgeIndex == 1.0)
-    //{
-    //    fpos = interpolate(c1, c2, v1, v2);
-    //}
-    //else if (edgeIndex == 2.0)
-    //{
-    //    fpos = interpolate(c2, c3, v2, v3);
-    //}
-    //else if (edgeIndex == 3.0)
-    //{
-    //    fpos = interpolate(c3, c0, v3, v0);
-    //}
-    //else if (edgeIndex == 4.0)
-    //{
-    //    fpos = interpolate(c4, c5, v4, v5);
-    //}
-    //else if (edgeIndex == 5.0)
-    //{
-    //    fpos = interpolate(c5, c6, v5, v6);
-    //}
-    //else if (edgeIndex == 6.0)
-    //{
-    //    fpos = interpolate(c6, c7, v6, v7);
-    //}
-    //else if (edgeIndex == 7.0)
-    //{
-    //    fpos = interpolate(c4, c7, v4, v7);
-    //}
-    //else if (edgeIndex == 8.0)
-    //{
-    //    fpos = interpolate(c0, c4, v0, v4);
-    //}
-    //else if (edgeIndex == 9.0)
-    //{
-    //    fpos = interpolate(c1, c5, v1, v5);
-    //}
-    //else if (edgeIndex == 10.0)
-    //{
-    //    fpos = interpolate(c2, c6, v2, v6);
-    //}
-    //else if (edgeIndex == 11.0)
-    //{
-    //    fpos = interpolate(c3, c7, v3, v7);
-    //}
+    else if (edgeIndex == 1.0)
+    {
+        fpos = interpolate(c1, c2, v1, v2);
+    }
+    else if (edgeIndex == 2.0)
+    {
+        fpos = interpolate(c2, c3, v2, v3);
+    }
+    else if (edgeIndex == 3.0)
+    {
+        fpos = interpolate(c3, c0, v3, v0);
+    }
+    else if (edgeIndex == 4.0)
+    {
+        fpos = interpolate(c4, c5, v4, v5);
+    }
+    else if (edgeIndex == 5.0)
+    {
+        fpos = interpolate(c5, c6, v5, v6);
+    }
+    else if (edgeIndex == 6.0)
+    {
+        fpos = interpolate(c6, c7, v6, v7);
+    }
+    else if (edgeIndex == 7.0)
+    {
+        fpos = interpolate(c4, c7, v4, v7);
+    }
+    else if (edgeIndex == 8.0)
+    {
+        fpos = interpolate(c0, c4, v0, v4);
+    }
+    else if (edgeIndex == 9.0)
+    {
+        fpos = interpolate(c1, c5, v1, v5);
+    }
+    else if (edgeIndex == 10.0)
+    {
+        fpos = interpolate(c2, c6, v2, v6);
+    }
+    else if (edgeIndex == 11.0)
+    {
+        fpos = interpolate(c3, c7, v3, v7);
+    }
 
     //vNormal = getNormal(pos);
 

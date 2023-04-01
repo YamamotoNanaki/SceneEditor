@@ -366,14 +366,14 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(Blend::NORMAL2D);
 	spriteM->ForeGroundDraw();
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	ImGui::Render();
-	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
+	//ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
+	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 
 	//デバッグ用
 
-//#endif // _DEBUG
+#endif // _DEBUG
 
 	DirectX12::Instance()->DrawAfter();
 }

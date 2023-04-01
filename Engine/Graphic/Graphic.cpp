@@ -430,6 +430,7 @@ void IF::Graphic::InitializeMetaball(D3D12_DESCRIPTOR_RANGE& descRangeSRV)
 
 	pipeline.pipelineDesc[0].BlendState.RenderTarget[0] = {};
 	pipeline.pipelineDesc[0].RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	pipeline.pipelineDesc[0].RasterizerState.CullMode = D3D12_CULL_MODE_NONE;  // ”w–Ê‚ðƒJƒŠƒ“ƒO‚µ‚È‚¢
 
 	result = device->CreateGraphicsPipelineState(&pipeline.pipelineDesc[0], IID_PPV_ARGS(&pipelinestate[18]));
 	assert(SUCCEEDED(result));
