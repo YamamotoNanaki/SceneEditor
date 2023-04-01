@@ -85,7 +85,7 @@ void DirectX12::Initialize(HWND hwnd, int window_width, int window_height)
 
 #ifdef _DEBUG
 
-	ID3D12Debug1* debugController;
+	ComPtr < ID3D12Debug1> debugController;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 	{
 		debugController->EnableDebugLayer();

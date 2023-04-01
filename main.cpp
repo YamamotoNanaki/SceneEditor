@@ -35,6 +35,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		sceneM->Release();
 		Input::DeleteInstance();
 		Window::DeleteInstance();
+
+
+#ifdef _DEBUG
+		ID3D12DebugDevice* debugInterface;
+		if (SUCCEEDED(DirectX12::Instance()->GetDevice()->QueryInterface(&debugInterface)))
+		{
+			debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
+			debugInterface->Release();
+		}
+#endif
 	}
 	//_CrtDumpMemoryLeaks();
 	return 0;
