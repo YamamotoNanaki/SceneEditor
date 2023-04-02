@@ -2,15 +2,15 @@
 
 float4 main(GSOutput input) : SV_TARGET
 {
-    //float4 rColor;
-    //if (input.vDiscard == 1.0)
-    //{
-    //    discard;
-    //}
-    //else
-    //{
-    //    rColor = float4(sphere[0].color.xyz, 1.0);
-    //}
-    //return rColor;
+    float4 rColor;
+    if (input.vDiscard == 1.0)
+    {
+        discard;
+    }
+    else
+    {
+        return float4(1, 1, 1, 1.0);
+    }
+    return rColor;
     return float4(1, 1, 1, 1.0);
 }

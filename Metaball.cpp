@@ -95,19 +95,19 @@ void IF::Metaball::UpdateMargingCubesSpace()
 
 	vi.ResetVerticle();
 	vector<VertexID> vertices;
-	//for (size_t i = 0; i < numVertices; i++) {
+	for (size_t i = 0; i < numVertices; i++) {
 		VertexID a = { 0,{} };
-	//	vertices.push_back(a);
-	//	vertices.push_back(a);
-	//	vertices.push_back(a);
-	//}
-	vertices.push_back(a);
-	a.pos = { 0,1,0 };
-	vertices.push_back(a);
-	a.pos = { 1,0,0 };
-	vertices.push_back(a);
-	a.pos = { 1,1,0 };
-	vertices.push_back(a);
+		vertices.push_back(a);
+		vertices.push_back(a);
+		vertices.push_back(a);
+	}
+	//vertices.push_back(a);
+	//a.pos = { 0,1,0 };
+	//vertices.push_back(a);
+	//a.pos = { 1,0,0 };
+	//vertices.push_back(a);
+	//a.pos = { 1,1,0 };
+	//vertices.push_back(a);
 	vi.SetVerticle(vertices, vertices.size());
 	vi.Initialize();
 
@@ -199,7 +199,7 @@ void IF::Metaball::DataTransferGPU()
 
 	D3D12_RESOURCE_DESC texresDesc{};
 	texresDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	texresDesc.Format = DXGI_FORMAT_R8_UINT;
+	texresDesc.Format = DXGI_FORMAT_R8_UNORM;
 	texresDesc.Width = dataSize;			//•
 	texresDesc.Height = 1;	//‚‚³
 	texresDesc.DepthOrArraySize = 1;
