@@ -6,7 +6,7 @@ SamplerState smp : register(s0);
 
 
 
-float4 main(GSOutput input) : SV_TARGET
+PSOutput main(GSOutput input) : SV_TARGET
 {
     float4 texcolor = float4(tex.Sample(smp, input.uv));
     const float shininess = 4.0f;
@@ -163,6 +163,8 @@ float4 main(GSOutput input) : SV_TARGET
             shadecolor = toon;
         }
     }
-
-    return shadecolor * texcolor * color;
+    PSOutput o;
+    o.target0 = shadecolor * texcolor * color;
+    o.target1 = float4(1 - o.target0.rgb, o.target0.a);
+    return o;
 }
