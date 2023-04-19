@@ -1,6 +1,7 @@
 #include "PostEffect.h"
 #include "Window.h"
 #include "DirectX12.h"
+#include "Input.h"
 #include <cassert>
 #include <d3dx12.h>
 #include <d3dcompiler.h>
@@ -33,6 +34,20 @@ void PostEffect::Draw(bool add)
 	cmdList->SetGraphicsRootSignature(rootSignature.Get());
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+	if (Input::Instance()->KeyTriggere(KEY::num0))
+	{
+		static int tex = 0;
+		tex = (tex + 1) % 2;
+
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+
+		ID3D12Device* device = DirectX12::Instance()->GetDevice();
+		device->CreateShaderResourceView(texBuff[tex].Get(), &srvDesc, descHeapSRV->GetCPUDescriptorHandleForHeapStart());
+	}
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vi->GetVertexView());
 
@@ -93,10 +108,13 @@ void PostEffect::Initialize()
 
 	D3D12_CLEAR_VALUE d = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clearColor);
 
-	result = device->CreateCommittedResource(
-		&c, D3D12_HEAP_FLAG_NONE, &texresDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-		&d, IID_PPV_ARGS(&texBuff));
-	assert(SUCCEEDED(result));
+	for (int i = 0; i < 2; i++)
+	{
+		result = device->CreateCommittedResource(
+			&c, D3D12_HEAP_FLAG_NONE, &texresDesc, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+			&d, IID_PPV_ARGS(&texBuff[i]));
+		assert(SUCCEEDED(result));
+	}
 
 	const UINT pixelCount = w * h;
 	const UINT rowPitch = sizeof(UINT) * w;
@@ -105,8 +123,11 @@ void PostEffect::Initialize()
 	UINT* img = new UINT[pixelCount];
 	for (int i = 0; i < pixelCount; i++)img[i] = 0xff0000ff;
 
-	result = texBuff->WriteToSubresource(0, nullptr, img, rowPitch, depthPitch);
-	assert(SUCCEEDED(result));
+	for (int i = 0; i < 2; i++)
+	{
+		result = texBuff[i]->WriteToSubresource(0, nullptr, img, rowPitch, depthPitch);
+		assert(SUCCEEDED(result));
+	}
 	delete[] img;
 
 	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
@@ -123,16 +144,18 @@ void PostEffect::Initialize()
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 
-	device->CreateShaderResourceView(texBuff.Get(), &srvDesc, descHeapSRV->GetCPUDescriptorHandleForHeapStart());
+	device->CreateShaderResourceView(texBuff[0].Get(), &srvDesc, descHeapSRV->GetCPUDescriptorHandleForHeapStart());
 
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtvDescHeapDesc.NumDescriptors = 1;
+	rtvDescHeapDesc.NumDescriptors = 2;
 
 	result = device->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
 	assert(SUCCEEDED(result));
-
-	device->CreateRenderTargetView(texBuff.Get(), nullptr, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
+	for (int i = 0; i < 2; i++)
+	{
+		device->CreateRenderTargetView(texBuff[i].Get(), nullptr, CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeapRTV->GetCPUDescriptorHandleForHeapStart(), i, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)));
+	}
 
 	CD3DX12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D32_FLOAT, w, h, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
@@ -189,43 +212,65 @@ void PostEffect::Initialize()
 
 void PostEffect::DrawBefore()
 {
-	D3D12_RESOURCE_BARRIER a = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
-		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	ID3D12Device* device = DirectX12::Instance()->GetDevice();
 	ID3D12GraphicsCommandList* cmdList = DirectX12::Instance()->GetCmdList();
-	cmdList->ResourceBarrier(1, &a);
+	for (int i = 0; i < 2; i++)
+	{
+		D3D12_RESOURCE_BARRIER a = CD3DX12_RESOURCE_BARRIER::Transition(texBuff[i].Get(),
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		cmdList->ResourceBarrier(1, &a);
+	}
 
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvH = descHeapRTV->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvH[2];
+	for (int i = 0; i < 2; i++)
+	{
+		rtvH[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeapRTV->GetCPUDescriptorHandleForHeapStart(), i, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+	}
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 
-	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
+	cmdList->OMSetRenderTargets(2, rtvH, false, &dsvH);
 
 	float w = Window::Instance()->winWidth;
 	float h = Window::Instance()->winHeight;
 
-	D3D12_RECT b = CD3DX12_RECT(0, 0, w, h);
+	CD3DX12_VIEWPORT viewport[2];
+	CD3DX12_RECT rect[2];
+	for (int i = 0; i < 2; i++)
+	{
+		viewport[i] = CD3DX12_VIEWPORT(0.f, 0.f, w, h);
+		rect[i] = CD3DX12_RECT(0, 0, w, h);
+	}
 
-	D3D12_VIEWPORT viewport{};
+	//D3D12_RECT b = CD3DX12_RECT(0, 0, w, h);
 
-	viewport.Width = w;
-	viewport.Height = h;
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	viewport.MinDepth = 0;
-	viewport.MaxDepth = 1;
+	//D3D12_VIEWPORT viewport{};
 
-	cmdList->RSSetViewports(1, &viewport);
-	cmdList->RSSetScissorRects(1, &b);
+	//viewport.Width = w;
+	//viewport.Height = h;
+	//viewport.TopLeftX = 0.0f;
+	//viewport.TopLeftY = 0.0f;
+	//viewport.MinDepth = 0;
+	//viewport.MaxDepth = 1;
 
-	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
+	cmdList->RSSetViewports(2, viewport);
+	cmdList->RSSetScissorRects(2, rect);
+
+	for (int i = 0; i < 2; i++)
+	{
+		cmdList->ClearRenderTargetView(rtvH[i], clearColor, 0, nullptr);
+	}
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 }
 
 void PostEffect::DrawAfter()
 {
-	D3D12_RESOURCE_BARRIER a = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-	DirectX12::Instance()->GetCmdList()->ResourceBarrier(1, &a);
+	for (int i = 0; i < 2; i++)
+	{
+		D3D12_RESOURCE_BARRIER a = CD3DX12_RESOURCE_BARRIER::Transition(texBuff[i].Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+		DirectX12::Instance()->GetCmdList()->ResourceBarrier(1, &a);
+	}
 }
 
 void IF::PostEffect::SetRGBShift(float shift)
@@ -331,8 +376,9 @@ void PostEffect::CreateGraphicsPipelineState()
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
+	gpipeline.NumRenderTargets = 2;	// 描画対象は1つ
+	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
+	gpipeline.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
@@ -372,6 +418,7 @@ void PostEffect::CreateGraphicsPipelineState()
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;			//ソースの値を100%使う
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;			//デストの値を  0%使う
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+	gpipeline.BlendState.RenderTarget[1] = blenddesc;
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineStateAdd));

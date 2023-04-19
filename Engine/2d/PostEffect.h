@@ -8,7 +8,7 @@ namespace IF
 	class PostEffect : public Sprite
 	{
 	private:
-		Microsoft::WRL::ComPtr<ID3D12Resource>texBuff;
+		Microsoft::WRL::ComPtr<ID3D12Resource>texBuff[2];
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>descHeapSRV;
 		Microsoft::WRL::ComPtr<ID3D12Resource>depthBuff;
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>descHeapRTV;
