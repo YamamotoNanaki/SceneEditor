@@ -40,7 +40,7 @@ namespace IF
 	{
 		//0~0.005‚­‚ç‚¢‚Å
 		float shift;
-		float pad1;
+		bool kadai;
 		float pad2;
 		float pad3;
 	};

@@ -17,6 +17,8 @@ namespace IF
 		Microsoft::WRL::ComPtr<ID3D12PipelineState>pipelineStateAdd;
 		Microsoft::WRL::ComPtr<ID3D12RootSignature>rootSignature;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffPostEffect = nullptr;
+
+	public:
 		ConstBufferPostEffect* constMapPostEffect = nullptr;
 
 	private:

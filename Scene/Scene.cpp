@@ -43,9 +43,9 @@ void IF::Scene::Initialize()
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	gui.Initialize();
-//#endif
+	//#endif
 	postEffect = DEBUG_NEW PostEffect;
 	postEffect->Initialize();
 
@@ -352,6 +352,15 @@ void IF::Scene::Draw()
 	spriteM->BackGroundDraw();
 
 	graph->DrawBlendMode(Blend::NOBLEND);
+
+	if (SceneManager::Instance()->GetNowScene() == "MainScene")
+	{
+		postEffect->constMapPostEffect->kadai = true;
+	}
+	else
+	{
+		postEffect->constMapPostEffect->kadai = false;
+	}
 	postEffect->Draw();
 	particleM->Draw();
 
@@ -359,7 +368,7 @@ void IF::Scene::Draw()
 	graph->DrawBlendMode(Blend::NORMAL2D);
 	spriteM->ForeGroundDraw();
 
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	ImGui::Render();
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);

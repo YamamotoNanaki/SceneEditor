@@ -24,16 +24,22 @@ float4 Blur1Pixel(float2 uv)
 
 float4 main(VSOutput input) : SV_TARGET
 {
+    float4 color;
     float4 texcolor = tex0.Sample(smp, input.uv);
-    texcolor.rgb = 1 - texcolor.rgb;
-    float4 texcolor1 = Blur1Pixel(input.uv);
-    float num = 0;
+    float4 texcolor1 = tex1.Sample(smp, input.uv);
     
-    
-    float4 color = texcolor;
-    if (fmod(input.uv.y, 0.1f) < 0.05f)
+    color = texcolor;
+    if (kadai)
     {
-        color = texcolor1;
+        texcolor.rgb = 1 - texcolor.rgb;
+        texcolor1 = Blur1Pixel(input.uv);
+        float num = 0;
+    
+        color = texcolor;
+        if (fmod(input.uv.y, 0.1f) < 0.05f)
+        {
+            color = texcolor1;
+        }
     }
     
     return color;

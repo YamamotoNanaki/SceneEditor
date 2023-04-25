@@ -3,6 +3,9 @@
     "scene": [
         {
             "name": "MainScene"
+        },
+        {
+            "name": "scene"
         }
     ],
     "start": "MainScene"
