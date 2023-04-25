@@ -59,7 +59,7 @@ void PostEffect::Draw(bool add)
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeapSRV->GetGPUDescriptorHandleForHeapStart(), 0, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	cmdList->SetGraphicsRootDescriptorTable(2, CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeapSRV->GetGPUDescriptorHandleForHeapStart(), 1, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
-	cmdList->SetGraphicsRootConstantBufferView(2, constBuffPostEffect.Get()->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(3, constBuffPostEffect.Get()->GetGPUVirtualAddress());
 	// 描画コマンド
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
