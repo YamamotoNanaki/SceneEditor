@@ -7,20 +7,16 @@ SamplerState smp : register(s0); // 0番スロットに設定されたサンプラー
 float4 Blur1Pixel(float2 uv)
 {
     float4 col = float4(0, 0, 0, 1);
-    float u = 2.f / 1280.f;
-    float v = 2.f / 720.f;
+    float u = 1.f / 1280.f;
+    float v = 1.f / 720.f;
     
-    col += tex1.Sample(smp, uv + float2(-u, -v));
-    col += tex1.Sample(smp, uv + float2(0, -v));
-    col += tex1.Sample(smp, uv + float2(+u, -v));
-    
-    col += tex1.Sample(smp, uv + float2(-u, 0));
-    col += tex1.Sample(smp, uv + float2(0, 0));
-    col += tex1.Sample(smp, uv + float2(+u, 0));
-    
-    col += tex1.Sample(smp, uv + float2(-u, +v));
-    col += tex1.Sample(smp, uv + float2(0, +v));
-    col += tex1.Sample(smp, uv + float2(+u, +v));
+    for (int x = 0; x < 3; x++)
+    {
+        for (int y = 0; y < 3; y++)
+        {
+            col += tex1.Sample(smp, uv + float2(u * (x - 1), v * (y - 1)));
+        }
+    }
     
     col.rgb /= 9;
     return col;
