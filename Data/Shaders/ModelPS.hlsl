@@ -165,6 +165,6 @@ PSOutput main(GSOutput input) : SV_TARGET
     }
     PSOutput o;
     o.target0 = shadecolor * texcolor * color;
-    o.target1 = float4(1 - o.target0.rgb, o.target0.a);
+    o.target1 = o.target0;
     return o;
 }
