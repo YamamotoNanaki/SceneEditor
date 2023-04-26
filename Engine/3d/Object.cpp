@@ -270,7 +270,7 @@ void IF::Object::Draw(unsigned short texNum)
 		return;
 	}
 
-	lightPtr->Draw(4);
+	lightPtr->Draw(3);
 
 	model->Draw(constBuffTransform.Get(), texNum);
 }

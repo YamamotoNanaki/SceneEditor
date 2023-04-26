@@ -67,8 +67,9 @@ GPipeline::GPipeline(ID3DBlob* vsBlob, ID3DBlob* psBlob, ID3DBlob* gsBlob, D3D12
 
 		pipelineDesc[i].PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-		pipelineDesc[i].NumRenderTargets = 1; // •`‰æ‘ÎÛ‚Í1‚Â
+		pipelineDesc[i].NumRenderTargets = 2; // •`‰æ‘ÎÛ‚Í1‚Â
 		pipelineDesc[i].RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0`255Žw’è‚ÌRGBA
+		pipelineDesc[i].RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0`255Žw’è‚ÌRGBA
 		pipelineDesc[i].SampleDesc.Count = 1; // 1ƒsƒNƒZƒ‹‚É‚Â‚«1‰ñƒTƒ“ƒvƒŠƒ“ƒO
 
 		if (i > 3 && i < 8)

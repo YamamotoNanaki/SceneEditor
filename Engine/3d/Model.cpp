@@ -671,8 +671,8 @@ void IF::Model::Draw(ID3D12Resource* address, unsigned short texNum)
 	//インデックスバッファの設定
 	commandList->IASetIndexBuffer(&vi->GetIndexView());
 	//定数バッファビューの設定
-	commandList->SetGraphicsRootConstantBufferView(2, address->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(3, constBuffTransform1->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, address->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
 	//描画コマンド
 	commandList->DrawIndexedInstanced((UINT)vi->GetSize(), 1, 0, 0, 0);
 }

@@ -452,6 +452,7 @@ void IF::Scene::Draw()
 	//graph->DrawBlendMode(Blend::OUTLINE);
 	//objM->OutLineDraw();
 
+	Object::DrawBefore(graph->rootsignature.Get());
 	if (SceneManager::Instance()->GetNowScene() == "scene2")
 	{
 		graph->DrawBlendMode(Blend::ANIMNORMAL);

@@ -36,3 +36,13 @@ RootParam::RootParam(D3D12_DESCRIPTOR_RANGE& descRangeSRV, int texMax)
 	ConstRoot(3);
 	ConstRoot(4);
 }
+
+IF::RootParam::RootParam(D3D12_DESCRIPTOR_RANGE& descRangeSRV, int texMax, int num)
+{
+	ConstRoot(0);
+	TexRoot(descRangeSRV, texMax);
+	for (int i = 1; i < num + 1; i++)
+	{
+		ConstRoot(i);
+	}
+}
