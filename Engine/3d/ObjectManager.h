@@ -29,6 +29,7 @@ namespace IF
 		static ObjectManager* Instance();
 		static void DeleteInstance();
 		void Draw();
+		void FBXDraw();
 		void OutLineDraw();
 		void Update();
 		inline ICamera* GetCamera()

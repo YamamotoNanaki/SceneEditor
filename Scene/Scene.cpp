@@ -422,13 +422,21 @@ void IF::Scene::Draw()
 	//graph->DrawBlendMode(Blend::OUTLINE);
 	//objM->OutLineDraw();
 
-	graph->DrawBlendMode();
-	if(SceneManager::Instance()->GetNowScene() == "scene1")
+	if (SceneManager::Instance()->GetNowScene() == "scene2")
 	{
-		objM->SetToon();
+		graph->DrawBlendMode(Blend::ANIMNORMAL);
+		tex->SetTexture(1);
+		objM->FBXDraw();
 	}
-	objM->Draw();
-
+	else
+	{
+		graph->DrawBlendMode();
+		if (SceneManager::Instance()->GetNowScene() == "scene1")
+		{
+			objM->SetToon();
+		}
+		objM->Draw();
+	}
 	postEffect->DrawAfter();
 
 	DirectX12::Instance()->DrawBefore();

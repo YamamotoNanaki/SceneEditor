@@ -31,6 +31,12 @@ void IF::CObject::Draw()
 	if (texNum == 0)obj.Draw();
 	else obj.Draw(texNum);
 }
+void IF::CObject::FBXDraw()
+{
+	if (prefab)return;
+	
+	obj.FBXDraw();
+}
 
 void IF::CObject::OutLineDraw()
 {

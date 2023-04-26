@@ -3,6 +3,8 @@
 #include <cassert>
 #include "imgui.h"
 #include "Debug.h"
+#include "SceneManager.h"
+#include "ModelLoader.h"
 
 
 using namespace IF;
@@ -38,6 +40,13 @@ void IF::ObjectManager::Draw()
 		if (com->WeightSaving(150))com->Draw();
 	}
 }
+void IF::ObjectManager::FBXDraw()
+{
+	for (auto com : objList)
+	{
+		if (com->WeightSaving(150))com->FBXDraw();
+	}
+}
 
 void IF::ObjectManager::OutLineDraw()
 {
@@ -68,6 +77,12 @@ void IF::ObjectManager::IntputJson(nlohmann::json& j)
 		{
 			ptr->InputJson(i);
 			ptr->prefab = i["prefab"];
+			if (SceneManager::Instance()->GetNowScene() == "scene2")
+			{
+				ptr->obj.SetModel(nullptr);
+				ModelLoader m;
+				ptr->obj.Initialize(m.FBXLoad("simple", ".gltf"));
+			}
 		}
 	}
 }

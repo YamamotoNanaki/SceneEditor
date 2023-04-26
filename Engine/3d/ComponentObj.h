@@ -19,7 +19,7 @@ namespace IF
 		bool particleFlag = false;
 		Emitter* emitter = nullptr;
 		bool prefab = false;
-	protected:
+	public:
 		Object obj{};
 		unsigned short texNum = 0;
 		Matrix* matView = nullptr, * matProjection = nullptr;
@@ -30,6 +30,7 @@ namespace IF
 		virtual void Initialize(Model* model, bool prefab);
 		virtual void Update();
 		virtual void Draw();
+		void FBXDraw();
 		virtual void OutLineDraw();
 		virtual ~CObject();
 		virtual void DebugUpdate();
