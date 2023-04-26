@@ -24,7 +24,7 @@ void IF::SceneManager::Initialize()
 	scene->InputJson(now);
 #ifdef _DEBUG
 #else
-	DirectX12::Instance()->SetClearColor(0, 0, 0);
+	//DirectX12::Instance()->SetClearColor(0, 0, 0);
 #endif
 }
 

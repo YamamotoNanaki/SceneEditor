@@ -306,11 +306,41 @@ void IF::Scene::StaticInitialize()
 
 void IF::Scene::Update()
 {
+	if (Input::Instance()->KeyTriggere(KEY::SPACE))
+	{
+		static int num = 0;
+		switch (num)
+		{
+		case 0:
+			SceneManager::Instance()->SceneChange("scene");
+			num++;
+			break;
+		case 1:
+			SceneManager::Instance()->SceneChange("scene1");
+			num++;
+			break;
+		case 2:
+			SceneManager::Instance()->SceneChange("scene2");
+			num++;
+			break;
+		case 3:
+			SceneManager::Instance()->SceneChange("scene3");
+			num++;
+			break;
+		case 4:
+			SceneManager::Instance()->SceneChange("MainScene");
+			num = 0;
+			break;
+		}
+	}
 	Input::Instance()->Input::Update();
 
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	ImGui::Begin("explanation");
+	ImGui::Text("next scene : SPACE KEY");
+	ImGui::End();
 	static float ambient[3] = { 0.2, 0.2, 0.2 };
 	static bool dirLActive[3] = { true,false,false };
 	static float dirLDir[3][3] = { {-1,-1,0.8},{1,1,0.7},{0,0,1} };
@@ -453,7 +483,7 @@ void IF::Scene::Draw()
 		postEffect->constMapPostEffect->kadai = true;
 		postEffect->constMapPostEffect->gaussianBlur = false;
 	}
-	else if(SceneManager::Instance()->GetNowScene() == "scene3")
+	else if (SceneManager::Instance()->GetNowScene() == "scene3")
 	{
 		postEffect->constMapPostEffect->gaussianBlur = true;
 		postEffect->constMapPostEffect->kadai = false;

@@ -6,6 +6,7 @@
 #include <cassert>
 #include "Light.h"
 #include "DirectX12.h"
+#include "ModelLoader.h"
 
 using namespace IF;
 using namespace std;
@@ -279,7 +280,9 @@ void IF::Object::FBXDraw()
 	if (fmodel == nullptr)
 	{
 		assert(0 && "モデルがセットされていません");
-		return;
+		ModelLoader m;
+		fmodel = m.FBXLoad("simple", ".gltf");
+		Initialize(fmodel);
 	}
 
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();

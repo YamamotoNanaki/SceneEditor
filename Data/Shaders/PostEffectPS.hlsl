@@ -52,7 +52,7 @@ float4 main(VSOutput input) : SV_TARGET
 {
     float4 color;
     float4 texcolor = tex0.Sample(smp, input.uv);
-    float4 texcolor1 = tex1.Sample(smp, input.uv);
+    float4 texcolor1;
     
     color = texcolor;
     if (kadai)
@@ -71,6 +71,5 @@ float4 main(VSOutput input) : SV_TARGET
     {
         color = GaussianBlur(input.uv);
     }
-    
     return color;
 }

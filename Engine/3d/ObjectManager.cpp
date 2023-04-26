@@ -37,14 +37,14 @@ void IF::ObjectManager::Draw()
 {
 	for (auto com : objList)
 	{
-		if (com->WeightSaving(150))com->Draw();
+		/*if (com->WeightSaving(150))*/com->Draw();
 	}
 }
 void IF::ObjectManager::FBXDraw()
 {
 	for (auto com : objList)
 	{
-		if (com->WeightSaving(150))com->FBXDraw();
+		/*if (com->WeightSaving(150))*/com->FBXDraw();
 	}
 }
 
@@ -77,12 +77,14 @@ void IF::ObjectManager::IntputJson(nlohmann::json& j)
 		{
 			ptr->InputJson(i);
 			ptr->prefab = i["prefab"];
+#ifdef _DEBUG
 			if (SceneManager::Instance()->GetNowScene() == "scene2")
 			{
 				ptr->obj.SetModel(nullptr);
 				ModelLoader m;
 				ptr->obj.Initialize(m.FBXLoad("simple", ".gltf"));
 			}
+#endif
 		}
 	}
 }

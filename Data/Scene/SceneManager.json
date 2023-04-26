@@ -17,5 +17,5 @@
             "name": "scene3"
         }
     ],
-    "start": "scene3"
+    "start": "MainScene"
 }
