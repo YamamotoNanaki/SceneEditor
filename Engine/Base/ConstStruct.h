@@ -18,8 +18,8 @@ namespace IF
 		float polygonSize;
 		float gravity;
 		float rotation;
-		bool lightFlag = true;
-		bool toonFlag = false;
+		unsigned int lightFlag = true;
+		unsigned int toonFlag = false;
 	};
 
 	struct ConstBufferBillboard

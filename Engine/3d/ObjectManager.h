@@ -521,6 +521,13 @@ namespace IF
 			}
 		}
 		void IntputJson(nlohmann::json& j);
+		inline void SetToon()
+		{
+			for (auto& com : objList)
+			{
+				com->SetToon();
+			}
+		}
 #ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();

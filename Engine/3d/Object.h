@@ -98,5 +98,10 @@ namespace IF
 		{
 			return model->GetTag();
 		}
+
+		void SetToon()
+		{
+			constMapTransform->toonFlag = true;
+		}
 	};
 }

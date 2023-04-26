@@ -35,6 +35,7 @@ namespace IF
 		virtual void DebugUpdate();
 		void SetCollider(BaseCollider* collider);
 		virtual void OnCollision(const CollisionInfo& info) {}
+		virtual void SetToon() { obj.SetToon(); };
 
 	public:
 		virtual void ClassUpdate();

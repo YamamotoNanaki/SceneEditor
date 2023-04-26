@@ -14,6 +14,7 @@
 #include "DebugText.h"
 #include "ParticleManager.h"
 #include "PostEffect.h"
+#include "FBXModel.h"
 
 namespace IF
 {

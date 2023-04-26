@@ -311,9 +311,9 @@ void IF::Scene::Update()
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	static float ambient[3] = { 0.4, 0.4, 0.4 };
+	static float ambient[3] = { 0.2, 0.2, 0.2 };
 	static bool dirLActive[3] = { true,false,false };
-	static float dirLDir[3][3] = { {-1,-1,-1},{1,1,0.7},{0,0,1} };
+	static float dirLDir[3][3] = { {-1,-1,0.8},{1,1,0.7},{0,0,1} };
 	static float dirLColor[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
 	static bool pointLActive[3] = { false,false,false };
 	static float pointLPos[3][3] = { {-1,-1,-1},{1,1,0.7},{0,-1,1} };
@@ -423,6 +423,10 @@ void IF::Scene::Draw()
 	//objM->OutLineDraw();
 
 	graph->DrawBlendMode();
+	if(SceneManager::Instance()->GetNowScene() == "scene1")
+	{
+		objM->SetToon();
+	}
 	objM->Draw();
 
 	postEffect->DrawAfter();

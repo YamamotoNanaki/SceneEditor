@@ -580,9 +580,9 @@ void IF::Model::CreateSphere(unsigned short texNum, bool smoothing)
 	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapMaterial);
 	assert(SUCCEEDED(result));
 
-	constMapMaterial->ambient = { 0.8,0.8,0.8 };
-	constMapMaterial->diffuse = { 0.8,0.8,0.8 };
-	constMapMaterial->specular = { 0.8,0.8,0.8 };
+	constMapMaterial->ambient = { 1,1,1 };
+	constMapMaterial->diffuse = { 1,1,1 };
+	constMapMaterial->specular = { 1,1,1 };
 	constMapMaterial->alpha = material.alpha;
 	material.texNum = texNum;
 	material.tex = true;
