@@ -366,8 +366,8 @@ void IF::SceneManager::GUI()
 		{
 			//scene->OutputJson(now);
 			scene->Reset();
-			scene->InputJson(sceneList[mode4]);
 			now = sceneList[mode4];
+			scene->InputJson(sceneList[mode4]);
 		}
 		ImGui::TreePop();
 	}

@@ -22,6 +22,32 @@ float4 Blur1Pixel(float2 uv)
     return col;
 }
 
+float Gaussian(float2 drawuv, float2 pickuv, float sigma)
+{
+    float d = distance(drawuv, pickuv);
+    return exp(-(d * d) / (2 * sigma * sigma));
+}
+
+float4 GaussianBlur(float2 uv)
+{
+    float totalWeight = 0, _sigma = 0.005, _stepWidth = 0.001;
+    float4 col = float4(0, 0, 0, 1);
+    
+    for (float py = -_sigma * 2; py <= _sigma * 2; py += _stepWidth)
+    {
+        for (float px = -_sigma * 2; px <= _sigma * 2; px += _stepWidth)
+        {
+            float2 pickuv = uv + float2(px, py);
+            float weight = Gaussian(uv, pickuv, _sigma);
+            col += tex0.Sample(smp, pickuv) * weight;
+            totalWeight += weight;
+        }
+    }
+    col.rgb = col.rgb / totalWeight;
+    return col;
+}
+
+
 float4 main(VSOutput input) : SV_TARGET
 {
     float4 color;
@@ -40,6 +66,10 @@ float4 main(VSOutput input) : SV_TARGET
         {
             color = texcolor1;
         }
+    }
+    if (gaussianBlur)
+    {
+        color = GaussianBlur(input.uv);
     }
     
     return color;

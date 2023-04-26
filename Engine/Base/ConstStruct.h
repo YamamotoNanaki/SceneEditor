@@ -40,8 +40,8 @@ namespace IF
 	{
 		//0~0.005‚­‚ç‚¢‚Å
 		float shift;
-		bool kadai;
-		float pad2;
+		unsigned int kadai;
+		unsigned int gaussianBlur;
 		float pad3;
 	};
 	struct ConstBufferDataSkin

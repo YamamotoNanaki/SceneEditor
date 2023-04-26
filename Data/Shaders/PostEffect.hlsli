@@ -2,6 +2,7 @@ cbuffer cbuff0 : register(b0)
 {
     float shift;
     bool kadai;
+    bool gaussianBlur;
 };
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

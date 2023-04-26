@@ -451,10 +451,17 @@ void IF::Scene::Draw()
 	if (SceneManager::Instance()->GetNowScene() == "MainScene")
 	{
 		postEffect->constMapPostEffect->kadai = true;
+		postEffect->constMapPostEffect->gaussianBlur = false;
+	}
+	else if(SceneManager::Instance()->GetNowScene() == "scene3")
+	{
+		postEffect->constMapPostEffect->gaussianBlur = true;
+		postEffect->constMapPostEffect->kadai = false;
 	}
 	else
 	{
 		postEffect->constMapPostEffect->kadai = false;
+		postEffect->constMapPostEffect->gaussianBlur = false;
 	}
 	postEffect->Draw();
 	particleM->Draw();
