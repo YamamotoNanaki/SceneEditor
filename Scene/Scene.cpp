@@ -118,9 +118,9 @@ void IF::Scene::OutputJson(std::string failename)
 
 void IF::Scene::DebugUpdate()
 {
-	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	NewFrame();
+	//ImGui_ImplDX12_NewFrame();
+	//ImGui_ImplWin32_NewFrame();
+	//NewFrame();
 	static bool flag = false;
 	ImGui::Begin("Debug");
 	ImGui::Text("Saved when debugging starts");
@@ -308,6 +308,92 @@ void IF::Scene::Update()
 {
 	Input::Instance()->Input::Update();
 
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	static float ambient[3] = { 0.4, 0.4, 0.4 };
+	static bool dirLActive[3] = { true,false,false };
+	static float dirLDir[3][3] = { {-1,-1,-1},{1,1,0.7},{0,0,1} };
+	static float dirLColor[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
+	static bool pointLActive[3] = { false,false,false };
+	static float pointLPos[3][3] = { {-1,-1,-1},{1,1,0.7},{0,-1,1} };
+	static float pointLAtten[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
+	static float pointLColor[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
+	static bool spotLActive[3] = { false,false,false };
+	static float spotLPos[3][3] = { {0,5,0},{0,5,0},{0,5,0} };
+	static float spotDir[3][3] = { {0,-1,0},{0,-1,0},{0,-1,0} };
+	static float spotLAtten[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
+	static float spotLFactorAngle[3][2] = { {20,30},{20,30},{20,30} };
+	static float spotLColor[3][3] = { {1,1,0},{0,1,1},{1,0,1} };
+	ImGui::Begin("Light Settings");
+	ImGui::ColorEdit3("ambient color", ambient);
+	if (ImGui::CollapsingHeader("Directional Light"))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			string s2 = "dirLight";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &dirLActive[i]);
+				ImGui::DragFloat3("Dir", dirLDir[i], 0.01);
+				ImGui::ColorEdit3("color", dirLColor[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	if (ImGui::CollapsingHeader("Point Light"))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			string s2 = "pointLight";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &pointLActive[i]);
+				ImGui::DragFloat3("Pos", pointLPos[i], 0.01);
+				ImGui::DragFloat3("atten", pointLAtten[i], 0.01);
+				ImGui::ColorEdit3("color", pointLColor[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	if (ImGui::CollapsingHeader("Spot Light"))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			string s2 = "spotLight";
+			s2 += to_string(i);
+			if (ImGui::TreeNode(s2.c_str()))
+			{
+				ImGui::Checkbox("active", &spotLActive[i]);
+				ImGui::DragFloat3("Pos", spotLPos[i], 0.01);
+				ImGui::DragFloat3("Dir", spotDir[i], 0.01);
+				ImGui::DragFloat3("atten", spotLAtten[i], 0.01);
+				ImGui::DragFloat2("FactorAngle", spotLFactorAngle[i], 0.01);
+				ImGui::ColorEdit3("color", spotLColor[i]);
+				ImGui::TreePop();
+			}
+		}
+	}
+	ImGui::End();
+	for (int i = 0; i < 3; i++)
+	{
+		lightM->SetDirLightActive(i, dirLActive[i]);
+		lightM->SetDirLightDir(i, { dirLDir[i][0],dirLDir[i][1],dirLDir[i][2] });
+		lightM->SetDirLightColor(i, { dirLColor[i][0],dirLColor[i][1],dirLColor[i][2] });
+		lightM->SetPointLightActive(i, pointLActive[i]);
+		lightM->SetPointLightAtten(i, { pointLAtten[i][0],pointLAtten[i][1],pointLAtten[i][2] });
+		lightM->SetPointLightColor(i, { pointLColor[i][0],pointLColor[i][1],pointLColor[i][2] });
+		lightM->SetPointLightPos(i, { pointLPos[i][0],pointLPos[i][1],pointLPos[i][2] });
+		lightM->SetSpotLightActive(i, spotLActive[i]);
+		lightM->SetSpotLightAtten(i, { spotLAtten[i][0],spotLAtten[i][1],spotLAtten[i][2] });
+		lightM->SetSpotLightColor(i, { spotLColor[i][0],spotLColor[i][1],spotLColor[i][2] });
+		lightM->SetSpotLightPos(i, { spotLPos[i][0],spotLPos[i][1],spotLPos[i][2] });
+		lightM->SetSpotLightDir(i, { spotDir[i][0],spotDir[i][1],spotDir[i][2] });
+		lightM->SetSpotLightFactorAngle(i, { spotLFactorAngle[i][0],spotLFactorAngle[i][1] });
+	}
+	lightM->SetAmbientColor({ ambient[0],ambient[1],ambient[2] });
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -319,13 +405,10 @@ void IF::Scene::Update()
 	spriteM->DeleteSprite();
 	objM->DeleteObject();
 
-	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
 
-	ImGui::Begin("test");
-	ImGui::Text("test");
-	ImGui::End();
+	//ImGui::Begin("test");
+	//ImGui::Text("test");
+	//ImGui::End();
 #endif
 }
 
@@ -336,8 +419,8 @@ void IF::Scene::Draw()
 	Object::DrawBefore(graph->rootsignature.Get());
 	postEffect->DrawBefore();
 
-	graph->DrawBlendMode(Blend::OUTLINE);
-	objM->OutLineDraw();
+	//graph->DrawBlendMode(Blend::OUTLINE);
+	//objM->OutLineDraw();
 
 	graph->DrawBlendMode();
 	objM->Draw();
@@ -369,6 +452,9 @@ void IF::Scene::Draw()
 	spriteM->ForeGroundDraw();
 
 	//#ifdef _DEBUG
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->srvHeap.Get() };
+	//デスクリプタヒープをセット
+	DirectX12::Instance()->GetCmdList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	ImGui::Render();
 	ID3D12GraphicsCommandList* commandList = DirectX12::Instance()->GetCmdList();
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);

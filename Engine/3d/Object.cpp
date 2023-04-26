@@ -135,6 +135,7 @@ void Object::Update(Matrix matView, Matrix matProjection, Float3 cameraPos, int 
 	constMapTransform->cameraPos = cameraPos;
 	constMapTransform->polygonSize = 1;
 	constMapTransform->explosion = 0;
+	constMapTransform->lightFlag = true;
 
 	if (fmodel == nullptr || fmodel->bones.size() == 0)return;
 	animTimer += 0.01f;

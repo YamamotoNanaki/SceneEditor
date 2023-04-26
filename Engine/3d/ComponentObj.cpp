@@ -27,6 +27,7 @@ void IF::CObject::Update()
 void IF::CObject::Draw()
 {
 	if (prefab)return;
+	
 	if (texNum == 0)obj.Draw();
 	else obj.Draw(texNum);
 }
