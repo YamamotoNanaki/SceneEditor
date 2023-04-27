@@ -473,9 +473,9 @@ void IF::Scene::Draw()
 	DirectX12::Instance()->DrawBefore();
 	DirectX12::Instance()->DrawSetViewport();
 
-	graph->DrawBlendMode(Blend::NORMAL2D);
-	Sprite::DrawBefore(graph->rootsignature.Get());
-	spriteM->BackGroundDraw();
+	//graph->DrawBlendMode(Blend::NORMAL2D);
+	//Sprite::DrawBefore(graph->rootsignature.Get());
+	//spriteM->BackGroundDraw();
 
 	graph->DrawBlendMode(Blend::NOBLEND);
 
@@ -495,11 +495,11 @@ void IF::Scene::Draw()
 		postEffect->constMapPostEffect->gaussianBlur = false;
 	}
 	postEffect->Draw();
-	particleM->Draw();
+	//particleM->Draw();
 
-	Sprite::DrawBefore(graph->rootsignature.Get());
-	graph->DrawBlendMode(Blend::NORMAL2D);
-	spriteM->ForeGroundDraw();
+	//Sprite::DrawBefore(graph->rootsignature.Get());
+	//graph->DrawBlendMode(Blend::NORMAL2D);
+	//spriteM->ForeGroundDraw();
 
 	//#ifdef _DEBUG
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->srvHeap.Get() };
