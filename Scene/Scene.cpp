@@ -328,6 +328,10 @@ void IF::Scene::Update()
 			num++;
 			break;
 		case 4:
+			SceneManager::Instance()->SceneChange("scene4");
+			num++;
+			break;
+		case 5:
 			SceneManager::Instance()->SceneChange("MainScene");
 			num = 0;
 			break;
@@ -338,6 +342,37 @@ void IF::Scene::Update()
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	if (SceneManager::Instance()->GetNowScene() == "scene4")
+	{
+		static float shift = 0;
+		static bool s = false;
+		ImGui::Begin("PostEffect");
+		if (ImGui::TreeNode("RGBShift"))
+		{
+			ImGui::DragFloat("RGBShift", &shift, 0.001);
+			ImGui::TreePop();
+		}
+		static bool g = false;
+		static float sepia = false;
+		if (ImGui::TreeNode("grayscale"))
+		{
+			ImGui::Checkbox("grayscale", &g);
+			ImGui::DragFloat("Sepia", &sepia, 0.001);
+			ImGui::TreePop();
+		}
+		static bool n = false;
+		if (ImGui::TreeNode("negative-positive conversion"))
+		{
+			ImGui::Checkbox("negative", &n);
+			ImGui::TreePop();
+		}
+		ImGui::End();
+		postEffect->SetRGBShift(shift);
+		postEffect->SetGrayscale(g);
+		postEffect->SetSepia(sepia);
+	}
+
 	ImGui::Begin("explanation");
 	ImGui::Text("next scene : SPACE KEY");
 	ImGui::End();
@@ -404,8 +439,8 @@ void IF::Scene::Update()
 				ImGui::ColorEdit3("color", spotLColor[i]);
 				ImGui::TreePop();
 			}
-		}
 	}
+}
 	ImGui::End();
 	for (int i = 0; i < 3; i++)
 	{

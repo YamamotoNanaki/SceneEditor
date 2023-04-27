@@ -42,7 +42,11 @@ namespace IF
 		float shift;
 		unsigned int kadai;
 		unsigned int gaussianBlur;
-		float pad3;
+		unsigned int gray = false;
+		float sepia = 0;
+		float pad;
+		float pad1;
+		float pad2;
 	};
 	struct ConstBufferDataSkin
 	{

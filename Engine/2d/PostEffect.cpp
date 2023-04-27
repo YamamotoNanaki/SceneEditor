@@ -282,6 +282,16 @@ void IF::PostEffect::SetRGBShift(float shift)
 	constMapPostEffect->shift = shift;
 }
 
+void IF::PostEffect::SetGrayscale(bool gray)
+{
+	constMapPostEffect->gray = gray;
+}
+
+void IF::PostEffect::SetSepia(float sepia)
+{
+	constMapPostEffect->sepia = sepia;
+}
+
 void PostEffect::CreateGraphicsPipelineState()
 {
 	ID3D12Device* device = DirectX12::Instance()->GetDevice();

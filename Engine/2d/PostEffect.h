@@ -38,6 +38,8 @@ namespace IF
 		/// </summary>
 		/// <param name="shift">0~0.005ˆÈ“à‚ª‚¿‚å‚¤‚Ç—Ç‚¢‚ÆŽv‚¢‚Ü‚·</param>
 		void SetRGBShift(float shift);
+		void SetGrayscale(bool gray);
+		void SetSepia(float sepia);
 
 	private:
 		void CreateGraphicsPipelineState();
