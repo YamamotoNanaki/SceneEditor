@@ -52,9 +52,15 @@ float4 main(VSOutput input) : SV_TARGET
 {
     float4 color;
     float4 texcolor = tex0.Sample(smp, input.uv);
+    float s = shift;
+    texcolor.r = tex0.Sample(smp, input.uv + float2(-s, s)).r;
+    texcolor.g = tex0.Sample(smp, input.uv + float2(0, -s)).g;
+    texcolor.b = tex0.Sample(smp, input.uv + float2(s, 0)).b;
     if(gray)
     {
-        
+        float gray = texcolor.r * 0.299 + texcolor.g * 0.587 + texcolor.b * 0.114;
+
+        texcolor = float4(gray + sepia, gray, gray - sepia, texcolor.a);
     }
     float4 texcolor1;
     
