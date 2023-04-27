@@ -346,7 +346,6 @@ void IF::Scene::Update()
 	if (SceneManager::Instance()->GetNowScene() == "scene4")
 	{
 		static float shift = 0;
-		static bool s = false;
 		ImGui::Begin("PostEffect");
 		if (ImGui::TreeNode("RGBShift"))
 		{
@@ -359,12 +358,6 @@ void IF::Scene::Update()
 		{
 			ImGui::Checkbox("grayscale", &g);
 			ImGui::DragFloat("Sepia", &sepia, 0.001);
-			ImGui::TreePop();
-		}
-		static bool n = false;
-		if (ImGui::TreeNode("negative-positive conversion"))
-		{
-			ImGui::Checkbox("negative", &n);
 			ImGui::TreePop();
 		}
 		ImGui::End();
