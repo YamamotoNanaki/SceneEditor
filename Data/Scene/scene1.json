@@ -21,9 +21,9 @@
                 "outLineFlag": false,
                 "outLineSize": 0.20000000298023224,
                 "pos": {
-                    "x": 0.0,
+                    "x": -5.0,
                     "y": 0.0,
-                    "z": 0.0
+                    "z": 10.0
                 },
                 "prefab": false,
                 "rot": {
@@ -37,6 +37,42 @@
                     "z": 4.0
                 },
                 "tag": "Normal"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "dragon",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 5.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.02500000037252903,
+                    "y": 0.02500000037252903,
+                    "z": 0.02500000037252903
+                },
+                "tag": "dragon"
             }
         ]
     }

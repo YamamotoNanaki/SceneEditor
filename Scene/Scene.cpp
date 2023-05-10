@@ -370,8 +370,9 @@ void IF::Scene::Update()
 	static float ambient[3] = { 1, 0, 0 };
 	if (SceneManager::Instance()->GetNowScene() == "scene" || SceneManager::Instance()->GetNowScene() == "scene1")
 	{
-		ImGui::Begin("ObjectColor");
+		ImGui::Begin("Object Option");
 		CObject* o = objM->GetAddress<CObject>("Normal");
+		CObject* o2 = objM->GetAddress<CObject>("dragon");
 		float col[4];
 		static float rimcol[4] = {0,0,0,1};
 		static float specol[3] = {0,0,1};
@@ -406,6 +407,12 @@ void IF::Scene::Update()
 		o->obj.constMapTransform->speColor = { specol[0],specol[1],specol[2],1 };
 		o->obj.constMapTransform->difColor = { difcol[0],difcol[1],difcol[2],1 };
 		o->SetColor({ col[0],col[1],col[2],col[3] });
+		o2->obj.constMapTransform->rimFlag = rim;
+		o2->obj.constMapTransform->mixFlag = mix;
+		o2->obj.constMapTransform->rimColor = { rimcol[0],rimcol[1],rimcol[2],rimcol[3] };
+		o2->obj.constMapTransform->speColor = { specol[0],specol[1],specol[2],1 };
+		o2->obj.constMapTransform->difColor = { difcol[0],difcol[1],difcol[2],1 };
+		o2->SetColor({ col[0],col[1],col[2],col[3] });
 		ImGui::End();
 	}
 	else
@@ -413,8 +420,17 @@ void IF::Scene::Update()
 		t = false;
 	}
 	Model* m = modelM->GetModel("Sphere");
-	if (t) m->SetTexNum(24);
-	else m->SetTexNum(1);
+	Model* m2 = modelM->GetModel("dragon");
+	if (t)
+	{
+		m->SetTexNum(25);
+		m2->SetTexNum(25);
+	}
+	else
+	{
+		m->SetTexNum(1);
+		m2->SetTexNum(1);
+	}
 
 	ImGui::Begin("explanation");
 	ImGui::Text("next scene : SPACE KEY");

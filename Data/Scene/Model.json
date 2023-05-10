@@ -41,6 +41,13 @@
             "tag": "lowPolySmooth",
             "tex": 1,
             "type": 0
+        },
+        {
+            "name": "dragon",
+            "smooth": true,
+            "tag": "dragon",
+            "tex": 1,
+            "type": 0
         }
     ]
 }
