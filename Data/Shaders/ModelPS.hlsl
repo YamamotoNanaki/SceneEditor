@@ -10,9 +10,9 @@ PSOutput main(GSOutput input) : SV_TARGET
 {
     float4 texcolor = float4(tex.Sample(smp, input.uv));
     const float shininess = 4.0f;
-    float3 amb = ambient;
+    float3 amb = color.xyz * 0.2f * ambient * texcolor.xyz * color.xyz;
     float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
-    float4 shadecolor = float4(ambientColor * amb * texcolor.xyz * color.xyz, alpha * texcolor.a);
+    float4 shadecolor = float4(amb, alpha * texcolor.a);
 
     if (lightFlag)
     {
@@ -40,7 +40,16 @@ PSOutput main(GSOutput input) : SV_TARGET
                     spe = pow(saturate(dot(reflect, eyedir)), shininess) * specular;
                 }
 
-                shadecolor.rgb += (diff + spe) * dLights[i].lightcolor;
+                if (!mixFlag && toonFlag)
+                {
+                    float3 a = (1 - dotlightnormal - spe) * ambientColor;
+                    a = a < 0 ? 0 : a;
+                    shadecolor.rgb = a + (1 - spe) * dotlightnormal * difColor.xyz + spe * speColor.xyz;
+                }
+                else
+                {
+                    shadecolor.rgb += (diff + spe) * dLights[i].lightcolor;
+                }
             }
         }
 
@@ -139,9 +148,22 @@ PSOutput main(GSOutput input) : SV_TARGET
             }
         }
     }
+    
+    float rim = 0;
+    if (rimFlag)
+    {
+        if (toonFlag)
+        {
+            rim = smoothstep(0.3, 0.35, pow(1 - dot(eyedir, input.normal), 3));
+        }
+        else
+        {
+            rim = pow(1 - dot(eyedir, input.normal), 3);
+        }
+    }
 
     PSOutput o;
-    o.target0 = shadecolor;
+    o.target0 = (1 - rim) * shadecolor + rim * rimColor;
     o.target1 = o.target0;
     return o;
 }

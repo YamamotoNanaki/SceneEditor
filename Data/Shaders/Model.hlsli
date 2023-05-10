@@ -7,6 +7,9 @@ cbuffer ConstBufferDataTransform : register(b1)
 {
 	matrix viewPro;
 	matrix world;
+    float4 rimColor;
+    float4 difColor;
+    float4 speColor;
 	float3 cameraPos;
     float explosion;
     float polygonSize;
@@ -14,6 +17,8 @@ cbuffer ConstBufferDataTransform : register(b1)
     float rotation;
     bool lightFlag;
     bool toonFlag;
+    bool rimFlag;
+    bool mixFlag;
 };
 
 cbuffer Material : register(b2)

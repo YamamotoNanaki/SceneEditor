@@ -13,6 +13,9 @@ namespace IF
 	{
 		Matrix viewPro;
 		Matrix world;
+		Float4 rimColor;
+		Float4 difColor;
+		Float4 speColor;
 		Float3 cameraPos;
 		float explosion;
 		float polygonSize;
@@ -20,6 +23,8 @@ namespace IF
 		float rotation;
 		unsigned int lightFlag = true;
 		unsigned int toonFlag = false;
+		unsigned int rimFlag = false;
+		unsigned int mixFlag = false;
 	};
 
 	struct ConstBufferBillboard

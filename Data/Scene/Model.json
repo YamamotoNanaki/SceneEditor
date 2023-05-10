@@ -15,11 +15,11 @@
             "type": 0
         },
         {
-            "name": "",
-            "smooth": false,
+            "name": "Sphere",
+            "smooth": true,
             "tag": "Sphere",
             "tex": 1,
-            "type": 4
+            "type": 0
         },
         {
             "name": "ground",

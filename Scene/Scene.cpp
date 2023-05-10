@@ -312,12 +312,13 @@ void IF::Scene::Update()
 		switch (num)
 		{
 		case 0:
-			SceneManager::Instance()->SceneChange("scene");
+			SceneManager::Instance()->SceneChange("scene1");
 			num++;
 			break;
 		case 1:
-			SceneManager::Instance()->SceneChange("scene1");
-			num++;
+			SceneManager::Instance()->SceneChange("scene");
+			num += 2;
+			num = 0;
 			break;
 		case 2:
 			SceneManager::Instance()->SceneChange("scene2");
@@ -365,11 +366,59 @@ void IF::Scene::Update()
 		postEffect->SetGrayscale(g);
 		postEffect->SetSepia(sepia);
 	}
+	static bool t = false;
+	static float ambient[3] = { 1, 0, 0 };
+	if (SceneManager::Instance()->GetNowScene() == "scene" || SceneManager::Instance()->GetNowScene() == "scene1")
+	{
+		ImGui::Begin("ObjectColor");
+		CObject* o = objM->GetAddress<CObject>("Normal");
+		float col[4];
+		static float rimcol[4] = {0,0,0,1};
+		static float specol[3] = {0,0,1};
+		static float difcol[3] = {0,1,0};
+		Float4 c = o->GetColor();
+		col[0] = c.x;
+		col[1] = c.y;
+		col[2] = c.z;
+		col[3] = c.w;
+		static bool rim = false;
+		static bool mix = true;
+		ImGui::ColorEdit4("color", col);
+		ImGui::Checkbox("Use Texture", &t);
+		ImGui::Checkbox("rimFlag", &rim);
+		if (rim)
+		{
+			ImGui::ColorEdit4("rimColor", rimcol);
+		}
+		if (SceneManager::Instance()->GetNowScene() == "scene1")
+		{
+			ImGui::Checkbox("mixFlag", &mix);
+			if (!mix)
+			{
+				ImGui::ColorEdit3("diffColor", difcol);
+				ImGui::ColorEdit3("speColor", specol);
+				ImGui::ColorEdit3("ambColor", ambient);
+			}
+		}
+		o->obj.constMapTransform->rimFlag = rim;
+		o->obj.constMapTransform->mixFlag = mix;
+		o->obj.constMapTransform->rimColor = { rimcol[0],rimcol[1],rimcol[2],rimcol[3] };
+		o->obj.constMapTransform->speColor = { specol[0],specol[1],specol[2],1 };
+		o->obj.constMapTransform->difColor = { difcol[0],difcol[1],difcol[2],1 };
+		o->SetColor({ col[0],col[1],col[2],col[3] });
+		ImGui::End();
+	}
+	else
+	{
+		t = false;
+	}
+	Model* m = modelM->GetModel("Sphere");
+	if (t) m->SetTexNum(24);
+	else m->SetTexNum(1);
 
 	ImGui::Begin("explanation");
 	ImGui::Text("next scene : SPACE KEY");
 	ImGui::End();
-	static float ambient[3] = { 0.2, 0.2, 0.2 };
 	static bool dirLActive[3] = { true,false,false };
 	static float dirLDir[3][3] = { {-1,-1,0.8},{1,1,0.7},{0,0,1} };
 	static float dirLColor[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
@@ -384,10 +433,10 @@ void IF::Scene::Update()
 	static float spotLFactorAngle[3][2] = { {20,30},{20,30},{20,30} };
 	static float spotLColor[3][3] = { {1,1,0},{0,1,1},{1,0,1} };
 	ImGui::Begin("Light Settings");
-	ImGui::ColorEdit3("ambient color", ambient);
+	//ImGui::ColorEdit3("ambient color", ambient);
 	if (ImGui::CollapsingHeader("Directional Light"))
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			string s2 = "dirLight";
 			s2 += to_string(i);
@@ -400,40 +449,40 @@ void IF::Scene::Update()
 			}
 		}
 	}
-	if (ImGui::CollapsingHeader("Point Light"))
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			string s2 = "pointLight";
-			s2 += to_string(i);
-			if (ImGui::TreeNode(s2.c_str()))
-			{
-				ImGui::Checkbox("active", &pointLActive[i]);
-				ImGui::DragFloat3("Pos", pointLPos[i], 0.01);
-				ImGui::DragFloat3("atten", pointLAtten[i], 0.01);
-				ImGui::ColorEdit3("color", pointLColor[i]);
-				ImGui::TreePop();
-			}
-		}
-	}
-	if (ImGui::CollapsingHeader("Spot Light"))
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			string s2 = "spotLight";
-			s2 += to_string(i);
-			if (ImGui::TreeNode(s2.c_str()))
-			{
-				ImGui::Checkbox("active", &spotLActive[i]);
-				ImGui::DragFloat3("Pos", spotLPos[i], 0.01);
-				ImGui::DragFloat3("Dir", spotDir[i], 0.01);
-				ImGui::DragFloat3("atten", spotLAtten[i], 0.01);
-				ImGui::DragFloat2("FactorAngle", spotLFactorAngle[i], 0.01);
-				ImGui::ColorEdit3("color", spotLColor[i]);
-				ImGui::TreePop();
-			}
-	}
-}
+	//if (ImGui::CollapsingHeader("Point Light"))
+	//{
+	//	for (int i = 0; i < 1; i++)
+	//	{
+	//		string s2 = "pointLight";
+	//		s2 += to_string(i);
+	//		if (ImGui::TreeNode(s2.c_str()))
+	//		{
+	//			ImGui::Checkbox("active", &pointLActive[i]);
+	//			ImGui::DragFloat3("Pos", pointLPos[i], 0.01);
+	//			ImGui::DragFloat3("atten", pointLAtten[i], 0.01);
+	//			ImGui::ColorEdit3("color", pointLColor[i]);
+	//			ImGui::TreePop();
+	//		}
+	//	}
+	//}
+	//if (ImGui::CollapsingHeader("Spot Light"))
+	//{
+	//	for (int i = 0; i < 1; i++)
+	//	{
+	//		string s2 = "spotLight";
+	//		s2 += to_string(i);
+	//		if (ImGui::TreeNode(s2.c_str()))
+	//		{
+	//			ImGui::Checkbox("active", &spotLActive[i]);
+	//			ImGui::DragFloat3("Pos", spotLPos[i], 0.01);
+	//			ImGui::DragFloat3("Dir", spotDir[i], 0.01);
+	//			ImGui::DragFloat3("atten", spotLAtten[i], 0.01);
+	//			ImGui::DragFloat2("FactorAngle", spotLFactorAngle[i], 0.01);
+	//			ImGui::ColorEdit3("color", spotLColor[i]);
+	//			ImGui::TreePop();
+	//		}
+	//	}
+	//}
 	ImGui::End();
 	for (int i = 0; i < 3; i++)
 	{
