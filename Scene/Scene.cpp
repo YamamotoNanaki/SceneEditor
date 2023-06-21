@@ -320,16 +320,16 @@ void IF::Scene::Update()
 			num++;
 			break;
 		case 2:
-			SceneManager::Instance()->SceneChange("scene7");
-			num++;
-			break;
-		case 3:
 			SceneManager::Instance()->SceneChange("scene8");
 			num++;
 			break;
+		case 3:
+			SceneManager::Instance()->SceneChange("scene3");
+			num = 0;
+			break;
 		case 4:
 			SceneManager::Instance()->SceneChange("scene3");
-			num=0;
+			num = 0;
 			break;
 		case 5:
 			SceneManager::Instance()->SceneChange("MainScene");
@@ -373,9 +373,9 @@ void IF::Scene::Update()
 		CObject* o = objM->GetAddress<CObject>("Normal");
 		CObject* o2 = objM->GetAddress<CObject>("dragon");
 		float col[4];
-		static float rimcol[4] = {0,0,0,1};
-		static float specol[3] = {0,0,1};
-		static float difcol[3] = {0,1,0};
+		static float rimcol[4] = { 0,0,0,1 };
+		static float specol[3] = { 0,0,1 };
+		static float difcol[3] = { 0,1,0 };
 		Float4 c = o->GetColor();
 		col[0] = c.x;
 		col[1] = c.y;
@@ -516,6 +516,30 @@ void IF::Scene::Update()
 	//	lightM->SetSpotLightFactorAngle(i, { spotLFactorAngle[i][0],spotLFactorAngle[i][1] });
 	//}
 	//lightM->SetAmbientColor({ ambient[0],ambient[1],ambient[2] });
+
+	if (SceneManager::Instance()->GetNowScene() == "scene8")
+	{
+		ImGui::Begin("depth filed");
+		static bool flag;
+		static float n = 0.03;
+		static float f = 0.04;
+		static float d = 0.065;
+		ImGui::SliderFloat("near width", &n, 0.f, 0.15f);
+		ImGui::SliderFloat("far width", &f, 0.f, 0.15f);
+		ImGui::SliderFloat("depth", &d, 0.f, 0.15f);
+		ImGui::Checkbox("depth Tex", &flag);
+		if (ImGui::Button("Reset"))
+		{
+			n = 0.03;
+			f = 0.04;
+			d = 0.065;
+		}
+		postEffect->constMapPostEffect->_DepthTexFlag = !flag;
+		postEffect->constMapPostEffect->_NFocusWidth = n;
+		postEffect->constMapPostEffect->_FFocusWidth = f;
+		postEffect->constMapPostEffect->_FocusDepth = d;
+		ImGui::End();
+	}
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -536,6 +560,14 @@ void IF::Scene::Update()
 
 void IF::Scene::Draw()
 {
+	if (SceneManager::Instance()->GetNowScene() == "scene8")
+	{
+		objM->SetDepthTexFlag(true);
+	}
+	else
+	{
+		objM->SetDepthTexFlag(false);
+	}
 	//particleM->DrawPostEffect(graph->rootsignature.Get());
 	// ポストエフェクト
 	Object::DrawBefore(graph->rootsignature.Get());
@@ -575,6 +607,8 @@ void IF::Scene::Draw()
 	postEffect->constMapPostEffect->kadai = false;
 	postEffect->constMapPostEffect->gaussianBlur = false;
 	postEffect->constMapPostEffect->cross = false;
+	postEffect->constMapPostEffect->depth = false;
+	postEffect->constMapPostEffect->depth2 = false;
 	if (SceneManager::Instance()->GetNowScene() == "MainScene")
 	{
 		postEffect->constMapPostEffect->kadai = true;
@@ -590,6 +624,14 @@ void IF::Scene::Draw()
 	else if (SceneManager::Instance()->GetNowScene() == "scene6")
 	{
 		postEffect->constMapPostEffect->cross = true;
+	}
+	else if (SceneManager::Instance()->GetNowScene() == "scene7")
+	{
+		postEffect->constMapPostEffect->depth = true;
+	}
+	else if (SceneManager::Instance()->GetNowScene() == "scene8")
+	{
+		postEffect->constMapPostEffect->depth2 = true;
 	}
 	postEffect->Draw();
 

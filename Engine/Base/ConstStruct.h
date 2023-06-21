@@ -25,6 +25,7 @@ namespace IF
 		unsigned int toonFlag = false;
 		unsigned int rimFlag = false;
 		unsigned int mixFlag = false;
+		unsigned int depth = false;
 	};
 
 	struct ConstBufferBillboard
@@ -53,6 +54,10 @@ namespace IF
 		unsigned int cross;
 		unsigned int depth;
 		unsigned int depth2;
+		float _NFocusWidth;
+		float _FFocusWidth;
+		float _FocusDepth;
+		unsigned int _DepthTexFlag;
 		float pad;
 		float pad1;
 		float pad2;

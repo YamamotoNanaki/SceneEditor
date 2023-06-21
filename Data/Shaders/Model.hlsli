@@ -19,6 +19,7 @@ cbuffer ConstBufferDataTransform : register(b1)
     bool toonFlag;
     bool rimFlag;
     bool mixFlag;
+    bool depth;
 };
 
 cbuffer Material : register(b2)

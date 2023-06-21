@@ -529,6 +529,7 @@ namespace IF
 				com->SetToon();
 			}
 		}
+		void SetDepthTexFlag(bool flag);
 #ifdef _DEBUG
 		void GUI();
 		std::string GUIRadio();

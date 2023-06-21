@@ -1,0 +1,439 @@
+{
+    "object": {
+        "camera": "mainCamera",
+        "object": [
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "testBox",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": false,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": true,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 4.0,
+                    "y": 4.0,
+                    "z": 4.0
+                },
+                "tag": "Normal"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "dome",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal1"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "Sphere",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 4.5,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "tag": "Normal2"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 0.0
+                },
+                "model": "Sphere",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": false,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": -5.550000190734863,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "tag": "Normal3"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "ground",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": -4.199999809265137,
+                    "z": 0.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal4"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "model": "testBox",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": false,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": -0.05000000074505806,
+                    "y": 2.6500000953674316,
+                    "z": 14.699999809265137
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal5"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "model": "testBox",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": -12.300000190734863,
+                    "y": 0.05000000074505806,
+                    "z": 9.800000190734863
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 6.25
+                },
+                "tag": "Normal6"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "model": "testBox",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 7.349999904632568,
+                    "y": 3.200000047683716,
+                    "z": -3.5
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.75
+                },
+                "tag": "Normal7"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "Sphere",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": -2.75,
+                    "y": -0.75,
+                    "z": -3.0
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal8"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "Sphere",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 0.0,
+                    "y": 3.8499999046325684,
+                    "z": 2.0999999046325684
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal9"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "Sphere",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": -4.849999904632568,
+                    "y": 4.199999809265137,
+                    "z": 19.5
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal10"
+            },
+            {
+                "BillBoard": 0,
+                "ObjectName": "Normal",
+                "color": {
+                    "w": 1.0,
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "model": "Sphere",
+                "outLineColor": {
+                    "w": 1.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "outLineFlag": true,
+                "outLineSize": 0.20000000298023224,
+                "pos": {
+                    "x": 2.700000047683716,
+                    "y": -1.100000023841858,
+                    "z": 25.149999618530273
+                },
+                "prefab": false,
+                "rot": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "sca": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                },
+                "tag": "Normal11"
+            }
+        ]
+    }
+}

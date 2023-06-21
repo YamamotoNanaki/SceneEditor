@@ -49,6 +49,27 @@ float4 GaussianBlur(float2 uv, Texture2D<float4> tex)
     return col;
 }
 
+float4 GaussianDepthBlur(float2 uv, Texture2D<float4> tex, float focusWidth,float _FocusDepth ,float _sigma = 0.005)
+{
+    float totalWeight = 0, _stepWidth = 0.001;
+    float4 col = float4(0, 0, 0, 1);
+
+    for (float py = -_sigma * 2; py <= _sigma * 2; py += _stepWidth)
+    {
+        for (float px = -_sigma * 2; px <= _sigma * 2; px += _stepWidth)
+        {
+            float2 pickuv = uv + float2(px, py);
+            float pickDepth = tex1.Sample(smp, pickuv).r;
+            float pickFocus = smoothstep(0, focusWidth, abs(pickDepth - _FocusDepth));
+            float weight = Gaussian(uv, pickuv, _sigma) * pickFocus;
+            col += tex.Sample(smp, pickuv) * weight;
+            totalWeight += weight;
+        }
+    }
+    col.rgb = col.rgb / totalWeight;
+    return col;
+}
+
 float4 DotFilter(float2 uv, Texture2D<float4> tex)
 {
     uv = clamp(uv, 0, 1);
@@ -132,6 +153,31 @@ float4 main(VSOutput input) : SV_TARGET
     if (cross)
     {
         color += CrossFilter(input.uv, tex1);
+    }
+    if(depth2)
+    {        
+        float depth = tex1.Sample(smp, input.uv).r;
+        
+        float inFocus = 1 - smoothstep(0, _NFocusWidth, abs(depth - _FocusDepth));
+        float outFocus = smoothstep(_NFocusWidth, _FFocusWidth, abs(depth - _FocusDepth));
+        float middleFocus = 1 - inFocus - outFocus;
+        float4 inFocusColor;
+        float4 middleFocusColor;
+        float4 outFocusColor;
+
+        if (_DepthTexFlag == 0)
+        {
+            inFocusColor = float4(1, 0, 0, 1);
+            middleFocusColor = float4(0, 1, 0, 1);
+            outFocusColor = float4(0, 0, 1, 1);
+        }
+        else
+        {
+            inFocusColor = tex0.Sample(smp, input.uv);
+            middleFocusColor = GaussianDepthBlur(input.uv, tex0, _NFocusWidth, _FocusDepth, 0.001);
+            outFocusColor = GaussianDepthBlur(input.uv, tex0, _FFocusWidth, _FocusDepth);
+        }
+        color = inFocus * inFocusColor + middleFocus * middleFocusColor + outFocus * outFocusColor;
     }
     return color;
 }

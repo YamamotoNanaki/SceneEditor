@@ -89,6 +89,15 @@ void IF::ObjectManager::IntputJson(nlohmann::json& j)
 	}
 }
 
+void IF::ObjectManager::SetDepthTexFlag(bool flag)
+{
+	auto buff = objList;
+	for (auto com : buff)
+	{
+		com->obj.constMapTransform->depth = flag;
+	}
+}
+
 #ifdef _DEBUG
 void IF::ObjectManager::GUI()
 {
