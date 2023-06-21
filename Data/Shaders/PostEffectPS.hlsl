@@ -81,5 +81,9 @@ float4 main(VSOutput input) : SV_TARGET
 
         color = float4(gray + sepia, gray, gray - sepia, color.a);
     }
+    if (bloom)
+    {
+        color += GaussianBlur(input.uv, tex1);
+    }
     return color;
 }

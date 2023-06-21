@@ -49,9 +49,9 @@ namespace IF
 		unsigned int gaussianBlur;
 		unsigned int gray = false;
 		float sepia = 0;
-		float pad;
-		float pad1;
-		float pad2;
+		unsigned int bloom;
+		unsigned int depth;
+		unsigned int depth2;
 	};
 	struct ConstBufferDataSkin
 	{

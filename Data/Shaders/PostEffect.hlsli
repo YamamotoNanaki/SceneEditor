@@ -5,6 +5,9 @@ cbuffer cbuff0 : register(b0)
     bool gaussianBlur;
     bool gray;
     float sepia;
+    bool bloom;
+    bool depth;
+    bool depth2;
 };
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

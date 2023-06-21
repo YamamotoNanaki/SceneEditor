@@ -31,15 +31,15 @@ void IF::Scene::Initialize()
 	cameraM->Add<Camera>("mainCamera", 45, winWidth, winHeight);
 	lightM->Initialize();
 	lightM->DefaultLightSetting();
-	for (int i = 0; i < 3; i++)
-	{
-		lightM->SetDirLightActive(i, false);
-		lightM->SetPointLightActive(i, false);
-		lightM->SetSpotLightActive(i, false);
-	}
-	lightM->SetAmbientColor({ 1, 1, 1 });
-	lightM->SetDirLightActive(0, true);
-	lightM->SetDirLightDir(0, { -1,-1,0.7 });
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	lightM->SetDirLightActive(i, false);
+	//	lightM->SetPointLightActive(i, false);
+	//	lightM->SetSpotLightActive(i, false);
+	//}
+	//lightM->SetAmbientColor({ 1, 1, 1 });
+	//lightM->SetDirLightActive(0, true);
+	//lightM->SetDirLightDir(0, { -1,-1,0.7 });
 
 	objM->SetCamera(cameraM->GetCamera("mainCamera"));
 	DebugText::Instance()->Initialize(tex->LoadTexture("debugfont.png", 1022));
@@ -312,12 +312,11 @@ void IF::Scene::Update()
 		switch (num)
 		{
 		case 0:
-			SceneManager::Instance()->SceneChange("scene1");
+			SceneManager::Instance()->SceneChange("scene5");
 			num++;
 			break;
 		case 1:
-			SceneManager::Instance()->SceneChange("scene");
-			num += 2;
+			SceneManager::Instance()->SceneChange("scene3");
 			num = 0;
 			break;
 		case 2:
@@ -435,36 +434,36 @@ void IF::Scene::Update()
 	ImGui::Begin("explanation");
 	ImGui::Text("next scene : SPACE KEY");
 	ImGui::End();
-	static bool dirLActive[3] = { true,false,false };
-	static float dirLDir[3][3] = { {-1,-1,0.8},{1,1,0.7},{0,0,1} };
-	static float dirLColor[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
-	static bool pointLActive[3] = { false,false,false };
-	static float pointLPos[3][3] = { {-1,-1,-1},{1,1,0.7},{0,-1,1} };
-	static float pointLAtten[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
-	static float pointLColor[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
-	static bool spotLActive[3] = { false,false,false };
-	static float spotLPos[3][3] = { {0,5,0},{0,5,0},{0,5,0} };
-	static float spotDir[3][3] = { {0,-1,0},{0,-1,0},{0,-1,0} };
-	static float spotLAtten[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
-	static float spotLFactorAngle[3][2] = { {20,30},{20,30},{20,30} };
-	static float spotLColor[3][3] = { {1,1,0},{0,1,1},{1,0,1} };
-	ImGui::Begin("Light Settings");
+	//static bool dirLActive[3] = { true,false,false };
+	//static float dirLDir[3][3] = { {-1,-1,0.8},{1,1,0.7},{0,0,1} };
+	//static float dirLColor[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
+	//static bool pointLActive[3] = { false,false,false };
+	//static float pointLPos[3][3] = { {-1,-1,-1},{1,1,0.7},{0,-1,1} };
+	//static float pointLAtten[3][3] = { {1,1,1},{1,1,1},{1,1,1} };
+	//static float pointLColor[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
+	//static bool spotLActive[3] = { false,false,false };
+	//static float spotLPos[3][3] = { {0,5,0},{0,5,0},{0,5,0} };
+	//static float spotDir[3][3] = { {0,-1,0},{0,-1,0},{0,-1,0} };
+	//static float spotLAtten[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
+	//static float spotLFactorAngle[3][2] = { {20,30},{20,30},{20,30} };
+	//static float spotLColor[3][3] = { {1,1,0},{0,1,1},{1,0,1} };
+	//ImGui::Begin("Light Settings");
 	//ImGui::ColorEdit3("ambient color", ambient);
-	if (ImGui::CollapsingHeader("Directional Light"))
-	{
-		for (int i = 0; i < 1; i++)
-		{
-			string s2 = "dirLight";
-			s2 += to_string(i);
-			if (ImGui::TreeNode(s2.c_str()))
-			{
-				ImGui::Checkbox("active", &dirLActive[i]);
-				ImGui::DragFloat3("Dir", dirLDir[i], 0.01);
-				ImGui::ColorEdit3("color", dirLColor[i]);
-				ImGui::TreePop();
-			}
-		}
-	}
+	//if (ImGui::CollapsingHeader("Directional Light"))
+	//{
+	//	for (int i = 0; i < 1; i++)
+	//	{
+	//		string s2 = "dirLight";
+	//		s2 += to_string(i);
+	//		if (ImGui::TreeNode(s2.c_str()))
+	//		{
+	//			ImGui::Checkbox("active", &dirLActive[i]);
+	//			ImGui::DragFloat3("Dir", dirLDir[i], 0.01);
+	//			ImGui::ColorEdit3("color", dirLColor[i]);
+	//			ImGui::TreePop();
+	//		}
+	//	}
+	//}
 	//if (ImGui::CollapsingHeader("Point Light"))
 	//{
 	//	for (int i = 0; i < 1; i++)
@@ -499,24 +498,24 @@ void IF::Scene::Update()
 	//		}
 	//	}
 	//}
-	ImGui::End();
-	for (int i = 0; i < 3; i++)
-	{
-		lightM->SetDirLightActive(i, dirLActive[i]);
-		lightM->SetDirLightDir(i, { dirLDir[i][0],dirLDir[i][1],dirLDir[i][2] });
-		lightM->SetDirLightColor(i, { dirLColor[i][0],dirLColor[i][1],dirLColor[i][2] });
-		lightM->SetPointLightActive(i, pointLActive[i]);
-		lightM->SetPointLightAtten(i, { pointLAtten[i][0],pointLAtten[i][1],pointLAtten[i][2] });
-		lightM->SetPointLightColor(i, { pointLColor[i][0],pointLColor[i][1],pointLColor[i][2] });
-		lightM->SetPointLightPos(i, { pointLPos[i][0],pointLPos[i][1],pointLPos[i][2] });
-		lightM->SetSpotLightActive(i, spotLActive[i]);
-		lightM->SetSpotLightAtten(i, { spotLAtten[i][0],spotLAtten[i][1],spotLAtten[i][2] });
-		lightM->SetSpotLightColor(i, { spotLColor[i][0],spotLColor[i][1],spotLColor[i][2] });
-		lightM->SetSpotLightPos(i, { spotLPos[i][0],spotLPos[i][1],spotLPos[i][2] });
-		lightM->SetSpotLightDir(i, { spotDir[i][0],spotDir[i][1],spotDir[i][2] });
-		lightM->SetSpotLightFactorAngle(i, { spotLFactorAngle[i][0],spotLFactorAngle[i][1] });
-	}
-	lightM->SetAmbientColor({ ambient[0],ambient[1],ambient[2] });
+	//ImGui::End();
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	lightM->SetDirLightActive(i, dirLActive[i]);
+	//	lightM->SetDirLightDir(i, { dirLDir[i][0],dirLDir[i][1],dirLDir[i][2] });
+	//	lightM->SetDirLightColor(i, { dirLColor[i][0],dirLColor[i][1],dirLColor[i][2] });
+	//	lightM->SetPointLightActive(i, pointLActive[i]);
+	//	lightM->SetPointLightAtten(i, { pointLAtten[i][0],pointLAtten[i][1],pointLAtten[i][2] });
+	//	lightM->SetPointLightColor(i, { pointLColor[i][0],pointLColor[i][1],pointLColor[i][2] });
+	//	lightM->SetPointLightPos(i, { pointLPos[i][0],pointLPos[i][1],pointLPos[i][2] });
+	//	lightM->SetSpotLightActive(i, spotLActive[i]);
+	//	lightM->SetSpotLightAtten(i, { spotLAtten[i][0],spotLAtten[i][1],spotLAtten[i][2] });
+	//	lightM->SetSpotLightColor(i, { spotLColor[i][0],spotLColor[i][1],spotLColor[i][2] });
+	//	lightM->SetSpotLightPos(i, { spotLPos[i][0],spotLPos[i][1],spotLPos[i][2] });
+	//	lightM->SetSpotLightDir(i, { spotDir[i][0],spotDir[i][1],spotDir[i][2] });
+	//	lightM->SetSpotLightFactorAngle(i, { spotLFactorAngle[i][0],spotLFactorAngle[i][1] });
+	//}
+	//lightM->SetAmbientColor({ ambient[0],ambient[1],ambient[2] });
 #ifdef _DEBUG
 	DebugUpdate();
 #else
@@ -537,7 +536,7 @@ void IF::Scene::Update()
 
 void IF::Scene::Draw()
 {
-	particleM->DrawPostEffect(graph->rootsignature.Get());
+	//particleM->DrawPostEffect(graph->rootsignature.Get());
 	// ポストエフェクト
 	Object::DrawBefore(graph->rootsignature.Get());
 	postEffect->DrawBefore();
@@ -572,22 +571,23 @@ void IF::Scene::Draw()
 
 	graph->DrawBlendMode(Blend::NOBLEND);
 
+	postEffect->constMapPostEffect->bloom = false;
+	postEffect->constMapPostEffect->kadai = false;
+	postEffect->constMapPostEffect->gaussianBlur = false;
 	if (SceneManager::Instance()->GetNowScene() == "MainScene")
 	{
 		postEffect->constMapPostEffect->kadai = true;
-		postEffect->constMapPostEffect->gaussianBlur = false;
 	}
 	else if (SceneManager::Instance()->GetNowScene() == "scene3")
 	{
 		postEffect->constMapPostEffect->gaussianBlur = true;
-		postEffect->constMapPostEffect->kadai = false;
 	}
-	else
+	else if (SceneManager::Instance()->GetNowScene() == "scene5")
 	{
-		postEffect->constMapPostEffect->kadai = false;
-		postEffect->constMapPostEffect->gaussianBlur = false;
+		postEffect->constMapPostEffect->bloom = true;
 	}
 	postEffect->Draw();
+
 	//particleM->Draw();
 
 	//Sprite::DrawBefore(graph->rootsignature.Get());

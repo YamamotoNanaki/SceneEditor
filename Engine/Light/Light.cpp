@@ -90,6 +90,7 @@ void IF::LightManager::TransferConstBuffer()
 
 void IF::LightManager::DefaultLightSetting()
 {
+	dirty = true;
 	dLight[0].SetActive(true);
 	dLight[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
 	dLight[0].SetLightDir({ 0.0f, -1.0f, 0.0f });
@@ -100,7 +101,7 @@ void IF::LightManager::DefaultLightSetting()
 
 	dLight[2].SetActive(true);
 	dLight[2].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	dLight[2].SetLightDir({ -0.5f, +0.1f, -0.2f });
+	dLight[2].SetLightDir({ -0.2, 0, -1.f });
 }
 
 void IF::LightManager::SetAmbientColor(const Float3& color)

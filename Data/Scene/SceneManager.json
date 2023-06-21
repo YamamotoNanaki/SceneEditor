@@ -1,5 +1,5 @@
 {
-    "debug": "scene",
+    "debug": "scene5",
     "scene": [
         {
             "name": "MainScene"
@@ -18,7 +18,10 @@
         },
         {
             "name": "scene4"
+        },
+        {
+            "name": "scene5"
         }
     ],
-    "start": "scene"
+    "start": "scene3"
 }

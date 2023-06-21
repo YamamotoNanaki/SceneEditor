@@ -98,7 +98,7 @@ bool IF::CObject::DeleteObj()
 	return deleteFlag;
 }
 
-void IF::CObject::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, int mode)
+void IF::CObject::MatInitialize(Matrix* matView, Matrix* matProjection, Float3* cameraPos, int32_t mode)
 {
 	SetView(matView);
 	SetProjection(matProjection);
@@ -142,7 +142,7 @@ void IF::CObject::OutputJson(nlohmann::json& j)
 	j["color"]["y"] = GetColor().y;
 	j["color"]["z"] = GetColor().z;
 	j["color"]["w"] = GetColor().w;
-	j["BillBoard"] = (int)mode;
+	j["BillBoard"] = (int32_t)mode;
 	j["prefab"] = prefab;
 	ClassOutputJson(j);
 }
@@ -161,7 +161,7 @@ void IF::CObject::GUI()
 	{
 		float r[3] = { ConvertToDegrees(obj.rotation.x),ConvertToDegrees(obj.rotation.y),ConvertToDegrees(obj.rotation.z) };
 		ImGui::DragFloat3("", r, 0.5f);
-		for (int i = 0; i < 3; i++)
+		for (int32_t i = 0; i < 3; i++)
 		{
 			if (r[i] >= 360)r[i] -= 360;
 			if (r[i] < 0)r[i] += 360;
@@ -211,8 +211,8 @@ void IF::CObject::GUI()
 	}
 	//if (ImGui::TreeNode("Collision"))
 	//{
-	//	static int type = NotPri;
-	//	static int old = 0;
+	//	static int32_t type = NotPri;
+	//	static int32_t old = 0;
 	//	type = old = ptype;
 	//	ImGui::RadioButton("Ray", &type, RayPri);
 	//	ImGui::SameLine();
