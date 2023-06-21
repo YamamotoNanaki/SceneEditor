@@ -316,20 +316,20 @@ void IF::Scene::Update()
 			num++;
 			break;
 		case 1:
-			SceneManager::Instance()->SceneChange("scene3");
-			num = 0;
+			SceneManager::Instance()->SceneChange("scene6");
+			num++;
 			break;
 		case 2:
-			SceneManager::Instance()->SceneChange("scene2");
+			SceneManager::Instance()->SceneChange("scene7");
 			num++;
 			break;
 		case 3:
-			SceneManager::Instance()->SceneChange("scene3");
+			SceneManager::Instance()->SceneChange("scene8");
 			num++;
 			break;
 		case 4:
-			SceneManager::Instance()->SceneChange("scene4");
-			num++;
+			SceneManager::Instance()->SceneChange("scene3");
+			num=0;
 			break;
 		case 5:
 			SceneManager::Instance()->SceneChange("MainScene");
@@ -574,6 +574,7 @@ void IF::Scene::Draw()
 	postEffect->constMapPostEffect->bloom = false;
 	postEffect->constMapPostEffect->kadai = false;
 	postEffect->constMapPostEffect->gaussianBlur = false;
+	postEffect->constMapPostEffect->cross = false;
 	if (SceneManager::Instance()->GetNowScene() == "MainScene")
 	{
 		postEffect->constMapPostEffect->kadai = true;
@@ -585,6 +586,10 @@ void IF::Scene::Draw()
 	else if (SceneManager::Instance()->GetNowScene() == "scene5")
 	{
 		postEffect->constMapPostEffect->bloom = true;
+	}
+	else if (SceneManager::Instance()->GetNowScene() == "scene6")
+	{
+		postEffect->constMapPostEffect->cross = true;
 	}
 	postEffect->Draw();
 

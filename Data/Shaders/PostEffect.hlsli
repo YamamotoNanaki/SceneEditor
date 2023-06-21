@@ -6,6 +6,7 @@ cbuffer cbuff0 : register(b0)
     bool gray;
     float sepia;
     bool bloom;
+    bool cross;
     bool depth;
     bool depth2;
 };

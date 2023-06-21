@@ -50,8 +50,12 @@ namespace IF
 		unsigned int gray = false;
 		float sepia = 0;
 		unsigned int bloom;
+		unsigned int cross;
 		unsigned int depth;
 		unsigned int depth2;
+		float pad;
+		float pad1;
+		float pad2;
 	};
 	struct ConstBufferDataSkin
 	{
