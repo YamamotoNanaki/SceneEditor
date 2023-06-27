@@ -40,6 +40,8 @@ float4 GaussianBlur(float2 uv, Texture2D<float4> tex)
         for (float px = -_sigma * 2; px <= _sigma * 2; px += _stepWidth)
         {
             float2 pickuv = uv + float2(px, py);
+            if (pickuv.x < 0 || pickuv.y < 0 || pickuv.x > 1 || pickuv.y > 1)
+                continue;
             float weight = Gaussian(uv, pickuv, _sigma);
             col += tex.Sample(smp, pickuv) * weight;
             totalWeight += weight;
@@ -49,7 +51,7 @@ float4 GaussianBlur(float2 uv, Texture2D<float4> tex)
     return col;
 }
 
-float4 GaussianDepthBlur(float2 uv, Texture2D<float4> tex, float focusWidth,float _FocusDepth ,float _sigma = 0.005)
+float4 GaussianDepthBlur(float2 uv, Texture2D<float4> tex, float focusWidth, float _FocusDepth, float _sigma = 0.005)
 {
     float totalWeight = 0, _stepWidth = 0.001;
     float4 col = float4(0, 0, 0, 1);
@@ -59,6 +61,8 @@ float4 GaussianDepthBlur(float2 uv, Texture2D<float4> tex, float focusWidth,floa
         for (float px = -_sigma * 2; px <= _sigma * 2; px += _stepWidth)
         {
             float2 pickuv = uv + float2(px, py);
+            if (pickuv.x < 0 || pickuv.y < 0 || pickuv.x > 1 || pickuv.y > 1)
+                continue;
             float pickDepth = tex1.Sample(smp, pickuv).r;
             float pickFocus = smoothstep(0, focusWidth, abs(pickDepth - _FocusDepth));
             float weight = Gaussian(uv, pickuv, _sigma) * pickFocus;
@@ -72,7 +76,6 @@ float4 GaussianDepthBlur(float2 uv, Texture2D<float4> tex, float focusWidth,floa
 
 float4 DotFilter(float2 uv, Texture2D<float4> tex)
 {
-    uv = clamp(uv, 0, 1);
     float4 col = tex.Sample(smp, uv);
     float2 st = uv / 1280 * 30;
     st = frac(st * float2(1280, 720));
@@ -94,9 +97,11 @@ float4 GaussianAngleBlur(float2 uv, Texture2D<float4> tex, float angleDeg)
         float x = cos(angleRad) * j;
         float y = sin(angleRad) * j;
         pickuv = uv + float2(x, y);
+        if (pickuv.x < 0 || pickuv.y < 0 || pickuv.x > 1 || pickuv.y > 1)
+            continue;
 
         float weight = Gaussian(uv, pickuv, pickRange);
-        col += DotFilter(pickuv,tex) * weight;
+        col += DotFilter(pickuv, tex) * weight;
         totalWeight += weight;
     }
     col.rgb = col.rgb / totalWeight;
@@ -106,7 +111,7 @@ float4 GaussianAngleBlur(float2 uv, Texture2D<float4> tex, float angleDeg)
 float4 CrossFilter(float2 uv, Texture2D<float4> tex)
 {
     float4 col;
-    for (int i = 0; i < 3 ;i++)
+    for (int i = 0; i < 3; i++)
     {
         col += GaussianAngleBlur(uv, tex, i * 60);
     }
@@ -154,8 +159,8 @@ float4 main(VSOutput input) : SV_TARGET
     {
         color += CrossFilter(input.uv, tex1);
     }
-    if(depth2)
-    {        
+    if (depth2)
+    {
         float depth = tex1.Sample(smp, input.uv).r;
         
         float inFocus = 1 - smoothstep(0, _NFocusWidth, abs(depth - _FocusDepth));
